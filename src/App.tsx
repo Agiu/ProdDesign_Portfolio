@@ -6,13 +6,20 @@ import Footer from './components/Footer';
 import WIPSection from './components/WIPSection';
 
 export default function App() {
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/c151f05b-a538-424c-9049-a1574483a577',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'App.tsx:8',message:'App component mounted',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'setup',hypothesisId:'B'})}).catch(()=>{});
+  // #endregion
   const [activePage, setActivePage] = useState('Home');
   const isManualScroll = useRef(false);
   const lenisRef = useRef<Lenis | null>(null);
 
   // Initialize Lenis for smooth scrolling
   useEffect(() => {
-    const lenis = new Lenis({
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/c151f05b-a538-424c-9049-a1574483a577',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'App.tsx:16',message:'Initializing Lenis',data:{lenisAvailable:typeof Lenis!=='undefined'},timestamp:Date.now(),sessionId:'debug-session',runId:'setup',hypothesisId:'B'})}).catch(()=>{});
+    // #endregion
+    try {
+      const lenis = new Lenis({
       duration: .5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
@@ -21,6 +28,9 @@ export default function App() {
     });
 
     lenisRef.current = lenis;
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/c151f05b-a538-424c-9049-a1574483a577',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'App.tsx:25',message:'Lenis initialized successfully',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'setup',hypothesisId:'B'})}).catch(()=>{});
+    // #endregion
 
     function raf(time: number) {
       lenis.raf(time);
@@ -33,6 +43,12 @@ export default function App() {
       lenis.destroy();
       lenisRef.current = null;
     };
+    } catch (error) {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/c151f05b-a538-424c-9049-a1574483a577',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'App.tsx:35',message:'Lenis initialization failed',data:{error:error instanceof Error?error.message:String(error)},timestamp:Date.now(),sessionId:'debug-session',runId:'setup',hypothesisId:'B'})}).catch(()=>{});
+      // #endregion
+      console.error('Failed to initialize Lenis:', error);
+    }
   }, []);
 
   // Scroll Spy to update activePage based on scroll position
