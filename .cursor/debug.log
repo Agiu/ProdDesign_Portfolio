@@ -1,61 +1,772 @@
-{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768631307473,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768631307475,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768631307477,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768631307474,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631307485,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768631307498,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768631307498,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768631307586,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768631307588,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768631307499,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768631307499,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631307502,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768631307553,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768631307554,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768631307846,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768631307847,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768631307847,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768631307847,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631307850,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768631307905,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768631307908,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768631308233,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768631308233,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768631308234,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768631308234,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631308236,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768631308257,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768631308260,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631309725,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631309746,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631311198,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631311218,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631312533,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631312573,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631312591,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631313885,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631313903,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631314444,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631314463,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631317590,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631317607,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631321555,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631321572,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768631338328,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768631338330,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768631338328,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768631338329,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631338335,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768631338367,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768631338369,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631341262,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631341286,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631342370,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631342386,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768631355798,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768631355798,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768631355798,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768631355798,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
-{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768631355800,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768631355844,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
-{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768631355845,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632548152,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632548154,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632548178,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632548152,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632548153,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632548177,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632563733,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632563750,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632852885,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632852885,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632852888,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632852887,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632852893,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632852975,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632852976,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632853269,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632853269,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632853270,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632853270,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632853273,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632853333,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632853336,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632853444,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632853445,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632853445,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632853446,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632853448,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632853490,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632853490,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632853642,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632853642,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632853643,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632853643,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632853645,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632853665,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632853668,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632855498,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632855638,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632855639,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632855639,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632855640,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632855642,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632855665,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632855665,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632855665,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632856524,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632856524,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632856525,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632856525,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632856527,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632856548,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632856549,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632857895,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632857895,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632857896,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632857896,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632857898,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632857917,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632857918,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632859930,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632860311,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632861049,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632861068,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632862514,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632862531,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632863658,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632863658,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632863659,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632863660,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632863663,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632863686,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632863686,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632865690,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632867379,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632867379,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632867379,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632867380,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632867381,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632867402,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632867403,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632867978,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632867978,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632867978,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632867979,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632867981,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632868003,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632868003,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632868408,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632868409,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632868409,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632868410,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632868412,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632868436,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632868436,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632868924,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632868924,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632868925,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632868925,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632868927,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632868947,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632868948,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632869423,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632869423,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632869424,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632869424,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632869426,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632869446,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632869446,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632869829,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632869829,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632869829,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632869830,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632869832,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632869852,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632869852,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632870202,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632870202,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632870202,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632870204,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632870206,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632870227,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632870228,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632888594,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632888594,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632888595,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632888596,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632888601,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632888638,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632888641,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632889838,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632889839,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632889838,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632889839,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632889841,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632889860,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632889861,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632891877,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632896513,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632896513,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632896514,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632896517,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632896517,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632900683,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632900691,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632900694,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632912144,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632912144,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632912145,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632912146,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632912151,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632912183,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632912184,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632913539,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632913540,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632913540,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632913543,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632913541,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632913561,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632913562,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632914348,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632914348,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632914349,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632914349,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632914351,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632914369,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632914371,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632915214,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632915215,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632915214,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632915217,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632915215,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632915235,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632915236,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632916075,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632916075,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632916076,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632916077,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632916076,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632916093,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632916094,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632919647,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632919648,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632919648,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632919649,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632919652,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632919672,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632919673,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632920725,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632920725,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632920726,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632920726,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632920728,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632920745,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632920746,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632921895,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632921896,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632921896,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632921896,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632921898,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632921918,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632921919,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632985241,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632985242,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632985242,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632985243,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632985246,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632985271,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632985274,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632986216,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632986217,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632986217,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632986221,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632986218,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632986241,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632986242,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632986982,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632986982,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632986983,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632986983,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632986987,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632987013,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632987014,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632987598,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632987598,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632987599,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632987601,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632987599,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632987619,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632987620,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768632990480,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768632990480,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768632990481,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768632990481,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768632990482,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768632990495,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768632990496,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633088715,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633088721,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633088722,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633088735,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633105728,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633105735,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633105736,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633105749,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633119970,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633119970,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633119971,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633119970,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633119973,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633120023,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633120024,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633121916,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633121916,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633121917,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633121917,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633121920,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633121944,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633121944,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633122820,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633122820,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633122821,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633122821,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633122822,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633122848,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633122848,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633123717,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633123717,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633123718,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633123718,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633123720,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633123748,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633123748,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633125608,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633125609,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633125608,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633125610,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633125608,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633125635,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633125635,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633126695,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633126696,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633126695,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633126696,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633126697,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633126721,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633126721,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633127668,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633127668,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633127669,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633127669,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633127670,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633127698,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633127699,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633128452,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633128453,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633128454,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633128454,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633128456,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633128482,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633128482,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633128981,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633128981,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633128982,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633128983,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633128984,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633129005,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633129005,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633129572,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633129572,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633129573,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633129573,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633129576,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633129596,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633129596,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633130701,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633130702,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633130702,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633130702,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633130704,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633130733,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633130734,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633131667,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633131668,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633131668,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633131669,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633131671,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633131693,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633131693,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633132410,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633132410,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633132410,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633132411,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633132412,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633132434,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633132434,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633134921,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633134921,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633134921,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633134922,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633134924,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633134950,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633134950,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633138033,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633138051,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633139750,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633139768,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633140780,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633140780,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633140781,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633140781,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633140784,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633140804,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633140804,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633142181,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633142181,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633142182,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633142183,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633142184,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633142208,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633142209,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633144240,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633144241,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633144240,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633144242,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633144243,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633144273,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633144273,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633146129,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633146130,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633146130,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633146131,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633146134,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633146157,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633146159,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633147414,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633147414,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633147415,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633147415,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633147418,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633147439,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633147439,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633148624,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633148624,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633148624,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633148625,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633148627,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633148649,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633148650,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633151194,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633151195,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633151195,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633151194,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633151197,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633151224,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633151225,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633154449,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633154450,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633154451,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633154451,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633154453,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633154486,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633154487,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633155599,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633155600,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633155600,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633155601,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633155603,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633155629,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633155630,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633158205,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633158206,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633158206,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633158209,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633158207,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633158232,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633158233,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633159187,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633159187,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633159188,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633159188,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633159190,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633159214,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633159215,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633160525,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633160525,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633160526,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633160526,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633160529,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633160553,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633160554,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633162626,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633162627,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633162627,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633162628,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633162630,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633162653,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633162654,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633163950,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633163950,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633163951,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633163951,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633163954,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633163976,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633163976,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633169701,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633169702,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633169701,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633169702,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633169703,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633169727,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633169728,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633198996,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633199018,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633200152,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633200172,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633207434,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633207454,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633210850,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633210870,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633213777,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633213796,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633214458,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633214473,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633216183,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633216198,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633218756,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633218775,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633225412,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633225430,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633226615,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633226629,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633230674,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633230674,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633230675,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633230678,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633230675,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633230704,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633230706,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633232288,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633232288,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633232289,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633232292,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633232289,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633232314,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633232316,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633233471,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633233471,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633233472,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633233473,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633233475,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633233495,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633233496,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633269766,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633269786,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633270908,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633270924,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633272914,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633272929,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633274605,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633274620,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633287214,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633287214,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633287216,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633287215,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633287218,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633287245,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633287247,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633288047,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633288048,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633288048,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633288052,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633288049,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633288074,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633288075,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633288710,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633288710,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633288711,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633288713,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633288711,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633288732,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633288733,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633289157,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633289158,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633289158,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633289160,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633289159,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633289180,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633289181,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633289603,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633289604,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633289604,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633289603,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633289606,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633289625,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633289626,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633290060,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633290061,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633290062,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633290062,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633290064,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633290086,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633290087,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633290807,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633290807,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633290810,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633290808,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633290808,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633290831,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633290832,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633292182,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633292182,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633292183,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633292183,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633292185,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633292208,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633292209,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633292895,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633292895,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633292896,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633292896,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633292898,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633292919,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633292920,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633293469,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633293469,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633293469,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633293472,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633293470,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633293490,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633293491,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633293667,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633293667,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633293667,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633293668,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633293669,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633293691,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633293692,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633293839,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633293840,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633293840,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633293841,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633293842,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633293861,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633293862,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633293999,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633293999,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633294000,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633294000,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633294002,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633294024,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633294024,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633294163,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633294163,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633294164,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633294164,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633294166,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633294185,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633294186,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633294334,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633294334,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633294335,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633294335,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633294337,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633294357,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633294357,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633294513,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633294513,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633294514,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633294515,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633294518,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633294539,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633294540,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633294670,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633294671,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633294671,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633294672,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633294674,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633294693,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633294695,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633294822,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633294823,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633294824,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633294824,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633294827,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633294848,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633294849,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633294986,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633294987,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633294987,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633294987,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633294989,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633295008,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633295009,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633295153,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633295154,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633295154,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633295155,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633295157,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633295177,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633295178,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633295335,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633295335,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633295336,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633295336,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633295338,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633295359,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633295360,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633295501,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633295502,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633295503,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633295505,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633295503,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633295528,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633295529,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633295672,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633295673,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633295673,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633295674,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633295676,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633295697,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633295698,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633295842,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633295842,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633295843,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633295845,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633295843,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633295864,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633295865,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633296016,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633296016,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633296017,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633296017,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633296019,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633296038,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633296039,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633296194,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633296195,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633296194,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633296195,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633296197,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633296216,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633296216,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633296400,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633296401,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633296401,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633296401,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633296403,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633296423,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633296424,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633296559,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633296559,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633296560,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633296560,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633296562,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633296582,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633296582,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633296731,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633296732,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633296731,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633296732,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633296734,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633296754,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633296755,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633296922,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633296923,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633296922,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633296923,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633296925,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633296946,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633296947,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633297135,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633297135,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633297136,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633297136,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633297138,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633297157,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633297157,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633297289,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633297290,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633297291,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633297294,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633297291,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633297318,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633297319,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633297472,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633297472,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633297473,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633297473,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633297475,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633297494,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633297494,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633298051,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633298051,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633298052,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633298052,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633298055,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633298075,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633298076,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633299319,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633299324,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633300636,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633300651,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633301086,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633301086,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633301087,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633301088,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633301090,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633301117,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633301118,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633303334,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633303334,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633303335,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633303335,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633303338,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633303364,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633303364,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"main.tsx:7","message":"App initialization started","data":{"rootElement":true},"timestamp":1768633305891,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:18","message":"Creating React root","data":{},"timestamp":1768633305892,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:23","message":"Rendering app with BrowserRouter","data":{},"timestamp":1768633305892,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"main.tsx:30","message":"App rendered successfully","data":{},"timestamp":1768633305892,"sessionId":"debug-session","runId":"setup","hypothesisId":"A"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633305894,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:16","message":"Initializing Lenis","data":{"lenisAvailable":true},"timestamp":1768633305921,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:25","message":"Lenis initialized successfully","data":{},"timestamp":1768633305921,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633345081,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633345099,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633346319,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633346335,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633347371,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633348886,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633348900,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633351167,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}
+{"location":"App.tsx:8","message":"App component mounted","data":{},"timestamp":1768633357050,"sessionId":"debug-session","runId":"setup","hypothesisId":"B"}

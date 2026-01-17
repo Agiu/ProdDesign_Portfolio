@@ -86,8 +86,8 @@ export default function Footer() {
                   [NETWORKS]
                 </div>
                 <a
-                  href="#"
-                  className="group flex items-center md:justify-end gap-2 text-[#ccd3de] hover:text-white transition-colors"
+                  className="group flex cursor-pointer items-center md:justify-end gap-2 text-[#ccd3de] hover:text-white transition-colors"
+                  onClick={() => window.open('https://www.linkedin.com/in/kaelub/', '_blank')}
                 >
                   <span className="font-['Greycliff_CF:Regular',sans-serif]">
                     LinkedIn
