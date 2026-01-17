@@ -20,7 +20,7 @@ export default function App() {
     // #endregion
     try {
       const lenis = new Lenis({
-      duration: .5,
+      duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
