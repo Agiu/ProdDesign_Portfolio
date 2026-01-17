@@ -1,7 +1,7 @@
 
-  # Add Parallax Mountain Effect
+  # Caleb Aguiar - Product Designer
 
-  This is a code bundle for Add Parallax Mountain Effect. The original project is available at https://www.figma.com/design/lOztq95qnXN05lxE4u6yq9/Add-Parallax-Mountain-Effect.
+  This is a code bundle for Caleb Aguiar's Portfolio.
 
   ## Running the code
 
