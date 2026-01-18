@@ -45,7 +45,12 @@ export default function Header({ activePage, onPageChange }: HeaderProps) {
             {/* Background */}
             <div className="absolute bg-[#ecf1f8] h-[62px] left-0 top-0 w-full" />
 
-            <div className="relative h-full flex items-center justify-between px-4 md:px-0">
+            <motion.div
+                className="relative h-full flex items-center justify-between px-4 md:px-0"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.5, ease: 'easeOut' }}
+            >
                 {/* Logo */}
                 <div
                     className="relative z-10 md:w-[94px] h-full flex justify-center items-center cursor-pointer group"
@@ -54,14 +59,6 @@ export default function Header({ activePage, onPageChange }: HeaderProps) {
                         setIsMobileMenuOpen(false);
                     }}
                 >
-                    {/* Logo Background - uses layoutId for shared transition */}
-                    {activePage === 'Home' && (
-                        <motion.div
-                            layoutId="nav-highlight"
-                            className="absolute inset-0 bg-[#ccd3de] -z-10 hidden md:block"
-                            transition={{ type: "tween", ease: "easeInOut", duration: 0.5 }}
-                        />
-                    )}
                     <p className="font-['Greycliff_CF:Bold',sans-serif] text-[#1a1f28] text-[36px] leading-[1.32] group-hover:opacity-70 transition-opacity">
                         CA
                     </p>
@@ -75,13 +72,6 @@ export default function Header({ activePage, onPageChange }: HeaderProps) {
                             className="relative h-full flex items-center justify-center min-w-[94px] cursor-pointer group"
                             onClick={() => onPageChange(page.name)}
                         >
-                            {activePage === page.name && (
-                                <motion.div
-                                    layoutId="nav-highlight"
-                                    className="absolute bg-[#ccd3de] h-[62px] top-0 left-0 w-full z-0"
-                                    transition={{ type: "tween", ease: "easeInOut", duration: 0.5 }}
-                                />
-                            )}
                             <p className="relative z-10 font-['Greycliff_CF:Regular',sans-serif] text-[#1a1f28] text-[20px] group-hover:opacity-70 transition-opacity px-2">
                                 {page.name}
                             </p>
@@ -101,7 +91,7 @@ export default function Header({ activePage, onPageChange }: HeaderProps) {
                 >
                     {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
-            </div>
+            </motion.div>
 
             {/* Mobile Navigation Overlay */}
             <AnimatePresence>
