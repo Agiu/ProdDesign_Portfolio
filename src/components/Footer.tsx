@@ -1,137 +1,184 @@
-import { useState, useEffect } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { useEffect, useRef } from 'react';
 
-export default function Footer() {
-  const [time, setTime] = useState("");
+/* ── Subtle dither dot canvas ── */
+function DitherDots({ color = 'rgba(255,255,255,0.06)' }: { color?: string }) {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
-    // Initial set
-    setTime(new Date().toLocaleTimeString());
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
 
-    // Update every second
-    const interval = setInterval(() => {
-      setTime(new Date().toLocaleTimeString());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+        const dpr = window.devicePixelRatio || 1;
+        const w = 300;
+        const h = 300;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.scale(dpr, dpr);
+        ctx.clearRect(0, 0, w, h);
 
-  return (
-    <footer className="w-full bg-[#1a1f28] border-[#4a5a6a] relative z-20 text-[#ecf1f8]">
-      <div className="w-full max-w-[1308px] mx-auto p-8 md:p-12 relative">
-        {/* Background grid */}
-        <div
-          className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(0deg, #ecf1f8 0px, #ecf1f8 1px, transparent 1px, transparent 20px), repeating-linear-gradient(90deg, #ecf1f8 0px, #ecf1f8 1px, transparent 1px, transparent 19px)",
-          }}
+        const spacing = 10;
+        for (let x = 0; x < w; x += spacing) {
+            for (let y = 0; y < h; y += spacing) {
+                const noise = Math.random();
+                if (noise > 0.5) {
+                    const r = noise * 1.8;
+                    ctx.beginPath();
+                    ctx.arc(x, y, r, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                }
+            }
+        }
+    }, [color]);
+
+    return (
+        <canvas
+            ref={canvasRef}
+            className="pointer-events-none absolute"
+            style={{ width: 300, height: 300, opacity: 0.7 }}
         />
+    );
+}
 
-        {/* ASCII decorations */}
-        <div className="absolute top-6 left-6 font-mono text-[#4a5a6a] text-[10px] leading-none hidden md:block">
-          ┌─ CONTACT_PROTOCOL ─┐
-        </div>
-        <div className="absolute top-6 right-6 font-mono text-[#4a5a6a] text-[10px] leading-none text-right hidden md:block">
-          SECURE_CONNECTION: ESTABLISHED
-        </div>
+/* ── Horizontal dither line ──  */
+function DitherLine() {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
-        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 mt-8">
-          {/* Left Column: Bio & Status */}
-          <div className="space-y-8">
-            <div>
-              <h3 className="font-['Greycliff_CF:Bold',sans-serif] text-3xl md:text-4xl mb-4">
-                Come back someday to see more content
-              </h3>
-              <p className="text-[#ccd3de] font-['Greycliff_CF:Regular',sans-serif] text-lg max-w-md leading-relaxed">
-                Don't hesitate to contact me if you have a
-                project that needs re-working or a 0 to 1
-                design.
-              </p>
-            </div>
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
 
-            {/* Current Job Status */}
-            <div className="inline-flex flex-col gap-2">
-              <div className="border border-[#4a5a6a] bg-[#151921] p-4 min-w-[280px]">
-                <div className="font-mono text-[10px] text-[#4a5a6a] mb-2">
-                  WHAT I'M DOING RN:
+        const dpr = window.devicePixelRatio || 1;
+        const w = 800;
+        const h = 4;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.scale(dpr, dpr);
+
+        for (let x = 0; x < w; x += 2) {
+            const on = Math.random() > 0.3;
+            if (on) {
+                ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.12 + 0.03})`;
+                ctx.fillRect(x, 0, 1, h);
+            }
+        }
+    }, []);
+
+    return (
+        <canvas
+            ref={canvasRef}
+            className="w-full h-[2px] opacity-60"
+            style={{ imageRendering: 'pixelated' }}
+        />
+    );
+}
+
+interface FooterProps {
+    darkColor?: string;
+}
+
+export function Footer({ darkColor = '#020510' }: FooterProps) {
+
+    const year = new Date().getFullYear();
+
+    return (
+        <footer
+            className="relative w-full overflow-hidden"
+            style={{
+                backgroundColor: darkColor,
+                transition: 'background-color 0.6s ease',
+            }}
+        >
+            <div className="relative w-full h-full flex flex-col justify-between px-6 py-12 md:pl-10 md:pr-4 lg:px-12 lg:py-16">
+
+                {/* Dither dot decorations inside the container */}
+                <div className="absolute top-0 right-0 opacity-40 pointer-events-none">
+                    <DitherDots />
                 </div>
-                <div className="font-['Greycliff_CF:Bold',sans-serif] text-lg text-white mb-1">
-                  Masters Student
-                </div>
-                <div className="font-['Greycliff_CF:Regular',sans-serif] text-[#ccd3de] text-sm">
-                  @ UW MHCI+D
+                <div className="absolute bottom-0 left-0 opacity-30 pointer-events-none -rotate-45">
+                    <DitherDots color="rgba(255,255,255,0.04)" />
                 </div>
 
-                <div className="w-full h-[1px] bg-[#2a3340] my-3"></div>
+                <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-10">
+                    {/* Left: name + tagline */}
+                    <div>
+                        <h2
+                            className="text-white"
+                            style={{
+                                fontFamily: '"Domaine Display", serif',
+                                fontSize: 'clamp(2rem, 5vw, 4rem)',
+                                fontWeight: 700,
+                                lineHeight: 1.0,
+                            }}
+                        >
+                            CA.
+                        </h2>
+                        <p
+                            className="mt-4 text-white"
+                            style={{
+                                fontFamily: '"American Grotesk", sans-serif',
+                                fontSize: 'clamp(14px, 1.5vw, 16px)',
+                                fontWeight: 400,
+                            }}
+                        >
+                            Product Designer · Looking For Work · Seattle, WA
+                        </p>
+                    </div>
 
-                <div className="flex justify-between items-center">
-                  <span className="font-mono text-[10px] text-[#4a5a6a]">
-                    AVAILABILITY:
-                  </span>
-                  <div className="text-green-400 font-mono text-[10px] flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
-                    Available for Freelance
-                  </div>
+                    {/* Right: links */}
+                    <div className="flex flex-col gap-3 md:items-end mt-2">
+                        {[
+                            { label: 'LinkedIn', href: '#' },
+                            { label: 'GitHub', href: '#' },
+                            { label: 'Email', href: 'mailto:hello@calebaguiar.com' },
+                        ].map(({ label, href }) => (
+                            <a
+                                key={label}
+                                href={href}
+                                className="text-white hover:text-white transition-colors"
+                                style={{
+                                    fontFamily: '"American Grotesk", sans-serif',
+                                    fontSize: 'clamp(14px, 1.4vw, 16px)',
+                                    fontWeight: 400,
+                                    textTransform: 'lowercase' as const,
+                                }}
+                            >
+                                {label}
+                            </a>
+                        ))}
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
 
-          {/* Right Column: Links */}
-          <div className="flex flex-col md:items-end justify-between gap-8">
-            <div className="grid grid-cols-2 gap-12 md:text-right">
-              {/* Socials */}
-              <div className="flex flex-col gap-4">
-                <div className="font-mono text-[#4a5a6a] text-[10px] mb-2">
-                  [NETWORKS]
+                {/* Bottom bar */}
+                <div className="mt-16 md:mt-24">
+
+                    <div className="mt-4 flex flex-col md:flex-row md:justify-between gap-2">
+                        <p
+                            className="text-white/40"
+                            style={{
+                                fontFamily: '"American Grotesk", sans-serif',
+                                fontSize: '0.75rem',
+                            }}
+                        >
+                            © {year} Caleb Aguiar. All rights reserved.
+                        </p>
+                        <p
+                            className="text-white/40"
+                            style={{
+                                fontFamily: '"American Grotesk", sans-serif',
+                                fontSize: '0.7rem',
+                                textTransform: 'uppercase' as const,
+                            }}
+                        >
+                            Designed & built alongside Claude
+                        </p>
+                    </div>
                 </div>
-                <a
-                  className="group flex cursor-pointer items-center md:justify-end gap-2 text-[#ccd3de] hover:text-white transition-colors"
-                  onClick={() => window.open('https://www.linkedin.com/in/kaelub/', '_blank')}
-                >
-                  <span className="font-['Greycliff_CF:Regular',sans-serif]">
-                    LinkedIn
-                  </span>
-                  <ArrowUpRight
-                    size={14}
-                    className="text-[#4a5a6a] group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
-                  />
-                </a>
-              </div>
-
             </div>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="mt-16 pt-6 border-t border-[#2a3340] flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-[10px] text-[#4a5a6a]">
-          <div className="flex items-center gap-2">
-            <span>© 2026 CALEB AGUIAR</span>
-            <span className="text-[#2a3340]">|</span>
-            <span>ALL RIGHTS RESERVED</span>
-          </div>
-
-          <div className="flex items-center gap-6">
-            <div className="hidden md:block">
-              BUILD_VER: v2.4.0-rc
-            </div>
-            <div className="flex items-center gap-2">
-              <span>
-                SYS_TIME:{" "}
-                <span className="text-[#ccd3de]">{time}</span>
-              </span>
-              <span className="text-green-500 animate-pulse">
-                █
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Corner ASCII */}
-        <div className="absolute bottom-6 right-6 font-mono text-[#4a5a6a] text-[10px] leading-none text-right hidden md:block">
-          └─ END_OF_FILE ─┘
-        </div>
-      </div>
-    </footer>
-  );
+        </footer>
+    );
 }

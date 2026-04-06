@@ -1,5 +1,54 @@
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: 'American Grotesk';
+  src: url('../Imports/Test American Grotesk Collection/Test American Grotesk/TestAmericanGrotesk-Medium.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'American Grotesk';
+  src: url('../Imports/Test American Grotesk Collection/Test American Grotesk/TestAmericanGrotesk-Medium.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'American Grotesk';
+  src: url('../Imports/Test American Grotesk Collection/Test American Grotesk/TestAmericanGrotesk-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'American Grotesk';
+  src: url('../Imports/Test American Grotesk Collection/Test American Grotesk/TestAmericanGrotesk-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Domaine Display';
+  src: url('../Imports/Test Domaine Collection/Test Domaine Display/TestDomaineDisplay-Extrabold.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Domaine Display';
+  src: url('../Imports/Test Domaine Collection/Test Domaine Display/TestDomaineDisplay-Extrabold.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Domaine Display';
+  src: url('../Imports/Test Domaine Collection/Test Domaine Display/TestDomaineDisplay-Extrabold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
 :root {
   --font-size: 16px;
   --background: #ffffff;
