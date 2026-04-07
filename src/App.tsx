@@ -12,6 +12,12 @@ export default function App() {
     setDarkColor(color);
   }, []);
 
+  // Sync darkColor to <html> so Safari's overscroll area stays immersive
+  useEffect(() => {
+    document.documentElement.style.backgroundColor = darkColor;
+    document.body.style.backgroundColor = darkColor;
+  }, [darkColor]);
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: .6,
@@ -36,15 +42,14 @@ export default function App() {
   return (
     <Router>
       <div className="w-full min-h-screen flex flex-col">
-        <UnderConstruction />
-
-        {/* <div className="flex-1">
+        <div className="flex-1">
+          <UnderConstruction />
           <Routes>
             <Route path="/" element={<HomePage darkColor={darkColor} onDarkColorChange={handleDarkColorChange} />} />
             <Route path="/case-study/:id" element={<CaseStudyPage darkColor={darkColor} />} />
           </Routes>
         </div>
-        <Footer darkColor={darkColor} /> */}
+        <Footer darkColor={darkColor} />
       </div>
     </Router>
   );

@@ -231,4 +231,11 @@
 
 html {
   font-size: var(--font-size);
+  /* Safari overscroll area fix — must match the portfolio dark background */
+  background-color: #020510;
+}
+
+body {
+  /* Ensures Safari bottom overscroll also stays dark */
+  background-color: #020510;
 }
