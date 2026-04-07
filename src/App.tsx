@@ -44,10 +44,12 @@ export default function App() {
       <div className="w-full min-h-screen flex flex-col">
         <div className="flex-1">
           <UnderConstruction />
+          {/*
           <Routes>
             <Route path="/" element={<HomePage darkColor={darkColor} onDarkColorChange={handleDarkColorChange} />} />
             <Route path="/case-study/:id" element={<CaseStudyPage darkColor={darkColor} />} />
           </Routes>
+          */}
         </div>
         <Footer darkColor={darkColor} />
       </div>
