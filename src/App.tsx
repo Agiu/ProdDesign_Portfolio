@@ -49,10 +49,10 @@ export default function App() {
             <Route path="/" element={<HomePage darkColor={darkColor} onDarkColorChange={handleDarkColorChange} />} />
             <Route path="/case-study/:id" element={<CaseStudyPage darkColor={darkColor} />} />
           </Routes>
-          */}
+
         </div>
-        <Footer darkColor={darkColor} />
-      </div>
+        <Footer darkColor={darkColor} /> */}
+        </div>
     </Router>
   );
 }
