@@ -111,15 +111,15 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
     <div className="w-full min-h-screen text-white pt-24 pb-32" style={{ backgroundColor: darkColor, transition: 'background-color 0.6s ease' }}>
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <Link to="/" className="inline-block text-white/50 hover:text-white mb-12 transition-colors uppercase text-sm tracking-widest" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
-          ← Back to Work
+          ← Back Home
         </Link>
 
         {currentStudy && (
           <div className="mb-16">
-            <h1 style={{ fontFamily: '"Domaine Display", serif', fontWeight: 700, lineHeight: 1.1 }} className="text-5xl md:text-7xl mb-6">
+            <h1 style={{ fontFamily: '"Domaine Display", serif', fontWeight: 700, lineHeight: 1.1 }} className="text-5xl md:text-7xl mb-6 text-center">
               {currentStudy.title}
             </h1>
-            <p className="text-white/70 text-lg md:text-xl max-w-2xl mb-12" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+            <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto mb-12 text-center" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
               {currentStudy.description}
             </p>
 

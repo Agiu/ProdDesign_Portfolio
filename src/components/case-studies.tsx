@@ -543,7 +543,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
 
               {/* Right column: Case study cards */}
               <div className="lg:col-span-8">
-                <div className="grid grid-cols-1 gap-5 md:gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
                   {caseStudies.map((study) => (
                     <Link to={`/case-study/${study.id}`} key={study.id} className="block">
                       <CaseStudyCard study={study} darkColor={darkColor!} />
