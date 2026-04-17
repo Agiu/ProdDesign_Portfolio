@@ -1,9 +1,47 @@
 import { useState, useCallback, useEffect } from 'react';
 import Lenis from 'lenis';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import { HomePage } from './pages/HomePage';
 import { CaseStudyPage } from './pages/CaseStudyPage';
 import { Footer } from './components/Footer';
+
+function AnimatedRoutes({ darkColor, handleDarkColorChange }: { darkColor: string, handleDarkColorChange: (color: string) => void }) {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
+      <Routes location={location} key={location.pathname}>
+        <Route 
+          path="/" 
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <HomePage darkColor={darkColor} onDarkColorChange={handleDarkColorChange} />
+            </motion.div>
+          } 
+        />
+        <Route 
+          path="/case-study/:id" 
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <CaseStudyPage darkColor={darkColor} />
+            </motion.div>
+          } 
+        />
+      </Routes>
+    </AnimatePresence>
+  );
+}
 
 export default function App() {
   const [darkColor, setDarkColor] = useState('#020510');
@@ -34,12 +72,12 @@ export default function App() {
 
   return (
     <Router>
-      <div className="w-full min-h-screen flex flex-col">
+      <div 
+        className="w-full min-h-screen flex flex-col"
+        style={{ backgroundColor: darkColor, transition: 'background-color 0.6s ease' }}
+      >
         <div className="flex-1">
-          <Routes>
-            <Route path="/" element={<HomePage darkColor={darkColor} onDarkColorChange={handleDarkColorChange} />} />
-            <Route path="/case-study/:id" element={<CaseStudyPage darkColor={darkColor} />} />
-          </Routes>
+          <AnimatedRoutes darkColor={darkColor} handleDarkColorChange={handleDarkColorChange} />
         </div>
         <Footer darkColor={darkColor} />
       </div>

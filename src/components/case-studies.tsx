@@ -18,23 +18,23 @@ export const caseStudies = [
       { name: "Yessenia Garcia", title: "Technical Program Manager II, Xbox" },
     ],
     team: ["Caleb Aguiar", "Clarisse Pelayo Sicatt", "Sauhee Shannon Han", "Meera Forespring"],
+    bannerVideo: "907652347",
   },
   {
     id: 2,
-    title: "Forma Branding",
-    category: "Brand Identity",
-    year: "2025",
+    title: "Headphones of the Future",
+    category: "Industrial Design",
+    year: "2024",
     description:
-      "A complete visual identity system for a sustainable architecture studio — from logo to environmental signage.",
+      "A bandless headphone concept designed to alleviate head fatigue and provide a more open audio experience.",
     image:
-      "https://images.unsplash.com/photo-1762365189058-7be5b07e038b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmFuZGluZyUyMGlkZW50aXR5JTIwZGVzaWduJTIwbW9ja3VwfGVufDF8fHx8MTc3NTA4NDA1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
-    tags: ["Branding", "Print", "Strategy"],
-    role: "Art Director",
-    advisors: [
-      { name: "Marco Rossi", title: "Founding Partner, Studio Forma" },
-      { name: "Mike Ross", title: "Brand Strategist, Freelance" },
-    ],
-    team: ["Caleb Aguiar", "Studio Forma", "Mike Ross"],
+      "/headphones/image_placeholder_8.JPG",
+    bannerImage:
+      "/headphones/image_placeholder_1.JPG",
+    tags: ["3D Modeling", "Hardware", "Prototyping"],
+    role: "Lead Prototyper",
+    advisors: [],
+    team: ["Caleb Aguiar", "Alexander Akande", "Kyo Fan", "Meera Divecha Forespring", "Hannah Hatchett"],
   },
   {
     id: 3,
@@ -361,15 +361,11 @@ export function CaseStudyCard({ study, darkColor }: { study: (typeof caseStudies
           WebkitMaskRepeat: "no-repeat",
         }}
       >
-        {/* Bitrate-slider pixelated image canvas */}
-        {dims.w > 0 && dims.h > 0 && (
-          <PixelatedImageCanvas
-            src={study.image}
-            hovered={hovered}
-            width={dims.w}
-            height={dims.h}
-          />
-        )}
+        <img
+          src={study.image}
+          alt={study.title}
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        />
 
         {/* Hue-matching overlay */}
         <div
