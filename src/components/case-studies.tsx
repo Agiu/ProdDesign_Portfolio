@@ -26,6 +26,22 @@ export const caseStudies = [
     team: ["Caleb Aguiar", "Alexander Akande", "Kyo Fan", "Meera Divecha Forespring", "Hannah Hatchett"],
   },
   {
+    id: 3,
+    title: "Creating A New Way To Shop and Find Games",
+    category: "App Design",
+    year: "2025",
+    description:
+      "A Steam Shop redesign to focus more on the immersion and entertainment value of each game.",
+    image:
+      "/steamredesign/steamredesign.jpg",
+    tags: ["Web", "Ecommerce", "Gaming"],
+    role: "UX/UI Designer",
+    advisors: [
+      { name: "Dr. Emily Chen", title: "Health UX Researcher, Stanford" },
+    ],
+    team: ["Caleb Aguiar", "Dr. Emily Chen"],
+  },
+  {
     id: 1,
     title: "Building a Mini Golf Course from Scratch",
     category: "Design",
@@ -42,22 +58,6 @@ export const caseStudies = [
     ],
     team: ["Caleb Aguiar", "Clarisse Pelayo Sicatt", "Sauhee Shannon Han", "Meera Forespring"],
     bannerVideo: "1187888582",
-  },
-  {
-    id: 3,
-    title: "Creating A New Way To Shop and Find Videogames",
-    category: "App Design",
-    year: "2025",
-    description:
-      "A Steam Shop redesign to focus more on the immersion and entertainment value of each game.",
-    image:
-      "/steamredesign/steamredesign.jpg",
-    tags: ["Web", "Ecommerce", "Gaming"],
-    role: "UX/UI Designer",
-    advisors: [
-      { name: "Dr. Emily Chen", title: "Health UX Researcher, Stanford" },
-    ],
-    team: ["Caleb Aguiar", "Dr. Emily Chen"],
   },
 
 ];
