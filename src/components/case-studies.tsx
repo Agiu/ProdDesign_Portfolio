@@ -27,68 +27,39 @@ export const caseStudies = [
   },
   {
     id: 1,
-    title: "Xbox Restructuring",
-    category: "Product Design",
+    title: "Building a Mini Golf Course from Scratch",
+    category: "Design",
     year: "2026",
     description:
-      "End-to-end redesign of a SaaS analytics platform, improving data legibility and user task completion by 40%.",
+      "Putting together physical objects with player interactions through code and arduinos",
     image:
-      "https://images.unsplash.com/photo-1720962158883-b0f2021fb51e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWJzaXRlJTIwcmVkZXNpZ24lMjBkYXNoYm9hcmQlMjBkYXJrfGVufDF8fHx8MTc3NTA4NDA1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
-    tags: ["UI/UX", "Design System", "Analytics"],
+      "/Minigolf/minigolfhole.png",
+    tags: ["Interaction Design", "Physical Design", "Prototyping", "Electronics"],
     role: "Designer",
     advisors: [
       { name: "John Snavely", title: "Head of Design, Xbox" },
       { name: "Yessenia Garcia", title: "Technical Program Manager II, Xbox" },
     ],
     team: ["Caleb Aguiar", "Clarisse Pelayo Sicatt", "Sauhee Shannon Han", "Meera Forespring"],
-    bannerVideo: "907652347",
+    bannerVideo: "1187888582",
   },
   {
     id: 3,
-    title: "Pulse Mobile",
+    title: "Creating A New Way To Shop and Find Videogames",
     category: "App Design",
-    year: "2024",
+    year: "2025",
     description:
-      "Health tracking app with adaptive interfaces that respond to user behavior and biometric input patterns.",
+      "A Steam Shop redesign to focus more on the immersion and entertainment value of each game.",
     image:
-      "https://images.unsplash.com/photo-1748801583967-3038967d7279?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2JpbGUlMjBhcHAlMjBVSSUyMHByb3RvdHlwZXxlbnwxfHx8fDE3NzUwODQwNTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    tags: ["Mobile", "iOS", "Health"],
+      "/steamredesign/steamredesign.jpg",
+    tags: ["Web", "Ecommerce", "Gaming"],
     role: "UX/UI Designer",
     advisors: [
       { name: "Dr. Emily Chen", title: "Health UX Researcher, Stanford" },
     ],
     team: ["Caleb Aguiar", "Dr. Emily Chen"],
   },
-  {
-    id: 4,
-    title: "Voidmarket",
-    category: "E-Commerce",
-    year: "2024",
-    description:
-      "Reimagining luxury e-commerce with immersive product storytelling and a brutalist checkout flow.",
-    image:
-      "https://images.unsplash.com/photo-1648134859177-66e35b61e106?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlY29tbWVyY2UlMjBwcm9kdWN0JTIwcGFnZSUyMGRlc2lnbnxlbnwxfHx8fDE3NzUwODQwNTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    tags: ["Web", "E-Commerce", "Interaction"],
-    role: "Front-End Developer & Designer",
-    advisors: [
-      { name: "Voidmarket Founders", title: "Co-founders, Voidmarket" },
-    ],
-    team: ["Caleb Aguiar", "Voidmarket Founders"],
-  },
-  {
-    id: 5,
-    title: "Synthwave OS",
-    category: "Concept Design",
-    year: "2024",
-    description:
-      "A speculative operating system UI exploring retro-futurism aesthetics with modern usability paradigms.",
-    image:
-      "https://images.unsplash.com/photo-1761044590861-71df31e43d0d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBhcHAlMjBpbnRlcmZhY2UlMjBkZXNpZ24lMjBkYXJrfGVufDF8fHx8MTc3NTA4NDA1MXww&ixlib=rb-4.1.0&q=80&w=1080",
-    tags: ["Concept", "UI", "Exploration"],
-    role: "Sole Designer",
-    advisors: [],
-    team: ["Caleb Aguiar"],
-  },
+
 ];
 
 // Corner radius used by both the dither mask and CSS — keep in sync
@@ -521,7 +492,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                           {activeStudy.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="text-[11px] uppercase text-white/80 border border-white/15 bg-white/5 px-3 py-1.5"
+                              className="text-[11px] uppercase text-white/80 bg-white/5 px-3 py-1.5"
                               style={{
                                 fontFamily: '"American Grotesk", sans-serif',
                                 borderRadius: 999,
@@ -545,41 +516,31 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                           <p className="text-white/90 text-[14px] md:text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>{activeStudy.category}</p>
                         </div>
                       </div>
-
-                      {/* Team */}
-                      {activeStudy.team && activeStudy.team.length > 0 && (
-                        <div>
-                          <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-1.5" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Team</h4>
-                          <p className="text-white/70 text-[13px] md:text-[14px] leading-relaxed" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
-                            {activeStudy.team.join(", ")}
-                          </p>
-                        </div>
-                      )}
                     </div>
                   )}
+                </div>
               </div>
-            </div>
 
-            {/* Right column: Case study cards */}
-            <div className="lg:col-span-8">
-              <div className="grid grid-cols-1 gap-5 md:gap-6">
-                {caseStudies.map((study) => (
-                  <Link
-                    to={`/case-study/${study.id}`}
-                    key={study.id}
-                    className="block"
-                    onMouseEnter={() => handleMouseEnter(study)}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    <CaseStudyCard study={study} darkColor={darkColor!} />
-                  </Link>
-                ))}
+              {/* Right column: Case study cards */}
+              <div className="lg:col-span-8">
+                <div className="grid grid-cols-1 gap-5 md:gap-6">
+                  {caseStudies.map((study) => (
+                    <Link
+                      to={`/case-study/${study.id}`}
+                      key={study.id}
+                      className="block"
+                      onMouseEnter={() => handleMouseEnter(study)}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      <CaseStudyCard study={study} darkColor={darkColor!} />
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </section >
   );
 }

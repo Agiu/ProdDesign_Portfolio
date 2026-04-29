@@ -229,10 +229,9 @@ const FALLBACK_WEATHER: WeatherData = {
 
 // ─── Rotating hook line index ──
 const HOOK_LINES = [
-  ' I love making films.',
+  ' I also love making films.',
   ' Most people design tools. I design experiences that inspire.',
-  ' I build things that move people.',
-  ' I think in systems, but I create with feeling.',
+  ' I build things that make people move.',
   ' I turn complexity into clarity.',
 ];
 
