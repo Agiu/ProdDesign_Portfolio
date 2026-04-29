@@ -506,40 +506,17 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                   }}
                 >
                   {activeStudy && (
-                    <div className="flex flex-col gap-8">
+                    <div className="flex flex-col gap-6">
                       {/* Title & Description */}
                       <div>
-                        <h3 className="text-white text-3xl md:text-4xl mb-4 leading-tight" style={{ fontFamily: '"Domaine Display", serif', fontWeight: 600 }}>
+                        <h3 className="text-white text-3xl md:text-4xl mb-3 leading-tight" style={{ fontFamily: '"Domaine Display", serif', fontWeight: 600 }}>
                           {activeStudy.title}
                         </h3>
-                        <p className="text-white/75 text-[15px] md:text-[16px] leading-relaxed max-w-sm" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                        <p className="text-white/75 text-[15px] md:text-[16px] leading-relaxed max-w-sm mb-4" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
                           {activeStudy.description}
                         </p>
-                      </div>
 
-                      <div className="w-full h-[1px] bg-white/10" />
-
-                      {/* Metadata Grid */}
-                      <div className="grid grid-cols-2 gap-y-6 gap-x-4">
-                        <div>
-                          <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-1.5" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Role</h4>
-                          <p className="text-white/90 text-[14px] md:text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>{activeStudy.role}</p>
-                        </div>
-                        <div>
-                          <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-1.5" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Year</h4>
-                          <p className="text-white/90 text-[14px] md:text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>{activeStudy.year}</p>
-                        </div>
-                        <div className="col-span-2">
-                          <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-1.5" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Category</h4>
-                          <p className="text-white/90 text-[14px] md:text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>{activeStudy.category}</p>
-                        </div>
-                      </div>
-
-                      <div className="w-full h-[1px] bg-white/10" />
-
-                      {/* Expertise / Tags */}
-                      <div>
-                        <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-3" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Expertise</h4>
+                        {/* Tags — directly under headline */}
                         <div className="flex gap-2 flex-wrap">
                           {activeStudy.tags.map((tag) => (
                             <span
@@ -557,6 +534,18 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                         </div>
                       </div>
 
+                      {/* Metadata Grid */}
+                      <div className="grid grid-cols-2 gap-y-6 gap-x-4">
+                        <div>
+                          <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-1.5" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Year</h4>
+                          <p className="text-white/90 text-[14px] md:text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>{activeStudy.year}</p>
+                        </div>
+                        <div className="col-span-2">
+                          <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-1.5" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Category</h4>
+                          <p className="text-white/90 text-[14px] md:text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>{activeStudy.category}</p>
+                        </div>
+                      </div>
+
                       {/* Team */}
                       {activeStudy.team && activeStudy.team.length > 0 && (
                         <div>
@@ -568,29 +557,29 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                       )}
                     </div>
                   )}
-                </div>
               </div>
+            </div>
 
-              {/* Right column: Case study cards */}
-              <div className="lg:col-span-8">
-                <div className="grid grid-cols-1 gap-5 md:gap-6">
-                  {caseStudies.map((study) => (
-                    <Link
-                      to={`/case-study/${study.id}`}
-                      key={study.id}
-                      className="block"
-                      onMouseEnter={() => handleMouseEnter(study)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <CaseStudyCard study={study} darkColor={darkColor!} />
-                    </Link>
-                  ))}
-                </div>
+            {/* Right column: Case study cards */}
+            <div className="lg:col-span-8">
+              <div className="grid grid-cols-1 gap-5 md:gap-6">
+                {caseStudies.map((study) => (
+                  <Link
+                    to={`/case-study/${study.id}`}
+                    key={study.id}
+                    className="block"
+                    onMouseEnter={() => handleMouseEnter(study)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <CaseStudyCard study={study} darkColor={darkColor!} />
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+    </section >
   );
 }
