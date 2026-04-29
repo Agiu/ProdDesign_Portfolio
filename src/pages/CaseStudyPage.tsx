@@ -68,6 +68,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
   const [activeId, setActiveId] = useState<string>('');
   const [tocOpen, setTocOpen] = useState(false);
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+  const [isPlayingShowcase, setIsPlayingShowcase] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   const heroRef = useRef<HTMLDivElement>(null);
@@ -139,6 +140,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
       }
     };
     fetchMarkdown();
+    setIsPlayingShowcase(false);
     window.scrollTo(0, 0);
   }, [id]);
 
@@ -165,19 +167,34 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
   const otherStudies = caseStudies.filter(study => study.id.toString() !== id).slice(0, 2);
 
   const TocLinks = () => (
-    <nav style={{ fontFamily: '"American Grotesk", sans-serif' }}>
-      {headings.map(h => (
-        <button
-          key={h.id}
-          onClick={() => scrollTo(h.id)}
-          className={`block w-full text-left text-sm transition-colors duration-150 py-1 hover:text-white
-            ${h.level === 3 ? 'pl-3' : ''}
-            ${activeId === h.id ? 'text-white' : 'text-white/35'}
-          `}
-        >
-          {h.text}
-        </button>
-      ))}
+    <nav style={{ fontFamily: '"American Grotesk", sans-serif' }} className="flex flex-col gap-1">
+      {headings.map(h => {
+        const isActive = activeId === h.id;
+        return (
+          <button
+            key={h.id}
+            onClick={() => scrollTo(h.id)}
+            className={`relative block w-full text-left transition-all duration-300 py-2 pr-3 rounded-lg
+              ${h.level === 3 ? 'pl-8 text-[13.5px] text-white/60' : 'pl-3 text-[15px] font-medium'}
+              ${isActive
+                ? 'text-white bg-white/10 shadow-sm'
+                : 'hover:text-white/90 hover:bg-white/5'}
+            `}
+          >
+            {isActive && (
+              <motion.div
+                layoutId="activeToc"
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-white rounded-r-full"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              />
+            )}
+            <span className="flex items-center gap-2.5">
+              {h.level === 3 && <span className={`w-1 h-1 rounded-full ${isActive ? 'bg-white' : 'bg-white/20'}`} />}
+              <span className="truncate">{h.text}</span>
+            </span>
+          </button>
+        );
+      })}
     </nav>
   );
 
@@ -185,12 +202,18 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
     <>
       <div className="w-full min-h-screen text-white bg-black" style={{ backgroundColor: darkColor, transition: 'background-color 0.6s ease' }}>
 
-        {/* Back Button Overlay */}
-        <div className="fixed top-8 left-6 md:left-12 z-50">
-          <Link to="/" className="inline-flex items-center text-white/70 hover:text-white transition-colors uppercase text-sm tracking-widest bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
-            ← Back Home
+        {/* Navigation / Header */}
+        <nav className="fixed top-8 left-6 md:left-12 z-50 mix-blend-difference">
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center text-white/70 hover:text-white transition-colors duration-200 rounded-full p-2 hover:bg-white/10"
+            aria-label="Back home"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
           </Link>
-        </div>
+        </nav>
 
         {/* HERO ANIMATION SECTION */}
         {currentStudy && (
@@ -260,28 +283,96 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
                     <p className="text-white/40 text-xs uppercase tracking-widest mb-2 font-bold">Role</p>
                     <p className="text-white font-medium">{currentStudy.role}</p>
                   </div>
-                  <div className="rounded-lg p-6 bg-white/5 backdrop-blur-sm">
+                  <div className="rounded-lg p-6 bg-white/5 backdrop-blur-sm flex-1">
                     <p className="text-white/40 text-xs uppercase tracking-widest mb-2 font-bold">Team</p>
-                    <p className="text-white font-medium">{currentStudy.team?.join(", ")}</p>
+                    {currentStudy.team && currentStudy.team.length > 0 ? (
+                      <ul className="text-white font-medium list-disc list-outside pl-4">
+                        {currentStudy.team.map((member, idx) => (
+                          <li key={idx}>{member}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-white font-medium">—</p>
+                    )}
                   </div>
                 </div>
-                <div className="rounded-lg p-6 bg-white/5 backdrop-blur-sm flex flex-col">
-                  <p className="text-white/40 text-xs uppercase tracking-widest mb-4 font-bold">Advisors</p>
-                  {currentStudy.advisors && currentStudy.advisors.length > 0 ? (
-                    <div className="flex flex-col gap-4">
-                      {currentStudy.advisors.map((advisor, i) => (
-                        <div key={i}>
-                          <p className="text-white font-medium">{advisor.name}</p>
-                          <p className="text-white/50 text-sm mt-0.5">{advisor.title}</p>
-                        </div>
-                      ))}
+                <div className="flex flex-col gap-4">
+                  <div className={`rounded-lg p-6 backdrop-blur-sm flex flex-col ${currentStudy.id === 2 ? 'bg-white/10' : 'bg-white/5'}`}>
+                    <p className="text-white/40 text-xs uppercase tracking-widest mb-4 font-bold">
+                      {currentStudy.id === 2 ? "My contributions" : "Advisors"}
+                    </p>
+                    {'contributions' in currentStudy && currentStudy.contributions ? (
+                      <ul className="text-white font-medium list-disc list-outside pl-4">
+                        {(currentStudy.contributions as string[]).map((contrib, i) => (
+                          <li key={i}>{contrib}</li>
+                        ))}
+                      </ul>
+                    ) : currentStudy.advisors && currentStudy.advisors.length > 0 ? (
+                      <div className="flex flex-col gap-4">
+                        {currentStudy.advisors.map((advisor, i) => (
+                          <div key={i}>
+                            <p className="text-white font-medium">{advisor.name}</p>
+                            <p className="text-white/50 text-sm mt-0.5">{advisor.title}</p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-white font-medium">—</p>
+                    )}
+                  </div>
+                  {currentStudy && 'timeline' in currentStudy && currentStudy.timeline && (
+                    <div className="rounded-lg p-6 bg-white/5 backdrop-blur-sm flex-1 flex flex-col">
+                      <p className="text-white/40 text-xs uppercase tracking-widest mb-4 font-bold">Timeline</p>
+                      <p className="text-white text-3xl font-bold tracking-tight" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                        {currentStudy.timeline as string}
+                      </p>
                     </div>
-                  ) : (
-                    <p className="text-white font-medium">—</p>
                   )}
                 </div>
               </div>
             </div>
+          )}
+
+          {/* Showcase Video */}
+          {currentStudy && 'showcaseVideo' in currentStudy && currentStudy.showcaseVideo && (
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full mb-20 relative group"
+            >
+              <div className="absolute -inset-4 bg-white/10 blur-2xl rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+              <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-black" style={{ boxShadow: '0 24px 80px rgba(0,0,0,0.6)' }}>
+                {!isPlayingShowcase ? (
+                  <div
+                    className="absolute inset-0 w-full h-full cursor-pointer group/play"
+                    onClick={() => setIsPlayingShowcase(true)}
+                  >
+                    <img
+                      src={`https://img.youtube.com/vi/${currentStudy.showcaseVideo}/maxresdefault.jpg`}
+                      alt="Video thumbnail"
+                      className="w-full h-full object-cover opacity-80 group-hover/play:opacity-100 transition-opacity duration-500"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover/play:scale-110 group-hover/play:bg-white/20 transition-all duration-300">
+                        <svg className="w-8 h-8 text-white translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${currentStudy.showcaseVideo as string}?rel=0&color=white&autoplay=1`}
+                    className="w-full h-full"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                )}
+              </div>
+            </motion.div>
           )}
 
           {/* Mobile TOC dropdown */}
@@ -307,14 +398,16 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
 
             {/* Sticky desktop TOC — left side */}
             {headings.length > 0 && (
-              <aside className="hidden xl:block w-48 shrink-0 sticky top-28 self-start pt-12">
+              <aside className="hidden xl:block w-72 shrink-0 sticky top-32 self-start">
                 <p
-                  className="text-white/30 text-xs uppercase tracking-widest mb-3"
+                  className="text-white/40 text-xs uppercase tracking-widest mb-4 pl-2 font-bold"
                   style={{ fontFamily: '"American Grotesk", sans-serif' }}
                 >
                   On this page
                 </p>
-                <TocLinks />
+                <div className="rounded-2xl p-6 bg-white/5 backdrop-blur-sm shadow-2xl">
+                  <TocLinks />
+                </div>
               </aside>
             )}
 
@@ -353,7 +446,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
               .prose p { 
                 text-align: left !important;
                 color: rgba(255, 255, 255, 0.7) !important; 
-                font-size: 1.25rem !important;
+                font-size: 1.375rem !important;
                 line-height: 1.9 !important; 
                 font-family: "American Grotesk", sans-serif !important; 
                 font-weight: 300 !important; 
@@ -363,7 +456,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
               /* Lists */
               .prose ul, .prose ol {
                 color: rgba(255, 255, 255, 0.7) !important; 
-                font-size: 1.25rem !important;
+                font-size: 1.375rem !important;
                 line-height: 1.9 !important; 
                 font-family: "American Grotesk", sans-serif !important; 
                 font-weight: 300 !important; 

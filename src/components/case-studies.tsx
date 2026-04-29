@@ -3,6 +3,29 @@ import { Link } from "react-router-dom";
 
 export const caseStudies = [
   {
+    id: 2,
+    title: "Headphones of the Future",
+    category: "Industrial Design",
+    year: "2024",
+    description:
+      "A bandless headphone concept designed to alleviate head fatigue and provide a more open audio experience.",
+    image:
+      "/headphones/image_placeholder_8.png",
+    bannerImage:
+      "/headphones/image_placeholder_10.png",
+    tags: ["3D Modeling", "Interaction Design", "Prototyping"],
+    role: "Product Designer, Cinematographer",
+    advisors: [],
+    contributions: [
+      "Led the main prototyping and 3D modeling for nearly 20 iterative concepts.",
+      "Contributed to nearly 30 rounds of user testing to adjust designs for over 47 potential ears.",
+      "Developed a branding and pitch video demonstrating the headphones' interactions."
+    ],
+    timeline: "4 weeks",
+    showcaseVideo: "2mzSQccg3mY",
+    team: ["Caleb Aguiar", "Alexander Akande", "Kyo Fan", "Meera Divecha Forespring", "Hannah Hatchett"],
+  },
+  {
     id: 1,
     title: "Xbox Restructuring",
     category: "Product Design",
@@ -19,22 +42,6 @@ export const caseStudies = [
     ],
     team: ["Caleb Aguiar", "Clarisse Pelayo Sicatt", "Sauhee Shannon Han", "Meera Forespring"],
     bannerVideo: "907652347",
-  },
-  {
-    id: 2,
-    title: "Headphones of the Future",
-    category: "Industrial Design",
-    year: "2024",
-    description:
-      "A bandless headphone concept designed to alleviate head fatigue and provide a more open audio experience.",
-    image:
-      "/headphones/image_placeholder_8.JPG",
-    bannerImage:
-      "/headphones/image_placeholder_1.JPG",
-    tags: ["3D Modeling", "Hardware", "Prototyping"],
-    role: "Lead Prototyper",
-    advisors: [],
-    team: ["Caleb Aguiar", "Alexander Akande", "Kyo Fan", "Meera Divecha Forespring", "Hannah Hatchett"],
   },
   {
     id: 3,
@@ -479,7 +486,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                       opacity: hoveredStudy ? 0.3 : 1,
                     }}
                   >
-                    CASE STUDIES
+                    CASE<br />STUDIES
                   </h2>
                   <p
                     className="text-white mt-4 text-[13px] max-w-md leading-relaxed transition-opacity duration-500"
@@ -490,7 +497,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                 </div>
 
                 {/* Hover Info Panel (Hidden on Mobile) */}
-                <div 
+                <div
                   className="mt-12 transition-all duration-500 ease-out hidden lg:block"
                   style={{
                     opacity: hoveredStudy ? 1 : 0,
@@ -549,7 +556,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                           ))}
                         </div>
                       </div>
-                      
+
                       {/* Team */}
                       {activeStudy.team && activeStudy.team.length > 0 && (
                         <div>
@@ -566,11 +573,11 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
 
               {/* Right column: Case study cards */}
               <div className="lg:col-span-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+                <div className="grid grid-cols-1 gap-5 md:gap-6">
                   {caseStudies.map((study) => (
-                    <Link 
-                      to={`/case-study/${study.id}`} 
-                      key={study.id} 
+                    <Link
+                      to={`/case-study/${study.id}`}
+                      key={study.id}
                       className="block"
                       onMouseEnter={() => handleMouseEnter(study)}
                       onMouseLeave={handleMouseLeave}

@@ -767,6 +767,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
               fontStyle: 'normal',
               fontWeight: 700,
               lineHeight: 1.2,
+              letterSpacing: '0.02em',
             }}
           >
             I'm a designer and software engineer.
