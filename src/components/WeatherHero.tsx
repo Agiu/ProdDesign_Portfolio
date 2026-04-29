@@ -212,12 +212,12 @@ function cToF(c: number): number {
 }
 
 const FALLBACK_WEATHER: WeatherData = {
-  city: 'New York',
-  region: 'NY',
+  city: 'Seattle',
+  region: 'WA',
   country: 'United States',
-  latitude: 40.71,
-  longitude: -74.01,
-  currentTemp: 22,
+  latitude: 47.6062,
+  longitude: -122.3321,
+  currentTemp: 12,
   feelsLike: 24,
   humidity: 55,
   windSpeed: 12,
@@ -243,6 +243,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
   const offscreenRef = useRef<HTMLCanvasElement | null>(null);
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [apiFailed, setApiFailed] = useState(false);
   const [canvasReady, setCanvasReady] = useState(false);
   const animFrameRef = useRef<number>(0);
   const lastEmittedColor = useRef<string>('');
@@ -401,7 +402,8 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
         const lon = -122.3321;
 
         const weatherRes = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m&timezone=auto&forecast_days=1`
+          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m&timezone=auto&forecast_days=1`,
+          { signal: AbortSignal.timeout(5000) }
         );
         if (!weatherRes.ok) throw new Error('Weather failed');
         const wd = await weatherRes.json();
@@ -423,7 +425,10 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
           currentHour: new Date().getHours(),
         });
       } catch {
-        if (!cancelled) setWeather(FALLBACK_WEATHER);
+        if (!cancelled) {
+          setWeather(FALLBACK_WEATHER);
+          setApiFailed(true);
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -723,16 +728,24 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
 
 
       {/* Weather details */}
-      <p
-        className="text-white mt-1.5"
-        style={{
-          fontFamily: '"American Grotesk", sans-serif',
-          fontSize: 'clamp(13px, 1.5vw, 16px)',
-          fontWeight: 300,
-        }}
-      >
-        {desc} · {cToF(activeTemp).toFixed(0)}°F
-      </p>
+      <div className="flex flex-col gap-1 mt-1.5">
+        <p
+          className="text-white"
+          style={{
+            fontFamily: '"American Grotesk", sans-serif',
+            fontSize: 'clamp(13px, 1.5vw, 16px)',
+            fontWeight: 300,
+          }}
+        >
+          {desc} · {cToF(activeTemp).toFixed(0)}°F
+        </p>
+        {apiFailed && (
+          <div className="inline-flex items-center gap-1.5 mt-1 px-2 py-1 rounded-sm bg-red-500/10 w-fit">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+            <span className="text-red-200/90 text-[10px] tracking-widest uppercase font-semibold" style={{ fontFamily: '"American Grotesk", sans-serif' }}>API Offline · Fallback Info</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 
@@ -754,6 +767,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
               fontStyle: 'normal',
               fontWeight: 700,
               lineHeight: 1.2,
+              letterSpacing: '0.02em',
             }}
           >
             I'm a designer and software engineer.

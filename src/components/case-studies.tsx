@@ -3,6 +3,29 @@ import { Link } from "react-router-dom";
 
 export const caseStudies = [
   {
+    id: 2,
+    title: "Headphones of the Future",
+    category: "Industrial Design",
+    year: "2024",
+    description:
+      "A bandless headphone concept designed to alleviate head fatigue and provide a more open audio experience.",
+    image:
+      "/headphones/image_placeholder_8.png",
+    bannerImage:
+      "/headphones/image_placeholder_10.png",
+    tags: ["3D Modeling", "Interaction Design", "Prototyping"],
+    role: "Product Designer, Cinematographer",
+    advisors: [],
+    contributions: [
+      "Led the main prototyping and 3D modeling for nearly 20 iterative concepts.",
+      "Contributed to nearly 30 rounds of user testing to adjust designs for over 47 potential ears.",
+      "Developed a branding and pitch video demonstrating the headphones' interactions."
+    ],
+    timeline: "4 weeks",
+    showcaseVideo: "2mzSQccg3mY",
+    team: ["Caleb Aguiar", "Alexander Akande", "Kyo Fan", "Meera Divecha Forespring", "Hannah Hatchett"],
+  },
+  {
     id: 1,
     title: "Xbox Restructuring",
     category: "Product Design",
@@ -18,23 +41,7 @@ export const caseStudies = [
       { name: "Yessenia Garcia", title: "Technical Program Manager II, Xbox" },
     ],
     team: ["Caleb Aguiar", "Clarisse Pelayo Sicatt", "Sauhee Shannon Han", "Meera Forespring"],
-  },
-  {
-    id: 2,
-    title: "Forma Branding",
-    category: "Brand Identity",
-    year: "2025",
-    description:
-      "A complete visual identity system for a sustainable architecture studio — from logo to environmental signage.",
-    image:
-      "https://images.unsplash.com/photo-1762365189058-7be5b07e038b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmFuZGluZyUyMGlkZW50aXR5JTIwZGVzaWduJTIwbW9ja3VwfGVufDF8fHx8MTc3NTA4NDA1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
-    tags: ["Branding", "Print", "Strategy"],
-    role: "Art Director",
-    advisors: [
-      { name: "Marco Rossi", title: "Founding Partner, Studio Forma" },
-      { name: "Mike Ross", title: "Brand Strategist, Freelance" },
-    ],
-    team: ["Caleb Aguiar", "Studio Forma", "Mike Ross"],
+    bannerVideo: "907652347",
   },
   {
     id: 3,
@@ -361,15 +368,11 @@ export function CaseStudyCard({ study, darkColor }: { study: (typeof caseStudies
           WebkitMaskRepeat: "no-repeat",
         }}
       >
-        {/* Bitrate-slider pixelated image canvas */}
-        {dims.w > 0 && dims.h > 0 && (
-          <PixelatedImageCanvas
-            src={study.image}
-            hovered={hovered}
-            width={dims.w}
-            height={dims.h}
-          />
-        )}
+        <img
+          src={study.image}
+          alt={study.title}
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        />
 
         {/* Hue-matching overlay */}
         <div
@@ -386,84 +389,25 @@ export function CaseStudyCard({ study, darkColor }: { study: (typeof caseStudies
           className="absolute inset-0 z-20 pointer-events-none transition-all duration-700"
           style={{
             background: hovered
-              ? "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.15) 70%, transparent 100%)"
+              ? "linear-gradient(to top, rgba(0,0,0,0) 0%, transparent 100%)"
               : "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 30%, transparent 55%)",
           }}
         />
 
-
-
         {/* Content */}
         <div className="absolute inset-0 z-30 flex flex-col justify-end p-5 md:p-7">
-
           <h3
-            className="text-white transition-all duration-500"
+            className="text-white transition-all duration-500 ease-in-out"
             style={{
               fontFamily: '"Domaine Display", serif',
               fontWeight: 700,
-              fontSize: hovered ? "1.35rem" : "2.5rem",
-              transform: hovered ? "translateY(0)" : "translateY(3px)",
+              fontSize: "2.5rem",
+              opacity: hovered ? 0 : 1,
+              transform: hovered ? "translateY(20px)" : "translateY(0)",
             }}
           >
             {study.title}
           </h3>
-
-          <div
-            className="flex items-center gap-2 mb-2 transition-all duration-500"
-            style={{
-              opacity: hovered ? 1 : 0.5,
-              transform: hovered ? "translateY(0)" : "translateY(5px)",
-            }}
-          >
-            <span
-              className="text-[10px] uppercase text-white"
-              style={{ fontFamily: '"American Grotesk", sans-serif' }}
-            >
-              {study.category}
-            </span>
-            <span className="text-white/40">·</span>
-            <span
-              className="text-[10px] text-white/60"
-              style={{ fontFamily: '"American Grotesk", sans-serif' }}
-            >
-              {study.year}
-            </span>
-          </div>
-
-          <p
-            className="text-white/70 text-[15px] leading-relaxed max-w-sm mt-2 transition-all duration-600"
-            style={{
-              fontFamily: '"American Grotesk", sans-serif',
-              opacity: hovered ? 1 : 0,
-              transform: hovered ? "translateY(0)" : "translateY(10px)",
-              maxHeight: hovered ? 80 : 0,
-              overflow: "hidden",
-            }}
-          >
-            {study.description}
-          </p>
-
-          {/* Tags — pill shaped */}
-          <div
-            className="flex gap-2 mt-3 flex-wrap transition-all duration-500"
-            style={{
-              opacity: hovered ? 0.7 : 0,
-              transform: hovered ? "translateY(0)" : "translateY(6px)",
-            }}
-          >
-            {study.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-[9px] uppercase text-white/70 border border-white/20 px-3 py-1"
-                style={{
-                  fontFamily: '"American Grotesk", sans-serif',
-                  borderRadius: 999,
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
         </div>
       </a>
     </div>
@@ -473,6 +417,8 @@ export function CaseStudyCard({ study, darkColor }: { study: (typeof caseStudies
 export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [opacity, setOpacity] = useState(1);
+  const [hoveredStudy, setHoveredStudy] = useState<(typeof caseStudies)[0] | null>(null);
+  const [activeStudy, setActiveStudy] = useState<(typeof caseStudies)[0] | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -499,6 +445,15 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleMouseEnter = (study: (typeof caseStudies)[0]) => {
+    setHoveredStudy(study);
+    setActiveStudy(study);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredStudy(null);
+  };
+
   return (
     <section
       ref={sectionRef}
@@ -519,42 +474,112 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
             {/* Two-column layout: sticky title left, cards right */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
               {/* Left column: Sticky title */}
-              <div className="lg:col-span-4 lg:sticky lg:top-32 self-start">
+              <div className="lg:col-span-4 lg:sticky lg:top-32 self-start flex flex-col lg:min-h-[calc(100vh-200px)]">
                 <div>
                   <h2
-                    className="text-white"
+                    className="text-white transition-opacity duration-500"
                     style={{
                       fontFamily: '"Domaine Display", serif',
                       fontSize: "clamp(2.8rem, 4vw, 8rem)",
                       fontWeight: 700,
                       lineHeight: 1.1,
+                      opacity: hoveredStudy ? 0.3 : 1,
                     }}
                   >
-                    CASE STUDIES
+                    CASE<br />STUDIES
                   </h2>
                   <p
-                    className="text-white mt-4 text-[13px] max-w-md leading-relaxed"
-                    style={{ fontFamily: '"American Grotesk", sans-serif', fontSize: 'clamp(14px, 2vw, 18px)' }}
+                    className="text-white mt-4 text-[13px] max-w-md leading-relaxed transition-opacity duration-500"
+                    style={{ fontFamily: '"American Grotesk", sans-serif', fontSize: 'clamp(14px, 2vw, 18px)', opacity: hoveredStudy ? 0.3 : 1 }}
                   >
                     This is a collection of my work from academia, higher education client work, and corporate work.
                   </p>
                 </div>
-              </div>
 
-              {/* Right column: Case study cards */}
-              <div className="lg:col-span-8">
-                <div className="grid grid-cols-1 gap-5 md:gap-6">
-                  {caseStudies.map((study) => (
-                    <Link to={`/case-study/${study.id}`} key={study.id} className="block">
-                      <CaseStudyCard study={study} darkColor={darkColor!} />
-                    </Link>
-                  ))}
-                </div>
+                {/* Hover Info Panel (Hidden on Mobile) */}
+                <div
+                  className="mt-12 transition-all duration-500 ease-out hidden lg:block"
+                  style={{
+                    opacity: hoveredStudy ? 1 : 0,
+                    transform: hoveredStudy ? 'translateY(0)' : 'translateY(15px)',
+                    pointerEvents: hoveredStudy ? 'auto' : 'none',
+                  }}
+                >
+                  {activeStudy && (
+                    <div className="flex flex-col gap-6">
+                      {/* Title & Description */}
+                      <div>
+                        <h3 className="text-white text-3xl md:text-4xl mb-3 leading-tight" style={{ fontFamily: '"Domaine Display", serif', fontWeight: 600 }}>
+                          {activeStudy.title}
+                        </h3>
+                        <p className="text-white/75 text-[15px] md:text-[16px] leading-relaxed max-w-sm mb-4" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                          {activeStudy.description}
+                        </p>
+
+                        {/* Tags — directly under headline */}
+                        <div className="flex gap-2 flex-wrap">
+                          {activeStudy.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="text-[11px] uppercase text-white/80 border border-white/15 bg-white/5 px-3 py-1.5"
+                              style={{
+                                fontFamily: '"American Grotesk", sans-serif',
+                                borderRadius: 999,
+                                letterSpacing: "0.05em"
+                              }}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Metadata Grid */}
+                      <div className="grid grid-cols-2 gap-y-6 gap-x-4">
+                        <div>
+                          <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-1.5" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Year</h4>
+                          <p className="text-white/90 text-[14px] md:text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>{activeStudy.year}</p>
+                        </div>
+                        <div className="col-span-2">
+                          <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-1.5" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Category</h4>
+                          <p className="text-white/90 text-[14px] md:text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>{activeStudy.category}</p>
+                        </div>
+                      </div>
+
+                      {/* Team */}
+                      {activeStudy.team && activeStudy.team.length > 0 && (
+                        <div>
+                          <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-1.5" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Team</h4>
+                          <p className="text-white/70 text-[13px] md:text-[14px] leading-relaxed" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                            {activeStudy.team.join(", ")}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+              </div>
+            </div>
+
+            {/* Right column: Case study cards */}
+            <div className="lg:col-span-8">
+              <div className="grid grid-cols-1 gap-5 md:gap-6">
+                {caseStudies.map((study) => (
+                  <Link
+                    to={`/case-study/${study.id}`}
+                    key={study.id}
+                    className="block"
+                    onMouseEnter={() => handleMouseEnter(study)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <CaseStudyCard study={study} darkColor={darkColor!} />
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+    </section >
   );
 }
