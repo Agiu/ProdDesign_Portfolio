@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { getBrightAccent } from './case-studies';
 
 /* ── Subtle dither dot canvas ── */
 function DitherDots({ color = 'rgba(255,255,255,0.06)' }: { color?: string }) {
@@ -82,14 +83,14 @@ interface FooterProps {
 }
 
 export function Footer({ darkColor = '#020510' }: FooterProps) {
-
     const year = new Date().getFullYear();
+    const brightAccent = getBrightAccent(darkColor);
 
     return (
         <footer
             className="relative w-full overflow-hidden"
             style={{
-                backgroundColor: darkColor,
+                backgroundColor: `color-mix(in srgb, ${darkColor}, white 4%)`,
                 transition: 'background-color 0.6s ease',
             }}
         >
@@ -107,47 +108,49 @@ export function Footer({ darkColor = '#020510' }: FooterProps) {
                     {/* Left: name + tagline */}
                     <div>
                         <h2
-                            className="text-white"
                             style={{
                                 fontFamily: '"Domaine Display", serif',
                                 fontSize: 'clamp(2rem, 5vw, 4rem)',
                                 fontWeight: 700,
                                 lineHeight: 1.0,
+                                color: brightAccent
                             }}
                         >
                             CA.
                         </h2>
                         <p
-                            className="mt-4 text-white"
+                            className="mt-4"
                             style={{
                                 fontFamily: '"American Grotesk", sans-serif',
                                 fontSize: 'clamp(14px, 1.5vw, 16px)',
                                 fontWeight: 400,
+                                color: brightAccent
                             }}
                         >
-                            Product Designer · Looking For Work · Seattle, WA
+                            Product Designer · Seattle, WA
                         </p>
                     </div>
 
                     {/* Right: links */}
                     <div className="flex flex-col gap-3 md:items-end mt-2">
                         {[
-                            { label: 'LinkedIn', href: '#' },
-                            { label: 'GitHub', href: '#' },
-                            { label: 'Email', href: 'mailto:hello@calebaguiar.com' },
+                            { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/kaelub/' },
+                            { label: 'GITHUB', href: 'https://github.com/Agiu' },
+                            { label: 'EMAIL', href: 'mailto:kaelub.tech@gmail.com' },
                         ].map(({ label, href }) => (
                             <a
                                 key={label}
                                 href={href}
-                                className="text-white hover:text-white transition-colors"
+                                className="group transition-colors text-[color:var(--accent)] hover:text-white inline-block"
                                 style={{
                                     fontFamily: '"American Grotesk", sans-serif',
                                     fontSize: 'clamp(14px, 1.4vw, 16px)',
                                     fontWeight: 400,
-                                    textTransform: 'lowercase' as const,
-                                }}
+                                    textTransform: 'uppercase' as const,
+                                    '--accent': brightAccent
+                                } as React.CSSProperties}
                             >
-                                {label}
+                                <span className="border-b border-current pb-0.5 transition-colors">{label}</span>
                             </a>
                         ))}
                     </div>
@@ -174,7 +177,7 @@ export function Footer({ darkColor = '#020510' }: FooterProps) {
                                 textTransform: 'uppercase' as const,
                             }}
                         >
-                            Designed & built alongside Claude
+                            Designed & built By Caleb :3
                         </p>
                     </div>
                 </div>

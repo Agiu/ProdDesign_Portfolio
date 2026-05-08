@@ -446,7 +446,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
               .prose p { 
                 text-align: left !important;
                 color: rgba(255, 255, 255, 0.7) !important; 
-                font-size: 1.375rem !important;
+                font-size: clamp(18px, 2.5vw, 24px) !important;
                 line-height: 1.9 !important; 
                 font-family: "American Grotesk", sans-serif !important; 
                 font-weight: 300 !important; 
@@ -456,7 +456,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
               /* Lists */
               .prose ul, .prose ol {
                 color: rgba(255, 255, 255, 0.7) !important; 
-                font-size: 1.375rem !important;
+                font-size: clamp(18px, 2.5vw, 24px) !important;
                 line-height: 1.9 !important; 
                 font-family: "American Grotesk", sans-serif !important; 
                 font-weight: 300 !important; 

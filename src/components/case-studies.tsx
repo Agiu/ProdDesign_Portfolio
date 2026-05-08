@@ -6,7 +6,7 @@ export const caseStudies = [
     id: 2,
     title: "Headphones of the Future",
     category: "Industrial Design",
-    year: "2024",
+    year: "2025",
     description:
       "A bandless headphone concept designed to alleviate head fatigue and provide a more open audio experience.",
     image:
@@ -61,6 +61,28 @@ export const caseStudies = [
   },
 
 ];
+
+export function getBrightAccent(color: string) {
+  let hex = color.startsWith('#') ? color.substring(1) : color;
+  if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+  if (hex.length !== 6) return 'orange';
+
+  const r = parseInt(hex.substring(0, 2), 16) / 255;
+  const g = parseInt(hex.substring(2, 4), 16) / 255;
+  const b = parseInt(hex.substring(4, 6), 16) / 255;
+
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  if (max === min || max === 0) return 'orange';
+
+  const d = max - min;
+  let h = 0;
+  if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+  else if (max === g) h = (b - r) / d + 2;
+  else h = (r - g) / d + 4;
+  h = Math.round(h * 60);
+  
+  return `hsl(${h}, 100%, 75%)`;
+}
 
 // Corner radius used by both the dither mask and CSS — keep in sync
 const CARD_RADIUS = 30; // px — matches rounded-[30px]
@@ -138,7 +160,7 @@ function generateDitherMask(
 }
 
 // ─ Bitrate-slider image canvas ─────────────────────────────────────────────
-function PixelatedImageCanvas({
+export function PixelatedImageCanvas({
   src,
   hovered,
   width,
@@ -150,7 +172,6 @@ function PixelatedImageCanvas({
   height: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animRef = useRef<number>(0);
   const progressRef = useRef(0);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const offscreenRef = useRef<HTMLCanvasElement | null>(null);
@@ -296,11 +317,9 @@ function PixelatedImageCanvas({
   );
 }
 
-export function CaseStudyCard({ study, darkColor }: { study: (typeof caseStudies)[0]; darkColor: string }) {
-  const [hovered, setHovered] = useState(false);
+export function CaseStudyCard({ study, darkColor, isActive = false }: { study: (typeof caseStudies)[0]; darkColor: string; isActive?: boolean }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [maskUrl, setMaskUrl] = useState<string>("");
-  const [dims, setDims] = useState({ w: 0, h: 0 });
 
   useEffect(() => {
     const el = cardRef.current;
@@ -310,7 +329,6 @@ export function CaseStudyCard({ study, darkColor }: { study: (typeof caseStudies
         const w = Math.round(entry.contentRect.width);
         const h = Math.round(entry.contentRect.height);
         if (w > 0 && h > 0) {
-          setDims({ w, h });
           setMaskUrl(generateDitherMask(w, h, 44, CARD_RADIUS));
         }
       }
@@ -323,8 +341,6 @@ export function CaseStudyCard({ study, darkColor }: { study: (typeof caseStudies
     <div
       ref={cardRef}
       className="relative aspect-[4/3]"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
     >
       <a
         href="#"
@@ -351,35 +367,27 @@ export function CaseStudyCard({ study, darkColor }: { study: (typeof caseStudies
           style={{
             backgroundColor: darkColor,
             mixBlendMode: "color",
-            opacity: hovered ? 0 : 1,
+            opacity: isActive ? 0 : 1,
           }}
         />
 
-        {/* Gradient overlay */}
-        <div
-          className="absolute inset-0 z-20 pointer-events-none transition-all duration-700"
-          style={{
-            background: hovered
-              ? "linear-gradient(to top, rgba(0,0,0,0) 0%, transparent 100%)"
-              : "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 30%, transparent 55%)",
-          }}
-        />
-
-        {/* Content */}
-        <div className="absolute inset-0 z-30 flex flex-col justify-end p-5 md:p-7">
+        {/* Mobile Title Overlay */}
+        <div className="absolute inset-0 z-30 flex flex-col justify-end p-6 lg:hidden pointer-events-none transition-opacity duration-500">
           <h3
-            className="text-white transition-all duration-500 ease-in-out"
+            className="text-white"
             style={{
               fontFamily: '"Domaine Display", serif',
-              fontWeight: 700,
-              fontSize: "2.5rem",
-              opacity: hovered ? 0 : 1,
-              transform: hovered ? "translateY(20px)" : "translateY(0)",
+              fontWeight: 600,
+              fontSize: "1.75rem",
+              lineHeight: 1.2,
+              textShadow: "0 2px 12px rgba(0,0,0,0.7), 0 0 40px rgba(0,0,0,0.5)"
             }}
           >
             {study.title}
           </h3>
         </div>
+
+
       </a>
     </div>
   );
@@ -387,43 +395,68 @@ export function CaseStudyCard({ study, darkColor }: { study: (typeof caseStudies
 
 export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const [opacity, setOpacity] = useState(1);
-  const [hoveredStudy, setHoveredStudy] = useState<(typeof caseStudies)[0] | null>(null);
   const [activeStudy, setActiveStudy] = useState<(typeof caseStudies)[0] | null>(null);
+  const cardsRef = useRef<Record<number, HTMLDivElement | null>>({});
+
+  const brightAccent = getBrightAccent(darkColor);
+
+
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+    const visibleCards = new Set<number>();
 
-      // When rect.bottom is less than windowHeight, the About section below is entering the screen.
-      // We fade out the content over a span of ~400px (or half the window height).
-      const fadeDistance = Math.min(windowHeight * 0.6, 500);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let changed = false;
+        entries.forEach((entry) => {
+          const idEntry = Object.entries(cardsRef.current).find(
+            ([_, el]) => el === entry.target
+          );
+          if (idEntry) {
+            const id = Number(idEntry[0]);
+            if (entry.isIntersecting) {
+              visibleCards.add(id);
+              changed = true;
+            } else {
+              visibleCards.delete(id);
+              changed = true;
+            }
+          }
+        });
 
-      if (rect.bottom > windowHeight) {
-        setOpacity(1);
-      } else {
-        const overlap = windowHeight - rect.bottom;
-        const newOpacity = Math.max(0, 1 - overlap / fadeDistance);
-        setOpacity(newOpacity);
+        if (changed) {
+          if (visibleCards.size === 0) {
+            // Only reset if we've scrolled above the first case study
+            const firstCardId = caseStudies[0]?.id;
+            const firstCardEl = firstCardId ? cardsRef.current[firstCardId] : null;
+            if (firstCardEl) {
+              const rect = firstCardEl.getBoundingClientRect();
+              if (rect.top > window.innerHeight * 0.4) {
+                setActiveStudy(null);
+              }
+            } else {
+              setActiveStudy(null);
+            }
+          } else {
+            const firstVisibleId = Array.from(visibleCards)[0];
+            const study = caseStudies.find(s => s.id === firstVisibleId);
+            if (study) setActiveStudy(study);
+          }
+        }
+      },
+      {
+        threshold: 0.7
       }
-    };
+    );
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // initialize on mount
+    // Initial check and observe
+    const elements = Object.values(cardsRef.current).filter(Boolean) as HTMLDivElement[];
+    elements.forEach(el => observer.observe(el));
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    // Re-observe if refs change (e.g. after mount)
+    // Though they shouldn't change much since list is static.
+    return () => observer.disconnect();
   }, []);
-
-  const handleMouseEnter = (study: (typeof caseStudies)[0]) => {
-    setHoveredStudy(study);
-    setActiveStudy(study);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredStudy(null);
-  };
 
   return (
     <section
@@ -434,107 +467,134 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
         transition: 'background-color 0.6s ease',
       }}
     >
-      <div
-        style={{
-          opacity,
-          pointerEvents: opacity < 0.1 ? "none" : "auto",
-        }}
-      >
+      <div>
         <div className="relative w-full h-full px-6 md:pl-10 md:pr-4 lg:px-12 py-20 md:py-28">
           <div className="w-full">
             {/* Two-column layout: sticky title left, cards right */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
               {/* Left column: Sticky title */}
               <div className="lg:col-span-4 lg:sticky lg:top-32 self-start flex flex-col lg:min-h-[calc(100vh-200px)]">
-                <div>
-                  <h2
-                    className="text-white transition-opacity duration-500"
+                <div className="grid w-full">
+                  {/* Default State */}
+                  <div
+                    className="col-start-1 row-start-1 w-full transition-all duration-300 ease-in-out"
                     style={{
-                      fontFamily: '"Domaine Display", serif',
-                      fontSize: "clamp(2.8rem, 4vw, 8rem)",
-                      fontWeight: 700,
-                      lineHeight: 1.1,
-                      opacity: hoveredStudy ? 0.3 : 1,
+                      opacity: activeStudy ? 0 : 1,
+                      transform: activeStudy ? 'translateY(-15px)' : 'translateY(0)',
+                      pointerEvents: activeStudy ? 'none' : 'auto',
+                      transitionDelay: activeStudy ? '0ms' : '200ms',
                     }}
                   >
-                    CASE<br />STUDIES
-                  </h2>
-                  <p
-                    className="text-white mt-4 text-[13px] max-w-md leading-relaxed transition-opacity duration-500"
-                    style={{ fontFamily: '"American Grotesk", sans-serif', fontSize: 'clamp(14px, 2vw, 18px)', opacity: hoveredStudy ? 0.3 : 1 }}
+                    <h2
+                      className="text-white"
+                      style={{
+                        fontFamily: '"Domaine Display", serif',
+                        fontSize: "clamp(2.8rem, 4vw, 8rem)",
+                        fontWeight: 700,
+                        lineHeight: 1.1,
+                      }}
+                    >
+                      CASE<br />STUDIES
+                    </h2>
+                    <p
+                      className="text-white mt-4 text-[13px] max-w-md leading-relaxed"
+                      style={{ fontFamily: '"American Grotesk", sans-serif', fontSize: 'clamp(14px, 2vw, 18px)' }}
+                    >
+                      This is a collection of my work from academia, higher education client work, and corporate work.
+                    </p>
+                  </div>
+
+                  {/* Hovered State */}
+                  <div
+                    className="col-start-1 row-start-1 w-full transition-all duration-300 ease-in-out hidden lg:block"
+                    style={{
+                      opacity: activeStudy ? 1 : 0,
+                      transform: activeStudy ? 'translateY(0)' : 'translateY(15px)',
+                      pointerEvents: activeStudy ? 'auto' : 'none',
+                      transitionDelay: activeStudy ? '200ms' : '0ms',
+                    }}
                   >
-                    This is a collection of my work from academia, higher education client work, and corporate work.
-                  </p>
-                </div>
-
-                {/* Hover Info Panel (Hidden on Mobile) */}
-                <div
-                  className="mt-12 transition-all duration-500 ease-out hidden lg:block"
-                  style={{
-                    opacity: hoveredStudy ? 1 : 0,
-                    transform: hoveredStudy ? 'translateY(0)' : 'translateY(15px)',
-                    pointerEvents: hoveredStudy ? 'auto' : 'none',
-                  }}
-                >
-                  {activeStudy && (
-                    <div className="flex flex-col gap-6">
-                      {/* Title & Description */}
-                      <div>
-                        <h3 className="text-white text-3xl md:text-4xl mb-3 leading-tight" style={{ fontFamily: '"Domaine Display", serif', fontWeight: 600 }}>
-                          {activeStudy.title}
-                        </h3>
-                        <p className="text-white/75 text-[15px] md:text-[16px] leading-relaxed max-w-sm mb-4" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
-                          {activeStudy.description}
-                        </p>
-
-                        {/* Tags — directly under headline */}
-                        <div className="flex gap-2 flex-wrap">
-                          {activeStudy.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="text-[11px] uppercase text-white/80 bg-white/5 px-3 py-1.5"
-                              style={{
-                                fontFamily: '"American Grotesk", sans-serif',
-                                borderRadius: 999,
-                                letterSpacing: "0.05em"
-                              }}
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Metadata Grid */}
-                      <div className="grid grid-cols-2 gap-y-6 gap-x-4">
+                    {activeStudy && (
+                      <div className="flex flex-col gap-6">
+                        {/* Title & Description */}
                         <div>
-                          <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-1.5" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Year</h4>
-                          <p className="text-white/90 text-[14px] md:text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>{activeStudy.year}</p>
+                          <h3 className="text-white text-3xl md:text-4xl mb-3 leading-tight" style={{ fontFamily: '"Domaine Display", serif', fontWeight: 600 }}>
+                            {activeStudy.title}
+                          </h3>
+                          <p className="text-white/75 text-[15px] md:text-[16px] leading-relaxed max-w-sm mb-4" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                            {activeStudy.description}
+                          </p>
+
+                          {/* Tags */}
+                          <div className="flex gap-2 flex-wrap">
+                            {activeStudy.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="text-[11px] uppercase text-white/80 bg-white/5 px-3 py-1.5"
+                                style={{
+                                  fontFamily: '"American Grotesk", sans-serif',
+                                  borderRadius: 999,
+                                  letterSpacing: "0.05em"
+                                }}
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
                         </div>
-                        <div className="col-span-2">
-                          <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-1.5" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Category</h4>
-                          <p className="text-white/90 text-[14px] md:text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>{activeStudy.category}</p>
+
+                        {/* Metadata Grid */}
+                        <div className="grid grid-cols-2 gap-y-6 gap-x-4">
+                          <div>
+                            <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-1.5" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Year</h4>
+                            <p className="text-white/90 text-[14px] md:text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>{activeStudy.year}</p>
+                          </div>
+                          <div className="col-span-2">
+                            <h4 className="text-white/40 text-[10px] md:text-[11px] uppercase tracking-widest mb-1.5" style={{ fontFamily: '"American Grotesk", sans-serif' }}>Category</h4>
+                            <p className="text-white/90 text-[14px] md:text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>{activeStudy.category}</p>
+                          </div>
+                        </div>
+
+                        {/* View Case Study Link */}
+                        <div className="mt-4">
+                          <Link
+                            to={`/case-study/${activeStudy.id}`}
+                            className="inline-flex items-center text-[12px] uppercase tracking-widest transition-colors group text-[color:var(--accent)] hover:text-white"
+                            style={{ 
+                              fontFamily: '"American Grotesk", sans-serif',
+                              '--accent': brightAccent
+                            } as React.CSSProperties}
+                          >
+                            <span className="border-b border-current pb-1 transition-colors">View Case Study</span>
+                            <svg className="w-3 h-3 ml-2 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                          </Link>
                         </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
 
               {/* Right column: Case study cards */}
               <div className="lg:col-span-8">
                 <div className="grid grid-cols-1 gap-5 md:gap-6">
-                  {caseStudies.map((study) => (
-                    <Link
-                      to={`/case-study/${study.id}`}
-                      key={study.id}
-                      className="block"
-                      onMouseEnter={() => handleMouseEnter(study)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <CaseStudyCard study={study} darkColor={darkColor!} />
-                    </Link>
-                  ))}
+                  {caseStudies.map((study) => {
+                    const isActive = activeStudy?.id === study.id;
+                    return (
+                      <div
+                        key={study.id}
+                        ref={(el) => { cardsRef.current[study.id] = el; }}
+                        className="block"
+                      >
+                        <Link
+                          to={`/case-study/${study.id}`}
+                          className="block"
+                        >
+                          <CaseStudyCard study={study} darkColor={darkColor!} isActive={isActive} />
+                        </Link>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
