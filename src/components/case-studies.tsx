@@ -80,7 +80,7 @@ export function getBrightAccent(color: string) {
   else if (max === g) h = (b - r) / d + 2;
   else h = (r - g) / d + 4;
   h = Math.round(h * 60);
-  
+
   return `hsl(${h}, 100%, 75%)`;
 }
 
@@ -396,6 +396,7 @@ export function CaseStudyCard({ study, darkColor, isActive = false }: { study: (
 export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [activeStudy, setActiveStudy] = useState<(typeof caseStudies)[0] | null>(null);
+  const [showModal, setShowModal] = useState(false);
   const cardsRef = useRef<Record<number, HTMLDivElement | null>>({});
 
   const brightAccent = getBrightAccent(darkColor);
@@ -473,7 +474,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
             {/* Two-column layout: sticky title left, cards right */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
               {/* Left column: Sticky title */}
-              <div className="lg:col-span-4 lg:sticky lg:top-32 self-start flex flex-col lg:min-h-[calc(100vh-200px)]">
+              <div className="lg:col-span-4 lg:sticky lg:top-32 self-start flex flex-col">
                 <div className="grid w-full">
                   {/* Default State */}
                   <div
@@ -557,17 +558,31 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
 
                         {/* View Case Study Link */}
                         <div className="mt-4">
-                          <Link
-                            to={`/case-study/${activeStudy.id}`}
-                            className="inline-flex items-center text-[12px] uppercase tracking-widest transition-colors group text-[color:var(--accent)] hover:text-white"
-                            style={{ 
-                              fontFamily: '"American Grotesk", sans-serif',
-                              '--accent': brightAccent
-                            } as React.CSSProperties}
-                          >
-                            <span className="border-b border-current pb-1 transition-colors">View Case Study</span>
-                            <svg className="w-3 h-3 ml-2 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                          </Link>
+                          {(activeStudy.id === 1 || activeStudy.id === 3) ? (
+                            <button
+                              onClick={() => setShowModal(true)}
+                              className="inline-flex items-center text-[12px] uppercase tracking-widest transition-colors group text-[color:var(--accent)] hover:text-white"
+                              style={{
+                                fontFamily: '"American Grotesk", sans-serif',
+                                '--accent': brightAccent
+                              } as React.CSSProperties}
+                            >
+                              <span className="border-b border-current pb-1 transition-colors">View Case Study</span>
+                              <svg className="w-3 h-3 ml-2 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                            </button>
+                          ) : (
+                            <Link
+                              to={`/case-study/${activeStudy.id}`}
+                              className="inline-flex items-center text-[12px] uppercase tracking-widest transition-colors group text-[color:var(--accent)] hover:text-white"
+                              style={{
+                                fontFamily: '"American Grotesk", sans-serif',
+                                '--accent': brightAccent
+                              } as React.CSSProperties}
+                            >
+                              <span className="border-b border-current pb-1 transition-colors">View Case Study</span>
+                              <svg className="w-3 h-3 ml-2 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                            </Link>
+                          )}
                         </div>
                       </div>
                     )}
@@ -580,18 +595,28 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                 <div className="grid grid-cols-1 gap-5 md:gap-6">
                   {caseStudies.map((study) => {
                     const isActive = activeStudy?.id === study.id;
+                    const isNotBuilt = study.id === 1 || study.id === 3;
                     return (
                       <div
                         key={study.id}
                         ref={(el) => { cardsRef.current[study.id] = el; }}
                         className="block"
                       >
-                        <Link
-                          to={`/case-study/${study.id}`}
-                          className="block"
-                        >
-                          <CaseStudyCard study={study} darkColor={darkColor!} isActive={isActive} />
-                        </Link>
+                        {isNotBuilt ? (
+                          <div
+                            onClick={(e) => { e.preventDefault(); setShowModal(true); }}
+                            className="block cursor-pointer"
+                          >
+                            <CaseStudyCard study={study} darkColor={darkColor!} isActive={isActive} />
+                          </div>
+                        ) : (
+                          <Link
+                            to={`/case-study/${study.id}`}
+                            className="block"
+                          >
+                            <CaseStudyCard study={study} darkColor={darkColor!} isActive={isActive} />
+                          </Link>
+                        )}
                       </div>
                     );
                   })}
@@ -601,6 +626,33 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
           </div>
         </div>
       </div>
+
+      {/* Modal Overlay */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowModal(false)}
+          />
+          <div
+            className="relative bg-[#1a1a1a] p-8 rounded-2xl max-w-md w-full shadow-2xl"
+            style={{ fontFamily: '"American Grotesk", sans-serif' }}
+          >
+            <h3 className="text-white text-xl md:text-2xl mb-4 font-semibold" style={{ fontFamily: '"Domaine Display", serif' }}>
+              Work in Progress
+            </h3>
+            <p className="text-white/80 text-[15px] leading-relaxed mb-6">
+              Sorry, this case study is still being built out. Check back later (hopefully by <span style={{ color: brightAccent }}>June 1st</span>)!
+            </p>
+            <button
+              onClick={() => setShowModal(false)}
+              className="w-full py-3 rounded-xl text-white/90 bg-white/5 hover:bg-white/10 transition-colors text-sm font-medium tracking-wide uppercase"
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
     </section >
   );
 }
