@@ -135,7 +135,7 @@ These "headphones" are perfect for commuting publicly and comfort. It lets you h
 
 ![Blueprint Wireframe](/headphones/image_placeholder_9.png)
 
-## Reflection & Growth
+## Reflection
 Moving forward, I would have loved more time to flesh out the design further, particularly the interior of the form factor. My teammates had established viable interior chips by the end of the project, but we only had about two days to work with them. A significant portion of our time was also consumed by repeated printing iterations to nail the tiered fits, which cut into valuable design time.
 
 From the start, I wanted these to work well for casual and commuter use, comfortable enough to wear outside while still letting you hear your surroundings. One thing I failed to account for, though, was aerodynamics. The design handled them poorly; at even a brisk running pace, wind noise would drown out the music entirely. It's something I didn't have the time to address.
