@@ -3,22 +3,22 @@ import { Link } from "react-router-dom";
 
 export const caseStudies = [
   {
-    id: 2,
-    title: "Headphones of the Future",
+    id: "audio",
+    title: "Extending Wear For Audio Wearables",
     category: "Industrial Design",
     year: "2025",
     description:
-      "A bandless headphone concept designed to alleviate head fatigue and provide a more open audio experience.",
+      "Project Open is an audio form factor designed to improve the shortcomings of current headphones and earphones.",
     image:
       "/headphones/image_placeholder_8.png",
     bannerImage:
       "/headphones/image_placeholder_10.png",
     tags: ["3D Modeling", "Interaction Design", "Prototyping"],
-    role: "Product Designer, Cinematographer",
+    role: "Lead Product Designer and Filmmaker",
     advisors: [],
     contributions: [
       "Led the main prototyping and 3D modeling for nearly 20 iterative concepts.",
-      "Contributed to nearly 30 rounds of user testing to adjust designs for over 47 potential ears.",
+      "Contributed to nearly 30 trials of user testing to adjust designs for over 94 potential ears.",
       "Developed a branding and pitch video demonstrating the headphones' interactions."
     ],
     timeline: "4 weeks",
@@ -87,272 +87,15 @@ export function getBrightAccent(color: string) {
 // Corner radius used by both the dither mask and CSS — keep in sync
 const CARD_RADIUS = 30; // px — matches rounded-[30px]
 
-// ─── Rounded-rectangle SDF ───────────────────────────────────────────────────
-// Returns negative inside the shape, positive outside.
-// hw/hh are the true half-extents (width/2, height/2). r is corner radius.
-function sdfRoundedRect(
-  px: number,
-  py: number,
-  cx: number,
-  cy: number,
-  hw: number,
-  hh: number,
-  r: number
-): number {
-  const qx = Math.abs(px - cx) - (hw - r);
-  const qy = Math.abs(py - cy) - (hh - r);
-  return (
-    Math.sqrt(Math.max(qx, 0) ** 2 + Math.max(qy, 0) ** 2) +
-    Math.min(Math.max(qx, qy), 0) -
-    r
-  );
-}
-
-// Dither mask shaped as a rounded rectangle — dissolve traces the curved edges
-function generateDitherMask(
-  width: number,
-  height: number,
-  edgeSize: number = 44,
-  cornerRadius: number = CARD_RADIUS
-): string {
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d")!;
-
-  const bayer8 = [
-    [0, 32, 8, 40, 2, 34, 10, 42],
-    [48, 16, 56, 24, 50, 18, 58, 26],
-    [12, 44, 4, 36, 14, 46, 6, 38],
-    [60, 28, 52, 20, 62, 30, 54, 22],
-    [3, 35, 11, 43, 1, 33, 9, 41],
-    [51, 19, 59, 27, 49, 17, 57, 25],
-    [15, 47, 7, 39, 13, 45, 5, 37],
-    [63, 31, 55, 23, 61, 29, 53, 21],
-  ].map((row) => row.map((v) => v / 64));
-
-  const imageData = ctx.createImageData(width, height);
-  const cx = width / 2;
-  const cy = height / 2;
-  const hw = width / 2;
-  const hh = height / 2;
-
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      // sdf: negative = inside shape, positive = outside
-      const sdf = sdfRoundedRect(x + 0.5, y + 0.5, cx, cy, hw, hh, cornerRadius);
-      // distFromEdge: how far inward from the boundary (positive inside, negative outside)
-      const distFromEdge = -sdf;
-
-      const opacity = Math.min(Math.max(distFromEdge / edgeSize, 0), 1);
-      const threshold = bayer8[y % 8][x % 8];
-      const pixel = opacity > threshold ? 255 : 0;
-      const idx = (y * width + x) * 4;
-      imageData.data[idx] = pixel;
-      imageData.data[idx + 1] = pixel;
-      imageData.data[idx + 2] = pixel;
-      imageData.data[idx + 3] = 255;
-    }
-  }
-
-  ctx.putImageData(imageData, 0, 0);
-  return canvas.toDataURL();
-}
-
-// ─ Bitrate-slider image canvas ─────────────────────────────────────────────
-export function PixelatedImageCanvas({
-  src,
-  hovered,
-  width,
-  height,
-}: {
-  src: string;
-  hovered: boolean;
-  width: number;
-  height: number;
-}) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const progressRef = useRef(0);
-  const imgRef = useRef<HTMLImageElement | null>(null);
-  const offscreenRef = useRef<HTMLCanvasElement | null>(null);
-  const [imgLoaded, setImgLoaded] = useState(false);
-  const animStartTimeRef = useRef<number | null>(null);
-  const animStartValueRef = useRef(0);
-  const prevTargetRef = useRef(0);
-
-  const MAX_BLOCK = 72;
-  const ANIM_DURATION = 700; // ms
-
-  // Ease-in-ease-out function (smoothstep)
-  const easeInOutQuad = (t: number) => {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-  };
-
-  useEffect(() => {
-    setImgLoaded(false);
-    imgRef.current = null;
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = src;
-    img.onload = () => {
-      imgRef.current = img;
-      setImgLoaded(true);
-    };
-    return () => { img.onload = null; };
-  }, [src]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || width === 0 || height === 0) return;
-    const ctx = canvas.getContext("2d")!;
-
-    if (!offscreenRef.current) {
-      offscreenRef.current = document.createElement("canvas");
-    }
-    const tmp = offscreenRef.current;
-    let rafId = 0;
-
-    const draw = (timestamp: number) => {
-      const target = hovered ? 1 : 0;
-
-      // Detect if target changed and restart animation
-      if (target !== prevTargetRef.current) {
-        animStartTimeRef.current = timestamp;
-        animStartValueRef.current = progressRef.current;
-        prevTargetRef.current = target;
-      }
-
-      // Initialize animation start time if target changed
-      if (animStartTimeRef.current === null) {
-        animStartTimeRef.current = timestamp;
-        animStartValueRef.current = progressRef.current;
-      }
-
-      const elapsed = timestamp - animStartTimeRef.current;
-      const progress = Math.min(elapsed / ANIM_DURATION, 1);
-      const easedProgress = easeInOutQuad(progress);
-
-      // Interpolate from start value to target
-      progressRef.current =
-        animStartValueRef.current + (target - animStartValueRef.current) * easedProgress;
-
-      // Reset animation if we've reached the target
-      if (progress >= 1) {
-        progressRef.current = target;
-        animStartTimeRef.current = null;
-      }
-
-      const p = progressRef.current;
-      const blockSize = Math.max(1, Math.round(MAX_BLOCK * Math.pow(1 - p, 2.8)));
-
-      ctx.clearRect(0, 0, width, height);
-
-      if (imgRef.current) {
-        const img = imgRef.current;
-        // object-fit: cover crop
-        const imgAspect = img.naturalWidth / img.naturalHeight;
-        const canvasAspect = width / height;
-        let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
-        if (imgAspect > canvasAspect) {
-          sw = img.naturalHeight * canvasAspect;
-          sx = (img.naturalWidth - sw) / 2;
-        } else {
-          sh = img.naturalWidth / canvasAspect;
-          sy = (img.naturalHeight - sh) / 2;
-        }
-
-        if (blockSize <= 1) {
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = "high";
-          ctx.drawImage(img, sx, sy, sw, sh, 0, 0, width, height);
-        } else {
-          const smallW = Math.max(1, Math.ceil(width / blockSize));
-          const smallH = Math.max(1, Math.ceil(height / blockSize));
-          tmp.width = smallW;
-          tmp.height = smallH;
-          const tmpCtx = tmp.getContext("2d")!;
-          tmpCtx.imageSmoothingEnabled = blockSize > 8;
-          tmpCtx.clearRect(0, 0, smallW, smallH);
-          tmpCtx.drawImage(img, sx, sy, sw, sh, 0, 0, smallW, smallH);
-          ctx.imageSmoothingEnabled = false;
-          ctx.drawImage(tmp, 0, 0, width, height);
-        }
-      }
-
-      // Scanlines: thick at low res, gone at full res
-      const scanlineAlpha = Math.pow(1 - p, 1.8) * 0.14;
-      if (scanlineAlpha > 0.002) {
-        ctx.fillStyle = "rgba(0,0,0,1)";
-        ctx.globalAlpha = scanlineAlpha;
-        for (let y = 0; y < height; y += 3) {
-          ctx.fillRect(0, y, width, 1);
-        }
-        ctx.globalAlpha = 1;
-      }
-
-      // CSS filter: tolerance-crush → natural colour
-      const contrast = (1 + (1 - p) * 2.2).toFixed(3);
-      const brightness = (0.38 + p * 0.22).toFixed(3);
-      //const saturate = (p * 1.15).toFixed(3);
-      canvas.style.filter = `contrast(${contrast}) brightness(${brightness})`;
-      //{saturate(${saturate})}
-
-      if (progressRef.current !== target) {
-        rafId = requestAnimationFrame(draw);
-      }
-    };
-
-    rafId = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(rafId);
-  }, [hovered, width, height, imgLoaded]);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      width={width}
-      height={height}
-      className="absolute inset-0 w-full h-full z-0"
-      style={{}}
-    />
-  );
-}
 
 export function CaseStudyCard({ study, darkColor, isActive = false }: { study: (typeof caseStudies)[0]; darkColor: string; isActive?: boolean }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [maskUrl, setMaskUrl] = useState<string>("");
-
-  useEffect(() => {
-    const el = cardRef.current;
-    if (!el) return;
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = Math.round(entry.contentRect.width);
-        const h = Math.round(entry.contentRect.height);
-        if (w > 0 && h > 0) {
-          setMaskUrl(generateDitherMask(w, h, 44, CARD_RADIUS));
-        }
-      }
-    });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div
-      ref={cardRef}
-      className="relative aspect-[4/3]"
-    >
+    <div className="relative aspect-[4/3]">
       <a
         href="#"
         className="group relative block w-full h-full overflow-hidden cursor-pointer"
         style={{
           borderRadius: CARD_RADIUS,
-          maskImage: maskUrl ? `url(${maskUrl})` : undefined,
-          WebkitMaskImage: maskUrl ? `url(${maskUrl})` : undefined,
-          maskSize: "100% 100%",
-          WebkitMaskSize: "100% 100%",
-          maskRepeat: "no-repeat",
-          WebkitMaskRepeat: "no-repeat",
         }}
       >
         <img
@@ -397,14 +140,14 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [activeStudy, setActiveStudy] = useState<(typeof caseStudies)[0] | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const cardsRef = useRef<Record<number, HTMLDivElement | null>>({});
+  const cardsRef = useRef<Record<string | number, HTMLDivElement | null>>({});
 
   const brightAccent = getBrightAccent(darkColor);
 
 
 
   useEffect(() => {
-    const visibleCards = new Set<number>();
+    const visibleCards = new Set<string | number>();
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -414,7 +157,8 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
             ([_, el]) => el === entry.target
           );
           if (idEntry) {
-            const id = Number(idEntry[0]);
+            const idStr = idEntry[0];
+            const id = isNaN(Number(idStr)) ? idStr : Number(idStr);
             if (entry.isIntersecting) {
               visibleCards.add(id);
               changed = true;
@@ -461,6 +205,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
 
   return (
     <section
+      id="work"
       ref={sectionRef}
       className="relative w-full"
       style={{

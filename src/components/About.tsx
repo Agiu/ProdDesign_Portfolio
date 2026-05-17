@@ -10,6 +10,7 @@ export function About({ darkColor = '#020510' }: AboutProps) {
 
     return (
         <section
+            id="about"
             className="relative w-full"
             style={{
                 backgroundColor: darkColor,

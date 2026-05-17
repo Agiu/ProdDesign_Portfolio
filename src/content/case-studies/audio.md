@@ -1,29 +1,72 @@
 
-## The Problem & Goal
-Today's audio wearables fail to deliver consistent comfort and performance across real-world use. Earbuds trap heat and moisture, fall out, or cause pain, while over-ear headphones are bulky and heavy for extended wear. The goal was to redesign headphones to remove head fatigue and allow for a more open, adaptable, and versatile audio solution - all within a four week time window.
+## So, what's the problem? | Today's audio wearables fail to deliver consistent comfort and performance across real-world use. ==Earbuds trap heat and moisture, fall out, or cause pain, while over-ear headphones are bulky and heavy for extended wear.== What's the solution and middleground?
 
-## Research & Discovery
-The luxury of having this be a master's program project is that we quite literally see a project happen from 0 → 1. As a group, we all had an interest in wanting to be a little contrarian to most of our cohort. We went physical rather than interfaced focus. The majority of the group did not have any experience with industrial design, we were used to user interfaces and telling a good story around that. This project ended up turning into a big lesson on team dynamics, team management, and learning on the fly to create a high quality product. Collectively we all had interests in wearable and we thought there could be something within this space—we dove in.
 
-### The Start
-So, taking the four weeks criteria into account, we had meager time to conduct extensive research; as well as coming up with a problem space, building the actual product, and 3D printing the final designs. We had to conduct this project as efficiently as possible. So, in some phases we had to cut our losses, but this gave us many interesting avenues to go down as I will discuss throughout the case study. This time constraint ate into our interview time, so we attempted to keep a balance of brevity while maintaining high quality questions to collect good data from.
+![Project Open](/headphones/headphone_render.jpg)
+We've all experienced issues with comfort among our headphones and earbuds. Many companies have attempted to solve universal comfort issues across all mediums — Virtual Reality, Personal handheld devices, and more with little to no success. 
 
-* **User Interviews:** We each conducted our individual interviews, which aggregated to 5 total user interviews, transcribing roughly 5,400 words to analyze for patterns. The interviewees were from people around the UW MHCI+D cohort, and a few relatives and friends. The questions at first were generally written along the lines of "why do you wear headphones" and "walk me through your experience with... " and as the interview evolved we honed in on more specific questions or assumptions we had from our own heuristic analysis of most headphones (the aching, moisture collection, etc..).
+![On right: Human headphones which failed due to a few factors but majorily around comfort, on left: Apple's Airpods Max which sound great but will cause fatigue after extended use due to different hair styles of users](/headphones/comparison.png)
 
-After the interview process, we began synthesizing the transcribed portions and applying an empathy map model to each sentence or phrase we found in common, with a goal of finding a problem space.
+My team of design friends and I came together to try and address these frustrations with ==a new form factor design that maintains continous comfort, while mitigating the common issues seen in typical audio form factors.==
 
-* **Empathy Mapping:** Using empathy maps and AI assistance from Figma itself, we identified several core insights:
-  * Users consider social pressures, situational awareness, and aesthetics when selecting headphones.
-  * Users experience pain and discomfort, such as sweaty ears, pressure points, and earbuds falling out.
-  * Users desire headphones that are compact for transport, have adjustable features, and fit properly.
+This project ended up turning into a big lesson on team dynamics, team management, and learning on the fly to create a high quality product. Collectively we all had interests in wearable devices and we thought there could be something within the audio space, however we had little to no experience in industrial design.
+
+
+## Building out the problem list 
+
+To narrow down our problem space, I insited on gathering heuristic assumptions firstly, then validating those assumptions with research. ==Our assumptions were around comfort and general frustrations like ear pressure, heat build-up, and instability.== These needed to be validated, of course; maybe through some user research?
+
+### Conducting user interviews to understand the problem space
+```stats
+5 | Total user interviews | Users
+5,400 | Words transcribed | FileText
+4 days | To recruit and interview participants | Clock
+```
+
+```button
+View Interviews | https://docs.google.com/document/d/17wlYGyDGmDJn1tCKFC4ODD3lw5XimgeTamJ1faz2z-4/edit?usp=sharing | FileText
+```
+
+
+The interviewees we recruited were from people around the UW MHCI+D cohort, and a few relatives and friends. The questions at first were generally written along the lines of "why do you wear headphones" and "walk me through your experience with... " and as the interview evolved we honed in on more specific questions or assumptions we had from our own heuristic analysis of most headphones (the aching, moisture collection, etc..).
+
+After the interview process, we began synthesizing the transcribed portions and applying an empathy map model to each sentence or phrase we found in common, with a goal of finding a problem space with common issues. We chose the empathy map method because of its effectiveness in identifying obvious painpoints and outlining common emotional themes we may have missed during the interviews.
+
+![The goal was to find a few problems within our space and what we found out is our assumption were generally correct. We just needed to verify them through user research.](/headphones/empathy_map_1.png)
+
+```quotes
+I always feel like these over-ear headphones are going to fall off | Interviewee 1
+Earrings can get squeezed into my skin with some padding. | Interviewee 3
+I wear headphones when I work out because they help me structure my workouts | Interviewee 2
+My ideal earphone would fit in my ear properly and I won’t have to keep adjusting | Interviewee 5
+Headphones are more comfortable in the long run, but I do get fatigue from the extra weight sitting on my head | Interviewee 5
+```
+
+
+So, by using these empathy maps and some AI analysis from Figma itself, we identified several core findings that validated our assumptions. 
+
+```insights
+Social Pressures & Aesthetics | Users consider social pressures, situational awareness, and aesthetics when selecting headphones. | Eye
+Literal Pain Points | Users experience pain and discomfort, such as sweaty ears, pressure points, and earbuds falling out. | Frown
+Universal Form Factors | Users desire headphones that are compact for transport, have adjustable features, and fit properly. | Settings
+```
 
 The AI assistance aided in finding common themes across all phrases we collected, but to hold the AI accountable we searched through each common theme to make sure there was validity. If validity did not exist, we would create our own theme around the excess—if need be.
 
-From these findings we created a few 'how might we's':
-1. Design earphones that fit comfortably for all ear sizes without falling out or causing pain.
-2. Design headphones that are lightweight, portable and comfortable (even with a degree of variance e.g wearing glasses).
-3. Design headphones that can be used for longer without accumulating heat, moisture or causing pain.
-4. Design an audio device form factor that is desirable in different contexts (whether reading, walking, working out, or social interactions).
+From these findings we created a few how might we's that could lead us to ==designing a product==. 
+
+```hmw
+How might we design a headset that stays securely in place across all ear sizes and alongside peripherals like glasses or earrings, without requiring readjustment?
+How might we distribute the weight of a headset so it avoids localized pressure points and head fatigue during sustained wear?
+How might we design an audio form factor that prevents heat and moisture build-up during extended or active use?
+How might we create an audio device that feels desirable and appropriate across different contexts — commuting, working out, reading, or social settings?
+```
+
+> **Note:** How might we's wording was slightly changed from original research to fit the story better, but the goal is still the same.
+
+```button
+View Research Analysis | https://www.figma.com/board/seMvdbF8VlQxQLFU1DzH1T/CKHAM--Empathy-Maps---Findings?node-id=287-2055&t=U84CDWwuTr7xnvhD-1 | FileMaps
+```
 
 ## Ideation & Strategy
 Out of the selection, we chose: "How might we design headphones that are lightweight, portable, and comfortable (even with a degree of variance e.g. wearing glasses)?"
@@ -31,7 +74,7 @@ Out of the selection, we chose: "How might we design headphones that are lightwe
 ![Early ideation sketches, Zoom calls, and Figma boards](/headphones/image_placeholder_2.JPG)
 *Early ideation sketches exploring utilitarian, bandless, and double-curve headband designs.*
 
-### Sketching
+### Sketching From Inspiration
 We centered many of our inspirational material around things we found on the internet and sketches we conjured up ourselves. Personally, I went after VR headsets which allowed for over-ear hearing much like what you see on the Valve Index, which was actually one of my references. These headphones don't exactly sit on your ear, but have the same quality as regular open-back headphones.
 
 ![Sketches for possible designs](/headphones/image_placeholder_3.JPG)
@@ -76,7 +119,9 @@ So I cut the inner bit of the ear foundation out, completely. And as it turns ou
 
 This was it. I modeled a speaker with holes for wiring that sat right above the ear. The team as a whole found this method much more impactful due to its ease to put on and the comfort—while still allowing earrings and other peripherals.
 
-> It also just looks damn cool.
+> "I left it on for the whole day accidentally while filming the video and I kept forgetting they were on me.. it's super comfortable."
+>
+> Alexander Akande
 
 ![Final Headphones Render](/headphones/image_placeholder_8.png)
 
@@ -91,8 +136,10 @@ These "headphones" are perfect for commuting publicly and comfort. It lets you h
 ![Blueprint Wireframe](/headphones/image_placeholder_9.png)
 
 ## Reflection & Growth
-As a team of non-industrial designers, having this be our first project was extremely daunting. But personally, I thrived in the uncertainty of each step we took. I opened up blender because I felt more comfortable with a computer rather than my own sketching hands—which I have gotten better at in my opinion—it turned out to be a wonderful trajectory I took because it diversifies my own design experience.
+Moving forward, I would have loved more time to flesh out the design further, particularly the interior of the form factor. My teammates had established viable interior chips by the end of the project, but we only had about two days to work with them. A significant portion of our time was also consumed by repeated printing iterations to nail the tiered fits, which cut into valuable design time.
 
-Working with a team was also beneficial and challenging in its own ways. Having to balance our research with ideas we just want to create on a whim was difficult, but what was most necessary seemed to be debate. As a designer you need to know what you're talking about to convince others, especially when they may have different motives or attachments to certain prototypes. It's good to reel back in the goal for the project and make sure your current dilemma makes sense in the grand-scheme-of-things.
+From the start, I wanted these to work well for casual and commuter use, comfortable enough to wear outside while still letting you hear your surroundings. One thing I failed to account for, though, was aerodynamics. The design handled them poorly; at even a brisk running pace, wind noise would drown out the music entirely. It's something I didn't have the time to address.
+
+On a brighter note, our main actor wore Project Open throughout the entire video shoot for three days, only taking them off after shooting finished (which was usually 7 hours long!). To me, that speaks to the comfort we were aiming for. Hell, I can't even wear my AirPods for more than 2 hours without them falling out or becoming uncomfortable from the moisture they trap.
 
 — **Caleb Aguiar**

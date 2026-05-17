@@ -272,6 +272,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
   const viewedHourRef = useRef<number | null>(null);
   useEffect(() => { viewedHourRef.current = viewedHour; }, [viewedHour]);
   const [dragging, setDragging] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   // ── Momentum / inertia tracking ──
   const lastPointerTime = useRef(0);
@@ -346,6 +347,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
   const handleCanvasPointerDown = useCallback((e: React.PointerEvent) => {
     stopMomentum();
     setDragging(true);
+    setHasInteracted(true);
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
     const hour = getHourFromPointer(e.clientX);
     setViewedHour(hour);
@@ -696,6 +698,33 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
 
   const nameWeatherBlock = (
     <div>
+      {/* Navigation Links */}
+      <div className="mb-10 flex flex-col gap-3.5">
+        {[
+          { label: 'Selected Work', id: 'work' },
+          { label: 'About Me', id: 'about' }
+        ].map((link, idx) => (
+          <button
+            key={link.id}
+            onClick={() => document.getElementById(link.id)?.scrollIntoView({ behavior: 'smooth' })}
+            className="group flex items-center w-fit text-left outline-none"
+            style={{ '--accent': getTimePalette(activeHour).accentDot } as React.CSSProperties}
+          >
+            <span
+              className="text-white/40 group-hover:text-white transition-colors duration-400 tracking-[0.15em] uppercase text-[11px] md:text-[12px] font-bold"
+              style={{ fontFamily: '"American Grotesk", sans-serif' }}
+            >
+              {String(idx + 1).padStart(2, '0')} // {link.label}
+            </span>
+            <span className="ml-3 opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out text-[color:var(--accent)]">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 5v14M19 12l-7 7-7-7" />
+              </svg>
+            </span>
+          </button>
+        ))}
+      </div>
+
       <h1
         className="text-white"
         style={{
@@ -806,6 +835,22 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
             onPointerCancel={handleCanvasPointerUp}
             onDoubleClick={handleCanvasDoubleClick}
           />
+
+          {/* Interaction Hint */}
+          <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center">
+            <div
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-md bg-black/20 backdrop-blur-md transition-all duration-700 ${(!hasInteracted && !dragging && canvasReady && !loading) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95'}`}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70">
+                <path d="M8 9l-4 4 4 4" />
+                <path d="M16 9l4 4-4 4" />
+                <line x1="4" y1="13" x2="20" y2="13" />
+              </svg>
+              <span className="text-white/80 text-[10px] tracking-[0.2em] uppercase font-bold mt-[1px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                Drag to explore Seattle Weather
+              </span>
+            </div>
+          </div>
 
           {/* Loading overlay */}
           {loading && !weather && (

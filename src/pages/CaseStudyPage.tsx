@@ -2,8 +2,9 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { caseStudies, CaseStudyCard } from '../components/case-studies';
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
+import * as LucideIcons from 'lucide-react';
+import { caseStudies, CaseStudyCard, getBrightAccent } from '../components/case-studies';
 
 // @ts-ignore
 const mdModules = import.meta.glob('../content/case-studies/*.md', { query: '?raw', import: 'default' });
@@ -19,19 +20,153 @@ function parseHeadings(md: string): Heading[] {
     .filter(line => /^#{2,3}\s/.test(line))
     .map(line => {
       const level = line.match(/^(#{2,3})/)?.[1].length ?? 2;
-      const text = line.replace(/^#{2,3}\s+/, '').trim();
+      let text = line.replace(/^#{2,3}\s+/, '').trim();
+
+      if (level === 2 && text.includes('|')) {
+        text = text.split('|')[0].trim();
+      }
+
       return { id: slugify(text), text, level };
     });
+}
+
+function QuoteCarousel({ lines }: { lines: string[] }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+
+  const quotes = lines.map(line => {
+    const parts = line.split('|').map(s => s.trim());
+    return {
+      quote: parts[0],
+      author: parts[1] || ''
+    };
+  }).filter(q => q.quote);
+
+  if (quotes.length === 0) return null;
+
+  const isCarousel = quotes.length > 1;
+  const currentQuote = quotes[currentIndex];
+
+  const next = () => {
+    if (currentIndex < quotes.length - 1) {
+      setDirection(1);
+      setCurrentIndex(i => i + 1);
+    }
+  };
+
+  const prev = () => {
+    if (currentIndex > 0) {
+      setDirection(-1);
+      setCurrentIndex(i => i - 1);
+    }
+  };
+
+  const getFontSizeClass = (text: string) => {
+    const len = text.length;
+    if (len < 60) return 'text-3xl md:text-5xl';
+    if (len < 100) return 'text-2xl md:text-4xl';
+    if (len < 150) return 'text-xl md:text-3xl';
+    return 'text-lg md:text-2xl';
+  };
+
+  return (
+    <div className="my-12 not-prose flex flex-col gap-4">
+      <div className="flex items-center gap-2 md:gap-4 w-full">
+        {isCarousel && (
+          <button
+            onClick={prev}
+            disabled={currentIndex === 0}
+            className={`shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-colors text-white outline-none ${currentIndex === 0 ? 'bg-white/5 opacity-30 cursor-not-allowed' : 'bg-white/10 hover:bg-white/20'}`}
+          >
+            <LucideIcons.ChevronLeft size={24} />
+          </button>
+        )}
+
+        <div className="flex-1 relative p-8 md:p-12 rounded-2xl bg-white/5 backdrop-blur-sm shadow-xl overflow-hidden flex flex-col justify-center h-[280px] md:h-[320px]">
+          <div className="absolute top-0 left-0 w-full h-1.5" style={{ backgroundColor: 'var(--accent)' }}></div>
+
+          <div className="absolute -top-12 -left-4 text-[16rem] text-white/[0.03] leading-none pointer-events-none select-none" style={{ fontFamily: '"Domaine Display", serif' }}>
+            "
+          </div>
+
+          <div className="relative z-10">
+            <div className={`text-white leading-snug font-medium mb-6 ${getFontSizeClass(currentQuote.quote)}`} style={{ fontFamily: '"Domaine Display", serif' }}>
+              "{currentQuote.quote}"
+            </div>
+            {currentQuote.author && (
+              <div className="text-white/60 tracking-widest uppercase text-sm font-semibold" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                — {currentQuote.author}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {isCarousel && (
+          <button
+            onClick={next}
+            disabled={currentIndex === quotes.length - 1}
+            className={`shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-colors text-white outline-none ${currentIndex === quotes.length - 1 ? 'bg-white/5 opacity-30 cursor-not-allowed' : 'bg-white/10 hover:bg-white/20'}`}
+          >
+            <LucideIcons.ChevronRight size={24} />
+          </button>
+        )}
+      </div>
+
+      {isCarousel && (
+        <div className="flex justify-center w-full">
+          <div className="text-white/40 text-[10px] uppercase font-bold tracking-widest" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+            {currentIndex + 1} / {quotes.length}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function extractText(node: any): string {
+  if (typeof node === 'string') return node;
+  if (typeof node === 'number') return String(node);
+  if (Array.isArray(node)) return node.map(extractText).join('');
+  if (node && node.props && node.props.children) return extractText(node.props.children);
+  return '';
+}
+
+function renderSubtitle(text: string) {
+  return text.split(/(==[^=]+==)/g).map((part, i) => {
+    if (part.startsWith('==') && part.endsWith('==')) {
+      return <span key={i} className="highlight-text" style={{ color: 'var(--accent)', fontWeight: 400 }}>{part.slice(2, -2)}</span>;
+    }
+    return part;
+  });
 }
 
 // Custom heading renderers that inject id attributes
 function makeHeadingComponents() {
   const H2 = ({ children }: { children?: React.ReactNode }) => {
-    const text = String(children);
+    const text = extractText(children);
+
+    if (text.includes('|')) {
+      const parts = text.split('|');
+      const title = parts[0].trim();
+      const subtitle = parts.slice(1).join('|').trim();
+
+      return (
+        <div className="mb-12">
+          <h2 id={slugify(title)} className="h2-subtitle-mode">
+            {title}
+          </h2>
+          <p className="text-xl font-light !mt-0 !mb-0" style={{ fontFamily: '"American Grotesk", sans-serif', color: 'var(--accent)' }}>
+            {renderSubtitle(subtitle)}
+          </p>
+          <div className="w-full h-px bg-white/10 mt-6" />
+        </div>
+      );
+    }
+
     return <h2 id={slugify(text)}>{children}</h2>;
   };
   const H3 = ({ children }: { children?: React.ReactNode }) => {
-    const text = String(children);
+    const text = extractText(children);
     return <h3 id={slugify(text)}>{children}</h3>;
   };
   return { h2: H2, h3: H3 };
@@ -43,11 +178,10 @@ const headingComponents = makeHeadingComponents();
 import React from 'react';
 const LightboxContext = React.createContext<(src: string, alt: string) => void>(() => { });
 
-// Custom image renderer — centered, rounded, clickable to zoom
 const ImageRenderer = ({ src, alt }: { src?: string; alt?: string }) => {
   const openLightbox = React.useContext(LightboxContext);
   return (
-    <figure className="my-10 flex flex-col items-center">
+    <figure className="my-10 flex flex-col items-center gap-4">
       <img
         src={src}
         alt={alt}
@@ -55,6 +189,11 @@ const ImageRenderer = ({ src, alt }: { src?: string; alt?: string }) => {
         className="w-full max-w-2xl rounded-2xl object-cover cursor-zoom-in transition-transform duration-300 hover:scale-[1.02]"
         style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.5)' }}
       />
+      {alt && (
+        <figcaption className="text-white/50 text-sm text-center max-w-2xl px-4 font-medium tracking-wide" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+          {alt}
+        </figcaption>
+      )}
     </figure>
   );
 };
@@ -63,6 +202,7 @@ const ImageRenderer = ({ src, alt }: { src?: string; alt?: string }) => {
 interface CaseStudyPageProps { darkColor: string; }
 
 export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
+  const brightAccent = getBrightAccent(darkColor);
   const { id } = useParams<{ id: string }>();
   const [markdown, setMarkdown] = useState<string>('');
   const [activeId, setActiveId] = useState<string>('');
@@ -200,7 +340,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
 
   return (
     <>
-      <div className="w-full min-h-screen text-white bg-black" style={{ backgroundColor: darkColor, transition: 'background-color 0.6s ease' }}>
+      <div className="w-full min-h-screen text-white bg-black" style={{ backgroundColor: darkColor, transition: 'background-color 0.6s ease', '--accent': brightAccent } as React.CSSProperties}>
 
         {/* Navigation / Header */}
         <nav className="fixed top-8 left-6 md:left-12 z-50 mix-blend-difference">
@@ -333,48 +473,6 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
             </div>
           )}
 
-          {/* Showcase Video */}
-          {currentStudy && 'showcaseVideo' in currentStudy && currentStudy.showcaseVideo && (
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full mb-20 relative group"
-            >
-              <div className="absolute -inset-4 bg-white/10 blur-2xl rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-              <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-black" style={{ boxShadow: '0 24px 80px rgba(0,0,0,0.6)' }}>
-                {!isPlayingShowcase ? (
-                  <div
-                    className="absolute inset-0 w-full h-full cursor-pointer group/play"
-                    onClick={() => setIsPlayingShowcase(true)}
-                  >
-                    <img
-                      src={`https://img.youtube.com/vi/${currentStudy.showcaseVideo}/maxresdefault.jpg`}
-                      alt="Video thumbnail"
-                      className="w-full h-full object-cover opacity-80 group-hover/play:opacity-100 transition-opacity duration-500"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover/play:scale-110 group-hover/play:bg-white/20 transition-all duration-300">
-                        <svg className="w-8 h-8 text-white translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <iframe
-                    src={`https://www.youtube.com/embed/${currentStudy.showcaseVideo as string}?rel=0&color=white&autoplay=1`}
-                    className="w-full h-full"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                )}
-              </div>
-            </motion.div>
-          )}
-
           {/* Mobile TOC dropdown */}
           {headings.length > 0 && (
             <div className="xl:hidden mb-10 rounded-lg bg-white/5 backdrop-blur-sm overflow-hidden" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
@@ -427,26 +525,32 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
               
               /* Section Headers (H2) */
               .prose h2 { 
-                font-size: 3.25rem !important; 
-                margin-top: 5rem !important; 
-                margin-bottom: 2rem !important; 
+                font-size: 2.75rem !important; 
+                margin-top: 4.5rem !important; 
+                margin-bottom: 1.75rem !important; 
                 padding-bottom: 1rem !important;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
               }
               
+              .prose h2.h2-subtitle-mode {
+                border-bottom: none !important;
+                padding-bottom: 0 !important;
+                margin-bottom: 0.5rem !important;
+              }
+              
               /* Sub-headers (H3) */
               .prose h3 { 
-                font-size: 2.25rem !important; 
+                font-size: 2rem !important; 
                 margin-top: 3.5rem !important; 
                 margin-bottom: 1.5rem !important; 
-                color: rgba(255, 255, 255, 0.9) !important;
+                color: var(--accent) !important;
               }
               
               /* Standard paragraph styling */
               .prose p { 
                 text-align: left !important;
                 color: rgba(255, 255, 255, 0.7) !important; 
-                font-size: clamp(18px, 2.5vw, 24px) !important;
+                font-size: clamp(16px, 2vw, 20px) !important;
                 line-height: 1.9 !important; 
                 font-family: "American Grotesk", sans-serif !important; 
                 font-weight: 300 !important; 
@@ -456,7 +560,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
               /* Lists */
               .prose ul, .prose ol {
                 color: rgba(255, 255, 255, 0.7) !important; 
-                font-size: clamp(18px, 2.5vw, 24px) !important;
+                font-size: clamp(16px, 2vw, 20px) !important;
                 line-height: 1.9 !important; 
                 font-family: "American Grotesk", sans-serif !important; 
                 font-weight: 300 !important; 
@@ -477,15 +581,35 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
 
               /* Blockquotes */
               .prose blockquote {
-                border-left: 3px solid rgba(255, 255, 255, 0.4) !important;
-                padding-left: 2rem !important;
-                margin-top: 4rem !important;
-                margin-bottom: 4rem !important;
-                font-size: 2.25rem !important;
-                line-height: 1.4 !important;
+                border-left: none !important;
+                padding-left: 0 !important;
+                margin-top: 3.5rem !important;
+                margin-bottom: 3.5rem !important;
+              }
+              .prose blockquote p {
+                border-left: 3px solid var(--accent) !important;
+                padding-left: 1.5rem !important;
+                font-size: 1.125rem !important;
+                line-height: 1.6 !important;
                 font-style: italic !important;
-                color: rgba(255, 255, 255, 0.9) !important;
-                font-family: "Domaine Display", serif !important;
+                color: var(--accent) !important;
+                margin-bottom: 0 !important;
+              }
+              
+              /* Style the author attribution if it's separated by a blank line */
+              .prose blockquote p:last-of-type:not(:first-of-type) {
+                border-left: none !important;
+                padding-left: 0 !important;
+                font-style: normal !important;
+                font-family: "American Grotesk", sans-serif !important;
+                margin-top: 1rem !important;
+                text-align: right !important;
+              }
+
+              /* Disable Tailwind Typography's default auto-quotes */
+              .prose blockquote p::before,
+              .prose blockquote p::after {
+                content: none !important;
               }
 
               /* Center standalone captions */
@@ -522,14 +646,202 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
                   components={{
                     ...headingComponents,
                     img: ImageRenderer as never,
+                    pre: ({ children, ...props }: any) => {
+                      const childArray = Array.isArray(children) ? children : [children];
+                      if (childArray.some((c: any) => {
+                        const cls = c?.props?.className || '';
+                        return cls.includes('language-stats') || cls.includes('language-insights') || cls.includes('language-quotes') || cls.includes('language-button') || cls.includes('language-hmw');
+                      })) {
+                        return <>{children}</>;
+                      }
+                      return <pre {...props}>{children}</pre>;
+                    },
+                    code: ({ node, className, children, ...props }: any) => {
+                      const match = /language-(\w+)/.exec(className || '');
+                      
+                      if (match && match[1] === 'hmw') {
+                        const lines = String(children).trim().split('\n').filter(Boolean);
+                        return (
+                          <div className="flex flex-wrap justify-center gap-6 my-12 not-prose">
+                            {lines.map((line, i) => (
+                              <div key={i} className="flex flex-col p-8 rounded-2xl bg-white/5 backdrop-blur-sm shadow-xl relative overflow-hidden w-full md:w-[calc(50%-0.75rem)] max-w-md">
+                                <div className="absolute top-0 left-0 w-full h-1" style={{ backgroundColor: 'var(--accent)' }}></div>
+                                <div className="text-[var(--accent)] font-bold text-xl mb-4 tracking-widest" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                                  0{i + 1}
+                                </div>
+                                <div className="text-white/90 text-[20px] leading-relaxed font-light" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                                  {line}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        );
+                      }
+
+                      if (match && match[1] === 'button') {
+                        const text = String(children).trim();
+                        const parts = text.split('|').map(s => s.trim());
+                        const [label, url, iconName] = parts;
+                        // @ts-ignore
+                        const IconComponent = (iconName && LucideIcons[iconName]) ? LucideIcons[iconName] : LucideIcons.ExternalLink;
+
+                        return (
+                          <div className="not-prose flex w-full justify-center my-8">
+                            <a
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-3 px-8 py-4 rounded-xl transition-transform duration-300 no-underline w-fit group shadow-xl hover:scale-105"
+                              style={{ backgroundColor: 'var(--accent)' }}
+                            >
+                              <span className="text-black font-semibold tracking-wide text-lg" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                                {label}
+                              </span>
+                              <IconComponent size={20} className="text-black transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            </a>
+                          </div>
+                        );
+                      }
+
+                      if (match && match[1] === 'stats') {
+                        const lines = String(children).trim().split('\n').filter(Boolean);
+                        return (
+                          <div className="flex flex-wrap justify-center gap-6 my-12 not-prose">
+                            {lines.map((line, i) => {
+                              const parts = line.split('|').map(s => s.trim());
+                              if (parts.length < 2) return null;
+                              const [number, label, iconName] = parts;
+
+                              // @ts-ignore - Dynamic icon lookup
+                              const IconComponent = (iconName && LucideIcons[iconName]) ? LucideIcons[iconName] : LucideIcons.Activity;
+
+                              return (
+                                <div key={i} className="flex flex-col p-8 rounded-2xl bg-white/5 backdrop-blur-sm shadow-xl relative overflow-hidden w-full sm:w-auto max-w-full" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                                  <div className="absolute top-0 right-0 p-6 opacity-10 pointer-events-none">
+                                    <IconComponent size={120} strokeWidth={1} style={{ color: 'var(--accent)', transform: 'translate(20%, -20%)' }} />
+                                  </div>
+                                  <div className="mb-8 text-white/80 relative z-10" style={{ color: 'var(--accent)' }}>
+                                    <IconComponent size={32} strokeWidth={1.5} />
+                                  </div>
+                                  <div className="mt-auto relative z-10">
+                                    <div style={{ fontFamily: '"Domaine Display", serif', fontWeight: 700, lineHeight: 1 }} className="text-7xl text-white mb-3">
+                                      {number}
+                                    </div>
+                                    <div className="text-white/60 text-sm font-medium tracking-wide leading-snug">
+                                      {label}
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      }
+
+                      if (match && match[1] === 'quotes') {
+                        const lines = String(children).trim().split('\n').filter(Boolean);
+                        return <QuoteCarousel lines={lines} />;
+                      }
+
+                      if (match && match[1] === 'insights') {
+                        const lines = String(children).trim().split('\n').filter(Boolean);
+                        return (
+                          <div className="flex flex-col gap-4 my-12 not-prose">
+                            {lines.map((line, i) => {
+                              const parts = line.split('|').map(s => s.trim());
+                              if (parts.length < 2) return null;
+
+                              let title, description, iconName;
+                              if (parts.length >= 3) {
+                                title = parts[0];
+                                description = parts[1];
+                                iconName = parts[2];
+                              } else {
+                                description = parts[0];
+                                iconName = parts[1];
+                              }
+
+                              // @ts-ignore
+                              const IconComponent = (iconName && LucideIcons[iconName]) ? LucideIcons[iconName] : LucideIcons.Lightbulb;
+
+                              return (
+                                <div key={i} className="flex flex-col sm:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-white/5 backdrop-blur-sm shadow-xl items-start sm:items-center" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                                  <div className="shrink-0 w-14 h-14 rounded-full flex items-center justify-center bg-white/10" style={{ color: 'var(--accent)' }}>
+                                    <IconComponent size={28} strokeWidth={1.5} />
+                                  </div>
+                                  <div className="flex flex-col gap-2">
+                                    {title && (
+                                      <div style={{ fontFamily: '"Domaine Display", serif', fontWeight: 700 }} className="text-2xl text-white leading-tight">
+                                        {title}
+                                      </div>
+                                    )}
+                                    <div className="text-white/70 text-lg leading-relaxed font-light">
+                                      {description}
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      }
+
+                      const text = String(children);
+                      if (!match && text.startsWith('==') && text.endsWith('==')) {
+                        return <span className="highlight-text" style={{ color: 'var(--accent)', fontWeight: 400 }}>{text.slice(2, -2)}</span>;
+                      }
+                      return <code className={className} {...props}>{children}</code>;
+                    }
                   }}
                 >
-                  {markdown}
+                  {markdown.replace(/==([^=]+)==/g, '`==$1==`')}
                 </ReactMarkdown>
               </LightboxContext.Provider>
             </div>
 
           </div>
+
+          {/* Showcase Video */}
+          {currentStudy && 'showcaseVideo' in currentStudy && currentStudy.showcaseVideo && (
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full mb-20 mt-20 relative group"
+            >
+              <div className="absolute -inset-4 bg-white/10 blur-2xl rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+              <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-black" style={{ boxShadow: '0 24px 80px rgba(0,0,0,0.6)' }}>
+                {!isPlayingShowcase ? (
+                  <div
+                    className="absolute inset-0 w-full h-full cursor-pointer group/play"
+                    onClick={() => setIsPlayingShowcase(true)}
+                  >
+                    <img
+                      src={`https://img.youtube.com/vi/${currentStudy.showcaseVideo}/maxresdefault.jpg`}
+                      alt="Video thumbnail"
+                      className="w-full h-full object-cover opacity-80 group-hover/play:opacity-100 transition-opacity duration-500"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover/play:scale-110 group-hover/play:bg-white/20 transition-all duration-300">
+                        <svg className="w-8 h-8 text-white translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${currentStudy.showcaseVideo as string}?rel=0&color=white&autoplay=1`}
+                    className="w-full h-full"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                )}
+              </div>
+            </motion.div>
+          )}
 
           {/* More Case Studies */}
           <div className="mt-32 pt-16 border-t border-white/10">
