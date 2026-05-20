@@ -17,12 +17,12 @@ function slugify(text: string) {
 
 function parseHeadings(md: string): Heading[] {
   return md.split('\n')
-    .filter(line => /^#{2,3}\s/.test(line))
+    .filter(line => /^#{2}\s/.test(line))
     .map(line => {
-      const level = line.match(/^(#{2,3})/)?.[1].length ?? 2;
-      let text = line.replace(/^#{2,3}\s+/, '').trim();
+      const level = 2;
+      let text = line.replace(/^#{2}\s+/, '').trim();
 
-      if (level === 2 && text.includes('|')) {
+      if (text.includes('|')) {
         text = text.split('|')[0].trim();
       }
 
@@ -151,15 +151,15 @@ function makeHeadingComponents() {
       const subtitle = parts.slice(1).join('|').trim();
 
       return (
-        <div className="mb-12">
+        <React.Fragment>
           <h2 id={slugify(title)} className="h2-subtitle-mode">
             {title}
           </h2>
           <p className="text-xl font-light !mt-0 !mb-0" style={{ fontFamily: '"American Grotesk", sans-serif', color: 'var(--accent)' }}>
             {renderSubtitle(subtitle)}
           </p>
-          <div className="w-full h-px bg-white/10 mt-6" />
-        </div>
+          <div className="w-full h-px bg-white/10 mt-6 mb-12" />
+        </React.Fragment>
       );
     }
 
@@ -526,10 +526,15 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
               /* Section Headers (H2) */
               .prose h2 { 
                 font-size: 2.75rem !important; 
-                margin-top: 4.5rem !important; 
+                margin-top: 10rem !important; 
                 margin-bottom: 1.75rem !important; 
                 padding-bottom: 1rem !important;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+              }
+
+              /* First Section Header */
+              .prose h2:first-of-type {
+                margin-top: 2rem !important; /* You can adjust this value for the first header */
               }
               
               .prose h2.h2-subtitle-mode {
@@ -658,7 +663,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
                     },
                     code: ({ node, className, children, ...props }: any) => {
                       const match = /language-(\w+)/.exec(className || '');
-                      
+
                       if (match && match[1] === 'hmw') {
                         const lines = String(children).trim().split('\n').filter(Boolean);
                         return (

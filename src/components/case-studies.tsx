@@ -26,6 +26,20 @@ export const caseStudies = [
     team: ["Caleb Aguiar", "Alexander Akande", "Kyo Fan", "Meera Divecha Forespring", "Hannah Hatchett"],
   },
   {
+    id: "wos",
+    title: "Using AI to Reveal Corporate Owners of Downtown Seattle",
+    category: "Data Visualization",
+    year: "2026",
+    description:
+      "I created a new database and data visualization tool to show what estates run the economies of downtown Seattle; Who Owns Seattle?",
+    image:
+      "/WOS/Hero.jpg",
+    tags: ["AI", "Data Visualization", "Urban Studies", "Product Design"],
+    role: "Researcher and Designer",
+    advisors: [],
+    team: ["Caleb Aguiar"],
+  },
+  {
     id: 3,
     title: "Creating A New Way To Shop and Find Games",
     category: "App Design",
@@ -303,7 +317,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
 
                         {/* View Case Study Link */}
                         <div className="mt-4">
-                          {(activeStudy.id === 1 || activeStudy.id === 3) ? (
+                          {(activeStudy.id === 1 || activeStudy.id === 3 || activeStudy.id === "wos") ? (
                             <button
                               onClick={() => setShowModal(true)}
                               className="inline-flex items-center text-[12px] uppercase tracking-widest transition-colors group text-[color:var(--accent)] hover:text-white"
@@ -340,7 +354,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                 <div className="grid grid-cols-1 gap-5 md:gap-6">
                   {caseStudies.map((study) => {
                     const isActive = activeStudy?.id === study.id;
-                    const isNotBuilt = study.id === 1 || study.id === 3;
+                    const isNotBuilt = study.id === 1 || study.id === 3 || study.id === "wos";
                     return (
                       <div
                         key={study.id}

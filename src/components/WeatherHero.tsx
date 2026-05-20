@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { getBrightAccent } from './case-studies';
 
 
 // Bayer 8x8 ordered dithering matrix
@@ -227,13 +228,16 @@ const FALLBACK_WEATHER: WeatherData = {
   currentHour: new Date().getHours(),
 };
 
-// ─── Rotating hook line index ──
-const HOOK_LINES = [
-  ' I also love making films.',
-  ' Most people design tools. I design experiences that inspire.',
-  ' I build things that make people move.',
-  ' I turn complexity into clarity.',
+// ─── Rotating passion phrases ──
+const PASSION_PHRASES = [
+  'world building',
+  'filmmaking',
+  'storytelling',
+  'motion design',
+  'urban studies'
 ];
+
+
 
 // ─── Main Hero Component ──────────────────────────────────────
 export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color: string) => void }) {
@@ -249,23 +253,25 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
   const onDarkColorChangeRef = useRef(onDarkColorChange);
   onDarkColorChangeRef.current = onDarkColorChange;
 
-  // ── Load Google Fonts (Removed) ──
-
-  // ── Rotating hook line index ──
-  const [hookIndex, setHookIndex] = useState(0);
-  const [hookVisible, setHookVisible] = useState(true);
+  // ── Rotating phrase index ──
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [phraseVisible, setPhraseVisible] = useState(true);
   useEffect(() => {
-    const INTERVAL = 5000;
-    const FADE_OUT = 400; // ms before switch to fade out
+    const INTERVAL = 4000;
+    const FADE_OUT = 400;
     const id = setInterval(() => {
-      setHookVisible(false);
+      setPhraseVisible(false);
       setTimeout(() => {
-        setHookIndex((i) => (i + 1) % HOOK_LINES.length);
-        setHookVisible(true);
+        setPhraseIndex((i) => (i + 1) % PASSION_PHRASES.length);
+        setPhraseVisible(true);
       }, FADE_OUT);
     }, INTERVAL);
     return () => clearInterval(id);
   }, []);
+
+  // ── Load Google Fonts (Removed) ──
+
+
 
   // Viewed hour: null means "live / current time"
   const [viewedHour, setViewedHour] = useState<number | null>(null);
@@ -385,6 +391,49 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
   useEffect(() => {
     return () => { cancelAnimationFrame(momentumFrameRef.current); };
   }, []);
+
+  // ── Keyboard scrubbing ──
+  useEffect(() => {
+    let animationFrameId: number;
+    const keys = { left: false, right: false };
+    const SCRUB_SPEED = 6.0; // hours per second
+    let lastTime = performance.now();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') { keys.left = true; setHasInteracted(true); stopMomentum(); }
+      if (e.key === 'ArrowRight') { keys.right = true; setHasInteracted(true); stopMomentum(); }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') keys.left = false;
+      if (e.key === 'ArrowRight') keys.right = false;
+    };
+
+    const scrub = (time: number) => {
+      const dt = Math.min((time - lastTime) / 1000, 0.1); // cap dt at 0.1s to avoid huge jumps
+      lastTime = time;
+
+      if (keys.left || keys.right) {
+        setViewedHour(prev => {
+          let h = prev !== null ? prev : (new Date().getHours());
+          if (keys.left) h -= SCRUB_SPEED * dt;
+          if (keys.right) h += SCRUB_SPEED * dt;
+          return Math.max(0, Math.min(23, h));
+        });
+      }
+      animationFrameId = requestAnimationFrame(scrub);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    animationFrameId = requestAnimationFrame(scrub);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [stopMomentum]);
 
   // Live clock (ticks every second for smooth updates)
   const [now, setNow] = useState(() => new Date());
@@ -695,6 +744,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
 
   // Derive the darkest gradient color for the current time-of-day
   const darkColor = getTimePalette(activeHour).gradient[0];
+  const brightAccent = getBrightAccent(darkColor);
 
   const nameWeatherBlock = (
     <div>
@@ -798,17 +848,23 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
               letterSpacing: '0.02em',
             }}
           >
-            I'm a designer and software engineer.
-
-            <span
-              style={{
-                opacity: hookVisible ? 1 : 0,
-                transition: 'opacity 0.4s ease',
-                display: 'inline',
-              }}
+            I'm a UX Designer and Software Engineer with a love for{' '}
+            <button
+              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+              className="inline transition-colors duration-300 hover:opacity-80"
+              style={{ color: brightAccent, outline: 'none', font: 'inherit' }}
             >
-              {HOOK_LINES[hookIndex]}
-            </span>
+              <span
+                className="underline decoration-2 underline-offset-[6px]"
+                style={{
+                  opacity: phraseVisible ? 1 : 0,
+                  transition: 'opacity 0.4s ease',
+                  display: 'inline',
+                }}
+              >
+                {PASSION_PHRASES[phraseIndex]}
+              </span>
+            </button>
           </p>
         </div>
 
