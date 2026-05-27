@@ -25,15 +25,15 @@ export function About({ darkColor = '#020510' }: AboutProps) {
                         <div className="lg:col-span-4 self-start">
                             <div>
                                 <h2
-                                    className="text-white"
+                                    className="text-white text-center md:text-left"
                                     style={{
-                                        fontFamily: '"Domaine Display", serif',
+                                        fontFamily: '"Domaine Text", serif',
                                         fontSize: "clamp(2.8rem, 4vw, 8rem)",
                                         fontWeight: 700,
                                         lineHeight: 1.1,
                                     }}
                                 >
-                                    ABOUT
+                                    About
                                 </h2>
                             </div>
                         </div>
