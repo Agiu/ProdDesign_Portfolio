@@ -263,6 +263,24 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
   const onDarkColorChangeRef = useRef(onDarkColorChange);
   onDarkColorChangeRef.current = onDarkColorChange;
 
+  // ── Parallax State ──
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // ── Rotating phrase index ──
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [phraseVisible, setPhraseVisible] = useState(true);
@@ -719,13 +737,28 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
     }
   }, [weather]);
 
+  // ── Visibility Tracking for Performance ──
+  const isVisibleRef = useRef(true);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        isVisibleRef.current = entries[0].isIntersecting;
+      },
+      { threshold: 0 }
+    );
+    if (containerRef.current) observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   // Animation loop
   useEffect(() => {
     if (!weather) return;
     let running = true;
     const animate = (t: number) => {
       if (!running) return;
-      renderCanvas(t);
+      if (isVisibleRef.current) {
+        renderCanvas(t);
+      }
       animFrameRef.current = requestAnimationFrame(animate);
     };
     animFrameRef.current = requestAnimationFrame(animate);
@@ -771,9 +804,20 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
 
   return (
     <div className="relative w-full h-screen select-none bg-black">
+      {/* Mobile API Fallback */}
+      {apiFailed && (
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 z-50 md:hidden inline-flex items-center gap-1.5 px-2 py-1 rounded-sm bg-red-500/10 w-fit pointer-events-auto"
+             style={{
+               opacity: mounted ? 1 : 0,
+               transition: 'opacity 1.5s ease 1.2s'
+             }}>
+          <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+          <span className="text-red-200/90 text-[10px] tracking-widest uppercase font-semibold" style={{ fontFamily: '"American Grotesk", sans-serif' }}>API Offline · Fallback Info</span>
+        </div>
+      )}
 
       {/* ——— Full Screen Canvas Background ——— */}
-      <div ref={containerRef} className="absolute inset-0 z-0 bg-black overflow-hidden">
+      <div ref={containerRef} className="absolute inset-0 z-0 bg-black overflow-hidden" style={{ transform: `translateY(${scrollY * 0.5}px)` }}>
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full"
@@ -961,7 +1005,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
         </p>
 
         {apiFailed && (
-          <div className="inline-flex items-center gap-1.5 mt-2 px-2 py-1 rounded-sm bg-red-500/10 w-fit pointer-events-auto">
+          <div className="hidden md:inline-flex items-center gap-1.5 mt-2 px-2 py-1 rounded-sm bg-red-500/10 w-fit pointer-events-auto">
             <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
             <span className="text-red-200/90 text-[10px] tracking-widest uppercase font-semibold" style={{ fontFamily: '"American Grotesk", sans-serif' }}>API Offline · Fallback Info</span>
           </div>
