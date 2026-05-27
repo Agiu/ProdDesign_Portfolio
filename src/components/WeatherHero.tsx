@@ -248,7 +248,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
   const [loading, setLoading] = useState(true);
   const [apiFailed, setApiFailed] = useState(false);
   const [canvasReady, setCanvasReady] = useState(false);
-  
+
   // ── Mount Animation State ──
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -771,7 +771,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
 
   return (
     <div className="relative w-full h-screen select-none bg-black">
-      
+
       {/* ——— Full Screen Canvas Background ——— */}
       <div ref={containerRef} className="absolute inset-0 z-0 bg-black overflow-hidden">
         <canvas
@@ -791,11 +791,11 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
 
       {/* ——— Absolute Center Hook Text ——— */}
       <div className="absolute top-[35%] left-1/2 z-10 w-full px-4 text-center"
-           style={{
-             opacity: mounted ? 1 : 0,
-             transform: `translate(-50%, ${mounted ? '-50%' : '-20%'})`,
-             transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
-           }}>
+        style={{
+          opacity: mounted ? 1 : 0,
+          transform: `translate(-50%, ${mounted ? '-50%' : '-20%'})`,
+          transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
+        }}>
         <p
           className="text-white mx-auto max-w-3xl"
           style={{
@@ -807,7 +807,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
             textShadow: '0 0 24px rgba(255, 255, 255, 0.3)',
           }}
         >
-          I'm a UX Designer and Software Engineer<br />with a love for{' '}
+          UX Designer and Software Engineer<br />with a love for{' '}
           <button
             onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
             className="inline transition-colors duration-300 hover:opacity-80 align-bottom"
@@ -821,13 +821,13 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
               }}
             >
               {/* Invisible measuring element */}
-              <span 
+              <span
                 ref={measureRef}
                 className="inline-block invisible whitespace-nowrap underline decoration-2 underline-offset-[6px]"
               >
                 {PASSION_PHRASES[phraseIndex]}
               </span>
-              
+
               {/* Visible animated element */}
               <span
                 className="absolute left-1/2 -translate-x-1/2 top-0 whitespace-nowrap underline decoration-2 underline-offset-[6px]"
@@ -845,11 +845,11 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
 
       {/* ——— Bottom Center Name & Scroll Hint ——— */}
       <div className="absolute bottom-[16vh] left-1/2 z-10 flex flex-col items-center"
-           style={{
-             opacity: mounted ? 1 : 0,
-             transform: `translate(-50%, ${mounted ? '0' : '20px'})`,
-             transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
-           }}>
+        style={{
+          opacity: mounted ? 1 : 0,
+          transform: `translate(-50%, ${mounted ? '0' : '20px'})`,
+          transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+        }}>
         <div className="flex flex-col items-stretch w-max relative">
           <h1
             className="text-center"
@@ -864,7 +864,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
           >
             CALEB<br />AGUIAR
           </h1>
-          
+
           {/* Mobile "I'm located in..." text under name */}
           <p
             className="md:hidden text-center mt-2 mb-1"
@@ -878,36 +878,36 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
           >
             I'm located in {wd.city}{wd.region ? `, ${wd.region}` : ''} • {displayTime}
           </p>
-          
+
           {/* Horizontal Line matches Name width */}
-          <div className="w-full bg-current mt-4 z-10 relative" 
-               style={{ 
-                 height: '2.5px',
-                 color: brightAccent, 
-                 opacity: mounted ? 1 : 0,
-                 transform: `scaleX(${mounted ? 1 : 0})`,
-                 transformOrigin: 'center',
-                 transition: 'color 0.6s ease, opacity 0.8s ease 0.4s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s' 
-               }}></div>
-          
+          <div className="w-full bg-current mt-4 z-10 relative"
+            style={{
+              height: '2.5px',
+              color: brightAccent,
+              opacity: mounted ? 1 : 0,
+              transform: `scaleX(${mounted ? 1 : 0})`,
+              transformOrigin: 'center',
+              transition: 'color 0.6s ease, opacity 0.8s ease 0.4s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s'
+            }}></div>
+
           {/* Bleeding Vertical Line + X */}
-          <div className="absolute top-full left-1/2 z-10 flex flex-col items-center mt-[-1px]" 
-               style={{ 
-                 color: brightAccent, 
-                 transform: 'translateX(-50%)',
-                 transition: 'color 0.6s ease' 
-               }}>
+          <div className="absolute top-full left-1/2 z-10 flex flex-col items-center mt-[-1px]"
+            style={{
+              color: brightAccent,
+              transform: 'translateX(-50%)',
+              transition: 'color 0.6s ease'
+            }}>
             <div className="w-[2.5px] bg-current"
-                 style={{
-                   height: mounted ? '21vh' : '0vh',
-                   transition: 'height 1s cubic-bezier(0.16, 1, 0.3, 1) 2s'
-                 }}></div>
+              style={{
+                height: mounted ? '21vh' : '0vh',
+                transition: 'height 1s cubic-bezier(0.16, 1, 0.3, 1) 2s'
+              }}></div>
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="mt-[-2px]"
-                 style={{
-                   opacity: mounted ? 1 : 0,
-                   transform: `translateY(${mounted ? '0' : '-5px'})`,
-                   transition: 'opacity 0.6s ease 2.7s, transform 0.6s ease 2.7s'
-                 }}>
+              style={{
+                opacity: mounted ? 1 : 0,
+                transform: `translateY(${mounted ? '0' : '-5px'})`,
+                transition: 'opacity 0.6s ease 2.7s, transform 0.6s ease 2.7s'
+              }}>
               <line x1="20" y1="4" x2="4" y2="20"></line>
               <line x1="4" y1="4" x2="20" y2="20"></line>
             </svg>
@@ -917,10 +917,10 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
 
       {/* ——— Bottom Data (Centered on mobile, Left on desktop) ——— */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 md:left-10 md:translate-x-0 z-10 flex flex-col gap-1 pointer-events-none w-full text-center px-4 md:w-auto md:text-left md:px-0"
-           style={{
-             opacity: mounted ? 1 : 0,
-             transition: 'opacity 1.5s ease 1.2s'
-           }}>
+        style={{
+          opacity: mounted ? 1 : 0,
+          transition: 'opacity 1.5s ease 1.2s'
+        }}>
         <p
           className="hidden md:block"
           style={{
