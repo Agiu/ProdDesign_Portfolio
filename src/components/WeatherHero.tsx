@@ -800,7 +800,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
           className="text-white mx-auto max-w-3xl"
           style={{
             fontFamily: '"Domaine Text", serif',
-            fontSize: 'clamp(1.3rem, 2.5vw, 2.2rem)',
+            fontSize: 'clamp(1.1rem, 4.5vw, 2.2rem)',
             fontStyle: 'normal',
             fontWeight: 700,
             lineHeight: 1.2,
