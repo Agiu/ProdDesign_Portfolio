@@ -49,6 +49,27 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Domaine Text';
+  src: url('../Imports/Test Domaine Collection/Test Domaine Text/TestDomaineText-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Domaine Text';
+  src: url('../Imports/Test Domaine Collection/Test Domaine Text/TestDomaineText-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Domaine Text';
+  src: url('../Imports/Test Domaine Collection/Test Domaine Text/TestDomaineText-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
 :root {
   --font-size: 16px;
   --background: #ffffff;

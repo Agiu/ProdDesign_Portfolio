@@ -248,6 +248,16 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
   const [loading, setLoading] = useState(true);
   const [apiFailed, setApiFailed] = useState(false);
   const [canvasReady, setCanvasReady] = useState(false);
+  
+  // ── Mount Animation State ──
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    if (!loading || weather) {
+      const t = setTimeout(() => setMounted(true), 100);
+      return () => clearTimeout(t);
+    }
+  }, [loading, weather]);
+
   const animFrameRef = useRef<number>(0);
   const lastEmittedColor = useRef<string>('');
   const onDarkColorChangeRef = useRef(onDarkColorChange);
@@ -267,6 +277,21 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
       }, FADE_OUT);
     }, INTERVAL);
     return () => clearInterval(id);
+  }, []);
+
+  // ── Rotating phrase width measurement ──
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const [phraseWidth, setPhraseWidth] = useState<number>(0);
+
+  useEffect(() => {
+    if (!measureRef.current) return;
+    const observer = new ResizeObserver(() => {
+      if (measureRef.current) {
+        setPhraseWidth(measureRef.current.getBoundingClientRect().width);
+      }
+    });
+    observer.observe(measureRef.current);
+    return () => observer.disconnect();
   }, []);
 
   // ── Load Google Fonts (Removed) ──
@@ -740,189 +765,209 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
     }
   })();
 
-
-
   // Derive the darkest gradient color for the current time-of-day
   const darkColor = getTimePalette(activeHour).gradient[0];
   const brightAccent = getBrightAccent(darkColor);
 
-  const nameWeatherBlock = (
-    <div>
-      {/* Navigation Links */}
-      <div className="mb-10 flex flex-col gap-3.5">
-        {[
-          { label: 'Selected Work', id: 'work' },
-          { label: 'About Me', id: 'about' }
-        ].map((link, idx) => (
-          <button
-            key={link.id}
-            onClick={() => document.getElementById(link.id)?.scrollIntoView({ behavior: 'smooth' })}
-            className="group flex items-center w-fit text-left outline-none"
-            style={{ '--accent': getTimePalette(activeHour).accentDot } as React.CSSProperties}
-          >
-            <span
-              className="text-white/40 group-hover:text-white transition-colors duration-400 tracking-[0.15em] uppercase text-[11px] md:text-[12px] font-bold"
-              style={{ fontFamily: '"American Grotesk", sans-serif' }}
-            >
-              {String(idx + 1).padStart(2, '0')} // {link.label}
-            </span>
-            <span className="ml-3 opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out text-[color:var(--accent)]">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 5v14M19 12l-7 7-7-7" />
-              </svg>
-            </span>
-          </button>
-        ))}
+  return (
+    <div className="relative w-full h-screen select-none bg-black">
+      
+      {/* ——— Full Screen Canvas Background ——— */}
+      <div ref={containerRef} className="absolute inset-0 z-0 bg-black overflow-hidden">
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full"
+          style={{ imageRendering: 'pixelated', opacity: canvasReady ? 1 : 0, transition: 'opacity 1.2s ease' }}
+        />
       </div>
 
-      <h1
-        className="text-white"
-        style={{
-          fontFamily: '"Domaine Display", serif',
-          fontSize: 'clamp(2.8rem, 6vw, 8rem)',
-          fontWeight: 700,
-          lineHeight: 1.1,
+      {/* ——— Gradient Overlay ——— */}
+      <div className="absolute inset-0 z-0 pointer-events-none" style={{
+        backgroundColor: darkColor,
+        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,1) 100%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,1) 100%)',
+        transition: 'background-color 0.6s ease'
+      }}></div>
 
-        }}
-      >
-        CALEB
-        <br />
-        AGUIAR
-      </h1>
-
-      <span className="text-white mt-4 md:mt-5"> ___________</span>
-
-      {/* Location */}
-      <p
-        className="text-white mt-4 md:mt-5"
-        style={{
-          fontFamily: '"American Grotesk", sans-serif',
-          fontSize: 'clamp(14px, 2vw, 18px)',
-          fontWeight: 400,
-        }}
-      >
-        I'm Located In {wd.city}{wd.region ? `, ${wd.region}` : ''} · {displayTime}
-      </p>
-
-
-      {/* Weather details */}
-      <div className="flex flex-col gap-1 mt-1.5">
+      {/* ——— Absolute Center Hook Text ——— */}
+      <div className="absolute top-[35%] left-1/2 z-10 w-full px-4 text-center"
+           style={{
+             opacity: mounted ? 1 : 0,
+             transform: `translate(-50%, ${mounted ? '-50%' : '-20%'})`,
+             transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
+           }}>
         <p
-          className="text-white"
+          className="text-white mx-auto max-w-3xl"
           style={{
-            fontFamily: '"American Grotesk", sans-serif',
-            fontSize: 'clamp(13px, 1.5vw, 16px)',
-            fontWeight: 300,
+            fontFamily: '"Domaine Text", serif',
+            fontSize: 'clamp(1.3rem, 2.5vw, 2.2rem)',
+            fontStyle: 'normal',
+            fontWeight: 700,
+            lineHeight: 1.2,
+            textShadow: '0 0 24px rgba(255, 255, 255, 0.3)',
           }}
         >
-          {desc} · {cToF(activeTemp).toFixed(0)}°F
+          I'm a UX Designer and Software Engineer<br />with a love for{' '}
+          <button
+            onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+            className="inline transition-colors duration-300 hover:opacity-80 align-bottom"
+            style={{ color: brightAccent, outline: 'none', font: 'inherit', textShadow: '0 0 24px currentColor' }}
+          >
+            <span
+              className="inline-block relative overflow-visible"
+              style={{
+                width: phraseWidth > 0 ? `${phraseWidth}px` : 'auto',
+                transition: 'width 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
+              {/* Invisible measuring element */}
+              <span 
+                ref={measureRef}
+                className="inline-block invisible whitespace-nowrap underline decoration-2 underline-offset-[6px]"
+              >
+                {PASSION_PHRASES[phraseIndex]}
+              </span>
+              
+              {/* Visible animated element */}
+              <span
+                className="absolute left-1/2 -translate-x-1/2 top-0 whitespace-nowrap underline decoration-2 underline-offset-[6px]"
+                style={{
+                  opacity: phraseVisible ? 1 : 0,
+                  transition: 'opacity 0.4s ease',
+                }}
+              >
+                {PASSION_PHRASES[phraseIndex]}
+              </span>
+            </span>
+          </button>
         </p>
+      </div>
+
+      {/* ——— Bottom Center Name & Scroll Hint ——— */}
+      <div className="absolute bottom-[16vh] left-1/2 z-10 flex flex-col items-center"
+           style={{
+             opacity: mounted ? 1 : 0,
+             transform: `translate(-50%, ${mounted ? '0' : '20px'})`,
+             transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+           }}>
+        <div className="flex flex-col items-stretch w-max relative">
+          <h1
+            className="text-center"
+            style={{
+              fontFamily: '"Domaine Display", serif',
+              fontSize: 'clamp(3.5rem, 6vw, 7rem)',
+              fontWeight: 700,
+              lineHeight: 1.05,
+              color: brightAccent,
+              transition: 'color 0.6s ease'
+            }}
+          >
+            CALEB<br />AGUIAR
+          </h1>
+          
+          {/* Mobile "I'm located in..." text under name */}
+          <p
+            className="md:hidden text-center mt-2 mb-1"
+            style={{
+              color: brightAccent,
+              fontFamily: '"American Grotesk", sans-serif',
+              fontSize: 'clamp(14px, 2vw, 18px)',
+              fontWeight: 400,
+              transition: 'color 0.6s ease'
+            }}
+          >
+            I'm located in {wd.city}{wd.region ? `, ${wd.region}` : ''} • {displayTime}
+          </p>
+          
+          {/* Horizontal Line matches Name width */}
+          <div className="w-full bg-current mt-4 z-10 relative" 
+               style={{ 
+                 height: '2.5px',
+                 color: brightAccent, 
+                 opacity: mounted ? 1 : 0,
+                 transform: `scaleX(${mounted ? 1 : 0})`,
+                 transformOrigin: 'center',
+                 transition: 'color 0.6s ease, opacity 0.8s ease 0.4s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s' 
+               }}></div>
+          
+          {/* Bleeding Vertical Line + X */}
+          <div className="absolute top-full left-1/2 z-10 flex flex-col items-center mt-[-1px]" 
+               style={{ 
+                 color: brightAccent, 
+                 transform: 'translateX(-50%)',
+                 transition: 'color 0.6s ease' 
+               }}>
+            <div className="w-[2.5px] bg-current"
+                 style={{
+                   height: mounted ? '21vh' : '0vh',
+                   transition: 'height 1s cubic-bezier(0.16, 1, 0.3, 1) 2s'
+                 }}></div>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="mt-[-2px]"
+                 style={{
+                   opacity: mounted ? 1 : 0,
+                   transform: `translateY(${mounted ? '0' : '-5px'})`,
+                   transition: 'opacity 0.6s ease 2.7s, transform 0.6s ease 2.7s'
+                 }}>
+              <line x1="20" y1="4" x2="4" y2="20"></line>
+              <line x1="4" y1="4" x2="20" y2="20"></line>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* ——— Bottom Data (Centered on mobile, Left on desktop) ——— */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 md:left-10 md:translate-x-0 z-10 flex flex-col gap-1 pointer-events-none w-full text-center px-4 md:w-auto md:text-left md:px-0"
+           style={{
+             opacity: mounted ? 1 : 0,
+             transition: 'opacity 1.5s ease 1.2s'
+           }}>
+        <p
+          className="hidden md:block"
+          style={{
+            color: brightAccent,
+            fontFamily: '"American Grotesk", sans-serif',
+            fontSize: 'clamp(14px, 2vw, 18px)',
+            fontWeight: 400,
+            transition: 'color 0.6s ease'
+          }}
+        >
+          I'm located in {wd.city}{wd.region ? `, ${wd.region}` : ''} • {displayTime}
+        </p>
+        <p
+          className="hidden md:block"
+          style={{
+            color: brightAccent,
+            opacity: 0.8,
+            fontFamily: '"American Grotesk", sans-serif',
+            fontSize: 'clamp(14px, 2vw, 18px)',
+            fontWeight: 300,
+            transition: 'color 0.6s ease'
+          }}
+        >
+          {desc} {cToF(activeTemp).toFixed(0)}°F
+        </p>
+        <p
+          className="hidden md:block mt-1"
+          style={{
+            color: brightAccent,
+            opacity: 0.4,
+            fontFamily: '"American Grotesk", sans-serif',
+            fontSize: 'clamp(14px, 2vw, 18px)',
+            fontWeight: 300,
+            transition: 'color 0.6s ease'
+          }}
+        >
+          Use Arrow Keys to change time &lt; &gt;
+        </p>
+
         {apiFailed && (
-          <div className="inline-flex items-center gap-1.5 mt-1 px-2 py-1 rounded-sm bg-red-500/10 w-fit">
+          <div className="inline-flex items-center gap-1.5 mt-2 px-2 py-1 rounded-sm bg-red-500/10 w-fit pointer-events-auto">
             <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
             <span className="text-red-200/90 text-[10px] tracking-widest uppercase font-semibold" style={{ fontFamily: '"American Grotesk", sans-serif' }}>API Offline · Fallback Info</span>
           </div>
         )}
       </div>
-    </div>
-  );
 
-  return (
-    <div className="relative w-full h-screen overflow-hidden select-none flex flex-col md:flex-row" style={{ backgroundColor: darkColor, transition: 'background-color 0.6s ease' }}>
-
-      {/* ——— Left / Top black panel ——— */}
-      <div
-        className="w-full md:w-[28%] md:min-w-[280px] md:max-w-[700px] md:h-full flex flex-col justify-start md:justify-between p-6 md:p-10 lg:p-12 relative z-10 shrink-0"
-        style={{ backgroundColor: darkColor, transition: 'background-color 0.6s ease' }}
-      >
-        {/* Top: Hook */}
-        <div>
-          <p
-            className="text-white"
-            style={{
-              fontFamily: '"Domaine Display", serif',
-              fontSize: 'clamp(1.1rem, 2.2vw, 1.8rem)',
-              fontStyle: 'normal',
-              fontWeight: 700,
-              lineHeight: 1.2,
-              letterSpacing: '0.02em',
-            }}
-          >
-            I'm a UX Designer and Software Engineer with a love for{' '}
-            <button
-              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-              className="inline transition-colors duration-300 hover:opacity-80"
-              style={{ color: brightAccent, outline: 'none', font: 'inherit' }}
-            >
-              <span
-                className="underline decoration-2 underline-offset-[6px]"
-                style={{
-                  opacity: phraseVisible ? 1 : 0,
-                  transition: 'opacity 0.4s ease',
-                  display: 'inline',
-                }}
-              >
-                {PASSION_PHRASES[phraseIndex]}
-              </span>
-            </button>
-          </p>
-        </div>
-
-        {/* Bottom: Name + weather (desktop only) */}
-        <div className="hidden md:block">
-          {nameWeatherBlock}
-        </div>
-      </div>
-
-      {/* ——— Right / Bottom side: Canvas + Timeline ——— */}
-      <div className="flex-1 min-h-[240px] md:min-h-0 h-full relative flex items-stretch p-3 md:p-4 lg:p-12">
-        <div ref={containerRef} className="flex-1 relative overflow-hidden" style={{
-          borderRadius: '30px',
-          opacity: canvasReady ? 1 : 0,
-          transition: 'opacity 1.2s ease',
-        }}>
-          <canvas
-            ref={canvasRef}
-            className="absolute inset-0 w-full h-full cursor-crosshair touch-none"
-            style={{ imageRendering: 'pixelated' }}
-            onPointerDown={handleCanvasPointerDown}
-            onPointerMove={handleCanvasPointerMove}
-            onPointerUp={handleCanvasPointerUp}
-            onPointerCancel={handleCanvasPointerUp}
-            onDoubleClick={handleCanvasDoubleClick}
-          />
-
-          {/* Interaction Hint */}
-          <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center">
-            <div
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-md bg-black/20 backdrop-blur-md transition-all duration-700 ${(!hasInteracted && !dragging && canvasReady && !loading) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95'}`}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70">
-                <path d="M8 9l-4 4 4 4" />
-                <path d="M16 9l4 4-4 4" />
-                <line x1="4" y1="13" x2="20" y2="13" />
-              </svg>
-              <span className="text-white/80 text-[10px] tracking-[0.2em] uppercase font-bold mt-[1px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
-                Drag to explore Seattle Weather
-              </span>
-            </div>
-          </div>
-
-          {/* Loading overlay */}
-          {loading && !weather && (
-            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black" style={{ borderRadius: '30px' }}>
-              <div className="text-white/40 font-mono" style={{ fontSize: '11px' }}>
-                FETCHING WEATHER DATA...
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* ——— Bottom: Name + weather (mobile only, on solid black) ——— */}
-      <div className="shrink-0 z-20 p-6 md:hidden" style={{ backgroundColor: darkColor, transition: 'background-color 0.6s ease' }}>
-        {nameWeatherBlock}
-      </div>
     </div>
   );
 }
