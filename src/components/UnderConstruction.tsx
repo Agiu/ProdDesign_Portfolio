@@ -238,7 +238,7 @@ export function UnderConstruction() {
 
         <h1
           style={{
-            fontFamily: '"Domaine Display", serif',
+            fontFamily: '"Domaine Text", serif', letterSpacing: 'normal',
             fontSize: 'clamp(2.8rem, 7vw, 7rem)',
             fontWeight: 700,
             lineHeight: 1.05,

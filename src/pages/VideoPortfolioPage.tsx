@@ -45,7 +45,7 @@ export function VideoPortfolioPage({ darkColor }: VideoPortfolioPageProps) {
             transition={{ duration: 0.6 }}
             className="text-white drop-shadow-2xl uppercase"
             style={{
-              fontFamily: '"Domaine Display", serif',
+              fontFamily: '"Domaine Text", serif', letterSpacing: 'normal',
               fontSize: "clamp(3rem, 6vw, 6rem)",
               fontWeight: 700,
               lineHeight: 1.1,
@@ -108,7 +108,7 @@ export function VideoPortfolioPage({ darkColor }: VideoPortfolioPageProps) {
                 <div className="flex justify-between items-start gap-4">
                   <h3
                     className="text-white text-2xl font-bold"
-                    style={{ fontFamily: '"Domaine Display", serif', lineHeight: 1.1 }}
+                    style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal', lineHeight: 1.1 }}
                   >
                     {project.title}
                   </h3>

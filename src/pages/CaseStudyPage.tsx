@@ -85,12 +85,12 @@ function QuoteCarousel({ lines }: { lines: string[] }) {
         <div className="flex-1 relative p-8 md:p-12 rounded-2xl bg-white/5 backdrop-blur-sm shadow-xl overflow-hidden flex flex-col justify-center h-[280px] md:h-[320px]">
           <div className="absolute top-0 left-0 w-full h-1.5" style={{ backgroundColor: 'var(--accent)' }}></div>
 
-          <div className="absolute -top-12 -left-4 text-[16rem] text-white/[0.03] leading-none pointer-events-none select-none" style={{ fontFamily: '"Domaine Display", serif' }}>
+          <div className="absolute -top-12 -left-4 text-[16rem] text-white/[0.03] leading-none pointer-events-none select-none" style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal' }}>
             "
           </div>
 
           <div className="relative z-10">
-            <div className={`text-white leading-snug font-medium mb-6 ${getFontSizeClass(currentQuote.quote)}`} style={{ fontFamily: '"Domaine Display", serif' }}>
+            <div className={`text-white leading-snug font-medium mb-6 ${getFontSizeClass(currentQuote.quote)}`} style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal' }}>
               "{currentQuote.quote}"
             </div>
             {currentQuote.author && (
@@ -398,7 +398,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
                   style={{ scale: textScale, y: textY, opacity: textOpacity }}
                   className="relative z-10 flex flex-col items-center justify-center text-center px-6 max-w-4xl w-full"
                 >
-                  <h1 style={{ fontFamily: '"Domaine Display", serif', fontWeight: 700, lineHeight: 1.1 }} className="text-5xl md:text-8xl mb-6 text-white drop-shadow-2xl">
+                  <h1 style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal', fontWeight: 700, lineHeight: 1.1 }} className="text-5xl md:text-8xl mb-6 text-white drop-shadow-2xl">
                     {currentStudy.title}
                   </h1>
                   <p className="text-white/90 text-xl md:text-2xl drop-shadow-lg font-light" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
@@ -516,7 +516,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
             >
               <style>{`
               .prose h1, .prose h2, .prose h3, .prose h4 { 
-                font-family: "Domaine Display", serif !important; 
+                font-family: "Domaine Text", serif !important; 
                 font-weight: 700 !important;
                 letter-spacing: normal !important;
                 line-height: 1.1 !important;
@@ -729,7 +729,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
                                     <IconComponent size={32} strokeWidth={1.5} />
                                   </div>
                                   <div className="mt-auto relative z-10">
-                                    <div style={{ fontFamily: '"Domaine Display", serif', fontWeight: 700, lineHeight: 1 }} className="text-7xl text-white mb-3">
+                                    <div style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal', fontWeight: 700, lineHeight: 1 }} className="text-7xl text-white mb-3">
                                       {number}
                                     </div>
                                     <div className="text-white/60 text-sm font-medium tracking-wide leading-snug">
@@ -776,7 +776,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
                                   </div>
                                   <div className="flex flex-col gap-2">
                                     {title && (
-                                      <div style={{ fontFamily: '"Domaine Display", serif', fontWeight: 700 }} className="text-2xl text-white leading-tight">
+                                      <div style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal', fontWeight: 700 }} className="text-2xl text-white leading-tight">
                                         {title}
                                       </div>
                                     )}
@@ -850,7 +850,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
 
           {/* More Case Studies */}
           <div className="mt-32 pt-16 border-t border-white/10">
-            <h2 style={{ fontFamily: '"Domaine Display", serif', fontWeight: 700 }} className="text-4xl mb-12">
+            <h2 style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal', fontWeight: 700 }} className="text-4xl mb-12">
               More Case Studies
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

@@ -807,10 +807,10 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
       {/* Mobile API Fallback */}
       {apiFailed && (
         <div className="absolute top-10 left-1/2 -translate-x-1/2 z-50 md:hidden inline-flex items-center gap-1.5 px-2 py-1 rounded-sm bg-red-500/10 w-fit pointer-events-auto"
-             style={{
-               opacity: mounted ? 1 : 0,
-               transition: 'opacity 1.5s ease 1.2s'
-             }}>
+          style={{
+            opacity: mounted ? 1 : 0,
+            transition: 'opacity 1.5s ease 1.2s'
+          }}>
           <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
           <span className="text-red-200/90 text-[10px] tracking-widest uppercase font-semibold" style={{ fontFamily: '"American Grotesk", sans-serif' }}>API Offline · Fallback Info</span>
         </div>
@@ -888,7 +888,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
       </div>
 
       {/* ——— Bottom Center Name & Scroll Hint ——— */}
-      <div className="absolute bottom-[16vh] left-1/2 z-10 flex flex-col items-center"
+      <div className="absolute bottom-[16vh] left-1/2 z-10 flex flex-col items-center w-full"
         style={{
           opacity: mounted ? 1 : 0,
           transform: `translate(-50%, ${mounted ? '0' : '20px'})`,
@@ -933,34 +933,50 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
               transformOrigin: 'center',
               transition: 'color 0.6s ease, opacity 0.8s ease 0.4s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s'
             }}></div>
+        </div>
 
-          {/* Bleeding Vertical Line + X */}
-          <div className="absolute top-full left-1/2 z-10 flex flex-col items-center mt-[-1px]"
+        {/* Bleeding Vertical Line + Asterisk */}
+        <div className="absolute top-full left-0 w-full z-10 flex flex-col items-center mt-[-1px]"
+          style={{
+            color: brightAccent,
+            transition: 'color 0.6s ease'
+          }}>
+          {/* Vertical Line */}
+          <div className="w-[2.5px] bg-current relative z-10"
             style={{
-              color: brightAccent,
-              transform: 'translateX(-50%)',
-              transition: 'color 0.6s ease'
-            }}>
-            <div className="w-[2.5px] bg-current"
+              height: mounted ? '21vh' : '0vh',
+              transition: 'height 1s cubic-bezier(0.16, 1, 0.3, 1) 2s'
+            }}></div>
+            
+          {/* Asterisk Cross & Bottom Line Container */}
+          <div className="relative w-full flex justify-center mt-[-22px]">
+            {/* Bottom Horizontal Line */}
+            <div className="absolute top-1/2 left-6 right-6 md:left-10 md:right-4 lg:left-12 lg:right-12 bg-current z-[-1]"
               style={{
-                height: mounted ? '21vh' : '0vh',
-                transition: 'height 1s cubic-bezier(0.16, 1, 0.3, 1) 2s'
+                height: '2.5px',
+                marginTop: '-1.25px',
+                opacity: mounted ? 1 : 0,
+                transform: `scaleX(${mounted ? 1 : 0})`,
+                transformOrigin: 'center',
+                transition: 'opacity 0.6s ease 2.7s, transform 0.6s ease 2.7s'
               }}></div>
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="mt-[-2px]"
+              
+            {/* Asterisk Diagonals */}
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="2.5"
               style={{
                 opacity: mounted ? 1 : 0,
-                transform: `translateY(${mounted ? '0' : '-5px'})`,
+                transform: `scale(${mounted ? 1 : 0})`,
                 transition: 'opacity 0.6s ease 2.7s, transform 0.6s ease 2.7s'
               }}>
-              <line x1="20" y1="4" x2="4" y2="20"></line>
-              <line x1="4" y1="4" x2="20" y2="20"></line>
+              <line x1="6" y1="6" x2="38" y2="38"></line>
+              <line x1="38" y1="6" x2="6" y2="38"></line>
             </svg>
           </div>
         </div>
       </div>
 
       {/* ——— Bottom Data (Centered on mobile, Left on desktop) ——— */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 md:left-10 md:translate-x-0 z-10 flex flex-col gap-1 pointer-events-none w-full text-center px-4 md:w-auto md:text-left md:px-0"
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 md:left-10 lg:left-12 md:translate-x-0 z-10 flex flex-col gap-1 pointer-events-none w-full text-center px-4 md:w-auto md:text-left md:px-0"
         style={{
           opacity: mounted ? 1 : 0,
           transition: 'opacity 1.5s ease 1.2s'

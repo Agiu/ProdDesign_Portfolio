@@ -27,7 +27,7 @@ export function About({ darkColor = '#020510' }: AboutProps) {
                                 <h2
                                     className="text-white text-center md:text-left"
                                     style={{
-                                        fontFamily: '"Domaine Text", serif',
+                                        fontFamily: '"Domaine Text", serif', letterSpacing: 'normal',
                                         fontSize: "clamp(2.8rem, 4vw, 8rem)",
                                         fontWeight: 700,
                                         lineHeight: 1.1,
@@ -44,7 +44,7 @@ export function About({ darkColor = '#020510' }: AboutProps) {
                                 className="text-white/90 max-w-3xl leading-relaxed"
                                 style={{ fontFamily: '"American Grotesk", sans-serif', fontSize: 'clamp(18px, 2.5vw, 24px)' }}
                             >
-                                My name is Caleb Aguiar (Kaelub) and I'm a Designer with a large prototyping background who loves plunging myself into my work. My work explores the intersection of creative brand identity, interaction design, technical prototyping, and sometimes social activism. I love seeing and discussing where design can enhance a person's life or where it can be used to promote social good.
+                                My name is Caleb Aguiar (Kaelub) and I'm a UX Designer with a background in Software Engineering. Because of this I tend to prototype alot and really enjoy immersing myself into all facets of my work. My projects explore the intersection of UI Design, interaction design, storytelling, AI, and sometimes social activism. I love seeing and discussing where design can enhance a person's life or where it can be used to promote social good.
                             </p>
                             <div className="mt-8 flex flex-col gap-6 p-6 lg:p-8 rounded-2xl bg-white/5 backdrop-blur-sm max-w-2xl">
                                 <h3 className="text-white/40 uppercase tracking-widest text-[11px] font-bold" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
@@ -53,7 +53,7 @@ export function About({ darkColor = '#020510' }: AboutProps) {
 
                                 <div className="flex flex-col gap-6">
                                     <div>
-                                        <h4 className="text-white text-2xl font-medium tracking-wide mb-1" style={{ fontFamily: '"Domaine Display", serif' }}>
+                                        <h4 className="text-white text-2xl font-medium mb-1" style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal' }}>
                                             <span style={{ color: brightAccent, transition: 'color 0.6s ease' }}>Masters</span> in HCI + Design
                                         </h4>
                                         <p className="text-white/70 text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
@@ -62,7 +62,7 @@ export function About({ darkColor = '#020510' }: AboutProps) {
                                     </div>
 
                                     <div>
-                                        <h4 className="text-white text-2xl font-medium tracking-wide mb-1" style={{ fontFamily: '"Domaine Display", serif' }}>
+                                        <h4 className="text-white text-2xl font-medium mb-1" style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal' }}>
                                             <span style={{ color: brightAccent, transition: 'color 0.6s ease' }}>B.S.</span> in Computer Science
                                         </h4>
                                         <p className="text-white/70 text-[15px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
@@ -71,7 +71,7 @@ export function About({ darkColor = '#020510' }: AboutProps) {
                                     </div>
 
                                     <div className="pt-6 border-t border-white/10 mt-2">
-                                        <h4 className="text-white/80 text-xl font-medium tracking-wide mb-0.5" style={{ fontFamily: '"Domaine Display", serif' }}>
+                                        <h4 className="text-white/80 text-xl font-medium mb-0.5" style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal' }}>
                                             Virtual Reality HCI
                                         </h4>
                                         <p className="text-white/50 text-[14px]" style={{ fontFamily: '"American Grotesk", sans-serif' }}>

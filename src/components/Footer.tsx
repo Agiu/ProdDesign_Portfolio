@@ -88,13 +88,23 @@ export function Footer({ darkColor = '#020510' }: FooterProps) {
 
     return (
         <footer
-            className="relative w-full overflow-hidden"
-            style={{
-                backgroundColor: `color-mix(in srgb, ${darkColor}, white 4%)`,
-                transition: 'background-color 0.6s ease',
-            }}
+            className="relative w-full"
         >
-            <div className="relative w-full h-full flex flex-col justify-between px-6 py-12 md:pl-10 md:pr-4 lg:px-12 lg:py-16">
+            {/* Top Border Deco */}
+            <div className="absolute top-0 left-0 w-full z-20 flex flex-col items-center pointer-events-none"
+                style={{ color: brightAccent, transition: 'color 0.6s ease' }}>
+                {/* Asterisk Cross & Horizontal Line */}
+                <div className="relative w-full flex justify-center mt-[-22px]">
+                    <div className="absolute top-1/2 left-6 right-6 md:left-10 md:right-4 lg:left-12 lg:right-12 bg-current z-[-1]"
+                        style={{ height: '2.5px', marginTop: '-1.25px' }}></div>
+                    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <line x1="6" y1="6" x2="38" y2="38"></line>
+                        <line x1="38" y1="6" x2="6" y2="38"></line>
+                    </svg>
+                </div>
+            </div>
+
+            <div className="relative w-full h-full flex flex-col justify-between px-6 py-12 md:pl-10 md:pr-4 lg:px-12 lg:py-16 overflow-hidden">
 
                 {/* Dither dot decorations inside the container */}
                 <div className="absolute top-0 right-0 opacity-40 pointer-events-none">
@@ -109,7 +119,7 @@ export function Footer({ darkColor = '#020510' }: FooterProps) {
                     <div>
                         <h2
                             style={{
-                                fontFamily: '"Domaine Display", serif',
+                                fontFamily: '"Domaine Text", serif', letterSpacing: 'normal',
                                 fontSize: 'clamp(2rem, 5vw, 4rem)',
                                 fontWeight: 700,
                                 lineHeight: 1.0,

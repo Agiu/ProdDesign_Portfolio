@@ -133,7 +133,7 @@ export function CaseStudyCard({ study, darkColor, isActive = false }: { study: (
           <h3
             className="text-white"
             style={{
-              fontFamily: '"Domaine Display", serif',
+              fontFamily: '"Domaine Text", serif', letterSpacing: 'normal',
               fontWeight: 600,
               fontSize: "1.75rem",
               lineHeight: 1.2,
@@ -228,7 +228,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
       }}
     >
       <div>
-        <div className="relative w-full h-full px-6 md:pl-10 md:pr-4 lg:px-12 py-20 md:py-28">
+        <div className="relative w-full h-full px-6 md:pl-10 md:pr-4 lg:px-12 pt-24 pb-20 md:pt-32 md:pb-28">
           <div className="w-full">
             {/* Two-column layout: sticky title left, cards right */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
@@ -244,7 +244,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                     }
                   `}
                   style={{
-                    fontFamily: '"Domaine Text", serif',
+                    fontFamily: '"Domaine Text", serif', letterSpacing: 'normal',
                     lineHeight: 1.1,
                   }}
                 >
@@ -289,7 +289,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                       <div className="flex flex-col gap-6">
                         {/* Title & Description */}
                         <div>
-                          <h3 className="text-white text-3xl md:text-4xl mb-3 leading-tight" style={{ fontFamily: '"Domaine Text", serif', fontWeight: 600 }}>
+                          <h3 className="text-white text-3xl md:text-4xl mb-3 leading-tight" style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal', fontWeight: 600 }}>
                             {activeStudy.title}
                           </h3>
                           <p className="text-white/75 text-[15px] md:text-[16px] leading-relaxed max-w-sm mb-4" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
@@ -408,7 +408,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
             className="relative bg-[#1a1a1a] p-8 rounded-2xl max-w-md w-full shadow-2xl"
             style={{ fontFamily: '"American Grotesk", sans-serif' }}
           >
-            <h3 className="text-white text-xl md:text-2xl mb-4 font-semibold" style={{ fontFamily: '"Domaine Display", serif' }}>
+            <h3 className="text-white text-xl md:text-2xl mb-4 font-semibold" style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal' }}>
               Work in Progress
             </h3>
             <p className="text-white/80 text-[15px] leading-relaxed mb-6">
