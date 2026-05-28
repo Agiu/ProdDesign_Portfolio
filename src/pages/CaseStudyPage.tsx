@@ -230,6 +230,17 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
   });
 
   const [paddingTarget, setPaddingTarget] = useState(24);
+  const [hasScrolledDown, setHasScrolledDown] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY > 20 && !hasScrolledDown) {
+        setHasScrolledDown(true);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [hasScrolledDown]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -404,6 +415,43 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
                   <p className="text-white/90 text-xl md:text-2xl drop-shadow-lg font-light" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
                     {currentStudy.description}
                   </p>
+
+                  {/* Persuasive Line Group */}
+                  <motion.div 
+                    animate={{ opacity: hasScrolledDown ? 0 : 1 }}
+                    transition={{ duration: 0.4 }}
+                    className="absolute top-full left-0 w-full mt-10 flex flex-col items-center pointer-events-none text-white/90"
+                  >
+                    {/* Vertical Line */}
+                    <motion.div className="w-[2.5px] bg-current relative z-10"
+                      initial={{ height: '0vh' }}
+                      animate={{ height: '20vh' }}
+                      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
+                    />
+                    
+                    {/* Asterisk Cross */}
+                    <div className="relative w-full flex justify-center mt-[-22px]">
+                      <motion.svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="2.5"
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.6, ease: "easeOut", delay: 1.2 }}
+                      >
+                        <line x1="6" y1="6" x2="38" y2="38"></line>
+                        <line x1="38" y1="6" x2="6" y2="38"></line>
+                      </motion.svg>
+                    </div>
+
+                    {/* Scroll to view text */}
+                    <motion.div
+                      className="mt-4 text-[11px] uppercase tracking-widest font-bold"
+                      style={{ fontFamily: '"American Grotesk", sans-serif' }}
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, ease: "easeOut", delay: 1.4 }}
+                    >
+                      Scroll to view
+                    </motion.div>
+                  </motion.div>
                 </motion.div>
               </motion.div>
             </motion.div>
