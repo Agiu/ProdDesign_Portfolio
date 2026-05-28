@@ -228,7 +228,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
       }}
     >
       <div>
-        <div className="relative w-full h-full px-6 md:pl-10 md:pr-4 lg:px-12 pt-24 pb-20 md:pt-32 md:pb-28">
+        <div className="relative w-full h-full px-6 md:pl-10 md:pr-4 lg:px-12 pt-[calc(29vh+3rem)] pb-20 md:pt-[calc(15vh+4rem)] md:pb-28">
           <div className="w-full">
             {/* Two-column layout: sticky title left, cards right */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
@@ -238,8 +238,8 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                 <h2
                   className={`text-center md:text-left transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
                     text-white text-[clamp(2.8rem,4vw,8rem)]
-                    ${activeStudy 
-                      ? 'lg:text-white/50 lg:text-lg lg:mb-3' 
+                    ${activeStudy
+                      ? 'lg:text-white/50 lg:text-lg lg:mb-3'
                       : 'lg:mb-0'
                     }
                   `}
@@ -261,11 +261,10 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
                 <div className="grid w-full">
                   {/* Default State */}
                   <div
-                    className={`col-start-1 row-start-1 w-full transition-all duration-300 ease-in-out ${
-                      activeStudy 
-                        ? 'lg:opacity-0 lg:-translate-y-[15px] lg:pointer-events-none lg:delay-0' 
-                        : 'opacity-100 translate-y-0 pointer-events-auto lg:delay-200'
-                    }`}
+                    className={`col-start-1 row-start-1 w-full transition-all duration-300 ease-in-out ${activeStudy
+                      ? 'lg:opacity-0 lg:-translate-y-[15px] lg:pointer-events-none lg:delay-0'
+                      : 'opacity-100 translate-y-0 pointer-events-auto lg:delay-200'
+                      }`}
                   >
                     <p
                       className="text-white mt-4 text-[13px] max-w-md leading-relaxed text-center mx-auto md:mx-0 md:text-left"

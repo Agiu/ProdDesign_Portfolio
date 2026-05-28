@@ -944,10 +944,10 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
           {/* Vertical Line */}
           <div className="w-[2.5px] bg-current relative z-10"
             style={{
-              height: mounted ? '21vh' : '0vh',
+              height: mounted ? '29vh' : '0vh',
               transition: 'height 1s cubic-bezier(0.16, 1, 0.3, 1) 2s'
             }}></div>
-            
+
           {/* Asterisk Cross & Bottom Line Container */}
           <div className="relative w-full flex justify-center mt-[-22px]">
             {/* Bottom Horizontal Line */}
@@ -960,7 +960,7 @@ export function WeatherHero({ onDarkColorChange }: { onDarkColorChange?: (color:
                 transformOrigin: 'center',
                 transition: 'opacity 0.6s ease 2.7s, transform 0.6s ease 2.7s'
               }}></div>
-              
+
             {/* Asterisk Diagonals */}
             <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="2.5"
               style={{
