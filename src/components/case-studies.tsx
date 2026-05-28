@@ -13,6 +13,7 @@ export const caseStudies = [
       "/headphones/image_placeholder_8.png",
     bannerImage:
       "/headphones/image_placeholder_10.png",
+    bannerVideo: "1196469457",
     tags: ["3D Modeling", "Interaction Design", "Prototyping"],
     role: "Lead Product Designer and Filmmaker",
     advisors: [],
@@ -228,7 +229,7 @@ export function CaseStudies({ darkColor = '#0a0a0a' }: { darkColor?: string }) {
       }}
     >
       <div>
-        <div className="relative w-full h-full px-6 md:pl-10 md:pr-4 lg:px-12 pt-[calc(29vh+3rem)] pb-20 md:pt-[calc(15vh+4rem)] md:pb-28">
+        <div className="relative w-full h-full px-6 md:pl-10 md:pr-4 lg:px-12 pt-[calc(15vh+3rem)] pb-20 md:pt-[calc(15vh+4rem)] md:pb-28">
           <div className="w-full">
             {/* Two-column layout: sticky title left, cards right */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">

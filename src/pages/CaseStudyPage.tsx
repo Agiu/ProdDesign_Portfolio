@@ -398,7 +398,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
                   style={{ scale: textScale, y: textY, opacity: textOpacity }}
                   className="relative z-10 flex flex-col items-center justify-center text-center px-6 max-w-4xl w-full"
                 >
-                  <h1 style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal', fontWeight: 700, lineHeight: 1.1 }} className="text-5xl md:text-8xl mb-6 text-white drop-shadow-2xl">
+                  <h1 style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal', fontWeight: 700, lineHeight: 1.1 }} className="text-4xl md:text-6xl lg:text-7xl mb-6 text-white drop-shadow-2xl">
                     {currentStudy.title}
                   </h1>
                   <p className="text-white/90 text-xl md:text-2xl drop-shadow-lg font-light" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
