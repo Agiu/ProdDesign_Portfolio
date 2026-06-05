@@ -5,9 +5,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Caleb Aguiar - Portfolio</title>
+  <style>
+    /* Hide the prerendered HTML if JS is enabled, to prevent flash before React mounts */
+    #root[data-prerendered="true"] {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+  <noscript>
+    <style>
+      /* Show the prerendered HTML immediately if JS is disabled */
+      #root[data-prerendered="true"] {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+    </style>
+  </noscript>
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root" data-prerendered="true"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

@@ -106,8 +106,7 @@ const CARD_RADIUS = 30; // px — matches rounded-[30px]
 export function CaseStudyCard({ study, darkColor, isActive = false }: { study: (typeof caseStudies)[0]; darkColor: string; isActive?: boolean }) {
   return (
     <div className="relative aspect-[4/3]">
-      <a
-        href="#"
+      <div
         className="group relative block w-full h-full overflow-hidden cursor-pointer"
         style={{
           borderRadius: CARD_RADIUS,
@@ -146,7 +145,7 @@ export function CaseStudyCard({ study, darkColor, isActive = false }: { study: (
         </div>
 
 
-      </a>
+      </div>
     </div>
   );
 }

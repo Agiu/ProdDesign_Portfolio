@@ -60,12 +60,14 @@
             "@types/react": "^19.2.13",
             "@types/react-dom": "^19.2.3",
             "@vitejs/plugin-react-swc": "^3.10.2",
+            "puppeteer": "^25.1.0",
+            "serve-handler": "^6.1.7",
             "tailwindcss": "^4.2.2",
             "typescript": "^5.9.3",
             "vite": "^6.4.2"
       },
       "scripts": {
             "dev": "vite",
-            "build": "vite build"
+            "build": "vite build && node scripts/prerender.js"
       }
 }

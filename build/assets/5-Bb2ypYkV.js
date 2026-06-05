@@ -1,0 +1,6 @@
+const e=`# Case Study 5
+
+This is the placeholder text for **Case Study 5**. You can easily edit this markdown file to change the content of the case study.
+## Overview
+Here goes the overview text.
+`;export{e as default};
