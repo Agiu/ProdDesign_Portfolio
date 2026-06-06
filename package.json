@@ -55,12 +55,14 @@
             "vaul": "^1.1.2"
       },
       "devDependencies": {
+            "@sparticuz/chromium": "^149.0.0",
             "@tailwindcss/vite": "^4.2.2",
             "@types/node": "^20.10.0",
             "@types/react": "^19.2.13",
             "@types/react-dom": "^19.2.3",
             "@vitejs/plugin-react-swc": "^3.10.2",
             "puppeteer": "^25.1.0",
+            "puppeteer-core": "^25.1.0",
             "serve-handler": "^6.1.7",
             "tailwindcss": "^4.2.2",
             "typescript": "^5.9.3",
@@ -68,6 +70,6 @@
       },
       "scripts": {
             "dev": "vite",
-            "build": "vite build && npx puppeteer browsers install chrome && node scripts/prerender.js"
+            "build": "vite build && node scripts/prerender.js"
       }
 }

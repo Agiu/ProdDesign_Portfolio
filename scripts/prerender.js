@@ -1,4 +1,5 @@
-import puppeteer from 'puppeteer';
+import puppeteerCore from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 import handler from 'serve-handler';
 import http from 'http';
 import fs from 'fs';
@@ -33,10 +34,24 @@ server.listen(PORT, async () => {
   let browser;
   try {
     console.log('Launching headless browser...');
-    browser = await puppeteer.launch({ 
-      headless: "new",
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
+    const isVercel = process.env.VERCEL === '1';
+
+    if (isVercel) {
+      console.log('Using @sparticuz/chromium for Vercel');
+      browser = await puppeteerCore.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+      });
+    } else {
+      console.log('Using local puppeteer');
+      const { default: puppeteer } = await import('puppeteer');
+      browser = await puppeteer.launch({ 
+        headless: "new",
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      });
+    }
     
     for (const route of routes) {
       console.log(`Prerendering ${route}...`);
