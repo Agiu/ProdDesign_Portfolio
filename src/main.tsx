@@ -4,5 +4,4 @@
   import "./index.css";
 
   const rootElement = document.getElementById("root")!;
-  rootElement.removeAttribute("data-prerendered");
   createRoot(rootElement).render(<App />);

@@ -90,6 +90,19 @@ export default function App() {
     };
   }, []);
 
+  // Remove the prerendered hiding class only AFTER React has mounted the initial state.
+  // This prevents the "flash" of the prerendered HTML before React applies opacity: 0.
+  useEffect(() => {
+    const root = document.getElementById('root');
+    if (root && root.getAttribute('data-prerendered') === 'true') {
+      // Use requestAnimationFrame to ensure Framer Motion & inline styles have applied
+      requestAnimationFrame(() => {
+        root.removeAttribute('data-prerendered');
+      });
+    }
+  }, []);
+
+
   return (
     <Router>
       <div
