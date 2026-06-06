@@ -68,6 +68,6 @@
       },
       "scripts": {
             "dev": "vite",
-            "build": "vite build && node scripts/prerender.js"
+            "build": "vite build && npx puppeteer browsers install chrome && node scripts/prerender.js"
       }
 }
