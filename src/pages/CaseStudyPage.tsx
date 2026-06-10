@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm';
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
 import * as LucideIcons from 'lucide-react';
 import { caseStudies, CaseStudyCard, getBrightAccent } from '../components/case-studies';
+import { ModelViewer } from '../components/ModelViewer';
 
 // @ts-ignore
 const mdModules = import.meta.glob('../content/case-studies/*.md', { query: '?raw', import: 'default' });
@@ -63,10 +64,10 @@ function QuoteCarousel({ lines }: { lines: string[] }) {
 
   const getFontSizeClass = (text: string) => {
     const len = text.length;
-    if (len < 60) return 'text-3xl md:text-5xl';
-    if (len < 100) return 'text-2xl md:text-4xl';
-    if (len < 150) return 'text-xl md:text-3xl';
-    return 'text-lg md:text-2xl';
+    if (len < 60) return 'text-2xl md:text-5xl';
+    if (len < 100) return 'text-xl md:text-4xl';
+    if (len < 150) return 'text-lg md:text-3xl';
+    return 'text-base md:text-2xl';
   };
 
   return (
@@ -82,7 +83,7 @@ function QuoteCarousel({ lines }: { lines: string[] }) {
           </button>
         )}
 
-        <div className="flex-1 relative p-8 md:p-12 rounded-2xl bg-white/5 backdrop-blur-sm shadow-xl overflow-hidden flex flex-col justify-center h-[280px] md:h-[320px]">
+        <div className="flex-1 relative p-6 md:p-12 rounded-2xl bg-white/5 backdrop-blur-sm shadow-xl overflow-hidden flex flex-col justify-center min-h-[280px] md:min-h-[320px]">
           <div className="absolute top-0 left-0 w-full h-1.5" style={{ backgroundColor: 'var(--accent)' }}></div>
 
           <div className="absolute -top-12 -left-4 text-[16rem] text-white/[0.03] leading-none pointer-events-none select-none" style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal' }}>
@@ -417,7 +418,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
                   </p>
 
                   {/* Persuasive Line Group */}
-                  <motion.div 
+                  <motion.div
                     animate={{ opacity: hasScrolledDown ? 0 : 1 }}
                     transition={{ duration: 0.4 }}
                     className="absolute top-full left-0 w-full mt-10 flex flex-col items-center pointer-events-none text-white/90"
@@ -428,7 +429,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
                       animate={{ height: '20vh' }}
                       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
                     />
-                    
+
                     {/* Asterisk Cross */}
                     <div className="relative w-full flex justify-center mt-[-22px]">
                       <motion.svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="2.5"
@@ -449,7 +450,7 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, ease: "easeOut", delay: 1.4 }}
                     >
-                      Scroll to view
+                      Scroll to read
                     </motion.div>
                   </motion.div>
                 </motion.div>
@@ -703,14 +704,14 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
                       const childArray = Array.isArray(children) ? children : [children];
                       if (childArray.some((c: any) => {
                         const cls = c?.props?.className || '';
-                        return cls.includes('language-stats') || cls.includes('language-insights') || cls.includes('language-quotes') || cls.includes('language-button') || cls.includes('language-hmw');
+                        return cls.includes('language-stats') || cls.includes('language-insights') || cls.includes('language-quotes') || cls.includes('language-button') || cls.includes('language-hmw') || cls.includes('language-recruiter') || cls.includes('language-3d-model');
                       })) {
                         return <>{children}</>;
                       }
                       return <pre {...props}>{children}</pre>;
                     },
                     code: ({ node, className, children, ...props }: any) => {
-                      const match = /language-(\w+)/.exec(className || '');
+                      const match = /language-([\w-]+)/.exec(className || '');
 
                       if (match && match[1] === 'hmw') {
                         const lines = String(children).trim().split('\n').filter(Boolean);
@@ -837,6 +838,54 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
                             })}
                           </div>
                         );
+                      }
+
+                      if (match && match[1] === 'recruiter') {
+                        const lines = String(children).trim().split('\n').filter(Boolean);
+                        return (
+                          <div className="flex flex-col gap-6 my-16 not-prose items-center text-center">
+                            {lines.map((line, i) => {
+                              const parts = line.split('|').map(s => s.trim());
+                              if (parts.length < 2) return null;
+
+                              let title, description, iconName;
+                              if (parts.length >= 3) {
+                                title = parts[0];
+                                description = parts[1];
+                                iconName = parts[2];
+                              } else {
+                                description = parts[0];
+                                iconName = parts[1];
+                              }
+
+                              // @ts-ignore
+                              const IconComponent = (iconName && LucideIcons[iconName]) ? LucideIcons[iconName] : LucideIcons.Lightbulb;
+
+                              return (
+                                <div key={i} className="flex flex-col items-center gap-6 max-w-3xl mx-auto" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                                  <div className="shrink-0 w-16 h-16 rounded-full flex items-center justify-center bg-white/5" style={{ color: 'var(--accent)' }}>
+                                    <IconComponent size={32} strokeWidth={1.5} />
+                                  </div>
+                                  <div className="flex flex-col gap-4">
+                                    {title && (
+                                      <div style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal', fontWeight: 700 }} className="text-3xl text-white leading-tight">
+                                        {title}
+                                      </div>
+                                    )}
+                                    <div className="text-white/70 text-xl leading-relaxed font-light">
+                                      {description}
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      }
+
+                      if (match && match[1] === '3d-model') {
+                        const url = String(children).trim();
+                        return <ModelViewer url={url} darkColor={darkColor} />;
                       }
 
                       const text = String(children);

@@ -1,5 +1,8 @@
+```recruiter
+This is a Masters Project | This case study represents a project I worked on during the first quarter of the UW MHCI+D program, this is a project that's essentially end-to-end. | GraduationCap
+```
 
-## So, what's the problem? | Today's audio wearables fail to deliver consistent comfort and performance across real-world use. ==Earbuds trap heat and moisture, fall out, or cause pain, while over-ear headphones are bulky and heavy for extended wear.== What's the solution and middleground?
+## So, What's The Problem? | Today's audio wearables fail to deliver consistent comfort and performance across real-world use. ==Earbuds trap heat and moisture, fall out, or cause pain, while over-ear headphones are bulky and heavy for extended wear.== What's the solution and middleground?
 
 
 ![Project Open](/headphones/headphone_render.jpg)
@@ -12,7 +15,7 @@ My team of design friends and I came together to try and address these frustrati
 This project ended up turning into a big lesson on team dynamics, team management, and learning on the fly to create a high quality product. Collectively we all had interests in wearable devices and we thought there could be something within the audio space, however we had little to no experience in industrial design.
 
 
-## Building out the problem list 
+## Building Out the Problem Space 
 
 To narrow down our problem space, I insited on gathering heuristic assumptions firstly, then validating those assumptions with research. ==Our assumptions were around comfort and general frustrations like ear pressure, heat build-up, and instability.== These needed to be validated, of course; maybe through some user research?
 
@@ -69,71 +72,85 @@ View Research Analysis | https://www.figma.com/board/seMvdbF8VlQxQLFU1DzH1T/CKHA
 ```
 
 ## Ideation & Strategy
-Out of the selection, we chose: "How might we design headphones that are lightweight, portable, and comfortable (even with a degree of variance e.g. wearing glasses)?"
+Out of the selection, we chose: "How might we design wearables that are lightweight, portable, and comfortable (even with a degree of variance e.g. wearing glasses)?"
 
-![Early ideation sketches, Zoom calls, and Figma boards](/headphones/image_placeholder_2.JPG)
-*Early ideation sketches exploring utilitarian, bandless, and double-curve headband designs.*
+![Early ideation sketches exploring utilitarian, bandless, and double-curve headband designs.](/headphones/image_placeholder_2.JPG)
 
 ### Sketching From Inspiration
-We centered many of our inspirational material around things we found on the internet and sketches we conjured up ourselves. Personally, I went after VR headsets which allowed for over-ear hearing much like what you see on the Valve Index, which was actually one of my references. These headphones don't exactly sit on your ear, but have the same quality as regular open-back headphones.
+We centered many of our inspirational material around things we found on the internet and sketches we conjured up ourselves. Personally, I went after VR headsets which allowed for over-ear hearing much like what you see on the Valve Index, which was actually one of my references. These wearables don't exactly sit on your ear, but have the same quality as regular open-back headphones.
 
-![Sketches for possible designs](/headphones/image_placeholder_3.JPG)
-*My "sketches" for possible designs*
+![My "beautiful" sketches for possible designs of our new audio wearable.](/headphones/image_placeholder_3.JPG)
 
-Many of my teammates thought the utilitarian idea was striking, but a little too controversial for the public. The joint system I built could work for all head sizes, however aesthetically it looks quite annoying to view and may add head pressure, which is where we want to move away from when focusing on our HMW.
 
-So I went Bandless...
+Many of my teammates thought the utilitarian idea was striking, but a little too controversial for the public. The joint system I built could work for all head sizes, however aesthetically it looks quite annoying to view and may add head pressure, which is where we want to move away from when focusing on our multiple how might we's.
 
-**The Bandless Pivot:** The idea of a bandless headset kept returning during ideation. Inspired by VR headsets that hover speakers over the ears rather than pressing on them, we realized that removing the band was the ultimate way to achieve a truly lightweight, comfortable form factor. After much deliberation and indecisiveness about how we can get a bandless headset on someone's ears without it falling off—while maintaining audio quality heard on headphones—we decided to just "yolo" it as some of us have said. In actuality, we split as a group to find out if we could still add in a headband just to make our designing lives easier. It did not.
+### Removing a Common Audio Wearable Trope
+
+The idea of a bandless headset kept returning during ideation. Inspired by VR headsets that hover speakers over the ears rather than pressing on them, we realized that removing the band was the ultimate way to achieve a truly lightweight, comfortable form factor. 
+
+![Small sketch by Hannah](/headphones/Bandless.png)
+
+After much deliberation and indecisiveness about how we can get a bandless headset on someone's ears without it falling off we decided to just "yolo" it as some of us have said. ==In actuality, we split as a group to find out if we could still add in a headband just to make our designing lives easier. It did not.==
+
+![Ideas for a potential headband design for our audio wearables](/headphones/image_placholder_11.png)
+
+At the end of the day, the spring-lock mechanism was too difficult for me to design — and given our constraints around time, we needed to act fast with our prototyping. Creating a mechanism like this will take at least two of us a few days to even get to finishing the 3D model.
+
+==We decided to fully commit to the bandless design.==
 
 ## Prototyping & Iteration
 
-### Transition to 3D Iteration
+### A Transition to 3D Iteration
 ![From drawing to 3D prototype](/headphones/image_placeholder_4.JPG)
-*From drawing by Meera to 3D prototype*
 
-I started with the foundation: how it will wrap around the ear. I created my first blender modeling project and iterated over and over again after a design one my group members made (Meera). A few of our group members delegated themselves to read some articles on common ear sizes, which influenced how I shaped the curves on the 3D model. Many bumps exist on the ear, different lobe types as well, so I needed to be inclusive of many of those attributes. The large circle on the right of the 3D model acted as a counter weight for the ear—alleviating the weight from pushing onto the back of the ear, which feels uncomfortable.
+I started with the foundation: how it will wrap around the ear. I created my first blender modeling project and iterated over and over again after a design one my group members made (Meera). A few of our group members delegated themselves to read some articles on common ear sizes, which influenced how I shaped the curves on the 3D model. ==Many bumps exist on the ear, different lobe types as well, so I needed to be inclusive of many of those attributes.== The large circle on the right of the 3D model acted as a counter weight for the ear—alleviating the weight from pushing onto the back of the ear, which feels uncomfortable.
 
-![Early 3D Models](/headphones/image_placeholder_5.png)
+![First iteration of the foundation. This allowed the ear to poke through the middle and sit on the cranium.](/headphones/image_placeholder_5.png)
 
-**Early 3D Models (The Ear Wrap):** Initial 3D-printed iterations focused on a foundation that wrapped tightly around the inner ear.
 
-**The Pivot:** While structurally a good start, the execution failed in user testing. The rough 3D printing filament created harsh edges, causing sharp pain just from putting the device on. The difficulties about this design was figuring out where to put the speaker head and how to put on the headphone foundation with ease. I had the foundation created but attaching a speaker seems so counter intuitive in this state, at the time and putting it on was causing some skin irritation. By this moment in time we had already eaten through three weeks and needed to come up with other ideas quickly. Iteration with 3D was also slow. It wasn't my first time messing around with 3D printing, however each print took quite some time due to the traffic each printer was having.
+While structurally a good start, the execution failed in user testing. The rough 3D printing filament created harsh edges, causing sharp pain just from putting the device on. The difficulties about this design was figuring out where to put the speaker head and how to put on the headphone foundation with ease. 
 
-### The Donut Concept
+I had the foundation created, but attaching a speaker seems so counter intuitive in this state, and putting it on was causing some skin irritation as said by some user testers. By this moment in time we had already eaten through three weeks and needed to come up with other ideas quickly. Iteration with 3D was also slow. ==It wasn't my first time messing around with 3D printing, however each print took quite some time due to the traffic each printer was having.==
+
+### See It From Another Perspective
+The group and I were stuck, iteration became increasingly slow as our ideas and prototyping came out slowly. We took a few days from eachother to decompress and even stopping our arguments about what is the best design choice for us in this moment. It was never a clear ending. ==It wasn't until someone else in my group finished an idea he had, which allowed me to see the project from a different perspective.==
+
 As I was stuck on this design; stuck on the simplicity of taking it on and off. Other group members worked on a design that was incredibly easy to put on and take off.. However, it could easily pop off the ear given enough bump. They called it the donut, however what was appealing to me wasn't the casing around it, but the foundation. There's no inner-ear support. Putting it on was quite literally dropping it on the top of your ear.
 
 ![Getting rid of literal pain points on our prototype](/headphones/image_placeholder_6.JPG)
 
-### Remix
+### Applying the New Discovery
 I took the idea of removing the inner sections of my foundation from the donut concept, which seemed to work flawlessly. Putting it on and taking it off became even easier than expected.
 
 During this process a breakthrough occurred and we called it the "Tri Axis Support". We merged concepts by keeping the open-ear "donut" foundation but introducing "tri-axis support cylinders" to help alleviate the weight distribution across the ear itself.
 
-**My Rationale:** By adding foam to these cylinders, they acted as padding that gently pushed against the ear and cranium. This pressure was just enough to keep the entire device highly secure without needing invasive inner-ear support and would allow pressure to move from the ear and instead onto the side of the head itself.
+By adding foam to these cylinders, they acted as padding that gently pushed against the ear and cranium. This pressure was just enough to keep the entire device highly secure without needing invasive inner-ear support and would allow pressure to move from the ear and instead onto the side of the head itself.
 
-![Successful integration of tri-axis support cylinders](/headphones/image_placeholder_7.JPG)
-*The successful integration of tri-axis support cylinders, securing the device comfortably without inner-ear pieces.*
+![Integration of tri-axis support cylinders, securing the device comfortably without inner-ear pieces](/headphones/image_placeholder_7.JPG)
 
 So I cut the inner bit of the ear foundation out, completely. And as it turns out, the cylinder support I created actually does more than originally thought. Those cylinders with foam, acting as padding between the cranium and headphone prototype, push against the ear and cranium just enough to keep the whole device extra-secure.
 
 This was it. I modeled a speaker with holes for wiring that sat right above the ear. The team as a whole found this method much more impactful due to its ease to put on and the comfort—while still allowing earrings and other peripherals.
 
-> "I left it on for the whole day accidentally while filming the video and I kept forgetting they were on me.. it's super comfortable."
+```3d-model
+/headphones/wearables.stl
+```
+
+> "I left it on for the whole day accidentally while filming the project video and I kept forgetting they were on me.. it's super comfortable."
 >
 > Alexander Akande
 
 ![Final Headphones Render](/headphones/image_placeholder_8.png)
 
-## Final Solution & Specifications
+## Final Designs & Specifications
 * **The Design:** A highly comfortable, small, bandless headset that avoids pressure points and is printed in different sizes to accommodate all users.
 * **Materials:** Constructed from PTB Plastic to ensure a durable and lightweight fit.
 * **Battery:** Equipped with a 105mAh Lithium Polymer battery per earphone, offering 11 hours of life with 1-hour charge times.
 * **Audio Tech:** Features beamforming microphones on the bottom tip and inner speakers to isolate the user's voice and cancel background noise. Uses bluetooth to connect to the user's phone.
 
-These "headphones" are perfect for commuting publicly and comfort. It lets you have the quality of headphones with the convenience of earbuds.
+==These audio wearables are perfect for commuting publicly and for comfort.==
 
-![Blueprint Wireframe](/headphones/image_placeholder_9.png)
+![](/headphones/image_placeholder_9.png)
 
 ## Reflection
 Moving forward, I would have loved more time to flesh out the design further, particularly the interior of the form factor. My teammates had established viable interior chips by the end of the project, but we only had about two days to work with them. A significant portion of our time was also consumed by repeated printing iterations to nail the tiered fits, which cut into valuable design time.
