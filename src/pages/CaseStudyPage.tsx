@@ -465,6 +465,27 @@ export function CaseStudyPage({ darkColor }: CaseStudyPageProps) {
           {currentStudy && (
             <div className="mb-16">
 
+              {/* Disclaimer */}
+              {'disclaimer' in currentStudy && currentStudy.disclaimer && (
+                <div className="flex flex-col items-center gap-6 max-w-3xl mx-auto mb-16 text-center" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
+                  <div className="shrink-0 w-16 h-16 rounded-full flex items-center justify-center bg-white/5" style={{ color: 'var(--accent)' }}>
+                    {(() => {
+                      // @ts-ignore
+                      const IconComponent = (currentStudy.disclaimer.icon && LucideIcons[currentStudy.disclaimer.icon]) ? LucideIcons[currentStudy.disclaimer.icon] : LucideIcons.Lightbulb;
+                      return <IconComponent size={32} strokeWidth={1.5} />;
+                    })()}
+                  </div>
+                  <div className="flex flex-col gap-4">
+                    <div style={{ fontFamily: '"Domaine Text", serif', letterSpacing: 'normal', fontWeight: 700 }} className="text-3xl text-white leading-tight">
+                      {currentStudy.disclaimer.title}
+                    </div>
+                    <div className="text-white/70 text-xl leading-relaxed font-light">
+                      {currentStudy.disclaimer.description}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Details Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4" style={{ fontFamily: '"American Grotesk", sans-serif' }}>
                 <div className="flex flex-col gap-4">

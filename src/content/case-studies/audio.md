@@ -1,6 +1,3 @@
-```recruiter
-This is a Masters Project | This case study represents a project I worked on during the first quarter of the UW MHCI+D program, this is a project that's essentially end-to-end. | GraduationCap
-```
 
 ## So, What's The Problem? | Today's audio wearables fail to deliver consistent comfort and performance across real-world use. ==Earbuds trap heat and moisture, fall out, or cause pain, while over-ear headphones are bulky and heavy for extended wear.== What's the solution and middleground?
 

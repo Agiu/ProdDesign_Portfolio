@@ -25,6 +25,11 @@ export const caseStudies = [
     timeline: "4 weeks",
     showcaseVideo: "2mzSQccg3mY",
     team: ["Caleb Aguiar", "Alexander Akande", "Kyo Fan", "Meera Divecha Forespring", "Hannah Hatchett"],
+    disclaimer: {
+      title: "This is a Masters Project",
+      description: "This case study represents a project I worked on during the first quarter of the UW MHCI+D program, this is a project that's essentially end-to-end.",
+      icon: "GraduationCap"
+    }
   },
   {
     id: "wos",
