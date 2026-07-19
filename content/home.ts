@@ -176,7 +176,7 @@ export const footer = {
   elsewhere: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/kaelub" },
     { label: "GitHub", href: "https://github.com/kaelub" },
-    { label: "Résumé", href: "/resume.pdf" },
+    { label: "Résumé", href: "https://media.kaelub.com/Caleb_Design_Resume.pdf" },
   ],
 
   now: [
