@@ -1,0 +1,90 @@
+.section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: clamp(340px, 42vw, 520px);
+  overflow: hidden;
+  background: var(--shade);
+  color: #fff;
+}
+
+/* Taller than the section so it can drift without exposing an edge — same
+   trick as Hero.module.css's .media. The 30% of headroom here is what DRIFT
+   in useParallax.ts is allowed to consume. */
+.media {
+  position: absolute;
+  top: -30%;
+  left: 0;
+  right: 0;
+  height: 160%;
+  will-change: transform;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+/* Matches the Figma: solid shade on the left, fading out across the frame. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    var(--shade) 0%,
+    rgb(31 31 31 / 82%) 30%,
+    rgb(31 31 31 / 0%) 78%
+  );
+}
+
+.inner {
+  position: relative;
+  width: 100%;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding: clamp(3rem, 6vw, 4.5rem) var(--gutter);
+}
+
+.heading {
+  margin-bottom: 0.9rem;
+}
+
+.body {
+  max-width: 38ch;
+  color: rgb(255 255 255 / 82%);
+  text-wrap: pretty;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.6rem;
+  padding-bottom: 3px;
+  font-weight: 600;
+  border-bottom: 1.5px solid rgb(255 255 255 / 35%);
+  transition: border-color var(--dur) var(--ease);
+}
+
+.cta:hover {
+  border-color: #fff;
+}
+
+.arrow {
+  transition: transform var(--dur) var(--ease);
+}
+
+.cta:hover .arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 640px) {
+  /* The left-to-right gradient can't carry contrast on a narrow screen. */
+  .scrim {
+    background: linear-gradient(
+      to right,
+      rgb(31 31 31 / 92%) 0%,
+      rgb(31 31 31 / 70%) 100%
+    );
+  }
+}

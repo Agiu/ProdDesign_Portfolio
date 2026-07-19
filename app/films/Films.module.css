@@ -1,0 +1,278 @@
+/*
+ * Films / video-portfolio page. Same light system as the case-study pages: a
+ * measure-width column, a back affordance grouped with the heading, then a
+ * responsive grid of video cards that open a modal YouTube player.
+ */
+
+.page {
+  padding-bottom: clamp(4rem, 9vw, 7.5rem);
+}
+
+/* ---- Header ------------------------------------------------------------- */
+
+.header {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  padding-top: clamp(3.5rem, 8vw, 6.5rem);
+  padding-bottom: clamp(2rem, 4vw, 3.25rem);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 1.4rem;
+  color: var(--ink-soft);
+  transition:
+    transform var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.back:hover {
+  color: var(--ink);
+  transform: translateX(-3px);
+}
+
+.heading {
+  margin-bottom: 0.9rem;
+}
+
+.intro {
+  max-width: 56ch;
+  font-size: var(--step-lead);
+  line-height: 1.35;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* ---- Grid --------------------------------------------------------------- */
+
+.grid {
+  display: grid;
+  /* Fixed two-up: the remaining films sit in a 2×n grid beneath the featured
+     demo reel, which spans both columns (.featured). minmax(0,1fr) so a long
+     title can't blow a column past its share. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.75rem, 3.5vw, 2.75rem);
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  list-style: none;
+}
+
+/* The demo reel: full width, so its 16:9 frame is roughly twice the size of a
+   regular card and reads as the lead. */
+.featured {
+  grid-column: 1 / -1;
+}
+
+.featured .cardTitle {
+  font-size: clamp(1.4rem, 1rem + 1.5vw, 1.9rem);
+}
+
+.featured .cardDesc {
+  max-width: 60ch;
+  font-size: var(--step-lead);
+}
+
+/* Below the two-column threshold everything stacks; the featured span is a
+   no-op in a single column. */
+@media (max-width: 620px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  /* Button reset — the card is a plain clickable block. */
+  display: block;
+  width: 100%;
+  padding: 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.cardDisabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.thumbWrap {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  background: var(--shade);
+}
+
+.thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Fades once decoded (see FilmGallery.tsx) rather than painting in raw. */
+  opacity: 0;
+  transition:
+    opacity 500ms var(--ease-inout),
+    transform var(--dur) var(--ease);
+}
+
+.thumbLoaded {
+  opacity: 1;
+}
+
+.card:hover .thumb {
+  transform: scale(1.04);
+}
+
+/* Play affordance — a translucent square that firms up on hover/focus. */
+.play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  color: #fff;
+  background: rgb(0 0 0 / 45%);
+  border: 1.5px solid rgb(255 255 255 / 70%);
+  transform: translate(-50%, -50%) scale(0.9);
+  opacity: 0.85;
+  transition:
+    transform var(--dur) var(--ease),
+    background-color var(--dur) var(--ease),
+    opacity var(--dur) var(--ease);
+}
+
+/* The triangle reads as optically centered when nudged right of true centre. */
+.play svg {
+  margin-left: 2px;
+}
+
+.card:hover .play,
+.card:focus-visible .play {
+  opacity: 1;
+  background: rgb(0 0 0 / 65%);
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.card:focus-visible .thumbWrap {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: var(--step-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 60%);
+}
+
+.eyebrow {
+  margin-bottom: 0.5rem;
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.cardTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.cardDesc {
+  margin-top: 0.45rem;
+  max-width: 42ch;
+  font-size: var(--step-body);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* ---- Modal player ------------------------------------------------------- */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: rgb(0 0 0 / 88%);
+  animation: modal-in 220ms var(--ease-inout);
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.player {
+  position: relative;
+  width: min(100%, 1100px);
+  aspect-ratio: 16 / 9;
+  max-height: 82vh;
+  /* Keeps the 16:9 box from exceeding the viewport height on short/wide
+     screens — width yields so the whole frame always fits. */
+  margin-inline: auto;
+  animation: player-in 260ms var(--ease);
+}
+
+@keyframes player-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+.iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #000;
+}
+
+.close {
+  position: absolute;
+  top: clamp(0.75rem, 2.5vw, 1.5rem);
+  right: clamp(0.75rem, 2.5vw, 1.5rem);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: rgb(255 255 255 / 80%);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition:
+    color var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
+}
+
+.close:hover,
+.close:focus-visible {
+  color: #fff;
+  background: rgb(255 255 255 / 12%);
+}
+
+.close:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}

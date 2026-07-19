@@ -1,0 +1,366 @@
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: calc(100svh - var(--hero-reveal));
+  overflow: hidden;
+  background: var(--shade);
+  color: #fff;
+}
+
+/* Taller than the hero so it can drift without exposing an edge. The 30% of
+   headroom here is what DRIFT in useParallax.ts is allowed to consume. */
+.media {
+  position: absolute;
+  top: -30%;
+  left: 0;
+  right: 0;
+  height: 160%;
+  will-change: transform;
+}
+
+/*
+ * Slides are plain CSS backgrounds rather than <Image>, so a slide and the tiles
+ * that assemble it can share one URL — and therefore one fetch. Opacity is
+ * written by anime.js (useFractalFill.ts); no transitions here, or they'd fight
+ * the handoff from the tile grid to the finished slide.
+ */
+.slide {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.slide[data-state="previous"] {
+  z-index: 1;
+  opacity: 1;
+}
+
+.slide[data-state="active"] {
+  z-index: 2;
+  opacity: 1;
+}
+
+/*
+ * A slide's optional video layer, living *inside* .slide so it inherits that
+ * element's active/previous/idle stacking for free instead of needing its own
+ * z-index. Starts invisible and is faded in by revealVideo (Hero.tsx) once the
+ * tile assembly has settled and the video itself is ready to play smoothly —
+ * so the still poster below is always the correct pre-hydration and no-JS
+ * resting state, not a placeholder for something broken.
+ */
+.slideVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/*
+ * The assembly. Sits above both slides and builds the incoming image out of
+ * quadtree tiles, over the outgoing one — which is why the tiles must carry the
+ * picture rather than merely mask it. Once assembled it hands off to the real
+ * slide and drops back to zero; both show the same image, so the swap can't be
+ * seen. Tiles are absolutely positioned (sizes vary), so no grid here.
+ */
+.assembly {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tile {
+  position: absolute;
+  overflow: hidden;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/*
+ * The tile's cap: an opaque near-black slab that lands *with* the tile and then
+ * dissolves, revealing that tile's slice of the image beneath. So a tile arrives
+ * as a solid block and resolves into picture, rather than arriving as picture.
+ *
+ * A real element rather than a ::after, because each cap fades on its own clock
+ * (useFractalFill.ts) and JS can't target a pseudo-element.
+ */
+.cap {
+  position: absolute;
+  inset: 0;
+  background: var(--void);
+  pointer-events: none;
+}
+
+/*
+ * A full-size, cover-fitted copy of the image, offset so this tile's window
+ * lands on the right patch of it. Sizing the background to the tile instead
+ * would stretch the picture — the tile's aspect ratio isn't the frame's, and
+ * `cover` on a tile-sized box crops to the tile, not to the slide. This way the
+ * crop is identical to the finished slide's by construction.
+ */
+.tileImage {
+  position: absolute;
+  background-image: var(--img);
+  background-size: cover;
+  background-position: center;
+}
+
+/* Keeps the headline legible over an unpredictable photo. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgb(0 0 0 / 82%) 0%,
+    rgb(0 0 0 / 55%) 28%,
+    rgb(0 0 0 / 20%) 50%,
+    rgb(0 0 0 / 0%) 72%
+  );
+}
+
+/*
+ * Same measure and gutter as .inner, so the toggle sits on the exact margin
+ * every other line of hero text hangs from — just pinned to the top edge
+ * instead of the bottom. The bar itself is click-transparent; only the button
+ * is a target.
+ */
+.topBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  display: flex;
+  justify-content: flex-end;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding: var(--gutter);
+  pointer-events: none;
+}
+
+/*
+ * Square backing, no border or radius — just enough of a scrim that the icon
+ * holds contrast over a bright frame of video instead of only relying on the
+ * hero's own gradient scrim.
+ */
+.motionToggle {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem;
+  font-size: var(--step-small);
+  line-height: 1;
+  color: rgb(255 255 255 / 75%);
+  background: rgb(0 0 0 / 40%);
+  border: 0;
+  cursor: pointer;
+  transition:
+    color var(--dur-slow) var(--ease-inout),
+    background-color var(--dur-slow) var(--ease-inout);
+}
+
+.motionToggle:hover,
+.motionToggle:focus-visible {
+  color: #fff;
+  background: rgb(0 0 0 / 55%);
+}
+
+.motionToggle:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.inner {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding: var(--gutter);
+  padding-block-end: clamp(2.5rem, 5vw, 4rem);
+}
+
+.greeting {
+  margin-bottom: 0.6rem;
+}
+
+.tagline {
+  max-width: 34ch;
+  font-size: var(--step-lead);
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.highlight {
+  white-space: nowrap;
+}
+
+/*
+ * The rotating word.
+ *
+ * Width is reserved by .ghost — a real, hidden copy of the longest option that
+ * stays in flow. The visible word is layered over it, absolutely positioned.
+ *
+ * Two reasons it's built this way rather than with `min-width: Nch`:
+ *   - the ghost is in flow, so the inline-block's baseline is derived from real
+ *     text on the line, which is what keeps the word sitting on the same
+ *     baseline as the rest of the sentence;
+ *   - `ch` is the width of the "0" glyph, a poor proxy for real text in a
+ *     proportional face, so it reserved the wrong width anyway.
+ *
+ * Nothing here may set `overflow` — on an inline-block, any value other than
+ * `visible` switches the baseline to the box's bottom edge, which lifts the
+ * word clean off the line.
+ */
+.word {
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+/* Sizes the box. Not announced, and never seen. */
+.ghost {
+  visibility: hidden;
+}
+
+/* The word you actually read. Opacity is written by anime.js
+   (useWordRotator.ts) — no transition here, or it would fight the fade. */
+.current {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+}
+
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.85rem;
+  flex-shrink: 0;
+}
+
+/*
+ * No max-width, and nowrap: the 15ch cap was breaking the longer captions
+ * ("Extending Wear For Audio Wearables") across three lines. .meta has
+ * flex-shrink: 0, so this can't be squeezed either — if space runs short it's
+ * .copy's tagline that absorbs it via its own normal wrapping, not this.
+ */
+.caption {
+  font-size: var(--step-small);
+  line-height: 1.25;
+  text-align: right;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+/*
+ * A measuring tape. Strips sit in a row and stretch sideways: the hovered or
+ * selected one runs out to full length while its neighbours ease outward to
+ * make room.
+ *
+ * Nothing here animates layout — each .tick is a fixed slot, and the .strip
+ * inside only ever transforms. Animating width instead would reflow the row and
+ * make strips grow from one edge, which reads as the group lurching sideways.
+ */
+.ticks {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/*
+ * The hit box — and it never moves. No transform, no transition: displacing the
+ * buttons displaces their hit boxes, so hovering one shoves its neighbours out
+ * from under the cursor and the pointer ends up chasing a target that flees it.
+ * All movement happens on .tickInner instead.
+ *
+ * Slots sit flush against each other (no gap on .ticks), so the row is one
+ * continuous target with no dead channels between strips to fall into.
+ */
+.tick {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 44px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* Everything that moves. Purely visual — carries no hit box of its own. */
+.tickInner {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.tick:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/*
+ * Transforms on .tick and .strip belong to anime.js (useTape.ts) — it writes
+ * them every frame, so no `transition: transform` here or the two would fight.
+ * The scaleX below is only the pre-hydration paint and the no-JS fallback.
+ *
+ * Colour stays in CSS on purpose: it needs no physics, and a plain transition
+ * responds instantly without a render pass.
+ */
+.strip {
+  width: 3px;
+  height: 20px;
+  background: rgb(255 255 255 / 55%);
+  /* Stretches out from its own middle, so the strip stays put as it grows. */
+  transform-origin: center;
+  transition: background-color var(--dur-slow) var(--ease-inout);
+}
+
+.tick:hover .strip,
+.tick:focus-visible .strip,
+.tick[data-active="true"] .strip {
+  background: #fff;
+}
+
+.tick[data-active="true"] .strip {
+  transform: scaleX(8);
+}
+
+@media (max-width: 640px) {
+  .inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .meta {
+    align-items: flex-start;
+  }
+
+  .caption {
+    text-align: left;
+  }
+
+  .ticks {
+    justify-content: flex-start;
+  }
+}

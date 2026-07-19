@@ -1,0 +1,195 @@
+/*
+ * The block mosaic is laid out in grid units of the smallest square (--u), taken
+ * straight from the Figma's 60x17 unit grid. Both clusters are anchored to the
+ * corners they occupy rather than positioned against the frame, so the footer
+ * can grow to fit its content and the mosaic still lands where it should.
+ */
+.footer {
+  position: relative;
+  overflow: hidden;
+  background: var(--night);
+  color: #fff;
+
+  --u: clamp(13px, 1.7vw, 26px);
+
+  /* Bottom padding clears the left cluster (4 units tall), so the base row
+     never runs underneath it. */
+  padding-block: clamp(4rem, 8vw, 7rem) calc(4 * var(--u) + 2.5rem);
+}
+
+.mosaic {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/*
+ * Opacity and scale are written by anime.js (useOrganicBlocks.ts) — no
+ * transitions here, or they'd fight it.
+ */
+.block {
+  position: absolute;
+  background: #ffffff;
+  transform-origin: center;
+}
+
+/* Growth blocks accrete out of nothing. Hidden until anime.js scales them in —
+   this is the pre-hydration state, so they can't flash at full size on load. */
+.block[data-kind="grow"] {
+  transform: scale(0);
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.75rem, 5vw, 4.5rem);
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.lead {
+  max-width: 30ch;
+}
+
+/* Keep the greeting on a single line — it's short enough that wrapping just
+   reads as a layout accident. */
+.heading {
+  white-space: nowrap;
+}
+
+.invitation {
+  margin-top: 0.9rem;
+  color: rgb(255 255 255 / 65%);
+  text-wrap: pretty;
+}
+
+/* Underline retracts to the right on hover, same gesture as the hero's links. */
+.email {
+  position: relative;
+  display: inline-block;
+  margin-top: 1.6rem;
+  font-size: var(--step-lead);
+  font-weight: 500;
+}
+
+.email::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.1em;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease);
+}
+
+.email:hover::after {
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
+  max-width: 52ch;
+}
+
+.label {
+  margin-bottom: 1rem;
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 45%);
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  list-style: none;
+}
+
+.link {
+  position: relative;
+  color: rgb(255 255 255 / 85%);
+  transition: color var(--dur) var(--ease);
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur) var(--ease);
+}
+
+.link:hover {
+  color: #fff;
+}
+
+/* Wipes in from the left — the inverse of the email's retract, so the two read
+   as related rather than identical. */
+.link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.now {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.nowRow {
+  display: flex;
+  gap: 0.75rem;
+  font-size: var(--step-small);
+  line-height: 1.4;
+}
+
+.nowRow dt {
+  flex-shrink: 0;
+  width: 5.5rem;
+  color: rgb(255 255 255 / 45%);
+}
+
+.nowRow dd {
+  color: rgb(255 255 255 / 85%);
+}
+
+.base {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  font-size: var(--step-small);
+  color: rgb(255 255 255 / 45%);
+}
+
+@media (max-width: 700px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+
+  .base {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  /* The left cluster sits under the base row on a narrow screen; it's
+     decorative, so it goes rather than fighting the text for space. */
+  .block[data-corner="left"] {
+    display: none;
+  }
+}

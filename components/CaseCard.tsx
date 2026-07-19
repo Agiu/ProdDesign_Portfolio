@@ -1,0 +1,181 @@
+"use client";
+
+import Image from "next/image";
+import { animate, cubicBezier, stagger, utils } from "animejs";
+import { useCallback, useEffect, useRef } from "react";
+import type { CaseStudy } from "@/content/home";
+import { ArrowIcon } from "./ArrowIcon";
+import styles from "./CaseStudies.module.css";
+
+/*
+ * How far the image drifts, as a share of the card. Small on purpose: the panel
+ * crosses its own full width while the image barely moves, and that difference
+ * in rate is what makes it read as parallax — the image sitting behind the
+ * panel rather than being shoved by it. Matching the panel's travel would make
+ * them one rigid slab.
+ */
+const IMAGE_DRIFT = "8%";
+
+/*
+ * Decelerating curves, not symmetric in-out ones: they leave immediately and
+ * settle softly, which is what lets a move be unhurried without feeling heavy.
+ */
+const DURATION = 700;
+const EXIT = 600;
+const EASE = cubicBezier(0.22, 1, 0.36, 1);
+const EASE_OUT = cubicBezier(0.16, 1, 0.3, 1);
+
+/** The whole reveal is a pointer affordance — it has no place on a touch screen. */
+const DESKTOP = "(min-width: 900px) and (hover: hover)";
+
+const isDesktop = () => window.matchMedia(DESKTOP).matches;
+const reduced = () =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/*
+ * Reduced motion collapses the duration to zero rather than skipping the reveal
+ * outright. Skipping would strand the panel offstage — and since the panel *is*
+ * the caption, that would leave those users with no case-study text at all. They
+ * get the panel, just without the travel.
+ */
+const ms = (value: number) => (reduced() ? 0 : value);
+
+export function CaseCard({
+  study,
+  priority,
+}: {
+  study: CaseStudy;
+  priority: boolean;
+}) {
+  const cover = useRef<HTMLDivElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  const lines = useRef<HTMLDivElement>(null);
+
+  /*
+   * anime.js reads transforms off the inline style attribute, not off computed
+   * styles — a transform declared in a stylesheet is invisible to it. Without
+   * this, the first hover would assume the panel starts at translateX(0), write
+   * that inline, and snap it straight to its end position before animating.
+   *
+   * So mirror the CSS resting state into inline styles once mounted. The CSS
+   * still owns the pre-hydration and no-JS paint; this only gives anime.js a
+   * value it can actually see.
+   */
+  useEffect(() => {
+    const mq = window.matchMedia(DESKTOP);
+
+    const seed = () => {
+      const p = panel.current;
+      const l = lines.current;
+      if (!p || !l) return;
+      const rows = Array.from(l.children);
+
+      if (mq.matches) {
+        utils.set(p, { translateX: "-100%" });
+        utils.set(rows, { opacity: 0, translateY: 8 });
+        return;
+      }
+
+      // Below the breakpoint the panel is a plain static caption. Any leftover
+      // inline transform would shove it off-screen, so clear it back to CSS.
+      p.style.transform = "";
+      for (const row of rows) {
+        const el = row as HTMLElement;
+        el.style.opacity = "";
+        el.style.transform = "";
+      }
+    };
+
+    seed();
+    mq.addEventListener("change", seed);
+    return () => mq.removeEventListener("change", seed);
+  }, []);
+
+  const onEnter = useCallback(() => {
+    const c = cover.current;
+    const p = panel.current;
+    const l = lines.current;
+    if (!c || !p || !l || !isDesktop()) return;
+
+    // An HTMLCollection is live and isn't a reliable anime.js target — take a
+    // plain array snapshot.
+    const rows = Array.from(l.children);
+
+    /*
+     * The cover pans rather than resizes. Animating its width would make the
+     * image's object-fit recompute mid-flight, so the picture re-crops as it
+     * moves — that reflow is what reads as jarring. A transform leaves the
+     * framing untouched and simply drifts it.
+     *
+     * Nothing is hard-reset first: each property animates from wherever it
+     * currently sits, so re-hovering mid-exit is picked up smoothly rather than
+     * snapping back to the start.
+     */
+    animate(c, { translateX: IMAGE_DRIFT, duration: ms(DURATION), ease: EASE });
+    animate(p, { translateX: "0%", duration: ms(DURATION), ease: EASE });
+
+    animate(rows, {
+      opacity: 1,
+      translateY: 0,
+      duration: ms(380),
+      ease: EASE_OUT,
+      // Text follows just behind the leading edge, rather than waiting for it.
+      delay: reduced() ? 0 : stagger(45, { start: 160 }),
+    });
+  }, []);
+
+  const onLeave = useCallback(() => {
+    const c = cover.current;
+    const p = panel.current;
+    const l = lines.current;
+    if (!c || !p || !l || !isDesktop()) return;
+
+    animate(c, { translateX: "0%", duration: ms(EXIT), ease: EASE });
+    // Retreats the way it came, hiding off the left edge. Sending it right would
+    // sweep it straight across the image: it rides above the image now, so it
+    // has nothing left to tuck behind.
+    animate(p, { translateX: "-100%", duration: ms(EXIT), ease: EASE });
+    animate(Array.from(l.children), {
+      opacity: 0,
+      translateY: 8,
+      duration: ms(180),
+      ease: EASE_OUT,
+    });
+  }, []);
+
+  return (
+    <a
+      href={`/case-study/${study.slug}`}
+      className={styles.card}
+      onPointerEnter={onEnter}
+      onPointerLeave={onLeave}
+      onFocus={onEnter}
+      onBlur={onLeave}
+    >
+      <div className={styles.frame}>
+        <div className={styles.cover} ref={cover}>
+          <Image
+            src={study.cover}
+            alt=""
+            fill
+            sizes="(max-width: 1100px) 100vw, 1100px"
+            priority={priority}
+            className={styles.image}
+          />
+        </div>
+      </div>
+
+      <div className={styles.panel} ref={panel}>
+        {/* These rows are what the stagger animates over. */}
+        <div className={styles.lines} ref={lines}>
+          <h3 className={styles.title}>{study.title}</h3>
+          <p className={styles.summary}>{study.summary}</p>
+          <p className={styles.cta}>
+            View case study
+            <ArrowIcon className={styles.arrow} />
+          </p>
+        </div>
+      </div>
+    </a>
+  );
+}

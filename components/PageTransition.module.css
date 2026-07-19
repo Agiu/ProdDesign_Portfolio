@@ -1,0 +1,15 @@
+/*
+ * The white curtain. Sits above all page content, below the intro
+ * LoadingScreen (z 9999), and is invisible + click-through at rest.
+ * PageTransition.tsx animates its opacity and toggles pointer-events during a
+ * navigation. Pure --paper white, so the dip matches the site's own ground.
+ */
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: var(--paper);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}

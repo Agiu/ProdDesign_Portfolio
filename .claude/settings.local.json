@@ -4,7 +4,21 @@
       "mcp__plugin_figma_figma__get_screenshot",
       "mcp__plugin_figma_figma__get_metadata",
       "Bash(curl -sL -o figma-home.png \"https://www.figma.com/api/mcp/asset/143cbcce-d6d5-44ee-9283-04dac7f7070d\")",
-      "mcp__plugin_figma_figma__get_design_context"
+      "mcp__plugin_figma_figma__get_design_context",
+      "Bash(mkdir -p /Users/kaelub/Documents/github/prod_design_portfolio_2/public/images)",
+      "Bash(curl -sL -o hero.png       \"https://www.figma.com/api/mcp/asset/6e6ab8d1-b22f-4945-86c1-70204a89d796\")",
+      "Bash(curl -sL -o case-1.png     \"https://www.figma.com/api/mcp/asset/7a3b7ae4-9ad4-4944-97a2-a9a95b78d8c0\")",
+      "Bash(curl -sL -o case-2.png     \"https://www.figma.com/api/mcp/asset/23acfe01-378a-4f19-972c-94ee6209154b\")",
+      "Bash(curl -sL -o case-3.png     \"https://www.figma.com/api/mcp/asset/96bae03d-b137-41d5-af34-be982b216e10\")",
+      "Bash(node /private/tmp/claude-502/-Users-kaelub-Documents-github-prod-design-portfolio-2/cd0fd1e1-6cd3-4679-9daf-1dc964352394/scratchpad/compress.mjs)",
+      "Bash(cp /private/tmp/claude-502/-Users-kaelub-Documents-github-prod-design-portfolio-2/cd0fd1e1-6cd3-4679-9daf-1dc964352394/scratchpad/compress.mjs ./compress.mjs)",
+      "Bash(node ./compress.mjs)",
+      "Bash(rm -f ./compress.mjs)",
+      "Bash(npx tsc *)",
+      "mcp__figma__get_screenshot",
+      "mcp__figma__get_design_context",
+      "mcp__figma__get_variable_defs",
+      "Bash(npm run *)"
     ]
   }
 }

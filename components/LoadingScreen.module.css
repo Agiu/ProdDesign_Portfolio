@@ -1,0 +1,136 @@
+/*
+ * Marathon-flavoured dot-matrix boot loader. A black field holding a pixel
+ * Seattle skyline whose window lights twinkle while the silhouette breathes,
+ * wrapped in faint atmospheric noise. anime.js owns the motion (see
+ * LoadingScreen.tsx); this file owns the look and the failsafe dismissal for
+ * the (unsupported) no-JS case.
+ */
+.overlay {
+  --field: #0a0a0a;
+  --dim: #808080;
+
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.75rem, 4vw, 2.75rem);
+  background: var(--field);
+  /* Failsafe: if JS never runs, this clears the overlay at 9s so it can't trap
+     the page. With JS the component unmounts long before it fires. */
+  animation: ls-failsafe 1ms linear 9s forwards;
+}
+
+@keyframes ls-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+/* ---- Dot matrix -------------------------------------------------------- */
+
+.matrix {
+  --b: clamp(4px, 1.05vw, 9px);
+  --g: calc(var(--b) * 0.32);
+  display: grid;
+  grid-template-columns: repeat(53, var(--b));
+  grid-template-rows: repeat(24, var(--b));
+  gap: var(--g);
+}
+
+/* All squares hard-cornered, hidden until anime.js reveals them — the first
+   paint never flashes a fully-formed scene. */
+
+/* Skyline silhouette — dim grey, the unlit mass of the buildings. */
+.structure {
+  width: var(--b);
+  height: var(--b);
+  background: #6a6a6a;
+  opacity: 0;
+}
+
+/* Window lights (and the Needle's beacon) — bright, and the layer that
+   twinkles while loading and sputters out on exit. */
+.light {
+  width: var(--b);
+  height: var(--b);
+  background: #fff;
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+/* Atmospheric noise — barely-there flecks in the sky and between towers. */
+.ambient {
+  width: var(--b);
+  height: var(--b);
+  background: #fff;
+  opacity: 0;
+}
+
+/* ---- Exit wipe ----------------------------------------------------------
+ * A tiled copy of the black field, sitting above the scene. Invisible until
+ * the exit hand-off: the overlay's solid background is swapped for these
+ * tiles (same colour, so the cut can't be seen), which then dissolve along
+ * the hero's fractal-tile front (useFractalFill), uncovering the site.
+ */
+.wipe {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.wipeTile {
+  position: absolute;
+  background: var(--field);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Scene layers sit beneath the wipe. */
+.matrix,
+.readout {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Readout ----------------------------------------------------------- */
+
+.readout {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  font-family: var(--font-open-sauce), system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--dim);
+  /* Optical: the tracking pushes the text visually right; nudge it back. */
+  padding-left: 0.3em;
+}
+
+.pct {
+  color: rgb(237 237 237 / 72%);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.16em;
+}
+
+/* ---- Reduced motion: static scene, no churn ---------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .structure {
+    opacity: 0.3;
+  }
+  .light {
+    opacity: 0.85;
+    transform: none;
+  }
+  .ambient {
+    opacity: 0.08;
+  }
+}
