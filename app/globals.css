@@ -45,6 +45,17 @@
   --dur-wipe: 900ms;
 }
 
+/* Toggled on <html> by HideScrollbar.tsx while the home page is mounted —
+   scrolling itself is unaffected, only the visible track/thumb. */
+html.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* legacy Edge/IE */
+}
+
+html.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, other WebKit/Blink browsers */
+}
+
 *,
 *::before,
 *::after {

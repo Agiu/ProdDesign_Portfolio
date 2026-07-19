@@ -185,6 +185,7 @@
 .content > .mdButton,
 .content > .stats,
 .content > .quoteCarousel,
+.content > .carousel,
 .content > .cardList,
 .content > .model,
 .content > .video,
@@ -1169,6 +1170,144 @@
 
   .quoteInner {
     padding-inline: 3rem;
+  }
+}
+
+/* ---- Custom block: carousel (CarouselBlock.tsx) ------------------------
+ * Not the paged `quotes` widget — this is the "circle of revolving brands"
+ * used for a set of peers (Steam's storefront competitors): a ring of dark
+ * chips that slowly orbits a shared centre. Built as two synced, opposite
+ * `animation`s — the ring rotates continuously; each chip counter-rotates by
+ * the same amount so its icon/label stay upright rather than tumbling.
+ * Hovering or focusing the ring pauses both (see :hover/:focus-within
+ * below), so an item can actually be read and clicked.
+ */
+.carousel {
+  display: flex;
+  justify-content: center;
+  margin-block: clamp(2rem, 4vw, 3rem);
+}
+
+.carouselRing {
+  position: relative;
+  width: clamp(260px, 52vw, 420px);
+  aspect-ratio: 1;
+  --radius: clamp(96px, 21vw, 168px);
+  animation: carousel-spin 34s linear infinite;
+}
+
+.carouselRing:hover,
+.carouselRing:focus-within {
+  animation-play-state: paused;
+}
+
+.carouselRing:hover .carouselChip,
+.carouselRing:focus-within .carouselChip {
+  animation-play-state: paused;
+}
+
+@keyframes carousel-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Zero-size pivot, placed at the ring's centre, rotated out to this item's
+   slice of the circle and pushed out by --radius; the trailing rotate(-angle)
+   cancels the placement rotation so the chip itself starts upright. */
+.carouselItem {
+  --angle: calc(360deg / var(--count) * var(--i));
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0;
+  height: 0;
+  transform: rotate(var(--angle)) translateY(calc(-1 * var(--radius)))
+    rotate(calc(-1 * var(--angle)));
+}
+
+.carouselChip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: clamp(74px, 13vw, 104px);
+  aspect-ratio: 1;
+  padding: 0.65rem;
+  background: #1b1b1b;
+  text-align: center;
+  animation: carousel-counter-spin 34s linear infinite;
+  transition: background-color var(--dur) var(--ease);
+}
+
+/* Counters the ring's rotation frame-for-frame; the constant translate
+   keeps the chip centred on its pivot throughout. */
+@keyframes carousel-counter-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+.carouselItem:hover .carouselChip,
+.carouselItem:focus-visible .carouselChip {
+  background: #2a2a2a;
+}
+
+.carouselItem:focus-visible {
+  outline: none;
+}
+
+.carouselItem:focus-visible .carouselChip {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.carouselIcon {
+  width: clamp(1.15rem, 2.4vw, 1.5rem);
+  height: clamp(1.15rem, 2.4vw, 1.5rem);
+  color: #fff;
+}
+
+.carouselLabel {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: clamp(0.6875rem, 0.6rem + 0.35vw, 0.8rem);
+  font-weight: 500;
+  line-height: 1.25;
+  color: rgb(255 255 255 / 88%);
+}
+
+/* Quiet centre mark the ring turns around — echoes the "+" glyph used
+   elsewhere on the site rather than leaving a bare empty middle. */
+.carouselHub {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  background: rgb(0 0 0 / 15%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+@media (max-width: 520px) {
+  .carouselRing {
+    width: clamp(220px, 78vw, 300px);
+    --radius: clamp(76px, 28vw, 108px);
+  }
+
+  .carouselChip {
+    width: clamp(62px, 20vw, 82px);
+    padding: 0.5rem;
   }
 }
 

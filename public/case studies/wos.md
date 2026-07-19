@@ -15,7 +15,7 @@ Seattle’s downtown area has seen a dramatic price increase in the last few dec
 
 These neighborhoods are just a few miles apart from each other, and in the same economic bubble, but are vastly different despite both areas looking roughly the same 50-70 years ago.
 
-![](https://media.kaelub.com/WOS/4.png)
+![](https://media.kaelub.com/WOS/4.jpg)
 
 ## Look at how different the buildings look, now!
 Through Paul Allen’s assistance (Co Founder of Microsoft), in the 90s, South Lake Union was meant to become something similar to New York City’s Central Park through an initiative titled the ‘Seattle Commons’.

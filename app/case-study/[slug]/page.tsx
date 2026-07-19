@@ -12,6 +12,7 @@ import { FigureImage } from "./FigureImage";
 import { HeroVideo } from "./HeroVideo";
 import { MarkdownButton } from "./blocks/MarkdownButton";
 import { QuoteCarousel } from "./blocks/QuoteCarousel";
+import { CarouselBlock } from "./blocks/CarouselBlock";
 import { StatsBlock } from "./blocks/StatsBlock";
 import { ModelViewer } from "./blocks/ModelViewer";
 import { ListBlock } from "./blocks/ListBlock";
@@ -152,9 +153,15 @@ function BlockView({ block }: { block: Block }) {
       // Rich blocks translated from the Figma design system.
       if (block.name === "button") return <MarkdownButton content={block.content} />;
       if (block.name === "quotes") return <QuoteCarousel content={block.content} />;
+      if (block.name === "carousel") return <CarouselBlock content={block.content} />;
       if (block.name === "stats") return <StatsBlock content={block.content} />;
       if (block.name === "3d-model") return <ModelViewer content={block.content} />;
-      if (block.name === "insights" || block.name === "hmw" || block.name === "rules")
+      if (
+        block.name === "insights" ||
+        block.name === "hmw" ||
+        block.name === "rules" ||
+        block.name === "questions"
+      )
         return <ListBlock content={block.content} />;
       if (block.name === "youtube") return <YouTubeEmbed content={block.content} />;
       if (block.name === "ide") return <CodeBlock content={block.content} />;
