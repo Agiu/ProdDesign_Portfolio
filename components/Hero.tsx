@@ -14,6 +14,18 @@ const AUTOPLAY_MS = 6000;
 const VIDEO_FADE_MS = 600;
 const EASE = cubicBezier(0.22, 1, 0.36, 1);
 
+/*
+ * Tiles are positioned in percentages, so adjacent edges rasterize to device
+ * pixels independently and rounding can leave a hairline gap between neighbours
+ * — the darker layer behind then shows through as thin seams as the fill sweeps
+ * left. Bleeding every tile outward by a fixed sub-pixel amount makes neighbours
+ * overlap instead of butt, closing the seam. Same trick the live-video clip
+ * already uses on its rects (see useFractalFill.ts); the image scales with the
+ * tile, so it still fills to the (now-overlapping) edge. Fixed px, not a percent
+ * scale, so the overlap is uniform whatever the tile's size.
+ */
+const TILE_BLEED = 0.75;
+
 const reduced = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -223,10 +235,10 @@ export function Hero() {
               key={i}
               className={styles.tile}
               style={{
-                left: `${t.x * 100}%`,
-                top: `${t.y * 100}%`,
-                width: `${t.w * 100}%`,
-                height: `${t.h * 100}%`,
+                left: `calc(${t.x * 100}% - ${TILE_BLEED}px)`,
+                top: `calc(${t.y * 100}% - ${TILE_BLEED}px)`,
+                width: `calc(${t.w * 100}% + ${TILE_BLEED * 2}px)`,
+                height: `calc(${t.h * 100}% + ${TILE_BLEED * 2}px)`,
               }}
             >
               <span
