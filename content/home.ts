@@ -149,6 +149,17 @@ export const caseStudies: CaseStudy[] = [
     },
   },
   {
+    slug: "3",
+    title: "Steam Storefront Redesign",
+    summary:
+      "Reframing Steam's storefront around immersion — you're buying the experience, not the game box.",
+    cover: "/images/hero-3.webp",
+    hero: "/images/hero-3.webp",
+    discipline: "Product Design",
+    year: "2025",
+    tags: ["Web", "Shopping UX", "Gaming"],
+  },
+  {
     slug: "minigolf",
     title: "Walk-Up-and-Play Minigolf",
     summary:
@@ -164,9 +175,9 @@ export const caseStudies: CaseStudy[] = [
       timeline: "10 weeks",
       team: [
         "Caleb Aguiar",
-        "Clarisse Pelayo Sicatt",
-        "Sauhee Shannon Han",
-        "Meera Forespring",
+        "Alexander Akande",
+        "Emily Wong",
+        "Marlyn Reed",
       ],
       contributions: [
         "Developed the physical structure and player interactions for the mini golf hole.",
@@ -175,17 +186,6 @@ export const caseStudies: CaseStudy[] = [
         "Created project videos to showcase the atmosphere and prototypes.",
       ],
     },
-  },
-  {
-    slug: "3",
-    title: "Steam Storefront Redesign",
-    summary:
-      "Reframing Steam's storefront around immersion — you're buying the experience, not the game box.",
-    cover: "/images/hero-3.webp",
-    hero: "/images/hero-3.webp",
-    discipline: "Product Design",
-    year: "2025",
-    tags: ["Web", "Shopping UX", "Gaming"],
   },
   {
     slug: "wos",
