@@ -170,6 +170,20 @@ export function CaseCard({
         <div className={styles.lines} ref={lines}>
           <h3 className={styles.title}>{study.title}</h3>
           <p className={styles.summary}>{study.summary}</p>
+          {/* Inline caption tags — mobile / no-hover only. Desktop hides
+              these entirely (no on-image equivalent). Kept last in source
+              order (so the desktop stagger sequence, which reads this same
+              list, is unaffected) — CSS `order` moves them visually to the
+              top on mobile. */}
+          {study.tags && study.tags.length > 0 && (
+            <ul className={styles.tags} aria-label="Disciplines and tools">
+              {study.tags.map((tag) => (
+                <li key={tag} className={styles.tag}>
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          )}
           <p className={styles.cta}>
             View case study
             <ArrowIcon className={styles.arrow} />

@@ -106,17 +106,29 @@
  * device gets the full text without ever running the reveal.
  */
 .panel {
-  padding-top: 1rem;
+  /* Clear room off the image — was tight enough to read as squished. */
+  padding-top: clamp(1.35rem, 5vw, 2rem);
   color: var(--ink);
 }
 
+/*
+ * Deliberately no flex `gap` here — the mobile rhythm is tiered by hand via
+ * margin-bottom on each row instead of one uniform value, so it reads as
+ * groups rather than a flat stack:
+ *   tags (eyebrow) — tight to the title, since it labels it
+ *   title — a clear step before the summary
+ *   summary — a noticeably bigger step before the CTA, so the "read this"
+ *     copy and the "do this" action feel like separate zones
+ * Desktop resets this to 0 and hand-places its own rhythm instead (see the
+ * 900px block below), so this only governs mobile.
+ */
 .lines {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
 }
 
 .title {
+  margin-bottom: clamp(0.45rem, 2vw, 0.65rem);
   font-size: var(--step-lead);
   font-weight: 600;
   letter-spacing: -0.015em;
@@ -124,8 +136,57 @@
 }
 
 .summary {
+  margin-bottom: clamp(1rem, 4.5vw, 1.5rem);
   color: var(--ink-soft);
   font-size: var(--step-body);
+}
+
+/*
+ * Tags — a wrapping row of small bordered chips (sharp corners per the site's
+ * no-radius rule). Uppercase + tracked to match the eyebrow-label idiom used
+ * elsewhere. Light caption version here; the dark-panel override lives in the
+ * desktop reveal block below.
+ *
+ * `order: -1` moves them visually to the top of the mobile caption — above
+ * the title, reading as its eyebrow label — while staying last in source
+ * order (see CaseCard.tsx), so the desktop stagger sequence over `.lines`'s
+ * children is unaffected. Sits close to the title it labels (own margin-
+ * bottom below .title's own), clearly apart from the summary/CTA group.
+ */
+.tags {
+  order: -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.5rem;
+  margin-bottom: clamp(0.55rem, 2.5vw, 0.8rem);
+  list-style: none;
+}
+
+.tag {
+  padding: 0.35em 0.7em;
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  /* Quiet at rest — brightens on hover. */
+  color: var(--ink-muted);
+  border: 1px solid rgb(0 0 0 / 10%);
+  white-space: nowrap;
+  transition:
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+.tag:hover {
+  color: var(--ink);
+  border-color: rgb(0 0 0 / 32%);
+}
+
+/* The separate animated box is a desktop-only affordance — the inline .tags
+   row above covers mobile / no-hover. */
+.tagBox {
+  display: none;
 }
 
 /*
@@ -139,7 +200,8 @@
   align-items: center;
   width: fit-content;
   gap: 0.3rem;
-  margin-top: 0.6rem;
+  /* No margin-top here — .summary's margin-bottom spaces it from the row
+     above on mobile. Desktop overrides this to `margin-top: auto` below. */
   padding-bottom: 3px;
   font-size: var(--step-small);
   font-weight: 600;
@@ -224,7 +286,16 @@
     line-height: 1.25;
   }
 
+  /* No on-image equivalent — desktop just drops the tags entirely. */
+  .tags {
+    display: none;
+  }
+
   .summary {
+    /* The mobile margin-bottom (for the group gap before the CTA) doesn't
+       apply here — .cta's own `margin-top: auto` claims the remaining
+       height instead, so this resets to avoid stacking both. */
+    margin-bottom: 0;
     color: rgb(255 255 255 / 78%);
     font-size: var(--step-body);
     font-weight: 400;

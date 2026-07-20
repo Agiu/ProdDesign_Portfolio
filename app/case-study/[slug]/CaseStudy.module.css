@@ -116,6 +116,283 @@
   color: rgb(255 255 255 / 60%);
 }
 
+/* ---- Project metadata band (CaseMeta.tsx) -----------------------------
+ * From the Figma: a full-width dark card under the hero. A padded left area
+ * holds Team Members + My Contributions (two columns on desktop); a flush
+ * right stack holds two grey panels — My Role over Time. The shared pixel
+ * ornament nests in the bottom-left corner. Everything collapses to one
+ * column below the same 760px breakpoint the page body uses.
+ */
+.metaWrap {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  /* Butts directly against the bottom of the hero — no gap in between. */
+  padding-top: 0;
+}
+
+.metaCard {
+  position: relative;
+  background: #1b1b1b;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* Full-width bar across the top — the collapse handle. Its hairline underline
+   drops away once collapsed, leaving a clean standalone bar. */
+.metaToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: clamp(0.85rem, 2vw, 1.15rem) clamp(1.6rem, 3.2vw, 2.4rem);
+  background: #1b1b1b;
+  color: #fff;
+  border: 0;
+  border-bottom: 1px solid rgb(255 255 255 / 10%);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  transition: border-color var(--dur) var(--ease);
+}
+
+.metaToggle[aria-expanded="false"] {
+  border-bottom-color: transparent;
+}
+
+.metaToggleLabel {
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 70%);
+  transition: color var(--dur) var(--ease);
+}
+
+.metaChevron {
+  flex: none;
+  color: rgb(255 255 255 / 70%);
+  transition: transform var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.metaChevronCollapsed {
+  transform: rotate(-180deg);
+}
+
+.metaToggle:hover .metaToggleLabel,
+.metaToggle:hover .metaChevron {
+  color: #fff;
+}
+
+.metaToggle:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -2px;
+}
+
+/* Collapse mechanism: animate the single grid row from 1fr to 0fr while the
+   inner wrapper clips its overflow. Reduced motion flattens the transition
+   via the global rule, so this just snaps for those users. */
+.metaCollapse {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--dur) var(--ease);
+}
+
+.metaCollapse[data-collapsed="true"] {
+  grid-template-rows: 0fr;
+}
+
+.metaClip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* The content grid — the padded left area and the flush right stack. */
+.metaBody {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/* Left area — Team + Contributions. Padded away from the card edges; the
+   bottom padding also keeps the copy clear of the corner ornament. */
+.metaMain {
+  /* Locks the phone stack gap and the top inset to one value, so the space
+     from the hero down to Team Members matches the space between Team Members
+     and My Contributions. The desktop override below unlinks them. */
+  --meta-stack-gap: clamp(2.5rem, 6vw, 3.25rem);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--meta-stack-gap);
+  padding: var(--meta-stack-gap) clamp(1.6rem, 3.2vw, 2.4rem)
+    clamp(2.75rem, 5vw, 3.5rem);
+}
+
+/* Small uppercase eyebrow over each field, on both the dark and grey panels. */
+.metaLabel {
+  margin-bottom: clamp(0.7rem, 1.6vw, 1rem);
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 55%);
+}
+
+/* A second label further down its column (e.g. Advisors under the team). */
+.metaLabelStacked {
+  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+.metaTeam {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.35rem, 1vw, 0.6rem);
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem);
+  line-height: 1.25;
+  color: rgb(255 255 255 / 82%);
+}
+
+/* The author, first in the list — read a step stronger than the rest. */
+.metaTeamLead {
+  font-weight: 700;
+  color: #fff;
+}
+
+.metaContributions {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.55rem, 1.4vw, 0.85rem);
+  max-width: 52ch;
+  font-size: clamp(0.9375rem, 0.9rem + 0.25vw, 1.0625rem);
+  line-height: 1.4;
+  color: rgb(255 255 255 / 82%);
+}
+
+/* Square bullet in the site's no-radius language, hung in the left margin. */
+.metaContributions li {
+  position: relative;
+  padding-left: 1.35rem;
+}
+
+.metaContributions li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 6px;
+  height: 6px;
+  background: rgb(255 255 255 / 55%);
+}
+
+/* Right stack — two grey panels, flush to the card's top/right/bottom edges.
+   Role auto-heights to its content; Time takes the remaining space so the
+   large value has room, echoing the Figma proportions. */
+.metaSide {
+  display: flex;
+  flex-direction: column;
+}
+
+.metaRole,
+.metaTime {
+  padding: clamp(1.4rem, 3vw, 2rem) clamp(1.5rem, 3.2vw, 2.15rem);
+}
+
+.metaRole {
+  background: #5e5e5e;
+}
+
+.metaTime {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* Extra room below the value on the phone stack, so Time doesn't sit tight
+     against the bottom edge. Reset to the shared inset on desktop below. */
+  padding-bottom: clamp(3rem, 11vw, 4.5rem);
+  /* A faint dot-grid clustered in the bottom-right for a bit of flare: the
+     dots tile the whole panel, then a linear gradient of the panel colour
+     fading to transparent covers all but the bottom-right corner. Kept at a
+     low alpha so it stays a texture, not a pattern. */
+  background-color: #353535;
+  background-image: linear-gradient(
+      to top left,
+      rgb(53 53 53 / 0) 0%,
+      #353535 55%
+    ),
+    radial-gradient(rgb(255 255 255 / 12%) 1px, transparent 1.5px);
+  background-repeat: no-repeat, repeat;
+  background-size:
+    100% 100%,
+    11px 11px;
+  background-position:
+    center,
+    right bottom;
+}
+
+/* Role + Time values share the Team Members size — bold, but not oversized. */
+.metaRoleValue,
+.metaTimeValue {
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.metaRoleValue {
+  text-wrap: balance;
+}
+
+/* Pixel-square ornament nested in the bottom-left corner: a 2×2 grid with the
+   corner cell brightest, the two adjoining cells stepping down in grey and the
+   opposite cell empty — the same motif as the other dark cards, re-anchored. */
+.metaOrnament {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  width: clamp(40px, 6vw, 52px);
+  height: clamp(40px, 6vw, 52px);
+  pointer-events: none;
+}
+
+.metaOrnament i {
+  display: block;
+}
+
+.metaOrnament i:nth-child(1) {
+  grid-area: 1 / 1;
+  background: #bababa;
+}
+.metaOrnament i:nth-child(2) {
+  grid-area: 2 / 1;
+  background: #fff;
+}
+.metaOrnament i:nth-child(3) {
+  grid-area: 2 / 2;
+  background: #e5e5e5;
+}
+
+@media (min-width: 760px) {
+  .metaBody {
+    grid-template-columns: minmax(0, 1fr) minmax(230px, 300px);
+  }
+
+  .metaMain {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(2rem, 4.5vw, 4rem);
+    /* Side by side now — the top inset no longer needs to match the row gap. */
+    padding-top: clamp(1.6rem, 3.2vw, 2.4rem);
+  }
+
+  .metaTime {
+    padding-bottom: clamp(1.4rem, 3vw, 2rem);
+  }
+}
+
 /* ---- Body: nav rail + content ----------------------------------------- */
 
 .body {

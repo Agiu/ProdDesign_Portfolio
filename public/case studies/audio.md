@@ -149,6 +149,10 @@ This was it. I modeled a speaker with holes for wiring that sat right above the 
 
 ![](https://media.kaelub.com/Audio/image_placeholder_9.png)
 
+```youtube
+2mzSQccg3mY
+```
+
 ## Reflection
 Moving forward, I would have loved more time to flesh out the design further, particularly the interior of the form factor. My teammates had established viable interior chips by the end of the project, but we only had about two days to work with them. A significant portion of our time was also consumed by repeated printing iterations to nail the tiered fits, which cut into valuable design time.
 

@@ -17,6 +17,24 @@ export type HeroSlide = {
   video?: string;
 };
 
+/**
+ * The metadata band shown under the hero on a case-study page (team, role,
+ * contributions, time). Optional — studies without it skip the band entirely.
+ * See `CaseMeta.tsx` for the layout.
+ */
+export type ProjectMeta = {
+  /** The author's role on the project. Shown in the "My Role" panel. */
+  role: string;
+  /** Everyone on the project. The first entry (the author) is emphasised. */
+  team: string[];
+  /** What the author personally did — rendered as a bulleted list. */
+  contributions: string[];
+  /** How long it took, e.g. "4 weeks". Omit to drop the "Time" panel. */
+  timeline?: string;
+  /** Optional faculty/advisors — a secondary list under the team. */
+  advisors?: string[];
+};
+
 export type CaseStudy = {
   /** Matches the markdown filename in `public/case studies/` and the
    *  `/case-study/[slug]` route. */
@@ -34,6 +52,10 @@ export type CaseStudy = {
   /** Rendered as the small label above the title on hover. */
   discipline: string;
   year: string;
+  /** Small labels on the homepage card — the project's disciplines and tools. */
+  tags?: string[];
+  /** Project metadata band under the hero. Studies without it skip the band. */
+  meta?: ProjectMeta;
 };
 
 export type Credential = {
@@ -108,6 +130,23 @@ export const caseStudies: CaseStudy[] = [
     video: "https://media.kaelub.com/headphones_background_v1%20(2160p).mp4",
     discipline: "Interaction Design",
     year: "2025",
+    tags: ["3D Modeling", "Interaction Design", "Prototyping"],
+    meta: {
+      role: "Lead Product Designer and Filmmaker",
+      timeline: "4 weeks",
+      team: [
+        "Caleb Aguiar",
+        "Alexander Akande",
+        "Kaiyo Fan",
+        "Meera Divecha Forespring",
+        "Hannah Hatchett",
+      ],
+      contributions: [
+        "Led the main prototyping and 3D modeling for nearly 20 iterative concepts.",
+        "Contributed to nearly 30 trials of user testing to adjust designs for over 94 potential ears.",
+        "Developed a branding and pitch video demonstrating the headphones' interactions.",
+      ],
+    },
   },
   {
     slug: "minigolf",
@@ -119,6 +158,23 @@ export const caseStudies: CaseStudy[] = [
     video: "https://media.kaelub.com/minigolfbackground_v1%20(1080p).mp4",
     discipline: "Experience Design",
     year: "2025",
+    tags: ["Interaction Design", "Physical Design", "Prototyping", "Electronics"],
+    meta: {
+      role: "Designer, Programmer",
+      timeline: "10 weeks",
+      team: [
+        "Caleb Aguiar",
+        "Clarisse Pelayo Sicatt",
+        "Sauhee Shannon Han",
+        "Meera Forespring",
+      ],
+      contributions: [
+        "Developed the physical structure and player interactions for the mini golf hole.",
+        "Programmed multiple Adafruit CPXs to either move objects or rearrange light colors.",
+        "Prototyped and tested physical interactions.",
+        "Created project videos to showcase the atmosphere and prototypes.",
+      ],
+    },
   },
   {
     slug: "3",
@@ -129,6 +185,7 @@ export const caseStudies: CaseStudy[] = [
     hero: "/images/hero-3.webp",
     discipline: "Product Design",
     year: "2025",
+    tags: ["Web", "Shopping UX", "Gaming"],
   },
   {
     slug: "wos",
@@ -139,6 +196,7 @@ export const caseStudies: CaseStudy[] = [
     hero: "https://media.kaelub.com/WOS/3.png",
     discipline: "Data Visualization",
     year: "2025",
+    tags: ["AI", "Data Visualization", "Urban Studies", "Product Design"],
   },
 ];
 

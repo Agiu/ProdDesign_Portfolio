@@ -7,6 +7,7 @@ import { caseStudies } from "@/content/home";
 import { parseCaseStudy, type Block, type InlineToken } from "@/lib/markdown";
 import { Footer } from "@/components/Footer";
 import { Toc } from "./Toc";
+import { CaseMeta } from "./CaseMeta";
 import { FadeImage } from "./FadeImage";
 import { FigureImage } from "./FigureImage";
 import { HeroVideo } from "./HeroVideo";
@@ -226,6 +227,8 @@ export default async function CaseStudyPage({
           </p>
         </div>
       </header>
+
+      {study.meta && <CaseMeta meta={study.meta} />}
 
       <div className={styles.body}>
         <Toc toc={toc} />
