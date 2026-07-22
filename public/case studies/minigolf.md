@@ -1,3 +1,6 @@
+```masters
+```
+
 ## Overview
 
 Minigolf is an old American delight, now found on bustling city corridors and the occasional wealthy backyard. Full golf is hard to design for the masses, but minigolf made the game approachable by shortening the holes, lowering the cost, and simplifying the tooling (putter). Its core philosophy, shared with arcade games and other mass-produced experiences, is walk-up-and-play: you get your bearings in seconds and immediately start playing whatever's in front of you.

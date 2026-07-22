@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { animate, cubicBezier, stagger, utils } from "animejs";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { CaseStudy } from "@/content/home";
 import { ArrowIcon } from "./ArrowIcon";
 import styles from "./CaseStudies.module.css";
@@ -28,6 +28,14 @@ const EASE_OUT = cubicBezier(0.16, 1, 0.3, 1);
 /** The whole reveal is a pointer affordance — it has no place on a touch screen. */
 const DESKTOP = "(min-width: 900px) and (hover: hover)";
 
+/*
+ * Crops the viewport down to a band across its middle. A card counts as the one
+ * being read only while it crosses that band, which is what makes the shadow
+ * follow the scroll rather than sitting under every card that's on screen. Any
+ * wider and two neighbours light up at once on a tall window.
+ */
+const ACTIVE_BAND = "-35% 0px -35% 0px";
+
 const isDesktop = () => window.matchMedia(DESKTOP).matches;
 const reduced = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -43,13 +51,41 @@ const ms = (value: number) => (reduced() ? 0 : value);
 export function CaseCard({
   study,
   priority,
+  featured = false,
 }: {
   study: CaseStudy;
   priority: boolean;
+  /**
+   * The lead card. It keeps the caption-below-the-image layout at every width
+   * — the one the small screens already get — rather than switching to the
+   * sliding panel on desktop, so the study reads as a showcase instead of as
+   * one more row. Every bit of the panel choreography below is skipped for it;
+   * its hover is a plain CSS push-down.
+   */
+  featured?: boolean;
 }) {
+  const card = useRef<HTMLAnchorElement>(null);
   const cover = useRef<HTMLDivElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const lines = useRef<HTMLDivElement>(null);
+
+  // Whether this is the card the reader has scrolled to — drives the shadow
+  // bloom in CSS. Unlike the entrance reveal this is not a one-shot: it has to
+  // keep up as cards scroll past in either direction.
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    const el = card.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setActive(entry.isIntersecting),
+      { rootMargin: ACTIVE_BAND },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   /*
    * anime.js reads transforms off the inline style attribute, not off computed
@@ -62,6 +98,10 @@ export function CaseCard({
    * value it can actually see.
    */
   useEffect(() => {
+    // The featured card never leaves the static-caption layout, so there's no
+    // offstage resting state to seed — and seeding one would hide its text.
+    if (featured) return;
+
     const mq = window.matchMedia(DESKTOP);
 
     const seed = () => {
@@ -89,13 +129,13 @@ export function CaseCard({
     seed();
     mq.addEventListener("change", seed);
     return () => mq.removeEventListener("change", seed);
-  }, []);
+  }, [featured]);
 
   const onEnter = useCallback(() => {
     const c = cover.current;
     const p = panel.current;
     const l = lines.current;
-    if (!c || !p || !l || !isDesktop()) return;
+    if (featured || !c || !p || !l || !isDesktop()) return;
 
     // An HTMLCollection is live and isn't a reliable anime.js target — take a
     // plain array snapshot.
@@ -122,13 +162,13 @@ export function CaseCard({
       // Text follows just behind the leading edge, rather than waiting for it.
       delay: reduced() ? 0 : stagger(45, { start: 160 }),
     });
-  }, []);
+  }, [featured]);
 
   const onLeave = useCallback(() => {
     const c = cover.current;
     const p = panel.current;
     const l = lines.current;
-    if (!c || !p || !l || !isDesktop()) return;
+    if (featured || !c || !p || !l || !isDesktop()) return;
 
     animate(c, { translateX: "0%", duration: ms(EXIT), ease: EASE });
     // Retreats the way it came, hiding off the left edge. Sending it right would
@@ -141,12 +181,14 @@ export function CaseCard({
       duration: ms(180),
       ease: EASE_OUT,
     });
-  }, []);
+  }, [featured]);
 
   return (
     <a
+      ref={card}
       href={`/case-study/${study.slug}`}
-      className={styles.card}
+      className={featured ? `${styles.card} ${styles.cardFeatured}` : styles.card}
+      data-active={active ? "true" : undefined}
       onPointerEnter={onEnter}
       onPointerLeave={onLeave}
       onFocus={onEnter}

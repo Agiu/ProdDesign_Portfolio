@@ -19,6 +19,7 @@ import { ModelViewer } from "./blocks/ModelViewer";
 import { ListBlock } from "./blocks/ListBlock";
 import { YouTubeEmbed } from "./blocks/YouTubeEmbed";
 import { CodeBlock } from "./blocks/CodeBlock";
+import { Callout } from "./blocks/Callout";
 import { ArrowIcon } from "@/components/ArrowIcon";
 import styles from "./CaseStudy.module.css";
 
@@ -166,6 +167,8 @@ function BlockView({ block }: { block: Block }) {
         return <ListBlock content={block.content} />;
       if (block.name === "youtube") return <YouTubeEmbed content={block.content} />;
       if (block.name === "ide") return <CodeBlock content={block.content} />;
+      if (block.name === "recruiter" || block.name === "masters")
+        return <Callout name={block.name} content={block.content} />;
       // Everything else keeps the labelled placeholder until it's built.
       return (
         <div className={styles.customBlock} data-block={block.name}>

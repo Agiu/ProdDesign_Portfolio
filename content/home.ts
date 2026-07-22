@@ -112,6 +112,9 @@ export const caseStudiesIntro = {
   heading: "case studies",
   /** Sits opposite the heading, right-aligned behind a "+". */
   note: "this is a collection of my work from academia, industry, and corporate work.",
+  /** Labels the break between the lead card and everything after it. Set at
+      reading size in the card summary's voice, not as an uppercase eyebrow. */
+  more: "more case studies",
 };
 
 /**
@@ -120,6 +123,17 @@ export const caseStudiesIntro = {
  * intended asset paths, which land when those image folders are added.
  */
 export const caseStudies: CaseStudy[] = [
+  {
+    slug: "trinity-search",
+    title: "Creating a Searching Suite for Trinity University",
+    summary:
+      "Due to new technology, Trinity.edu hired me to redesign their searching experience for their new SearchStax system.",
+    cover: "https://media.kaelub.com/Trinity-Search/Hero.jpg",
+    hero: "https://media.kaelub.com/trinity-banner.jpg",
+    discipline: "Information Architecture",
+    year: "2024",
+    tags: ["Search UX", "Information Architecture", "Higher Ed"],
+  },
   {
     slug: "audio",
     title: "Extending Wear For Audio Wearables",
@@ -147,6 +161,28 @@ export const caseStudies: CaseStudy[] = [
         "Developed a branding and pitch video demonstrating the headphones' interactions.",
       ],
     },
+  },
+  {
+    slug: "trinity-edu",
+    title: "Recentering Student Perspectives on Trinity.edu",
+    summary:
+      "A UX audit and redesign proposal for Trinity University's website, refocused around what prospective and current students actually need instead of institutional messaging. (Work in progress.)",
+    cover: "https://media.kaelub.com/Trinity-Redesign/Hero.jpg",
+    hero: "https://media.kaelub.com/trinity-banner.jpg",
+    discipline: "UX Research",
+    year: "2024",
+    tags: ["UX Research", "Higher Ed", "Website"],
+  },
+  {
+    slug: "wos",
+    title: "Who Owns Seattle",
+    summary:
+      "A data visualizer tracing property ownership and economic change across downtown Seattle. (Work in progress.)",
+    cover: "https://media.kaelub.com/WOS/1.png",
+    hero: "https://media.kaelub.com/WOS/3.png",
+    discipline: "Data Visualization",
+    year: "2025",
+    tags: ["AI", "Data Visualization", "Urban Studies", "Product Design"],
   },
   {
     slug: "3",
@@ -186,17 +222,6 @@ export const caseStudies: CaseStudy[] = [
         "Created project videos to showcase the atmosphere and prototypes.",
       ],
     },
-  },
-  {
-    slug: "wos",
-    title: "Who Owns Seattle",
-    summary:
-      "A data visualizer tracing property ownership and economic change across downtown Seattle. (Work in progress.)",
-    cover: "https://media.kaelub.com/WOS/1.png",
-    hero: "https://media.kaelub.com/WOS/3.png",
-    discipline: "Data Visualization",
-    year: "2025",
-    tags: ["AI", "Data Visualization", "Urban Studies", "Product Design"],
   },
 ];
 

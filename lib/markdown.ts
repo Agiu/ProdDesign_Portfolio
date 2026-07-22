@@ -51,6 +51,7 @@ const CUSTOM_BLOCKS = new Set([
   "rules",
   "questions",
   "recruiter",
+  "masters",
   "ide",
   "3d-model",
 ]);

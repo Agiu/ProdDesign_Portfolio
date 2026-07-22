@@ -466,7 +466,8 @@
 .content > .cardList,
 .content > .model,
 .content > .video,
-.content > .code {
+.content > .code,
+.content > .callout {
   margin-block: clamp(2.25rem, 4.5vw, 3.25rem);
 }
 
@@ -482,8 +483,11 @@
   color: var(--ink);
 }
 
-/* First heading sits directly under the hero — no extra top gap. */
-.content > .h2:first-child {
+/* First heading sits directly under the hero — no extra top gap. A callout
+   opening the study (the `masters` note) counts as the same starting position:
+   its own margin-bottom collapses through to space the heading below it. */
+.content > .h2:first-child,
+.content > .callout:first-child + .h2 {
   margin-top: 0;
 }
 
@@ -982,6 +986,92 @@
   .cardListBody,
   .cardListText {
     padding-right: 1.5rem;
+  }
+}
+
+/* ---- Custom block: callout (Callout.tsx) -------------------------------
+ * The `recruiter` and `masters` fences — a notice card, on paper rather than
+ * on the dark card fill the other blocks use, so it reads as an aside about
+ * the study instead of another piece of it.
+ *
+ * There's no accent colour in the palette to spend on "warning", so the
+ * caution comes from a hatched bar down the left edge — caution tape, drawn
+ * in ink. `masters` swaps the hatching for a solid bar: same card, one
+ * degree quieter, which is the whole difference between the two tones.
+ */
+.callout {
+  /* Named so the bar's width can be reused by the padding that clears it. */
+  --bar: clamp(10px, 1.6vw, 14px);
+
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(0.9rem, 2.2vw, 1.35rem);
+  padding: clamp(1.15rem, 2.6vw, 1.5rem) clamp(1.35rem, 3vw, 1.75rem);
+  padding-left: calc(var(--bar) + clamp(1.35rem, 3vw, 1.75rem));
+  border: 1px solid var(--ink);
+  /* Just off paper — enough to separate the card from the page without
+     becoming another grey surface. */
+  background: rgb(0 0 0 / 3%);
+}
+
+.calloutBar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--bar);
+  /* Hazard hatching. The gaps are transparent rather than white so the card's
+     own fill shows through and the bar sits *in* the card, not on it. */
+  background: repeating-linear-gradient(
+    45deg,
+    var(--ink) 0 4px,
+    transparent 4px 9px
+  );
+}
+
+/* The quiet tone: a solid rule, no hazard. */
+.callout[data-tone="note"] .calloutBar {
+  background: var(--ink);
+}
+
+.calloutIcon {
+  flex: none;
+  width: clamp(1.5rem, 3.2vw, 2rem);
+  height: clamp(1.5rem, 3.2vw, 2rem);
+  /* Optically centres the glyph on the label line rather than on the label's
+     box, which sits a touch higher than the text reads. */
+  margin-top: -0.1rem;
+  color: var(--ink);
+}
+
+.calloutBody {
+  min-width: 0;
+}
+
+/* Eyebrow treatment — the same uppercase + tracked idiom as the other labels
+   on the page, at full ink weight so it carries the notice. */
+.calloutLabel {
+  font-size: var(--step-small);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.calloutText {
+  margin-top: 0.45rem;
+  max-width: 62ch;
+  font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+@media (max-width: 520px) {
+  .callout {
+    gap: 0.85rem;
   }
 }
 

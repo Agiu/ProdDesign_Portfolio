@@ -71,10 +71,83 @@
   list-style: none;
 }
 
+/*
+ * THE BREAK — label, hairline, mosaic, in that reading order.
+ *
+ * Centre-aligned, so the rule and the block cluster both run through the
+ * middle of the label's text instead of sitting on its baseline — the row
+ * reads as one crossbar the label interrupts, not a line the text sits on.
+ * Same grid-unit mosaic as the footer (see organicMosaic.ts), but --u is set
+ * an order smaller here: the footer's clusters are architecture, this is
+ * punctuation.
+ */
+.break {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 1.75rem);
+  /* Bigger above than below: the break belongs to the group it introduces, so
+     it should sit closer to the cards that follow than to the lead card it
+     just closed off. Both exceed .list's own gap, or the break would read as
+     one more item in the stack. */
+  margin-block: clamp(4rem, 8vw, 6.5rem) clamp(2.5rem, 5vw, 4rem);
+
+  --u: clamp(5px, 0.7vw, 9px);
+}
+
+/* Matches the card summary's voice (.summary below) rather than the footer's
+   uppercase eyebrow labels — this sits at reading size, as a sentence, not as
+   a tag. */
+.breakLabel {
+  flex-shrink: 0;
+  font-size: var(--step-body);
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--ink-soft);
+}
+
+.rule {
+  flex: 1;
+  height: 1px;
+  /* Matches the tag chips' border — the site's one hairline value on paper. */
+  background: rgb(0 0 0 / 10%);
+}
+
+/* The box the cluster anchors inside. Blocks are placed from its bottom-left,
+   so it has to be the mosaic's full grid or they'd hang out of it — its size
+   comes from breakBlocks.ts's own bounds, set inline. */
+.breakMosaic {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Opacity and scale are written by anime.js (useOrganicBlocks.ts) — no
+   transitions here, or they'd fight it. Inked rather than white: this mosaic
+   is on paper, where the footer's is on night. */
+.breakBlock {
+  position: absolute;
+  background: var(--ink);
+  transform-origin: center;
+}
+
+/* Growth blocks accrete out of nothing. Hidden until anime.js scales them in —
+   this is the pre-hydration state, so they can't flash at full size on load. */
+.breakBlock[data-kind="grow"] {
+  transform: scale(0);
+}
+
 .card {
   display: block;
 }
 
+/*
+ * The shadow lives on .frame here and on .card in the desktop block below —
+ * two homes for one effect, because desktop's .card clips its children (it has
+ * to, to hide the offstage panel). .frame sits flush to the card's edges, so
+ * every pixel of a shadow drawn on it would fall outside that clip and be
+ * swallowed. Below the breakpoint there's no clipping, and .card is image +
+ * caption text — putting it on .frame keeps the shadow under the picture
+ * rather than wrapped around loose text.
+ */
 .frame {
   position: relative;
   /* A touch taller than the Figma banner. The panel's height is the card's
@@ -84,6 +157,17 @@
   overflow: hidden;
   /* No background here on purpose. The frame spans the full card above the
      panel, so any fill on it would mask the panel as the cover narrows. */
+
+  /* Barely there at rest — just enough to lift the card off the paper. */
+  box-shadow: 0 2px 12px rgb(0 0 0 / 7%);
+  transition: box-shadow var(--dur) var(--ease);
+}
+
+/* The card the reader has scrolled to (set by the observer in CaseCard.tsx).
+   Wide and soft rather than dark: the spread does the work, so the card reads
+   as sitting further off the page instead of being outlined in grey. */
+.card[data-active="true"] .frame {
+  box-shadow: 0 22px 60px 10px rgb(0 0 0 / 13%);
 }
 
 .cover {
@@ -98,6 +182,17 @@
 
 .image {
   object-fit: cover;
+}
+
+/*
+ * The featured (lead) card runs taller than the rest — closer to 16:9 than the
+ * wide banner ratio the others use. Above the mobile breakpoint only; the
+ * 640px override below keeps its own 4:3 ratio for every card.
+ */
+@media (min-width: 641px) {
+  .cardFeatured .frame {
+    aspect-ratio: 16 / 9;
+  }
 }
 
 /*
@@ -237,15 +332,34 @@
  *
  * Transforms here are written per-frame by anime.js, so there are deliberately
  * no transitions on them. The card clips the panel while it's offstage.
+ *
+ * Every rule in this block is scoped away from .cardFeatured. The lead card
+ * keeps the base (caption-below-the-image) layout at all widths, and the
+ * cleanest way to give it that is to never override it in the first place —
+ * cheaper, and safer, than restating the base values here to undo each one.
  */
 @media (min-width: 900px) and (hover: hover) {
-  .card {
+  .card:not(.cardFeatured) {
     position: relative;
     /* Clips the panel while it waits at -100% and after it exits to +100%. */
     overflow: hidden;
+    /* Same two shadows as the base rule, moved up a level — see the note on
+       .frame for why the clip above forces the swap. The featured card has no
+       panel to clip, so it keeps the shadow on .frame like the base rule. */
+    box-shadow: 0 2px 12px rgb(0 0 0 / 7%);
+    transition: box-shadow var(--dur) var(--ease);
   }
 
-  .panel {
+  .card:not(.cardFeatured)[data-active="true"] {
+    box-shadow: 0 22px 60px 10px rgb(0 0 0 / 13%);
+  }
+
+  .card:not(.cardFeatured) .frame,
+  .card:not(.cardFeatured)[data-active="true"] .frame {
+    box-shadow: none;
+  }
+
+  .card:not(.cardFeatured) .panel {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -259,7 +373,7 @@
     transform: translateX(-100%);
   }
 
-  .lines {
+  .card:not(.cardFeatured) .lines {
     /* Title and summary sit at the top; .footer claims the space below. */
     justify-content: flex-start;
     gap: 0;
@@ -270,14 +384,14 @@
   /* Resting state the rows animate in *from*. It lives here rather than being
      set in JS, so the first hover has something to fade up from. Safe to hide:
      the panel itself is offstage until hovered. */
-  .lines > * {
+  .card:not(.cardFeatured) .lines > * {
     opacity: 0;
     transform: translateY(8px);
   }
 
   /* Same size as the hero's hook (.tagline), so the two read as one voice —
      but bold, where the hook is regular. */
-  .title {
+  .card:not(.cardFeatured) .title {
     margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
     color: #fff;
     font-size: var(--step-lead);
@@ -286,12 +400,13 @@
     line-height: 1.25;
   }
 
-  /* No on-image equivalent — desktop just drops the tags entirely. */
-  .tags {
+  /* No on-image equivalent — desktop just drops the tags entirely. The
+     featured card keeps them: its caption is on paper, with room for the row. */
+  .card:not(.cardFeatured) .tags {
     display: none;
   }
 
-  .summary {
+  .card:not(.cardFeatured) .summary {
     /* The mobile margin-bottom (for the group gap before the CTA) doesn't
        apply here — .cta's own `margin-top: auto` claims the remaining
        height instead, so this resets to avoid stacking both. */
@@ -323,15 +438,35 @@
    * otherwise win and force the light-mode border-color here. Restated at
    * equal specificity so this later declaration takes it by source order.
    */
-  .cta {
+  .card:not(.cardFeatured) .cta {
     margin-top: auto;
     padding-top: 1rem;
     color: rgb(255 255 255 / 85%);
     border-color: rgb(255 255 255 / 35%);
   }
 
-  .card:hover .cta {
+  .card:not(.cardFeatured):hover .cta {
     border-color: rgb(255 255 255 / 65%);
+  }
+
+  /*
+   * The featured card's hover: a push down, not a slide. There's no panel to
+   * bring on, so the whole card — image and caption together — presses into
+   * the page, the inverse of the lift the case-study CTA button uses.
+   */
+  .cardFeatured {
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .cardFeatured:hover {
+    transform: translateY(6px);
+  }
+
+  /* Full-bleed at this width, so the caption needs its own measure — a summary
+     running the whole 1100px column is a single unreadable line. */
+  .cardFeatured .summary,
+  .cardFeatured .title {
+    max-width: 62ch;
   }
 }
 
