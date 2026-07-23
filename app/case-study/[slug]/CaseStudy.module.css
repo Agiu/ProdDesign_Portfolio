@@ -101,19 +101,11 @@
 }
 
 .summary {
-  position: relative;
   max-width: 46ch;
   margin-top: 0.75rem;
-  padding-left: 1.1rem;
   font-size: var(--step-body);
   line-height: 1.45;
   color: rgb(255 255 255 / 88%);
-}
-
-.plus {
-  position: absolute;
-  left: 0;
-  color: rgb(255 255 255 / 60%);
 }
 
 /* ---- Project metadata band (CaseMeta.tsx) -----------------------------
@@ -133,9 +125,30 @@
 
 .metaCard {
   position: relative;
-  background: #1b1b1b;
   color: #fff;
   overflow: hidden;
+
+  /* Corner ornament — the 2×2 pixel motif (bright corner cell, two greys, one
+   * empty) — painted as background layers on the card itself rather than a
+   * separate element. It's the same paint as the card's dark fill, so as the
+   * collapse animates the card's height the ornament rides the descending
+   * bottom edge in perfect lockstep with that fill — an absolutely-positioned
+   * element tracks the same edge via layout and trails it by a frame. The
+   * empty top-right cell falls back to the #1b1b1b fill, exactly the 3-of-4
+   * look the old markup had. */
+  --orn-cell: clamp(20px, 3vw, 26px);
+  background-color: #1b1b1b;
+  background-image:
+    linear-gradient(#fff 0 0),
+    linear-gradient(#e5e5e5 0 0),
+    linear-gradient(#bababa 0 0);
+  background-repeat: no-repeat;
+  background-size: var(--orn-cell) var(--orn-cell);
+  background-position:
+    /* white bottom-left, grey bottom-right, grey one cell up on the left */
+    left 0 bottom 0,
+    left var(--orn-cell) bottom 0,
+    left 0 bottom var(--orn-cell);
 }
 
 /* Full-width bar across the top — the collapse handle. Its hairline underline
@@ -143,8 +156,9 @@
 .metaToggle {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  /* Chevron sits right beside the label rather than pushed to the far edge. */
+  justify-content: flex-start;
+  gap: 0.55rem;
   width: 100%;
   padding: clamp(0.85rem, 2vw, 1.15rem) clamp(1.6rem, 3.2vw, 2.4rem);
   background: #1b1b1b;
@@ -344,38 +358,6 @@
   text-wrap: balance;
 }
 
-/* Pixel-square ornament nested in the bottom-left corner: a 2×2 grid with the
-   corner cell brightest, the two adjoining cells stepping down in grey and the
-   opposite cell empty — the same motif as the other dark cards, re-anchored. */
-.metaOrnament {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  width: clamp(40px, 6vw, 52px);
-  height: clamp(40px, 6vw, 52px);
-  pointer-events: none;
-}
-
-.metaOrnament i {
-  display: block;
-}
-
-.metaOrnament i:nth-child(1) {
-  grid-area: 1 / 1;
-  background: #bababa;
-}
-.metaOrnament i:nth-child(2) {
-  grid-area: 2 / 1;
-  background: #fff;
-}
-.metaOrnament i:nth-child(3) {
-  grid-area: 2 / 2;
-  background: #e5e5e5;
-}
-
 @media (min-width: 760px) {
   .metaBody {
     grid-template-columns: minmax(0, 1fr) minmax(230px, 300px);
@@ -410,15 +392,6 @@
   position: sticky;
   top: clamp(1.5rem, 4vh, 2.5rem);
   align-self: start;
-}
-
-.navLabel {
-  margin-bottom: 1rem;
-  font-size: var(--step-small);
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
 }
 
 .navList {

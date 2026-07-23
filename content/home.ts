@@ -9,6 +9,8 @@ export type HeroSlide = {
   alt: string;
   /** Shown at bottom-right, above the tick blocks. */
   caption: string;
+  /** Case study this slide represents — the caption links to `/case-study/[slug]`. */
+  slug: string;
   /**
    * Optional background video, layered over `image`. The still image is what
    * the fractal-tile reveal assembles; once that finishes, if this is set, the
@@ -87,23 +89,27 @@ export const hero = {
       image: "/images/hero-1.webp",
       alt: "Caleb riding a passenger ferry, motion-blurred waterfront behind him",
       caption: "Extending Wear For Audio Wearables",
-      video: "https://media.kaelub.com/headphones_background_v1%20(2160p).mp4",
+      slug: "audio",
+      video: "https://media.kaelub.com/%20headphones_background_v1%20(2160p).mp4",
     },
     {
       image: "https://media.kaelub.com/case-2.webp",
       alt: "Walk-up-and-play minigolf course",
       caption: "Walk-Up-and-Play Minigolf",
+      slug: "minigolf",
       video: "https://media.kaelub.com/minigolfbackground_v1%20(1080p).mp4",
     },
     {
       image: "/images/hero-3.webp",
       alt: "Interface panels from a game-adjacent control system",
       caption: "Steam Shopping UX Redesign",
+      slug: "3",
     },
     {
       image: "https://media.kaelub.com/WOS/Cover.jpg",
       alt: "Who Owns Seattle dashboard: an ownership map of South Lake Union with a scrubbable ownership-history timeline",
       caption: "Who Owns Seattle?",
+      slug: "wos",
     },
   ] as HeroSlide[],
 };
@@ -111,7 +117,7 @@ export const hero = {
 export const caseStudiesIntro = {
   heading: "case studies",
   /** Sits opposite the heading, right-aligned behind a "+". */
-  note: "this is a collection of my work from academia, industry, and corporate work.",
+  note: "below is a collection of my work from academia, industry, and corporate work.",
   /** Labels the break between the lead card and everything after it. Set at
       reading size in the card summary's voice, not as an uppercase eyebrow. */
   more: "more case studies",

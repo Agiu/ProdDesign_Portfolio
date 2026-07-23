@@ -305,7 +305,9 @@ export function Hero() {
         <div className={styles.meta}>
           {/* Announce caption changes without yanking focus. */}
           <p className={styles.caption} aria-live="polite">
-            {slides[active].caption}
+            <a href={`/case-study/${slides[active].slug}`} className={styles.captionLink}>
+              {slides[active].caption}
+            </a>
           </p>
 
           <div

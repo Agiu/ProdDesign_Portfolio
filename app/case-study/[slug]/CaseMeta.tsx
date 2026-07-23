@@ -109,12 +109,6 @@ export function CaseMeta({ meta }: { meta: ProjectMeta }) {
                   </div>
                 )}
               </div>
-
-              <span className={styles.metaOrnament} aria-hidden>
-                <i />
-                <i />
-                <i />
-              </span>
             </div>
           </div>
         </div>

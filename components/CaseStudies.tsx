@@ -103,14 +103,7 @@ export function CaseStudies() {
               display size and weight, and .header owns the spacing. */}
           <h2>{caseStudiesIntro.heading}</h2>
 
-          <p className={styles.note}>
-            {/* Inline, so it sits in the same right-aligned line flow as the
-                text and lands immediately before the first word. */}
-            <span className={styles.plus} aria-hidden>
-              +
-            </span>
-            {caseStudiesIntro.note}
-          </p>
+          <p className={styles.note}>{caseStudiesIntro.note}</p>
         </div>
 
         {/* Two lists, not one: the lead card and the rest are separate groups,

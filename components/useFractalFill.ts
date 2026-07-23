@@ -24,6 +24,20 @@ const CAP_HOLD = 90;
 /** How long that block then takes to dissolve into the image. */
 const CAP_FADE = 320;
 
+/*
+ * A horizontal drift layered over the fill: the outgoing image slides off to
+ * the left while the incoming one settles in from the right, both moving the
+ * same way (right → left) as the fill front itself. It's carried by the whole
+ * incoming presentation moving as one — the assembly and the active slide it
+ * hands off to — so the drift is seamless across the handoff.
+ */
+/** How far a slide travels as it enters/leaves, as a share of the frame width. */
+const SLIDE_SHIFT = 0.06;
+/** Beat after the fill begins before the drift starts, so motion trails the reveal. */
+const SLIDE_DELAY = 180;
+/** How long the drift takes to settle — well inside the fill so it lands before handoff. */
+const SLIDE_MS = 1100;
+
 /** Aspect change needed before the tile set is worth rebuilding. */
 const ASPECT_EPSILON = 0.08;
 
@@ -253,13 +267,20 @@ export function useFractalFill(
     const changed = lastActive.current !== -1 && lastActive.current !== active;
     lastActive.current = active;
 
+    const prevSlide = slides.current[previous];
+
     // Outgoing stays lit beneath the build; everything else is dark. A clip
-    // left over from an interrupted live-video reveal is cleared here too.
+    // left over from an interrupted live-video reveal is cleared here too. Any
+    // leftover drift is zeroed so a slide never re-enters a transition offset.
     slides.current.forEach((el, i) => {
       if (!el) return;
       el.style.clipPath = "";
-      utils.set(el, { opacity: i === active || i === previous ? 1 : 0 });
+      utils.set(el, {
+        opacity: i === active || i === previous ? 1 : 0,
+        translateX: 0,
+      });
     });
+    utils.set(grid, { translateX: 0 });
 
     if (!changed || reduced() || tiles.length === 0) {
       utils.set(target, { opacity: 1 });
@@ -305,6 +326,33 @@ export function useFractalFill(
       const t = tiles[i];
       return t ? delayFor(t, widest, aspect) : 0;
     };
+
+    /*
+     * The horizontal drift. The incoming presentation — the assembly plus the
+     * active slide it will hand off to — starts one shift-width right and eases
+     * to rest; the outgoing slide beneath eases the same distance left. Each
+     * edge the drift exposes is covered by the other layer during the crossover
+     * (the incoming's left by the still-lit outgoing, the outgoing's right by
+     * the incoming, since the fill front travels leftward), so no dark frame
+     * edge shows. Px, from the measured width, so the travel reads the same on
+     * any screen. Held at rest through reduced motion by the earlier snap.
+     */
+    const shift = width * SLIDE_SHIFT;
+    utils.set([target, grid], { translateX: shift });
+    const driftIn = animate([target, grid], {
+      translateX: 0,
+      duration: SLIDE_MS,
+      delay: SLIDE_DELAY,
+      ease: EASE,
+    });
+    const driftOut = prevSlide
+      ? animate(prevSlide, {
+          translateX: -shift,
+          duration: SLIDE_MS,
+          delay: SLIDE_DELAY,
+          ease: EASE,
+        })
+      : null;
 
     const nodes = Array.from(grid.children) as HTMLElement[];
     // Same order as `tiles`, so index i is tiles[i] for both.
@@ -401,6 +449,8 @@ export function useFractalFill(
       building.pause();
       dissolving.pause();
       unclipping?.pause();
+      driftIn.pause();
+      driftOut?.pause();
     };
   }, [active, previous, sources, tiles, onRevealed, videos]);
 

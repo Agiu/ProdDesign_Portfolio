@@ -44,24 +44,13 @@
   flex-shrink: 0;
 }
 
-/*
- * Right-aligned prose. The "+" is inline rather than a flex sibling: as a
- * sibling the text got its own fixed-width box, and right-aligning inside it
- * shoved the first line away from the "+". Inline, the "+" joins the same line
- * flow and lands hard against the first word.
- */
 .note {
   max-width: 42ch;
-  font-size: var(--step-lead);
+  font-size: var(--step-body);
   line-height: 1.3;
   color: var(--ink-dim);
   text-align: right;
   text-wrap: pretty;
-}
-
-.plus {
-  margin-right: 0.6rem;
-  color: var(--ink-muted);
 }
 
 .list {
@@ -149,6 +138,10 @@
  * rather than wrapped around loose text.
  */
 .frame {
+  /* The featured card renders this as an <a> (see CaseCard.tsx) rather than a
+     <div>, so it needs an explicit block display — an anchor defaults to
+     inline, which would collapse the aspect-ratio box down to its content. */
+  display: block;
   position: relative;
   /* A touch taller than the Figma banner. The panel's height is the card's
      height, and a --step-lead title plus a description plus a CTA does not fit
@@ -305,7 +298,15 @@
   transition: border-color var(--dur) var(--ease);
 }
 
-.card:hover .cta {
+/* Excludes .cardFeatured: it isn't a link itself (see CaseCard.tsx), so
+   hovering its plain-text title/summary shouldn't darken the CTA underline —
+   only hovering .frame or .cta itself should (scoped rule further below). */
+.card:not(.cardFeatured):hover .cta {
+  border-color: var(--ink);
+}
+
+.cardFeatured:has(a:hover) .cta,
+.cardFeatured:has(a:focus-visible) .cta {
   border-color: var(--ink);
 }
 
@@ -450,16 +451,20 @@
   }
 
   /*
-   * The featured card's hover: a push down, not a slide. There's no panel to
-   * bring on, so the whole card — image and caption together — presses into
-   * the page, the inverse of the lift the case-study CTA button uses.
+   * The featured card's hover: the image scales up slightly, reading as it
+   * lifting toward the viewer rather than sliding in any direction. Lives on
+   * .frame itself, not .cardFeatured — the panel below it (title, tags,
+   * summary, CTA) stays put. Same deep shadow the scroll-active state uses
+   * elsewhere, so "close to the reader" reads the same way in both places.
    */
-  .cardFeatured {
-    transition: transform var(--dur) var(--ease);
+  .cardFeatured .frame {
+    transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
   }
 
-  .cardFeatured:hover {
-    transform: translateY(6px);
+  .cardFeatured .frame:hover,
+  .cardFeatured .frame:focus-visible {
+    transform: scale(1.03);
+    box-shadow: 0 22px 60px 10px rgb(0 0 0 / 13%);
   }
 
   /* Full-bleed at this width, so the caption needs its own measure — a summary
@@ -489,5 +494,27 @@
 @media (max-width: 640px) {
   .frame {
     aspect-ratio: 4 / 3;
+  }
+
+  /* Same clamp-bottoms-out issue as the tags/title/summary gaps below: on a
+     phone the cards themselves sit closer together than they should. */
+  .list {
+    gap: 3.5rem;
+  }
+
+  /* The desktop clamps read fine at their own widths, but on a phone they
+     bottom out near their minimums and the tags/title/summary stack reads
+     cramped. Widen the floor for each gap without touching the desktop
+     panel's hand-placed rhythm (reset separately in the 900px block). */
+  .tags {
+    margin-bottom: 0.9rem;
+  }
+
+  .title {
+    margin-bottom: 0.8rem;
+  }
+
+  .summary {
+    margin-bottom: 1.4rem;
   }
 }

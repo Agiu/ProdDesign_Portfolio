@@ -22,7 +22,12 @@
       "Bash(curl -s http://localhost:3001/)",
       "Skill(claude-in-chrome)",
       "Bash(git checkout *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(xargs ls -la)",
+      "Bash(lsof -ti:3000)",
+      "Bash(xargs kill -9)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/)",
+      "Read(//private/tmp/**)"
     ]
   }
 }

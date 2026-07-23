@@ -64,7 +64,12 @@ export function CaseCard({
    */
   featured?: boolean;
 }) {
-  const card = useRef<HTMLAnchorElement>(null);
+  /*
+   * Typed to the base element rather than HTMLAnchorElement: the featured
+   * card's outer wrapper is a plain <div> (see the render branch below), not
+   * a link, so this ref has to fit both.
+   */
+  const card = useRef<HTMLElement | null>(null);
   const cover = useRef<HTMLDivElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const lines = useRef<HTMLDivElement>(null);
@@ -183,11 +188,70 @@ export function CaseCard({
     });
   }, [featured]);
 
+  const href = `/case-study/${study.slug}`;
+
+  // Same tags markup either way — pulled out so both branches below read the
+  // same list rather than drifting apart if one gets edited and not the other.
+  const tags = study.tags && study.tags.length > 0 && (
+    <ul className={styles.tags} aria-label="Disciplines and tools">
+      {study.tags.map((tag) => (
+        <li key={tag} className={styles.tag}>
+          {tag}
+        </li>
+      ))}
+    </ul>
+  );
+
+  /*
+   * The featured (lead) card reads as a showcase, not a row — so unlike the
+   * rest of the list it isn't one giant `<a>`. Only the image and the "View
+   * case study" CTA are click targets; the title/summary/tags are plain text
+   * a reader can select without also navigating away.
+   */
+  if (featured) {
+    return (
+      <div
+        ref={(el) => {
+          card.current = el;
+        }}
+        className={`${styles.card} ${styles.cardFeatured}`}
+        data-active={active ? "true" : undefined}
+      >
+        <a href={href} className={styles.frame} aria-label={`View case study: ${study.title}`}>
+          <div className={styles.cover} ref={cover}>
+            <Image
+              src={study.cover}
+              alt=""
+              fill
+              sizes="(max-width: 1100px) 100vw, 1100px"
+              priority={priority}
+              className={styles.image}
+            />
+          </div>
+        </a>
+
+        <div className={styles.panel} ref={panel}>
+          <div className={styles.lines} ref={lines}>
+            <h3 className={styles.title}>{study.title}</h3>
+            <p className={styles.summary}>{study.summary}</p>
+            {tags}
+            <a href={href} className={styles.cta}>
+              View case study
+              <ArrowIcon className={styles.arrow} />
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <a
-      ref={card}
-      href={`/case-study/${study.slug}`}
-      className={featured ? `${styles.card} ${styles.cardFeatured}` : styles.card}
+      ref={(el) => {
+        card.current = el;
+      }}
+      href={href}
+      className={styles.card}
       data-active={active ? "true" : undefined}
       onPointerEnter={onEnter}
       onPointerLeave={onLeave}
@@ -217,15 +281,7 @@ export function CaseCard({
               order (so the desktop stagger sequence, which reads this same
               list, is unaffected) — CSS `order` moves them visually to the
               top on mobile. */}
-          {study.tags && study.tags.length > 0 && (
-            <ul className={styles.tags} aria-label="Disciplines and tools">
-              {study.tags.map((tag) => (
-                <li key={tag} className={styles.tag}>
-                  {tag}
-                </li>
-              ))}
-            </ul>
-          )}
+          {tags}
           <p className={styles.cta}>
             View case study
             <ArrowIcon className={styles.arrow} />

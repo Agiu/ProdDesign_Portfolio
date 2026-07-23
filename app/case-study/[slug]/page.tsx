@@ -222,12 +222,7 @@ export default async function CaseStudyPage({
             </svg>
           </Link>
           <h1 className={styles.title}>{study.title}</h1>
-          <p className={styles.summary}>
-            <span className={styles.plus} aria-hidden>
-              +
-            </span>
-            {study.summary}
-          </p>
+          <p className={styles.summary}>{study.summary}</p>
         </div>
       </header>
 
