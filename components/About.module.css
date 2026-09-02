@@ -1,5 +1,55 @@
 .section {
+  position: relative;
   padding-block: clamp(3rem, 7vw, 6rem) clamp(4rem, 9vw, 7.5rem);
+}
+
+/*
+ * The blocks that carry the dark band above over this section's top edge —
+ * two staircasing down the left corner, one holding the right. They stand in
+ * the section's own top padding, which at every width this shows at is deeper
+ * than the cluster is tall, so they never reach the copy.
+ *
+ * Desktop only: the corners of a phone screen are within a thumb's width of
+ * the text, and an ornament there stops reading as an edge and starts reading
+ * as something in the way. Hidden at the same width the section stops being
+ * two columns.
+ */
+.seam {
+  --u: clamp(1.5rem, 2.6vw, 2.75rem);
+
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(var(--u) * 2);
+  pointer-events: none;
+}
+
+/* Anchored to the page's edges, not the text column: this is the band's own
+   hem, and the band runs full bleed. */
+.block {
+  position: absolute;
+  top: 0;
+  height: var(--u);
+  background: var(--shade);
+}
+
+.block[data-step="1"] {
+  left: 0;
+  width: calc(var(--u) * 2.2);
+}
+
+/* The step: narrower than the one above it and hung below, so the corner reads
+   as descending rather than as one notched rectangle. */
+.block[data-step="2"] {
+  top: var(--u);
+  left: 0;
+  width: calc(var(--u) * 1.5);
+}
+
+/* One block only on the right. The two corners shouldn't answer each other —
+   a symmetrical pair would read as a frame around the section. */
+.block[data-step="3"] {
+  right: 0;
+  width: var(--u);
 }
 
 .inner {
@@ -8,75 +58,360 @@
   padding-inline: var(--gutter);
 }
 
-.heading {
-  margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
-}
-
-.grid {
+/*
+ * Portrait left, prose right — and only this band is split in two. The stacks
+ * below need the section's full width (three columns squeezed into half a page
+ * would wrap, and a row that wraps stops being a row), so the split ends here
+ * rather than running the length of the section.
+ *
+ * The portrait's column is sized to it rather than to a fraction, so the prose
+ * takes whatever the picture doesn't and the two never negotiate: a face has a
+ * size it wants to be read at, a paragraph only has a width it must not exceed.
+ */
+.top {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
   gap: clamp(2rem, 5vw, 4.5rem);
   align-items: start;
+  margin-bottom: clamp(3.5rem, 8vw, 6rem);
 }
 
 .bio {
-  max-width: 46ch;
+  display: flex;
+  flex-direction: column;
+  max-width: 62ch;
+  /* Set apart, but less than the leading between two true paragraphs would —
+     these are three passes at one answer, not three subjects. */
+  gap: 0.9rem;
+}
+
+/* Its own step above the prose, wider than the gap between the paragraphs —
+   the heading introduces all three of them, so it can't sit as close to the
+   first as they sit to each other. Adds to .bio's flex gap on that side to
+   spend the whole distance here, where it can be read. */
+.bio h2 {
+  margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
   color: var(--ink-soft);
-  line-height: 1.65;
   text-wrap: pretty;
 }
 
-.label {
-  margin-bottom: 1.1rem;
+/*
+ * The location, hung under the bio. The page's small-label idiom — quiet, a
+ * touch of tracking, set as authored — the same treatment the case-study
+ * field labels and the film eyebrows use, so it reads as a caption on the
+ * introduction rather than a fourth sentence of it.
+ *
+ * The margin is its own rather than .bio's flex gap: that gap is the rhythm
+ * between the three paragraphs, and this needs to sit further off than they
+ * sit from each other to stop reading as one of them.
+ */
+.location {
+  margin-top: 0.6rem;
   font-size: var(--step-small);
   font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--ink-muted);
+}
+
+/*
+ * Loosened leading, and deliberately not on a phone.
+ *
+ * Half-leading is space the eye counts as part of the gap under a heading
+ * while no margin ever accounts for it: at 1.65 this one hangs about 10px of
+ * it beneath the glyphs. That is affordable in a wide two-column composition;
+ * it is not affordable down at the foot of this file, where the gap has a
+ * number it has to match. Left off there, the global h1/h2 rule's display
+ * leading applies instead — the same leading the filmmaker heading is measured
+ * with, which is the point.
+ */
+@media (min-width: 641px) {
+  .bio h2 {
+    line-height: 1.65;
+  }
+}
+
+/*
+ * The box the portrait is drawn into — the picture itself is a canvas that
+ * fills whatever it is given (PixelPortrait.tsx), so the shape is decided here.
+ * Held to the far edge of the column and to a size a face reads at: the blocks
+ * are sized as a fraction of this box, so making it bigger would not show more
+ * of the photograph, only bigger squares.
+ */
+.portrait {
+  position: relative;
+  width: 100%;
+  /* Square, because the photograph is: any other ratio would crop a face that
+     is already framed. */
+  aspect-ratio: 1;
+}
+
+/*
+ * The reverberation: two strokes that strike on at the picture's edge and ring
+ * outward, there to say the portrait is worth putting a pointer on. Under the
+ * pointer it resolves from blocks into the photograph (PixelPortrait.tsx), and
+ * nothing else on the page advertises that.
+ *
+ * The strokes are this element's two pseudo-elements — they are ornament, and
+ * there is nothing for a reader or a screen reader to have. Half a cycle
+ * apart, which is what makes it a reverberation rather than a pulse: the
+ * second strikes while the first is still travelling out, so the edge is never
+ * quite still.
+ *
+ * The wrapper exists to carry the dimmer.
+ *
+ * A running keyframe animation owns the property it animates, so there is no
+ * value for a transition to start from — switching the animation off at
+ * :hover snaps the stroke out from whatever brightness it happened to be at.
+ * Opacity here multiplies whatever the strokes are doing underneath, and it is
+ * an ordinary transitionable value, so the sign can dim out of a flicker
+ * rather than being cut mid-stroke.
+ *
+ * `pointer-events: none` because the one thing this must never do is stand
+ * between the pointer and the picture it is advertising.
+ */
+.reverb {
+  position: absolute;
+  /* Over the canvas, so a stroke at rest sits *on* the picture's edge rather
+     than being hidden a pixel behind it. */
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  /*
+   * Coming back on, which is the slower half on purpose: the invitation should
+   * not be waiting for you the instant you look away from it.
+   *
+   * --ease-inout rather than the site's usual --ease. That curve spends most
+   * of its travel in the first third, which on a dimmer reads as the sign
+   * being cut and then trailing — the exact thing this transition exists to
+   * avoid. This one gives the fade an even middle.
+   */
+  transition: opacity 460ms var(--ease-inout);
+}
+
+.reverb::before,
+.reverb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--ink-soft);
+  opacity: 0;
+}
+
+/*
+ * Hover only. The whole point is to advertise a hover, so on a screen that has
+ * no pointer it is advertising something that isn't there — and a touch
+ * portrait resolves itself on arrival anyway, with nothing left to invite.
+ */
+@media (hover: hover) {
+  .reverb::before,
+  .reverb::after {
+    animation: portraitReverb 3.4s linear infinite;
+  }
+
+  .reverb::after {
+    animation-delay: 1.7s;
+  }
+
+  /*
+   * Dimmed the moment the pointer arrives — an invitation being accepted has
+   * nothing left to say, and the strokes would otherwise ring over the
+   * photograph while it resolves. The strokes keep running underneath; it is
+   * only the dimmer that moves, so leaving brings the sign back up wherever
+   * its cycle has got to rather than restarting it mid-air.
+   */
+  .portrait:hover .reverb {
+    opacity: 0;
+    transition-duration: 340ms;
+  }
+}
+
+/*
+ * Struck like a neon tube: catching, dropping out, catching again, and only
+ * then holding. The paired keyframes are what make those blinks blinks — each
+ * value is held to just before the next one, so the change lands in ~17ms
+ * instead of easing across the gap and reading as a throb.
+ *
+ * The scale is front-loaded against them: most of the travel happens while the
+ * tube is still stuttering, so the stroke leaves the picture's edge as it
+ * lights rather than after it.
+ */
+@keyframes portraitReverb {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  2% {
+    opacity: 0;
+  }
+  2.5% {
+    opacity: 0.85;
+  }
+  5% {
+    opacity: 0.85;
+  }
+  5.5% {
+    opacity: 0.06;
+  }
+  7% {
+    opacity: 0.06;
+  }
+  7.5% {
+    opacity: 0.7;
+  }
+  9% {
+    opacity: 0.7;
+  }
+  9.5% {
+    opacity: 0.18;
+  }
+  11% {
+    opacity: 0.18;
+  }
+  11.5% {
+    opacity: 0.5;
+  }
+  18% {
+    transform: scale(1.05);
+  }
+  /* Lit, and drifting out on its own. */
+  64% {
+    opacity: 0.12;
+  }
+  78% {
+    opacity: 0;
+    transform: scale(1.13);
+  }
+  /* Dark for the rest of the turn, which is the room the other stroke rings
+     into before this one strikes again. */
+  100% {
+    opacity: 0;
+    transform: scale(1.13);
+  }
+}
+
+/*
+ * The résumé, then the education under it. Neither is headed, so this gap is
+ * the only thing separating them — set well wider than the rows inside either
+ * stack, or the two would read as one long list.
+ */
+.credentials {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.25rem, 4vw, 3rem);
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 0.75rem;
+  list-style: none;
 }
 
+/*
+ * One line, three columns: how long, where, what.
+ *
+ * The track sizes are stated here rather than derived from content, which is
+ * what lets the two stacks share a grid without being in one — a subgrid or a
+ * single table would align them, but only by making the résumé and the
+ * education the same list. Fixed first column because it holds the longest
+ * thing it will ever hold ("2025 – 2026") and the durations beside it are
+ * shorter; the other two divide what's left, weighted so the third column has
+ * room for a job title rather than an employer's name.
+ */
 .entry {
-  display: flex;
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr) minmax(0, 1.5fr);
+  gap: clamp(1rem, 3vw, 2.5rem);
   align-items: baseline;
-  justify-content: space-between;
-  gap: 1.5rem;
+  line-height: 1.4;
 }
 
-.institution {
-  display: block;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
-.detail {
-  display: block;
-  color: var(--ink-soft);
-  font-size: var(--step-small);
-  line-height: 1.35;
-}
-
+/* Three weights of ink, lightest to darkest to middling — the span is the
+   least of the three, the name is the row's subject, and what it was sits
+   between them. */
 .period {
-  flex-shrink: 0;
+  color: var(--ink-dim);
   font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  font-size: var(--step-small);
-  white-space: nowrap;
 }
 
-.muted .institution,
-.muted .detail,
-.muted .period {
+.name {
+  font-weight: 500;
+}
+
+.what {
+  color: var(--ink-soft);
+}
+
+.muted .period,
+.muted .name,
+.muted .what {
   color: var(--ink-muted);
 }
 
+/*
+ * Side by side, the prose runs out of measure before the section runs out of
+ * width. Stack them — the portrait is already first, so it stays the thing the
+ * text is introduced by — and let the picture run the full column, gutter to
+ * gutter, rather than keeping the desktop cap and leaving it stranded in the
+ * corner of a phone.
+ */
 @media (max-width: 820px) {
-  .grid {
-    grid-template-columns: 1fr;
+  .top {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.75rem, 5vw, 2.5rem);
+  }
+
+  .seam {
+    display: none;
+  }
+}
+
+/*
+ * Too narrow for three columns. The span moves to the end of the first line,
+ * held against the right edge, and what it was drops underneath the name — so
+ * a row becomes two lines rather than three columns crushed into one.
+ */
+@media (max-width: 700px) {
+  .list {
+    gap: 1.25rem;
+  }
+
+  .entry {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.15rem 1rem;
+  }
+
+  .period {
+    grid-area: 1 / 2;
+    text-align: right;
+  }
+
+  .name {
+    grid-area: 1 / 1;
+  }
+
+  .what {
+    grid-area: 2 / 1 / 3 / -1;
+  }
+}
+
+/*
+ * A phone reads the two section headings one after the other with nothing
+ * between them but a scroll, so they have to be stepped off their prose alike.
+ * This one now sits exactly where the filmmaker band's does — 0.9rem
+ * (Filmmaker.module.css, .heading).
+ *
+ * The margin goes so that .bio's own flex gap carries the whole distance, and
+ * that gap is already 0.9rem: the same number the other heading spends on
+ * margin, arrived at from the other direction. The leading is handled further
+ * up, by not applying there.
+ *
+ * 640px rather than this file's own 820/700 reflow points — those are about
+ * when the columns stop fitting, and this is about the phone, which is the
+ * width the rest of the site (and the section being matched) calls compact.
+ */
+@media (max-width: 640px) {
+  .bio h2 {
+    margin-bottom: 0;
   }
 }

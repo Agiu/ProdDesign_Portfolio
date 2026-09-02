@@ -7,14 +7,14 @@ export type HeroSlide = {
   /** Path under /public, or a full CDN URL once media moves off-repo. */
   image: string;
   alt: string;
-  /** Shown at bottom-right, above the tick blocks. */
+  /** Shown at bottom-right, above the carousel picker. */
   caption: string;
   /** Case study this slide represents — the caption links to `/case-study/[slug]`. */
   slug: string;
   /**
-   * Optional background video, layered over `image`. The still image is what
-   * the fractal-tile reveal assembles; once that finishes, if this is set, the
-   * video crossfades in on top and plays muted + looped.
+   * Optional background video, layered over `image`. The still is what shows
+   * through the hero's tear first; if this is set, the video fades in on top
+   * once it can play smoothly, muted + looped.
    */
   video?: string;
 };
@@ -33,8 +33,17 @@ export type ProjectMeta = {
   contributions: string[];
   /** How long it took, e.g. "4 weeks". Omit to drop the "Time" panel. */
   timeline?: string;
+  /** Optional subtitle under the timeline, e.g. the actual date range. */
+  timelineDetail?: string;
   /** Optional faculty/advisors — a secondary list under the team. */
-  advisors?: string[];
+  advisors?: Advisor[];
+};
+
+/** An advisor on a project. The title renders as a subtitle under the name. */
+export type Advisor = {
+  name: string;
+  /** Role and org, e.g. "Head of Design, Xbox". Omit for a bare name. */
+  title?: string;
 };
 
 export type CaseStudy = {
@@ -58,19 +67,58 @@ export type CaseStudy = {
   tags?: string[];
   /** Project metadata band under the hero. Studies without it skip the band. */
   meta?: ProjectMeta;
+  /**
+   * Archived studies stay in this list — their `/case-study/[slug]` page is
+   * still built and still reads — but they drop out of everything that links
+   * to them: the homepage list, the hero carousel, and the recommendations at
+   * the foot of a study. Use `listedCaseStudies` for anything that shows work.
+   */
+  archived?: boolean;
 };
 
 export type Credential = {
   institution: string;
+  /** The award, and any honour on it — the row's third column. */
   detail: string;
+  /** Years, written out — education is read as when, not as how long. */
   period: string;
   /** Dimmed in the education list — use for secondary entries. */
   muted?: boolean;
 };
 
+/**
+ * A résumé line. Deliberately the same three-part shape the education list
+ * uses — a span, a name, and what it was — so both stacks render through one
+ * set of rules in About.tsx and their columns line up down the whole section.
+ */
+export type Role = {
+  org: string;
+  title: string;
+  /** Time actually worked. Where a role is a run of stints (see below), this
+      is their sum, not the distance from the first start to the last end. */
+  months: number;
+};
+
+/**
+ * A span of time in the résumé's own units: months up to a year, then years to
+ * the nearest half past it. Held as a number in the entries and formatted here
+ * so the rule lives in one place — and so nothing has to be rewritten by hand
+ * when a span changes. Roles only: the education list is dated by year (see
+ * Credential), because a degree is read as when it happened, not how long it
+ * took.
+ */
+export const duration = (months: number) => {
+  if (months < 12) return `${months} mo${months === 1 ? "" : "s"}`;
+
+  const years = Math.round((months / 12) * 2) / 2;
+  const half = years % 1 !== 0;
+
+  return `${Math.floor(years)}${half ? "½" : ""} ${years === 1 ? "yr" : "yrs"}`;
+};
+
 export const hero = {
-  greeting: "caleb aguiar",
-  tagline: "i’m a product designer and software engineer with a love for",
+  greeting: "Caleb Aguiar",
+  tagline: "I’m a product designer and software engineer with a love for",
   /** Cycles in the tagline, one word/phrase visible at a time. Add or remove
       entries freely — the layout reserves space for whichever is longest. */
   highlights: [
@@ -81,10 +129,18 @@ export const hero = {
     "urban studies",
   ],
   /**
-   * The hero carousel. One tick block is rendered per slide, so the block count
-   * follows this array — add or remove entries freely.
+   * The hero carousel. One picker mark is rendered per slide, and each slide
+   * gets its own seeded tear in the hero's paper — so both follow this array.
+   * Add or remove entries freely.
    */
   slides: [
+    {
+      image: "https://media.kaelub.com/Xbox/Xbox_casestudy_hero.jpg",
+      alt: "Two players on a couch in a lamplit room, an XBOX Arcade lobby on the screen in front of them",
+      caption: "A Cloud Gaming Nook for XBOX + Discord",
+      slug: "xbox",
+      video: "https://media.kaelub.com/Xbox/xbox_vid.mp4",
+    },
     {
       image: "/images/hero-1.webp",
       alt: "Caleb riding a passenger ferry, motion-blurred waterfront behind him",
@@ -100,12 +156,6 @@ export const hero = {
       video: "https://media.kaelub.com/minigolfbackground_v1%20(1080p).mp4",
     },
     {
-      image: "/images/hero-3.webp",
-      alt: "Interface panels from a game-adjacent control system",
-      caption: "Steam Shopping UX Redesign",
-      slug: "3",
-    },
-    {
       image: "https://media.kaelub.com/WOS/Cover.jpg",
       alt: "Who Owns Seattle dashboard: an ownership map of South Lake Union with a scrubbable ownership-history timeline",
       caption: "Who Owns Seattle?",
@@ -114,21 +164,47 @@ export const hero = {
   ] as HeroSlide[],
 };
 
-export const caseStudiesIntro = {
-  heading: "case studies",
-  /** Sits opposite the heading, right-aligned behind a "+". */
-  note: "below is a collection of my work from academia, industry, and corporate work.",
-  /** Labels the break between the lead card and everything after it. Set at
-      reading size in the card summary's voice, not as an uppercase eyebrow. */
-  more: "more case studies",
-};
-
 /**
+ * Every study, archived ones included — this is what the `/case-study/[slug]`
+ * route builds from, so an archived page keeps working for anyone holding its
+ * link. Anything that *shows* work reads `listedCaseStudies` below instead.
+ *
  * Each slug matches a markdown file in `public/case studies/` and its
  * `/case-study/[slug]` page. Covers/heroes for minigolf and wos point at their
  * intended asset paths, which land when those image folders are added.
  */
 export const caseStudies: CaseStudy[] = [
+  {
+    slug: "xbox",
+    title: "Instant Matchmaking and Game Discovery",
+    summary:
+      "XBOX Arcade is matchmaking and game discovery combined, utilizing player data to help friend groups play.",
+    cover: "https://media.kaelub.com/Xbox/Xbox_casestudy_hero.jpg",
+    hero: "https://media.kaelub.com/Xbox/Xbox_casestudy_hero.jpg",
+    discipline: "Product Design",
+    year: "2026",
+    tags: ["Product Design", "Cloud Gaming", "Motion Design", "Prototyping"],
+    meta: {
+      role: "Prototyper, Story Strategist, and Designer",
+      timeline: "7 months",
+      timelineDetail: "Feb 2026 – Aug 2026",
+      team: [
+        "Caleb Aguiar",
+        "Clarisse Pelayo Sicat",
+        "Sauhee Han",
+        "Meera Forespring",
+      ],
+      advisors: [
+        { name: "John Snavely", title: "Head of Design, Xbox" },
+        { name: "Yessenia Garcia", title: "Technical Program Manager, Xbox" },
+      ],
+      contributions: [
+        "Led prototyping and strategy of key features such as an immediate group decision-making tool and adaptive information cards per group and category.",
+        "Owned art and design direction for hi-fi mockups, and implemented animation and motion design into our prototype for a smoother user experience.",
+        "Co-directed and produced a product pitch that fits the realm of Xbox and Discord, with funding from Netflix.",
+      ],
+    },
+  },
   {
     slug: "trinity-search",
     title: "Creating a Searching Suite for Trinity University",
@@ -172,12 +248,13 @@ export const caseStudies: CaseStudy[] = [
     slug: "trinity-edu",
     title: "Recentering Student Perspectives on Trinity.edu",
     summary:
-      "A UX audit and redesign proposal for Trinity University's website, refocused around what prospective and current students actually need instead of institutional messaging. (Work in progress.)",
+      "It's time for a renvisioning of a site with numerous perspectives to convince and support.",
     cover: "https://media.kaelub.com/Trinity-Redesign/Hero.jpg",
     hero: "https://media.kaelub.com/trinity-banner.jpg",
     discipline: "UX Research",
     year: "2024",
     tags: ["UX Research", "Higher Ed", "Website"],
+    archived: true,
   },
   {
     slug: "wos",
@@ -200,12 +277,13 @@ export const caseStudies: CaseStudy[] = [
     discipline: "Product Design",
     year: "2025",
     tags: ["Web", "Shopping UX", "Gaming"],
+    archived: true,
   },
   {
     slug: "minigolf",
     title: "Walk-Up-and-Play Minigolf",
     summary:
-      "A minigolf course built on nostalgia and spontaneity — finding the balance between complexity and clarity.",
+      "Desigining, programming, and building an interactive golf course",
     cover: "https://media.kaelub.com/Minigolf/1.png",
     hero: "https://media.kaelub.com/Minigolf/1.png",
     video: "https://media.kaelub.com/minigolfbackground_v1%20(1080p).mp4",
@@ -231,9 +309,51 @@ export const caseStudies: CaseStudy[] = [
   },
 ];
 
+/**
+ * The studies the site actually shows — the homepage list, the hero carousel,
+ * and the recommendations under a study all read this. Archive a study by
+ * setting `archived: true` on it above; its page stays built and reachable,
+ * it just stops being linked to from anywhere.
+ */
+export const listedCaseStudies = caseStudies.filter((study) => !study.archived);
+
 export const about = {
-  heading: "who am i?",
-  body: `My name is Caleb Aguiar (Kaelub) and I’m a UX Designer with a background in Software Engineering. Because of this I tend to prototype and enjoy immersing myself into all facets of my work. My projects explore the intersection of UI Design, interaction design, storytelling, AI, and sometimes social activism. I appreciate seeing and discussing where design can enhance a person’s wellness or where it can be used to promote social good.`,
+  heading: "A Little About Me",
+  portrait: {
+    src: "https://media.kaelub.com/caleb_a_profile.jpg",
+    alt: "Caleb Aguiar",
+  },
+  /* Three passes at the same answer — who, what, and why. Set as three short
+     paragraphs with air between them (see About.tsx). */
+  body: [
+    `My name is Caleb Aguiar (Kaelub) and I’m a UX Designer with a background in Software Engineering.`,
+
+    `Because of this molding of two subjects, my projects tend to explore UI Design, interaction design, storytelling, artificial intelligence, web engineering, and sometimes social activism.`,
+
+    `During my freetime I'm either playing videos games, composing music, or practicing my violin.`,
+  ],
+  /* Sits under the bio as a quiet closing fact, not part of the prose above
+     it. The footer states this too (see `footer.now`), which is fine — that
+     one is a contact detail, this one is part of the introduction. */
+  location: "Located in Seattle, Washington",
+  /*
+   * Condensed from the full history: consecutive stints at one employer are
+   * folded into the role they add up to, so each line is a job rather than a
+   * contract. Their months are summed rather than measured end to end — the
+   * Trinity UX line has a break in the middle of it (the masters), and counting
+   * across that would bill time not worked.
+   *
+   * No descriptions: the rows are one line each by design (see About.tsx), and
+   * the case studies below are where the work actually gets explained.
+   */
+  experience: [
+    { org: "Microsoft", title: "Product Designer (MHCI+D Capstone)", months: 7 },
+    { org: "Trinity University", title: "UX Designer", months: 18 },
+    { org: "ForeFlight", title: "Software Engineer Intern", months: 3 },
+    { org: "Spend With Us", title: "Software Development Intern", months: 5 },
+    { org: "Trinity University", title: "Creative Producer Intern", months: 32 },
+  ] satisfies Role[],
+
   education: [
     {
       institution: "University of Washington",
@@ -241,13 +361,13 @@ export const about = {
       period: "2025 – 2026",
     },
     {
-      institution: "Trinity University · Cum Laude",
-      detail: "B.S. in Computer Science",
+      institution: "Trinity University",
+      detail: "B.S. Computer Science · Cum Laude",
       period: "2021 – 2025",
     },
     {
-      institution: "University of Sydney · Study Abroad",
-      detail: "Virtual Reality HCI",
+      institution: "University of Sydney",
+      detail: "Study Abroad · Virtual Reality HCI",
       period: "2024",
       muted: true,
     },
@@ -255,7 +375,7 @@ export const about = {
 };
 
 export const footer = {
-  heading: "build with me :]",
+  heading: "Build with me :]",
   /** Sits under the heading — the one thing you actually want people to do. */
   invitation:
     "Always up for talking design, film, or a good idea that needs a prototype.",
@@ -269,14 +389,13 @@ export const footer = {
   ],
 
   now: [
-    { label: "Studying", value: "MHCI + Design, University of Washington" },
     { label: "Based in", value: "Seattle, WA" },
     { label: "Open to", value: "Product & UX design roles" },
   ],
 };
 
 export const filmmaker = {
-  heading: "i’m also a filmmaker",
+  heading: "I’m also a filmmaker",
   body: "Beyond UX design, I spend time exploring videography, 3D motion, and short films to tell compelling visual stories. Go check them out!",
   image: "/images/filmmaker.webp",
   imageAlt: "Still frame from a short film — a figure beside a swimming pool",

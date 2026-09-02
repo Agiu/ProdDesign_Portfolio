@@ -1,7 +1,6 @@
 /**
- * The shared machinery behind every block mosaic on the site — the footer's
- * corner clusters (footerBlocks.ts) and the case-study break's strip
- * (breakBlocks.ts).
+ * The shared machinery behind every block mosaic on the site — currently the
+ * footer's corner clusters (footerBlocks.ts).
  *
  * A mosaic is laid out in grid units of the smallest square. `a` is the offset
  * from the corner the cluster is anchored to (so a right-corner block measures

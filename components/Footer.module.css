@@ -8,9 +8,22 @@
   position: relative;
   overflow: hidden;
   background: var(--night);
-  color: #fff;
+  color: #e9e7e2;
 
   --u: clamp(13px, 1.7vw, 26px);
+
+  /*
+   * Three tiers of paper cream, and nothing in between. The footer used to carry
+   * four (45/65/85/100%), which is what made a single dark panel read as
+   * several unrelated ones. Rank is now the only thing a colour encodes:
+   * --fg is what you act on, --fg-soft is what you read, --fg-faint names
+   * things. Same for size — display for the greeting, lead for the mailto,
+   * body for every value, small for every label. One job each, per globals.css.
+   */
+  --fg: #e9e7e2;
+  --fg-soft: rgb(233 231 226 / 72%);
+  --fg-faint: rgb(233 231 226 / 44%);
+  --rule: rgb(233 231 226 / 12%);
 
   /* Bottom padding clears the left cluster (4 units tall), so the base row
      never runs underneath it. */
@@ -29,7 +42,7 @@
  */
 .block {
   position: absolute;
-  background: #ffffff;
+  background: #e9e7e2;
   transform-origin: center;
 }
 
@@ -51,7 +64,7 @@
 }
 
 .lead {
-  max-width: 30ch;
+  max-width: 34ch;
 }
 
 /* Keep the greeting on a single line — it's short enough that wrapping just
@@ -62,17 +75,22 @@
 
 .invitation {
   margin-top: 0.9rem;
-  color: rgb(255 255 255 / 65%);
+  color: var(--fg-soft);
   text-wrap: pretty;
 }
 
-/* Underline retracts to the right on hover, same gesture as the hero's links. */
+/* The one thing to actually do down here, so it's the only link at full paper
+   and the only text between the heading and the body copy that steps up a size.
+   No extra weight on top of that — size, colour and a standing underline are
+   already saying it three times. The underline retracts to the right on hover,
+   same gesture as the hero's links. */
 .email {
   position: relative;
   display: inline-block;
-  margin-top: 1.6rem;
+  margin-top: 1rem;
   font-size: var(--step-lead);
-  font-weight: 500;
+  line-height: 1.25;
+  color: var(--fg);
 }
 
 .email::after {
@@ -94,30 +112,29 @@
 
 .columns {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr);
   gap: clamp(2rem, 4vw, 3.5rem);
-  max-width: 52ch;
+  max-width: 56ch;
 }
 
-.label {
-  margin-bottom: 1rem;
-  font-size: var(--step-small);
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: rgb(255 255 255 / 45%);
+/* A hairline over each group, matching the rules on the case-study pages —
+   the only thing marking "Elsewhere" and "Now" as separate groups now that
+   neither carries a heading. */
+.column {
+  border-top: 1px solid var(--rule);
+  padding-top: 1.1rem;
 }
 
 .links {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.6rem;
   list-style: none;
 }
 
 .link {
   position: relative;
-  color: rgb(255 255 255 / 85%);
+  color: var(--fg-soft);
   transition: color var(--dur) var(--ease);
 }
 
@@ -135,7 +152,7 @@
 }
 
 .link:hover {
-  color: #fff;
+  color: var(--fg);
 }
 
 /* Wipes in from the left — the inverse of the email's retract, so the two read
@@ -145,35 +162,53 @@
   transform-origin: left;
 }
 
+/*
+ * Two real columns rather than a fixed-width key and a wrapped value, so the
+ * key column measures itself against the longest key and every value starts on
+ * the same axis. The rows are `display: contents` so the dl's own grid tracks
+ * apply to the dt/dd pairs inside them.
+ */
 .now {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 1.25rem;
+  row-gap: 0.6rem;
+  line-height: 1.45;
 }
 
 .nowRow {
-  display: flex;
-  gap: 0.75rem;
-  font-size: var(--step-small);
-  line-height: 1.4;
+  display: contents;
 }
 
+/* Same size as the values it labels — rank is carried by colour alone, which
+   is what keeps this list and the Elsewhere list beside it reading as one
+   system instead of two. */
 .nowRow dt {
-  flex-shrink: 0;
-  width: 5.5rem;
-  color: rgb(255 255 255 / 45%);
+  color: var(--fg-faint);
 }
 
 .nowRow dd {
-  color: rgb(255 255 255 / 85%);
+  color: var(--fg-soft);
+  text-wrap: pretty;
 }
 
+/*
+ * Metadata, so it takes the site's eyebrow treatment (see About.module.css)
+ * rather than a fourth flavour of small grey text. No rule above it, unlike
+ * the two column groups: the base row
+ * sits low enough to cross the mosaic's right cluster, and a 12%-paper hairline
+ * drawn over solid cream squares just reads as a broken line. The inner gap
+ * already separates it.
+ */
 .base {
   display: flex;
   align-items: baseline;
   gap: 1.5rem;
   font-size: var(--step-small);
-  color: rgb(255 255 255 / 45%);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
 }
 
 @media (max-width: 700px) {

@@ -1,0 +1,33 @@
+/*
+ * The canvas fills whatever box it is given — the portrait's size and shape
+ * belong to the layout that places it (About.module.css), not to the drawing.
+ */
+.frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* The picture is drawn at the box's own device resolution, so the browser
+     should never resample it on the way to the screen — that would soften
+     exactly the hard block edges the whole effect is made of. */
+  image-rendering: pixelated;
+  /* Holds the box while the photograph is still coming down the wire. Faint
+     rather than dark: the canvas sits on paper, and a black square flashing
+     into a cream section is louder than the thing it is standing in for. */
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+/* Stands in when the script that does the drawing never runs. Sharp, because
+   nothing would ever be there to resolve it. */
+.fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

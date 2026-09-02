@@ -29,7 +29,10 @@ export function YouTubeEmbed({ content }: { content: string }) {
         {playing ? (
           <iframe
             className={styles.videoFrame}
-            src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1`}
+            // Starts muted — autoplay alone doesn't guarantee sound is off,
+            // and minigolf alone stacks six of these; the viewer unmutes via
+            // YouTube's own controls (still shown) if they want audio.
+            src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1`}
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen

@@ -20,6 +20,36 @@
 }
 
 /*
+ * The frame — the homepage hero's, on the same 18px and the same breakpoint
+ * (Hero.module.css), so a reader crossing from one to the other sees the same
+ * gesture rather than two near-misses. Open at the bottom for the same reason:
+ * the legs run down into the page below and the white simply carries on.
+ *
+ * Border rather than padding, because everything in here is absolutely
+ * positioned — .heroImage (Next's `fill`), .heroVideo and .heroScrim are all
+ * inset: 0, and an abs-positioned child lays out against its ancestor's
+ * *padding* box. Padding would leave all three exactly where they are and move
+ * only .heroInner. A border shrinks that padding box, so all four inset at once
+ * and the overflow clip comes in with them.
+ *
+ * box-sizing is border-box, so the 18px comes out of the height clamp instead
+ * of adding to it — the banner still occupies the same strip, and .heroInner's
+ * height: 100% still resolves against the content box.
+ *
+ * Every study gets it now, meta band or not: the vitals row that used to
+ * follow a study's hero was a dark card butted flush against it (no border
+ * between the two dark surfaces); now that row sits on plain paper, the same
+ * "white carries on below" assumption this frame was already making for a
+ * study with no metadata holds for every study.
+ */
+@media (min-width: 1024px) {
+  .hero {
+    border: 18px solid var(--paper);
+    border-bottom: 0;
+  }
+}
+
+/*
  * Load fade — shared by the hero banner image (FadeImage.tsx), every
  * markdown body image (FigureImage.tsx), and the hero video (HeroVideo.tsx).
  * All three start hidden and cross-fade in once actually ready, rather than
@@ -73,23 +103,141 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  color: #fff;
+  color: #e9e7e2;
 }
 
+/*
+ * Title + summary, as their own box now that .heroInner has a second thing to
+ * lay out beside them (.heroVitals) rather than being its only children.
+ * min-width: 0 so this is the side that gives if the two ever get tight —
+ * .heroVitals is short, fixed-content facts with nowhere shorter to wrap to.
+ */
+.heroText {
+  min-width: 0;
+}
+
+/*
+ * Role and Time (CaseHeroVitals in CaseMeta.tsx), set into the hero's own
+ * bottom-right — empty paper on a wide screen otherwise, while the study's
+ * two shortest facts queued up in the band below instead. Own colour scale
+ * rather than reusing .metaLabel/.metaValue: those are tuned for ink on
+ * paper, and this sits on the same scrim .summary reads against.
+ *
+ * Desktop only. A phone's hero is short on both height and width to spend on
+ * a second column — CaseMeta's own .metaMobileOnly groups carry the same two
+ * facts back into the band below at that width instead.
+ */
+.heroVitals {
+  display: none;
+}
+
+@media (min-width: 761px) {
+  .heroInner {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .heroVitals {
+    display: flex;
+    flex: none;
+    gap: clamp(1.5rem, 3vw, 2.75rem);
+    text-align: right;
+  }
+
+  .heroVitalsGroup {
+    flex: none;
+  }
+}
+
+.heroVitalsLabel {
+  margin-bottom: 0.4rem;
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgb(233 231 226 / 62%);
+}
+
+.heroVitalsValue {
+  max-width: 20ch;
+  font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.0625rem);
+  font-weight: 600;
+  line-height: 1.3;
+  color: #e9e7e2;
+}
+
+.heroVitalsDetail {
+  margin-top: 0.15rem;
+  font-size: var(--step-small);
+  line-height: 1.3;
+  color: rgb(233 231 226 / 62%);
+}
+
+/*
+ * The back control (BackLink.tsx). Fixed to the top-left corner of the
+ * viewport rather than stacked above the title, so it stays reachable for the
+ * whole study instead of scrolling away with the hero.
+ *
+ * `top` is the Navigation rail's own sticky offset, repeated verbatim — once
+ * the page is under the fold the link and the rail come to rest on the same
+ * line, and the link sits out in the left margin beside it. `left` is the page
+ * gutter, pulled back by the hit-area padding so the glyph itself — not its
+ * box — lands on the gutter line the rest of the page is set to.
+ *
+ * Below 1180px that margin closes up: the content column runs full-bleed to
+ * the gutter, which is where this link already is, so the rail would stick
+ * straight through it. It drops below the link instead — see the rule beside
+ * .nav further down.
+ */
 .back {
+  position: fixed;
+  top: clamp(1.5rem, 4vh, 2.5rem);
+  left: calc(var(--gutter) - 0.4rem);
+  z-index: 40;
   display: inline-flex;
   align-items: center;
-  width: fit-content;
-  /* Sits directly above the title, grouped with it at the bottom of the hero
-     rather than pinned to the top. */
-  margin-bottom: 0.9rem;
-  color: rgb(255 255 255 / 85%);
-  transition: transform var(--dur) var(--ease), color var(--dur) var(--ease);
+  justify-content: center;
+  padding: 0.4rem;
+  transition:
+    transform var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 }
 
 .back:hover {
-  color: #fff;
   transform: translateX(-3px);
+}
+
+/* Over the hero and the metadata band — cream ink on dark ground. */
+.back[data-ground="dark"] {
+  color: rgb(233 231 226 / 85%);
+}
+
+.back[data-ground="dark"]:hover {
+  color: #e9e7e2;
+}
+
+/*
+ * Over the page body. The ground it carries is the body's own cream, which is
+ * invisible out in the empty margin where this normally sits — it earns its
+ * keep only on the phone stack, where the link floats over running text and
+ * would otherwise tangle with it.
+ */
+.back[data-ground="paper"] {
+  color: var(--ink-soft);
+  background: var(--paper);
+  /* A halo of the same cream, solid at the glyph and feathered out past it.
+     Out in the desktop margin this paints cream on cream and is invisible; on
+     the phone stack, where the link floats over running text, it is the only
+     thing keeping the glyph off the words — and it feathers so the copy slips
+     under it rather than hitting a hard patch. */
+  box-shadow:
+    0 0 0 0.3rem var(--paper),
+    0 0 1.4rem 0.9rem var(--paper);
+}
+
+.back[data-ground="paper"]:hover {
+  color: var(--ink);
 }
 
 .title {
@@ -105,274 +253,169 @@
   margin-top: 0.75rem;
   font-size: var(--step-body);
   line-height: 1.45;
-  color: rgb(255 255 255 / 88%);
+  color: rgb(233 231 226 / 88%);
 }
 
 /* ---- Project metadata band (CaseMeta.tsx) -----------------------------
- * From the Figma: a full-width dark card under the hero. A padded left area
- * holds Team Members + My Contributions (two columns on desktop); a flush
- * right stack holds two grey panels — My Role over Time. The shared pixel
- * ornament nests in the bottom-left corner. Everything collapses to one
- * column below the same 760px breakpoint the page body uses.
+ *
+ * The vitals under the hero, minus the two that now live in the hero itself
+ * (Role and Time — see .heroVitals below). What's left is a name list and a
+ * paragraph, which is short enough to sit in one row with no internal
+ * divider: Team on the left at its own width, Contributions taking the rest.
+ * On a phone, where the hero has nowhere to put Role/Time, .metaMobileOnly
+ * brings them back into Team's column instead — see CaseHeroVitals in
+ * CaseMeta.tsx for why that's a second copy in the DOM rather than one moved
+ * around with CSS `order`.
+ *
+ * No toggle. A row this short has nothing worth hiding.
  */
 .metaWrap {
   max-width: var(--measure);
   margin-inline: auto;
   padding-inline: var(--gutter);
-  /* Butts directly against the bottom of the hero — no gap in between. */
-  padding-top: 0;
+  padding-block: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 2.5vw, 1.75rem);
 }
 
-.metaCard {
-  position: relative;
-  color: #fff;
-  overflow: hidden;
-
-  /* Corner ornament — the 2×2 pixel motif (bright corner cell, two greys, one
-   * empty) — painted as background layers on the card itself rather than a
-   * separate element. It's the same paint as the card's dark fill, so as the
-   * collapse animates the card's height the ornament rides the descending
-   * bottom edge in perfect lockstep with that fill — an absolutely-positioned
-   * element tracks the same edge via layout and trails it by a frame. The
-   * empty top-right cell falls back to the #1b1b1b fill, exactly the 3-of-4
-   * look the old markup had. */
-  --orn-cell: clamp(20px, 3vw, 26px);
-  background-color: #1b1b1b;
-  background-image:
-    linear-gradient(#fff 0 0),
-    linear-gradient(#e5e5e5 0 0),
-    linear-gradient(#bababa 0 0);
-  background-repeat: no-repeat;
-  background-size: var(--orn-cell) var(--orn-cell);
-  background-position:
-    /* white bottom-left, grey bottom-right, grey one cell up on the left */
-    left 0 bottom 0,
-    left var(--orn-cell) bottom 0,
-    left 0 bottom var(--orn-cell);
-}
-
-/* Full-width bar across the top — the collapse handle. Its hairline underline
-   drops away once collapsed, leaving a clean standalone bar. */
-.metaToggle {
+.metaRow {
   display: flex;
-  align-items: center;
-  /* Chevron sits right beside the label rather than pushed to the far edge. */
-  justify-content: flex-start;
-  gap: 0.55rem;
-  width: 100%;
-  padding: clamp(0.85rem, 2vw, 1.15rem) clamp(1.6rem, 3.2vw, 2.4rem);
-  background: #1b1b1b;
-  color: #fff;
-  border: 0;
-  border-bottom: 1px solid rgb(255 255 255 / 10%);
-  cursor: pointer;
-  text-align: left;
-  font: inherit;
-  transition: border-color var(--dur) var(--ease);
+  flex-wrap: wrap;
+  column-gap: clamp(2.5rem, 6vw, 4.5rem);
+  /* Also the whole of the spacing between groups once they stack on a phone,
+     which is why nothing in here carries a margin of its own for it. */
+  row-gap: clamp(1.5rem, 5vw, 1.75rem);
+  padding-block: 0 clamp(1.1rem, 2.2vw, 1.5rem);
+  /* Bottom only. The hero's own bottom edge is already the line this band
+     sits under; a second rule a few pixels beneath it just boxed it in. */
+  border-bottom: 1px solid rgb(0 0 0 / 12%);
 }
 
-.metaToggle[aria-expanded="false"] {
-  border-bottom-color: transparent;
-}
-
-.metaToggleLabel {
-  font-size: var(--step-small);
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: rgb(255 255 255 / 70%);
-  transition: color var(--dur) var(--ease);
-}
-
-.metaChevron {
+.metaGroup {
   flex: none;
-  color: rgb(255 255 255 / 70%);
-  transition: transform var(--dur) var(--ease), color var(--dur) var(--ease);
+  min-width: 11rem;
 }
 
-.metaChevronCollapsed {
-  transform: rotate(-180deg);
+/* The one value in the row that's actual prose — full sentences, not a name
+   or a phrase — so it's the one group that grows to fill whatever width
+   Team leaves it, and the one whose lines are capped for readability rather
+   than left to run the row's full, wrap-however-wide width. */
+.metaContribGroup {
+  flex: 1 1 22rem;
+  max-width: 58ch;
 }
 
-.metaToggle:hover .metaToggleLabel,
-.metaToggle:hover .metaChevron {
-  color: #fff;
+/*
+ * Role and Time. The hero carries them from 761px up (.heroVitals), so up
+ * there these two are simply not drawn.
+ */
+.metaMobileOnly {
+  display: none;
 }
 
-.metaToggle:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: -2px;
+@media (min-width: 761px) {
+  /*
+   * The one place anything is reordered. Source order is the phone's reading
+   * order (see CaseMeta.tsx), which leaves Contributions ahead of Team — but
+   * side by side in a row the name list belongs on the left, against the
+   * gutter, with the prose given the rest of the width.
+   */
+  .metaGroup {
+    order: 1;
+  }
+
+  .metaContribGroup {
+    order: 2;
+  }
 }
 
-/* Collapse mechanism: animate the single grid row from 1fr to 0fr while the
-   inner wrapper clips its overflow. Reduced motion flattens the transition
-   via the global rule, so this just snaps for those users. */
-.metaCollapse {
-  display: grid;
-  grid-template-rows: 1fr;
-  transition: grid-template-rows var(--dur) var(--ease);
+@media (max-width: 760px) {
+  .metaGroup,
+  .metaContribGroup {
+    flex-basis: 100%;
+  }
+
+  .metaMobileOnly {
+    display: block;
+  }
 }
 
-.metaCollapse[data-collapsed="true"] {
-  grid-template-rows: 0fr;
-}
-
-.metaClip {
-  min-height: 0;
-  overflow: hidden;
-}
-
-/* The content grid — the padded left area and the flush right stack. */
-.metaBody {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-}
-
-/* Left area — Team + Contributions. Padded away from the card edges; the
-   bottom padding also keeps the copy clear of the corner ornament. */
-.metaMain {
-  /* Locks the phone stack gap and the top inset to one value, so the space
-     from the hero down to Team Members matches the space between Team Members
-     and My Contributions. The desktop override below unlinks them. */
-  --meta-stack-gap: clamp(2.5rem, 6vw, 3.25rem);
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--meta-stack-gap);
-  padding: var(--meta-stack-gap) clamp(1.6rem, 3.2vw, 2.4rem)
-    clamp(2.75rem, 5vw, 3.5rem);
-}
-
-/* Small uppercase eyebrow over each field, on both the dark and grey panels. */
 .metaLabel {
-  margin-bottom: clamp(0.7rem, 1.6vw, 1rem);
+  margin-bottom: 0.5rem;
   font-size: var(--step-small);
   font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: rgb(255 255 255 / 55%);
+  letter-spacing: 0.02em;
+  color: var(--ink-muted);
 }
 
-/* A second label further down its column (e.g. Advisors under the team). */
+/* A second label further down its column (Advisors, under Team). */
 .metaLabelStacked {
-  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+  margin-top: 0.9rem;
+}
+
+.metaValue {
+  font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+/* The real date range, a step down under the rounded duration. */
+.metaTimeDetail {
+  margin-top: 0.15rem;
+  font-size: var(--step-small);
+  line-height: 1.3;
+  color: var(--ink-dim);
 }
 
 .metaTeam {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: clamp(0.35rem, 1vw, 0.6rem);
-  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem);
-  line-height: 1.25;
-  color: rgb(255 255 255 / 82%);
+  gap: 0.25rem;
+  font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+  line-height: 1.35;
+  color: var(--ink-soft);
 }
 
 /* The author, first in the list — read a step stronger than the rest. */
 .metaTeamLead {
   font-weight: 700;
-  color: #fff;
+  color: var(--ink);
 }
 
+/* One line per advisor — name, then role and org run in after a comma rather
+   than dropped to a line of their own. Two lines each was the single biggest
+   thing the old card spent height on for the studies that had them. */
+.metaAdvisors {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: var(--step-small);
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.metaAdvisorTitle {
+  color: var(--ink-dim);
+}
+
+/*
+ * No bullet and no hanging indent — the entries set flush left like the name
+ * list beside them, which is what keeps the two columns reading as one band
+ * rather than a list next to a paragraph.
+ *
+ * The gap is doing the work a marker used to, so it's wider than it was: with
+ * nothing but space between two wrapped sentences, too tight a gap reads them
+ * as one paragraph.
+ */
 .metaContributions {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: clamp(0.55rem, 1.4vw, 0.85rem);
-  max-width: 52ch;
-  font-size: clamp(0.9375rem, 0.9rem + 0.25vw, 1.0625rem);
+  gap: 0.7rem;
+  font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
   line-height: 1.4;
-  color: rgb(255 255 255 / 82%);
-}
-
-/* Square bullet in the site's no-radius language, hung in the left margin. */
-.metaContributions li {
-  position: relative;
-  padding-left: 1.35rem;
-}
-
-.metaContributions li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.5em;
-  width: 6px;
-  height: 6px;
-  background: rgb(255 255 255 / 55%);
-}
-
-/* Right stack — two grey panels, flush to the card's top/right/bottom edges.
-   Role auto-heights to its content; Time takes the remaining space so the
-   large value has room, echoing the Figma proportions. */
-.metaSide {
-  display: flex;
-  flex-direction: column;
-}
-
-.metaRole,
-.metaTime {
-  padding: clamp(1.4rem, 3vw, 2rem) clamp(1.5rem, 3.2vw, 2.15rem);
-}
-
-.metaRole {
-  background: #5e5e5e;
-}
-
-.metaTime {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  /* Extra room below the value on the phone stack, so Time doesn't sit tight
-     against the bottom edge. Reset to the shared inset on desktop below. */
-  padding-bottom: clamp(3rem, 11vw, 4.5rem);
-  /* A faint dot-grid clustered in the bottom-right for a bit of flare: the
-     dots tile the whole panel, then a linear gradient of the panel colour
-     fading to transparent covers all but the bottom-right corner. Kept at a
-     low alpha so it stays a texture, not a pattern. */
-  background-color: #353535;
-  background-image: linear-gradient(
-      to top left,
-      rgb(53 53 53 / 0) 0%,
-      #353535 55%
-    ),
-    radial-gradient(rgb(255 255 255 / 12%) 1px, transparent 1.5px);
-  background-repeat: no-repeat, repeat;
-  background-size:
-    100% 100%,
-    11px 11px;
-  background-position:
-    center,
-    right bottom;
-}
-
-/* Role + Time values share the Team Members size — bold, but not oversized. */
-.metaRoleValue,
-.metaTimeValue {
-  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem);
-  font-weight: 700;
-  line-height: 1.2;
-  color: #fff;
-}
-
-.metaRoleValue {
-  text-wrap: balance;
-}
-
-@media (min-width: 760px) {
-  .metaBody {
-    grid-template-columns: minmax(0, 1fr) minmax(230px, 300px);
-  }
-
-  .metaMain {
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    gap: clamp(2rem, 4.5vw, 4rem);
-    /* Side by side now — the top inset no longer needs to match the row gap. */
-    padding-top: clamp(1.6rem, 3.2vw, 2.4rem);
-  }
-
-  .metaTime {
-    padding-bottom: clamp(1.4rem, 3vw, 2rem);
-  }
+  color: var(--ink-soft);
 }
 
 /* ---- Body: nav rail + content ----------------------------------------- */
@@ -392,6 +435,19 @@
   position: sticky;
   top: clamp(1.5rem, 4vh, 2.5rem);
   align-self: start;
+}
+
+/*
+ * Between the phone stack and the width where the page's outer margin opens
+ * up, the rail and the fixed back link share the same gutter — so the rail
+ * parks below the link rather than under it. Only the stuck position moves:
+ * in normal flow the rail starts well down the page, clear of the link
+ * anyway. See .back above.
+ */
+@media (min-width: 761px) and (max-width: 1179px) {
+  .nav {
+    top: calc(clamp(1.5rem, 4vh, 2.5rem) + 3.5rem);
+  }
 }
 
 .navList {
@@ -526,10 +582,10 @@
 
 .figureImg {
   width: 100%;
-  /* Pure white, so a transparent PNG (product renders, sketches, diagrams)
-     sits on white rather than showing the old --shade grey through its
+  /* The page's own paper cream, so a transparent PNG (product renders,
+     sketches, diagrams) sits on paper rather than showing --shade grey through its
      transparent areas. Invisible behind fully opaque images. */
-  background: #fff;
+  background: #e9e7e2;
 }
 
 /* Corner affordance signalling the image is zoomable — quiet until hovered
@@ -542,7 +598,7 @@
   place-items: center;
   width: 32px;
   height: 32px;
-  color: #fff;
+  color: #e9e7e2;
   background: rgb(0 0 0 / 55%);
   opacity: 0;
   transition: opacity var(--dur) var(--ease);
@@ -559,7 +615,7 @@
 }
 
 /* ---- Lightbox ------------------------------------------------------------
- * Full-size view of a figure image. White frame (not black) so a transparent
+ * Full-size view of a figure image. Paper frame (not black) so a transparent
  * PNG reads the same way it does inline, just larger — see .figureImg.
  */
 .lightbox {
@@ -583,7 +639,7 @@
 .lightboxImg {
   max-width: 100%;
   max-height: 90vh;
-  background: #fff;
+  background: #e9e7e2;
   cursor: default;
   animation: lightbox-img-in 260ms var(--ease);
 }
@@ -603,7 +659,7 @@
   place-items: center;
   width: 44px;
   height: 44px;
-  color: rgb(255 255 255 / 80%);
+  color: rgb(233 231 226 / 80%);
   background: none;
   border: 0;
   cursor: pointer;
@@ -614,12 +670,12 @@
 
 .lightboxClose:hover,
 .lightboxClose:focus-visible {
-  color: #fff;
-  background: rgb(255 255 255 / 12%);
+  color: #e9e7e2;
+  background: rgb(233 231 226 / 12%);
 }
 
 .lightboxClose:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid #e9e7e2;
   outline-offset: 2px;
 }
 
@@ -671,8 +727,7 @@
   margin-bottom: 0.5rem;
   font-size: var(--step-label, 0.6875rem);
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--ink-dim);
 }
 
@@ -702,13 +757,13 @@
   margin-block: clamp(0.5rem, 1.5vw, 1rem);
   margin-inline: auto;
   padding: clamp(1.15rem, 2.5vw, 1.5rem) clamp(1.35rem, 3vw, 1.75rem);
-  background: #1b1b1b;
-  color: #fff;
+  background: #2a2a2a;
+  color: #e9e7e2;
   text-decoration: none;
   transition: transform var(--dur) var(--ease);
 }
 
-/* Hover lift only — the fill stays the single #1b1b1b (no darken-on-hover). */
+/* Hover lift only — the fill stays the single #2a2a2a (no darken-on-hover). */
 .mdButton:hover {
   transform: translateY(-2px);
 }
@@ -743,14 +798,14 @@
 .mdButtonRule {
   height: 3px;
   margin-top: clamp(0.5rem, 1.1vw, 0.75rem);
-  background: #fff;
+  background: #e9e7e2;
 }
 
 .mdButtonArrow {
   flex: none;
   width: clamp(1.75rem, 4vw, 2.25rem);
   height: clamp(1.75rem, 4vw, 2.25rem);
-  color: #fff;
+  color: #e9e7e2;
   transition: transform var(--dur) var(--ease);
 }
 
@@ -791,11 +846,11 @@
   flex-direction: column;
   min-height: clamp(220px, 20vw, 280px);
   padding: clamp(1.5rem, 3vw, 2.25rem);
-  color: #fff;
-  background-color: #1b1b1b;
+  color: #e9e7e2;
+  background-color: #2a2a2a;
   /* Faint dot-grid texture from the Figma card fill. */
   background-image: radial-gradient(
-    rgb(255 255 255 / 6%) 1px,
+    rgb(233 231 226 / 6%) 1px,
     transparent 1.5px
   );
   background-size: 13px 13px;
@@ -807,7 +862,7 @@
   font-size: clamp(0.9rem, 0.86rem + 0.2vw, 1rem);
   font-weight: 500;
   line-height: 1.3;
-  color: rgb(255 255 255 / 92%);
+  color: rgb(233 231 226 / 92%);
 }
 
 .statBottom {
@@ -831,7 +886,7 @@
   width: clamp(1.6rem, 3vw, 2.15rem);
   height: clamp(1.6rem, 3vw, 2.15rem);
   margin-bottom: 0.35rem;
-  color: #fff;
+  color: #e9e7e2;
 }
 
 /* ---- Custom block: List Component (ListBlock.tsx) ----------------------
@@ -853,8 +908,8 @@
   align-items: center;
   gap: clamp(1.15rem, 3vw, 1.85rem);
   padding: clamp(1.35rem, 3vw, 1.85rem) clamp(1.5rem, 3.5vw, 2.35rem);
-  background: #1b1b1b;
-  color: #fff;
+  background: #2a2a2a;
+  color: #e9e7e2;
   overflow: hidden;
 }
 
@@ -862,7 +917,7 @@
   flex: none;
   width: clamp(2rem, 4.5vw, 2.75rem);
   height: clamp(2rem, 4.5vw, 2.75rem);
-  color: #fff;
+  color: #e9e7e2;
 }
 
 .cardListBody {
@@ -876,7 +931,7 @@
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  color: #fff;
+  color: #e9e7e2;
 }
 
 .cardListDesc {
@@ -884,7 +939,7 @@
   max-width: 68ch;
   font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
   line-height: 1.45;
-  color: rgb(255 255 255 / 74%);
+  color: rgb(233 231 226 / 74%);
   text-wrap: pretty;
 }
 
@@ -896,7 +951,7 @@
   font-size: clamp(1rem, 0.94rem + 0.3vw, 1.1875rem);
   font-weight: 500;
   line-height: 1.4;
-  color: #fff;
+  color: #e9e7e2;
   text-wrap: pretty;
 }
 
@@ -948,7 +1003,7 @@
 .cardListOrnament[data-corner="tr"] i:nth-child(2),
 .cardListOrnament[data-corner="bl"] i:nth-child(3),
 .cardListOrnament[data-corner="br"] i:nth-child(4) {
-  background: #fff;
+  background: #e9e7e2;
 }
 
 @media (max-width: 520px) {
@@ -1022,14 +1077,14 @@
   min-width: 0;
 }
 
-/* Eyebrow treatment — the same uppercase + tracked idiom as the other labels
-   on the page, at full ink weight so it carries the notice. */
+/* Eyebrow treatment — the same tracked idiom as the other labels on the page,
+   at full ink weight so it carries the notice. Set as authored, not forced to
+   caps (see .metaLabel above for why). */
 .calloutLabel {
   font-size: var(--step-small);
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.02em;
   line-height: 1.2;
-  text-transform: uppercase;
   color: var(--ink);
 }
 
@@ -1055,14 +1110,14 @@
 .video {
   /* A thin dark border framing the video. */
   padding: clamp(6px, 1vw, 10px);
-  background: #1b1b1b;
+  background: #2a2a2a;
 }
 
 .videoStage {
   position: relative;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  background: #000;
+  background: #2a2a2a;
 }
 
 .videoFrame {
@@ -1113,9 +1168,9 @@
   place-items: center;
   width: clamp(52px, 9vw, 72px);
   height: clamp(52px, 9vw, 72px);
-  color: #fff;
-  background: #1b1b1b;
-  border: 1.5px solid #fff;
+  color: #e9e7e2;
+  background: #2a2a2a;
+  border: 1.5px solid #e9e7e2;
   overflow: hidden;
   transition: color var(--dur) var(--ease);
 }
@@ -1124,7 +1179,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: #fff;
+  background: #e9e7e2;
   transform: translate(-100%, 100%);
   transition: transform var(--dur) var(--ease);
 }
@@ -1136,7 +1191,7 @@
 
 .videoButton:hover .videoPlay,
 .videoButton:focus-visible .videoPlay {
-  color: #1b1b1b;
+  color: #2a2a2a;
 }
 
 .videoPlay svg {
@@ -1159,7 +1214,7 @@
  * 0xRRGGBB literals render in their own colour (see CodeBlock.tsx).
  */
 .code {
-  background: #1b1b1b;
+  background: #2a2a2a;
   overflow: hidden;
 }
 
@@ -1167,7 +1222,7 @@
   display: flex;
   align-items: center;
   padding: clamp(0.7rem, 1.5vw, 0.9rem) clamp(1rem, 2.5vw, 1.4rem);
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid #e9e7e2;
 }
 
 .codeDots {
@@ -1181,7 +1236,7 @@
   height: 11px;
 }
 .codeDots i:nth-child(1) {
-  background: #fff;
+  background: #e9e7e2;
 }
 .codeDots i:nth-child(2) {
   background: #8f8f8f;
@@ -1233,7 +1288,7 @@
   height: 0.72em;
   margin-right: 0.35em;
   vertical-align: -0.05em;
-  border: 1px solid #fff;
+  border: 1px solid #e9e7e2;
 }
 
 /* ---- Custom block: 3D model viewer (ModelViewer.tsx) -------------------
@@ -1244,7 +1299,7 @@
   position: relative;
   margin-block: clamp(1.5rem, 3vw, 2.25rem);
   min-height: clamp(320px, 44vw, 520px);
-  background: #1b1b1b;
+  background: #2a2a2a;
   overflow: hidden;
 }
 
@@ -1267,7 +1322,7 @@
   z-index: 1;
   width: clamp(1.75rem, 4vw, 2.5rem);
   height: clamp(1.75rem, 4vw, 2.5rem);
-  color: #fff;
+  color: #e9e7e2;
   pointer-events: none;
 }
 
@@ -1285,7 +1340,7 @@
   place-items: center;
   font-size: var(--step-small);
   letter-spacing: 0.02em;
-  color: rgb(255 255 255 / 55%);
+  color: rgb(233 231 226 / 55%);
   pointer-events: none;
 }
 
@@ -1305,7 +1360,7 @@
     clamp(1.75rem, 4vw, 2.5rem);
   min-height: clamp(245px, 33vw, 335px);
   display: flex;
-  background: #1b1b1b;
+  background: #2a2a2a;
   overflow: hidden;
 }
 
@@ -1354,7 +1409,7 @@
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(3.5rem, 8vw, 5rem);
   line-height: 0.4;
-  color: #fff;
+  color: #e9e7e2;
 }
 
 .quoteText {
@@ -1363,7 +1418,7 @@
   font-size: clamp(1.0625rem, 0.95rem + 0.6vw, 1.375rem);
   font-weight: 600;
   line-height: 1.3;
-  color: #fff;
+  color: #e9e7e2;
   text-wrap: pretty;
 }
 
@@ -1391,7 +1446,7 @@
 }
 .quoteOrnament i:nth-child(2) {
   grid-area: 1 / 2;
-  background: #fff;
+  background: #e9e7e2;
 }
 .quoteOrnament i:nth-child(3) {
   grid-area: 2 / 2;
@@ -1409,9 +1464,9 @@
   width: clamp(32px, 4.5vw, 40px);
   height: clamp(44px, 7vw, 56px);
   padding: 0;
-  background: #1b1b1b;
-  border: 1.5px solid #fff;
-  color: #fff;
+  background: #2a2a2a;
+  border: 1.5px solid #e9e7e2;
+  color: #e9e7e2;
   cursor: pointer;
   overflow: hidden;
   transition: color var(--dur) var(--ease);
@@ -1436,7 +1491,7 @@
   top: 0;
   bottom: 0;
   width: 5px;
-  background: #fff;
+  background: #e9e7e2;
 }
 .quoteNavNext::after {
   right: 100%;
@@ -1451,7 +1506,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: #fff;
+  background: #e9e7e2;
   transform: translate(-100%, 100%);
   transition: transform var(--dur) var(--ease);
 }
@@ -1463,7 +1518,7 @@
 
 .quoteNav:hover,
 .quoteNav:focus-visible {
-  color: #1b1b1b;
+  color: #2a2a2a;
 }
 
 .quoteNav:focus-visible {
@@ -1578,7 +1633,7 @@
   width: clamp(74px, 13vw, 104px);
   aspect-ratio: 1;
   padding: 0.65rem;
-  background: #1b1b1b;
+  background: #2a2a2a;
   text-align: center;
   animation: carousel-counter-spin 34s linear infinite;
   transition: background-color var(--dur) var(--ease);
@@ -1605,14 +1660,14 @@
 }
 
 .carouselItem:focus-visible .carouselChip {
-  outline: 2px solid #fff;
+  outline: 2px solid #e9e7e2;
   outline-offset: 2px;
 }
 
 .carouselIcon {
   width: clamp(1.15rem, 2.4vw, 1.5rem);
   height: clamp(1.15rem, 2.4vw, 1.5rem);
-  color: #fff;
+  color: #e9e7e2;
 }
 
 .carouselLabel {
@@ -1623,7 +1678,7 @@
   font-size: clamp(0.6875rem, 0.6rem + 0.35vw, 0.8rem);
   font-weight: 500;
   line-height: 1.25;
-  color: rgb(255 255 255 / 88%);
+  color: rgb(233 231 226 / 88%);
 }
 
 /* Quiet centre mark the ring turns around — echoes the "+" glyph used
@@ -1686,8 +1741,7 @@
   margin-bottom: 0.6rem;
   font-size: var(--step-small);
   font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--ink-muted);
 }
 

@@ -45,15 +45,14 @@ export function Footer() {
       <div ref={reveal} className={`${styles.inner} reveal`}>
         <div className={styles.lead}>
           <h2 className={styles.heading}>{footer.heading}</h2>
-          <p className={styles.invitation}>{footer.invitation}</p>
           <a href={`mailto:${footer.email}`} className={styles.email}>
             {footer.email}
           </a>
+          <p className={styles.invitation}>{footer.invitation}</p>
         </div>
 
         <div className={styles.columns}>
-          <div>
-            <h3 className={styles.label}>Elsewhere</h3>
+          <div className={styles.column}>
             <ul className={styles.links}>
               {footer.elsewhere.map((link) => (
                 <li key={link.label}>
@@ -70,8 +69,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h3 className={styles.label}>Now</h3>
+          <div className={styles.column}>
             <dl className={styles.now}>
               {footer.now.map((item) => (
                 <div key={item.label} className={styles.nowRow}>
