@@ -490,7 +490,7 @@
 .h3 {
   /* Subheadings get a clear gap too, but a step down from the main-heading
      gap so the hierarchy reads. */
-  margin-top: clamp(2.25rem, 4vw, 3rem);
+  margin-top: clamp(3rem, 5.5vw, 4.25rem);
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: -0.01em;
