@@ -186,9 +186,8 @@ export const caseStudies: CaseStudy[] = [
     year: "2026",
     tags: ["Product Design", "Cloud Gaming", "Motion Design", "Prototyping"],
     meta: {
-      role: "Prototyper, Story Strategist, and Designer",
-      timeline: "7 months",
-      timelineDetail: "Feb 2026 - Aug 2026",
+      role: "Designer, Prototyper, Story Strategist",
+      timeline: "Feb - Aug 2026",
       team: [
         "Caleb Aguiar",
         "Clarisse Pelayo Sicat",
@@ -201,7 +200,7 @@ export const caseStudies: CaseStudy[] = [
       ],
       contributions: [
         "Led prototyping and strategy of key features such as an immediate group decision-making tool and adaptive information cards per group and category.",
-        "Owned art and design direction for hi-fi mockups, and implemented animation and motion design into our prototype for a smoother user experience.",
+        "Led art and design direction for hi-fi mockups, and implemented animation and motion design into our prototype for a smoother user experience.",
         "Co-directed and produced a product pitch that fits the realm of Xbox and Discord, with funding from Netflix.",
       ],
     },

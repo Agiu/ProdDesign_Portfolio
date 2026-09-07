@@ -15,6 +15,7 @@ import { BackLink } from "./BackLink";
 import { MarkdownButton } from "./blocks/MarkdownButton";
 import { QuoteCarousel } from "./blocks/QuoteCarousel";
 import { CarouselBlock } from "./blocks/CarouselBlock";
+import { ImageCarousel } from "./blocks/ImageCarousel";
 import { StatsBlock } from "./blocks/StatsBlock";
 import { ModelViewer } from "./blocks/ModelViewer";
 import { ListBlock } from "./blocks/ListBlock";
@@ -158,6 +159,7 @@ function BlockView({ block }: { block: Block }) {
       if (block.name === "button") return <MarkdownButton content={block.content} />;
       if (block.name === "quotes") return <QuoteCarousel content={block.content} />;
       if (block.name === "carousel") return <CarouselBlock content={block.content} />;
+      if (block.name === "image-carousel") return <ImageCarousel content={block.content} />;
       if (block.name === "stats") return <StatsBlock content={block.content} />;
       if (block.name === "3d-model") return <ModelViewer content={block.content} />;
       if (

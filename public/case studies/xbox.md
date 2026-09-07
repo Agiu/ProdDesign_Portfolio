@@ -10,23 +10,27 @@ There are many different mediums to communicate and share games from, but one th
 
 ## The Solution
 
-So we thought of ==Xbox Arcade: a one-stop-shop for game discovery and coordination, all within a subscription tier.==
+We designed ==Xbox Arcade: a one-stop shop for game discovery and coordination, delivered within a subscription tier.==
 
 ![All your friends, games, an coordination in one place](https://media.kaelub.com/Xbox/Xbox_casestudy_hero1.jpg)
 
-Arcade uses player data from Xbox and Discord to recommend and create mixes of games for you and your friends to play depending on filters and criteria you all set.
+Arcade draws on player data from Xbox and Discord to recommend and assemble mixes of games — internally called Playlists — for a group to play, based on filters and criteria the group sets together.
 
 ![Arcade mixing games based on your group's filters, also known as a Playlist](https://media.kaelub.com/Xbox/ex1.jpg)
 
-More importantly, ==Arcade skips the need for hardware capabilities by using cloud gaming, which lets you queue up with your friends instantly, hassle free.==
+More importantly, ==Arcade removes the hardware barrier by running on cloud gaming==, letting a group queue up together instantly.
 
 ![Queue up with friends instantly once a game is selected by the wheel](https://media.kaelub.com/Xbox/ex2.jpg)
 
-Out of the many tools that we give you through Arcade, the vast majority of them are used for deciding games that are right for your group. We let people using the app know what your friends play, how your friends liked a game, and it also allows you and your friends to have say in which games make it to game night.
+Most of the tools in Arcade exist to help a group decide what to play. The app surfaces what a player's friends are playing and how they rated a game, and it gives everyone in the group a say in which titles make it to game night.
 
 ![Ranking, Spin the Wheel, and social proof tools to make game coordination and decision easier](https://media.kaelub.com/Xbox/ex3.jpg)
 
 As a byproduct of creating an app to aid in coordination and game discovery, we've created ==a new type of game delivery experience that houses all instantly playable XBOX games within one price tag.==
+
+```youtube
+oO-0QA1BzfQ
+```
 
 ## So How Did We Get Here?
 
@@ -34,9 +38,14 @@ As a byproduct of creating an app to aid in coordination and game discovery, we'
 
 > When first developing the project, we had a corporate connection to storefronts and publishing within XBOX that swayed us toward potentially designing for a storefront setting. Much of our initial research was through that lens.
 
-### Building Up Context
+### Understanding Our Players
 
 When first searching for a problem in the gaming space, we wanted to build up context for what our players are like and what their needs are. ==I think Reddit is a great place to discuss and contemplate about things that are in the news, but its also a great area to find player sentiment about a certain topic.== So, I went ahead and created a parsing tool, which collected around 500 responses from different XBOX communities about player sentiment on storefronts.
+
+```button
+View All Scraped Data | https://docs.google.com/spreadsheets/d/1simp5TxkqfrUDZ8C1UFESbT_yu6HPKMbkgEsDbNFIlg/edit?usp=sharing | FileText
+```
+
 
 ```quotes
 
@@ -55,9 +64,21 @@ It’s not as bad as the playstation website at least. | u/MasterArCtik
 
 ```
 
-It seems that alienation is prevalent around XBOX, with many initiatives and projects either not taking in player feedback and analyzing it or simply not listening at all. When developing this project as a group, ==we wanted to make players our de facto stakeholder, one that would take prominence over other stakeholders.==
+From the quotes, player alienation is a recurring problem around Xbox, where many initiatives ship without gathering player feedback, analyzing it, or acting on it at all. Working as a group, we treated that as the core problem to design against.
 
-### Building Up Context: Attending conventions to listen to players
+> Given that, we made players our de facto stakeholder; one whose needs took precedence over the other stakeholders.
+
+Because gamers take precedence, we needed to truly understand their sentiments, the only way to do that is talk to them in person and see their environment.
+
+### Understanding Our Players: Attending conventions to listen to players
+
+```Image Carousel
+    https://media.kaelub.com/Xbox/Carousel1.jpeg | Us At Emerald City Comic Con dressed up as sims. Costumes helped us with gathering people to interview.
+    https://media.kaelub.com/Xbox/Carousel2.jpg | Conducting on-the-spot interviews with XBOX Players.
+    https://media.kaelub.com/Xbox/Carousel3.jpg | At the end of the day, our Sentiment-Stickyboards were filled.
+
+    
+```
 
 ==To build up more context we found that comic and anime conventions are a fantastic area to do this guerrilla research, because we have:==
 
@@ -65,11 +86,21 @@ It seems that alienation is prevalent around XBOX, with many initiatives and pro
 - Anime and comic book enjoyers have lots of double dipping within the gaming sector, similar fan-bases
 - We did not specifically have a gaming convention nearby, so we opted for adjacent conventions
 
-We wanted to understand player sentiment toward gaming storefronts—emotionally, philosophically, and what they wish were better—since gamers love airing their qualms about certain platforms. We also wanted to see how they'd reimagine a storefront under different lenses: one that feels like home, feels like a convention, or lets you wander. Using audience-tailored affinity mapping and an idea draw-out, we found that while many saw storefronts as corporate and transactional, they enjoyed reworking a storefront's motive—some as a player progression map, others as a cozy bookstore to sift through and discover something new in.
+We wanted to understand player sentiment toward gaming storefronts—emotionally, philosophically, and what they wish were better—since gamers love airing their qualms about certain platforms. We also wanted to see how they'd reimagine a storefront under different lenses: one that feels like home, feels like a convention, or lets you wander. 
 
-![Storyboards from the idea draw-out sessions](https://media.kaelub.com/Arcade/storyboards.jpg)
+```Image Carousel
+    https://media.kaelub.com/Xbox/Carousel4.jpg | Series of photos when asking people about their ideal storefronts through different perspectives at Sakura Con.
+    https://media.kaelub.com/Xbox/Carousel5.jpg | Series of photos when asking people about their ideal storefronts through different perspectives at Sakura Con.. 
+    https://media.kaelub.com/Xbox/Carousel6.jpg | Series of photos when asking people about their ideal storefronts through different perspectives at Sakura Con..
+
+    
+```
+
+==Using audience-tailored affinity mapping and an idea draw-out, we found that while many saw storefronts as corporate and transactional, they enjoyed reworking a storefront's motive—some as a player progression map, others as a cozy bookstore to sift through and discover something new in.==
 
 Simultaneously, we created and held surveys and interviews to get more in depth. 
+
+(talk about surveys and what we've discovered)
 
 ```stats
 300+ | Affinity sticky notes from conventions | MapPin
@@ -91,7 +122,7 @@ Game discovery is a group activity, not a solo one. | Players prefer finding gam
 
 By conducting eight interviews, the overall concensus of current Xbox UX standards are mostly negative.
 
-(Image of UX Teardown)
+![UX Teardown of multiple gaming-adjacent applications](https://media.kaelub.com/Xbox/UXT.jpg)
 
 In the process of finding evidence for the consensus, we had conducted ==in-depth UI/UX teardowns of various game platforms such as Steam, Roblox, Nintendo, and the various XBOX storefront experiences across platforms.== These teardowns helped to inform what was different with XBOX's desktop and console UX, but also allowed us to see more possible ways at altering how transactional a storefront could be.
 
@@ -103,10 +134,6 @@ As a group we decided to go create some workable prototypes from our ideas. Taki
 ![Polling station wireframe](https://media.kaelub.com/Arcade/polling-station-wireframe.jpg)
 
 This polling station idea had your friends from a Discord call hop in and add games to a queue from their respective game libraries (from Game Pass + independent libraries). Your friends (and yourself) will then vote on what game they would get to play in a matter of minutes; the time limit could be altered by the person who started the polling station, of course.
-
-```youtube
-VIDEO_ID
-```
 
 This idea is intended to cause conversation and some controversy, which is always great for gaming. After the video game is picked, you and your friends will then either instantly queue up into the game or complete a group buy. ==From our research we found that gifting is a very common practice within gamer communities, so that everyone in the same call wouldn't feel left out.== I thought this would be a fantastic new business model/venture if I were to set it at a slightly discounted rate.
 
