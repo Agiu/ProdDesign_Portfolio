@@ -564,7 +564,7 @@
 .highlight {
   background: none;
   color: var(--ink);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .link {
@@ -719,7 +719,8 @@
   max-width: 62ch;
   padding-left: 1.25rem;
   border-left: 2px solid var(--ink);
-  font-size: var(--step-lead);
+  font-size: var(--step-body);
+  font-weight: 700;
   line-height: 1.5;
   color: var(--ink);
 }

@@ -82,8 +82,15 @@ export function FigureImage({
         />
         <span className={styles.zoomHint} aria-hidden>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <circle
+              cx="10.5"
+              cy="10.5"
+              r="6.5"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
             <path
-              d="M11 4v14M4 11h14"
+              d="M20 20l-4.8-4.8"
               stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="square"
