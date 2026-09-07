@@ -45,6 +45,7 @@ export type ParsedCaseStudy = { toc: TocEntry[]; blocks: Block[] };
 const CUSTOM_BLOCKS = new Set([
   "stats",
   "insights",
+  "insight-toggle",
   "image-carousel",
   "hmw",
   "quotes",

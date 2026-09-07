@@ -109,17 +109,26 @@ Simultaneously, we created and held surveys and interviews to get more in depth.
 2 Months | Time to analyze | Users
 ```
 
-## Research Findings | By going to conventions and holding small interviews with gamers there were alot of insights that inadvertently would guide us away from storefronts
+## Research Findings | By going to conventions and holding small interviews with gamers there were many insights that inadvertently would guide us away from storefronts.
 
-```insights
+```insight-toggle
+## Business Insights
+Xbox participates late in the game discovery journey | Gamers discover and evaluate games through friends, Discord, social media, creators, Steam, and Reddit—then return to Xbox to check availability. | Magnifying Glass
+Players want certain features. Xbox has them, but fails to surface them. | Players overlook existing Xbox features because they're hard to discover or access during regular gameplay. | Users
+Time is limited, friend groups value frictionless coordination across different schedules and availabilities | As gaming competes with life's priorities, players choose more intentionally, favoring games that fit their group's schedules, interests, and access. | Friends
+
+## User Oriented Insights
 Storefronts Feel Transactional | Players described most storefronts as corporate and purely transactional. | Store
 Trust Comes From Friends | Players said they would rather read a friend's take on a game than a stranger's review online. | Users
-Gifting Is a Ritual | Gifting games is a common practice so no one in the group gets left out. | Gift
 Game discovery is a group activity, not a solo one. | Players prefer finding games with their friends rather than alone | Friends
+
 ```
 
+> So, given these insights, how might we design a nook for a group of gamers that allows game discovery and coordination without it feeling transactional?
 
 ## A Small Hackathon for Idea Generation
+
+![Each of our ideas for what our app could be based on our research insights](https://media.kaelub.com/Xbox/hackathon.jpg)
 
 (how did we get here)
 As a group we decided to go create some workable prototypes from our ideas. Taking our latest research round into account, I began wireframing some ideas on Figma.
@@ -202,8 +211,6 @@ Vertical video didn't make sense, since alot of the gaming content displayed on 
 ## Prototype
 
 (link to prototype)
-
-## Video
 
 
 

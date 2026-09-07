@@ -19,6 +19,7 @@ import { ImageCarousel } from "./blocks/ImageCarousel";
 import { StatsBlock } from "./blocks/StatsBlock";
 import { ModelViewer } from "./blocks/ModelViewer";
 import { ListBlock } from "./blocks/ListBlock";
+import { InsightToggle } from "./blocks/InsightToggle";
 import { YouTubeEmbed } from "./blocks/YouTubeEmbed";
 import { VideoBlock } from "./blocks/VideoBlock";
 import { LogoOrbit } from "./blocks/LogoOrbit";
@@ -170,6 +171,7 @@ function BlockView({ block }: { block: Block }) {
         block.name === "questions"
       )
         return <ListBlock content={block.content} />;
+      if (block.name === "insight-toggle") return <InsightToggle content={block.content} />;
       if (block.name === "youtube") return <YouTubeEmbed content={block.content} />;
       if (block.name === "video") return <VideoBlock content={block.content} />;
       if (block.name === "logo-orbit") return <LogoOrbit content={block.content} />;

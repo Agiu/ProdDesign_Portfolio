@@ -19,9 +19,9 @@ import styles from "../CaseStudy.module.css";
 type Corner = "tl" | "tr" | "bl" | "br";
 const CORNERS: Corner[] = ["tl", "tr", "bl", "br"];
 
-type Item = { title: string; description: string; icon: string } | { text: string };
+export type Item = { title: string; description: string; icon: string } | { text: string };
 
-function parseItems(content: string): Item[] {
+export function parseItems(content: string): Item[] {
   return content
     .split("\n")
     .map((line) => line.trim())
@@ -92,11 +92,16 @@ function Ornament({ corner }: { corner: Corner }) {
   );
 }
 
-export function ListBlock({ content }: { content: string }) {
-  const items = parseItems(content);
+/**
+ * The card stack itself, shared by `ListBlock` (a single `insights`/`hmw`/
+ * `rules` fence) and `InsightToggle` (which swaps between two item arrays
+ * under one pair of tabs). Corner placement is seeded off the rendered
+ * items so it's stable across re-renders of the same list.
+ */
+export function CardList({ items }: { items: Item[] }) {
   if (items.length === 0) return null;
 
-  const corners = pickCorners(items.length, hashString(content));
+  const corners = pickCorners(items.length, hashString(JSON.stringify(items)));
 
   return (
     <div className={styles.cardList}>
@@ -129,4 +134,8 @@ export function ListBlock({ content }: { content: string }) {
       })}
     </div>
   );
+}
+
+export function ListBlock({ content }: { content: string }) {
+  return <CardList items={parseItems(content)} />;
 }

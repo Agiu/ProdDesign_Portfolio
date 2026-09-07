@@ -905,6 +905,61 @@
   color: #e9e7e2;
 }
 
+/* ---- Custom block: insight toggle (InsightToggle.tsx) -------------------
+ * Two labelled tabs above a `cardList`, swapping which side's insights are
+ * shown. Tabs read as an underline-style pair (matching the section rule
+ * language elsewhere) rather than a boxed segmented control.
+ */
+.insightToggle {
+  margin-block: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.insightToggleTabs {
+  display: flex;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  border-bottom: 1px solid rgb(30 30 30 / 14%);
+}
+
+.insightToggleTab {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0 0 0.85rem;
+  font: inherit;
+  font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: rgb(30 30 30 / 45%);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.insightToggleTab:hover {
+  color: rgb(30 30 30 / 75%);
+}
+
+.insightToggleTab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: #1e1e1e;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.insightToggleTab[data-active] {
+  color: #1e1e1e;
+}
+
+.insightToggleTab[data-active]::after {
+  transform: scaleX(1);
+}
+
 /* ---- Custom block: List Component (ListBlock.tsx) ----------------------
  * Figma "List Component" — shared by insights + hmw. A stack of dark
  * horizontal cards: icon (left) + title/description (right) for insights,

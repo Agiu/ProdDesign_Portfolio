@@ -243,6 +243,11 @@ const GLYPHS: Record<string, ReactNode> = {
   ),
 };
 
+// Aliases: names markdown authors reach for that don't match a Lucide
+// component name 1:1, mapped onto the closest glyph already above.
+GLYPHS["Magnifying Glass"] = GLYPHS.Search;
+GLYPHS.Friends = GLYPHS.Users;
+
 export function Icon({ name, className }: { name: string; className?: string }) {
   const glyph = GLYPHS[name] ?? GLYPHS.Default;
   return (
