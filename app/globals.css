@@ -1,26 +1,36 @@
 :root {
-  --ink: #0a0a0a;
-  --ink-soft: #4a4a4a;
+  /*
+   * Nothing here is black. The darkest value in the site is a soft charcoal:
+   * type, dark grounds and hatching all sit in the same warm-neutral register
+   * as the cream, so no edge on the page is a hard black-on-white slam.
+   */
+  --ink: #2a2a2a;
+  --ink-soft: #575757;
   /* Between soft and muted — legible as prose, but clearly secondary. */
   --ink-dim: #8c8c8c;
   --ink-muted: #aeaeae;
-  --paper: #ffffff;
-  --shade: #1f1f1f;
-  /* Near-black, for surfaces that should read as a void rather than as grey. */
-  --void: #050505;
-  /* The footer's ground — a shade off the void, so the two don't flatten. */
-  --night: #0d0d0d;
+  /* The page's ground, and the hero's torn sheet — a warm cream rather than
+     pure white, so a photograph never sits on a colder surround than it has
+     itself. Every surface and every piece of type-on-dark in the site is
+     painted in it; nothing anywhere is #fff, bar the one highlight stroke on
+     the hero's ghost blocks, which exists precisely to read *against* this. */
+  --paper: #e9e7e2;
+  /* The dark band. Ground for the sections that invert — Case Studies and
+     Filmmaker — and, below, for the footer, so every dark surface on the page
+     is the same dark and the page reads as one ground interrupted by cream
+     rather than as three different darks stacked up. */
+  --shade: #111111;
+  /* A plate lifted off that band: the card panel that slides over an image,
+     and the tint under a picture that hasn't loaded. Lighter than the band
+     rather than darker — at this depth there is nothing left below. */
+  --void: #111111;
+  --night: #111111;
 
   /* The content column. Figma's 4321px frame is a 3x canvas; this is the
      real-world equivalent of its ~60% centered column. */
   --measure: 1100px;
   --gutter: clamp(1.25rem, 5vw, 2.5rem);
 
-  /* How much of the Case Studies section stays on screen beneath the hero.
-     The hero sizes itself to 100svh minus this, so the "Case Studies" heading
-     is always in view as a scroll cue. Must stay larger than that heading's
-     top padding + line height, or the cue gets cropped. */
-  --hero-reveal: clamp(7rem, 13svh, 10rem);
 
   /* Four sizes, one job each: display (headings), lead (subheads/intros),
      body (paragraphs), small (captions and — via uppercase + tracking,
@@ -69,6 +79,22 @@ html.hide-scrollbar::-webkit-scrollbar {
 
 html {
   -webkit-text-size-adjust: 100%;
+  /*
+   * No rubber band at either end of the page.
+   *
+   * A trackpad keeps sending scroll past the top of the document and the
+   * browser answers by dragging the whole page down and springing it back.
+   * That is fine on a page that starts with a margin; it is not fine here,
+   * where the first thing on screen is a sheet of paper pinned to the top edge
+   * (Hero.module.css) — bouncing it down exposes the page's own background
+   * above it and the sheet reads as having come loose from the window.
+   *
+   * `none` rather than `contain`: contain only stops the scroll chaining
+   * through to an ancestor, and it is the bounce itself that has to go. Set on
+   * the root, which is what the viewport takes its scrolling behaviour from —
+   * body carries `overflow-x` below, but it is still html that scrolls.
+   */
+  overscroll-behavior-y: none;
 }
 
 body {
@@ -130,9 +156,65 @@ a {
   transform: translateY(28px);
 }
 
+/*
+ * The opening's resting state, for the hero's name and tagline. Global for the
+ * same reason .reveal is: the <noscript> override in layout.tsx has to be able
+ * to name it, and it can't name a CSS-module class.
+ *
+ * Opacity only — the lift itself is written inline by anime.js (Hero.tsx),
+ * which owns the offset each of these starts from. Declaring one here too
+ * would only be a second opinion for the one frame before that runs.
+ */
+[data-intro] {
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;
     transform: none;
   }
+
+  /* Hero.tsx settles these itself under reduced motion, but not until it has
+     run — this is what keeps them from being invisible until then. */
+  [data-intro] {
+    opacity: 1;
+  }
+}
+
+/*
+ * The bordered chip a "read/see this" CTA renders as — the recruiter page's
+ * own button (Recruiter.module.css, `.chip`), lifted here now that a third
+ * dark-ground section wants the same one (Filmmaker, and both case-study
+ * card layouts — CaseStudies.module.css). Global rather than composed or
+ * repeated per module, for the same reason `.reveal` above is: it's one
+ * idiom several unrelated components need to agree on, not something scoped
+ * to any one of them.
+ *
+ * A cream-ground CTA restates this itself instead of using it (About.tsx's
+ * `.more`, styled after the same button) — that context needs different
+ * colours outright, not just a different ground, so there's nothing left to
+ * share past the shape, and the shape alone isn't worth a class for.
+ *
+ * This sets the chip's rest state only, deliberately with no `:hover` of its
+ * own. Everywhere it's used, the chip sits inside something bigger that's
+ * already the click target — a whole card, a whole link — so the hover
+ * trigger is wider than the chip itself, and each caller restates the invert
+ * against whatever that wider trigger actually is (see Filmmaker.module.css
+ * and CaseStudies.module.css for the two shapes that takes).
+ */
+.cta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.6rem 1rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #e9e7e2;
+  border: 1px solid #e9e7e2;
+  background: transparent;
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 }

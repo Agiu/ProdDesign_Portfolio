@@ -6,11 +6,19 @@ import { usePathname, useRouter } from "next/navigation";
 import styles from "./PageTransition.module.css";
 
 /*
- * Half the dip. The curtain fades up to white over FADE, the route commits
+ * Half the dip. The curtain fades up to paper over FADE, the route commits
  * behind it, then it fades back out over FADE — so a navigation reads as one
- * ~2×FADE "fade to white, fade back in" beat rather than an abrupt cut.
+ * ~2×FADE "fade to paper, fade back in" beat rather than an abrupt cut.
  */
 const FADE = 320;
+
+/*
+ * The opening, which is longer than a navigation's dip. That dip is a beat
+ * between two pages the reader is already moving through; this is the site
+ * arriving, with the hero's own entrance (Hero.tsx) rising underneath it, and
+ * it wants the room to be a reveal rather than a blink.
+ */
+const INTRO = 620;
 /* Symmetric in-out, so the two halves of the dip mirror each other. */
 const EASE = cubicBezier(0.4, 0, 0.2, 1);
 
@@ -18,7 +26,7 @@ const reduced = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /**
- * A white curtain that dips across every in-app navigation: fade to white,
+ * A paper curtain that dips across every in-app navigation: fade to cream,
  * swap the route underneath, fade back in. Lives in the root layout so it
  * survives across route changes and is always mounted to animate.
  *
@@ -38,10 +46,35 @@ export function PageTransition() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // True from the start of a fade-to-white until the matching fade-back-out
+  // True from the start of a fade-to-paper until the matching fade-back-out
   // completes. Gates the pathname effect so a route change we *didn't* drive
   // (the browser back/forward button) doesn't flash the curtain.
   const navigating = useRef(false);
+
+  /*
+   * The opening. The curtain is rendered opaque (PageTransition.module.css) so
+   * the page assembles behind cream rather than in front of the reader; this
+   * lifts it, once, on the first mount of the session. Route changes are the
+   * two effects below — the curtain is in the root layout and survives them,
+   * so this never runs again.
+   */
+  useEffect(() => {
+    const el = curtain.current;
+    if (!el) return;
+
+    /* Reduced motion gets the page, just not the reveal — the same bargain the
+       rest of the site strikes. Never a skip: skipping would leave the curtain
+       exactly where the stylesheet put it, over everything. */
+    if (reduced()) {
+      el.style.opacity = "0";
+      return;
+    }
+
+    const intro = animate(el, { opacity: [1, 0], duration: INTRO, ease: EASE });
+    return () => {
+      intro.cancel();
+    };
+  }, []);
 
   useEffect(() => {
     if (reduced()) return;
@@ -87,7 +120,7 @@ export function PageTransition() {
         opacity: [0, 1],
         duration: FADE,
         ease: EASE,
-        // Commit the route only once the curtain is fully white, so the swap
+        // Commit the route only once the curtain is fully opaque, so the swap
         // (and the destination's load latency) happens entirely unseen.
         onComplete: () => router.push(dest),
       });
@@ -122,5 +155,7 @@ export function PageTransition() {
     });
   }, [pathname]);
 
-  return <div ref={curtain} className={styles.curtain} aria-hidden />;
+  /* data-curtain is the handle the <noscript> block in layout.tsx needs: it
+     can't name a CSS-module class, and this must not stay up without JS. */
+  return <div ref={curtain} className={styles.curtain} data-curtain aria-hidden />;
 }

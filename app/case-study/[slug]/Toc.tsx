@@ -36,7 +36,6 @@ export function Toc({ toc }: { toc: TocEntry[] }) {
 
   return (
     <nav className={styles.nav} aria-label="On this page">
-      <p className={styles.navLabel}>Navigation</p>
       <ul className={styles.navList}>
         {toc.map((entry) => (
           <li key={entry.id}>

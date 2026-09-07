@@ -1,0 +1,44 @@
+/*
+ * The homepage's one piece of scroll choreography: the hero holds still while
+ * the work climbs over it.
+ *
+ * .pin is a shim, not a section — it exists only to give the hero a taller
+ * containing block than the hero itself, which is the whole mechanism. Sticky
+ * travel is the difference between the two, so the ::after spacer *is* the pin:
+ * one viewport of scroll during which the hero cannot move. The negative margin
+ * then takes that spacer back out of the flow, so everything below starts at
+ * the hero's own bottom edge and rides up over it. Net document height is
+ * unchanged — the pin costs the reader no extra scrolling, it just changes what
+ * the hero does with the scrolling they were already going to do.
+ *
+ * The hero unsticks exactly as the last of it disappears under .stack (see the
+ * height maths below), so it is never seen sliding.
+ */
+.pin {
+  position: relative;
+  margin-bottom: -100svh;
+}
+
+.pin::after {
+  content: "";
+  display: block;
+  height: 100svh;
+}
+
+/*
+ * Everything after the hero, in one stacking context above it.
+ *
+ * It has to be one wrapper rather than a z-index on the case studies alone: the
+ * hero is a positioned element now, and positioned elements paint over static
+ * ones no matter what order they appear in the source. Any section that could
+ * ever share screen space with the pinned hero therefore has to be lifted, and
+ * lifting them together is both cheaper and impossible to forget when a new
+ * section is added.
+ *
+ * Each section below brings its own opaque background, which is what actually
+ * hides the hero once it is covered.
+ */
+.stack {
+  position: relative;
+  z-index: 1;
+}

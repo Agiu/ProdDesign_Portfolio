@@ -38,6 +38,13 @@ export const films: Film[] = [
     category: "Demo Reel",
   },
   {
+    youtubeId: "oO-0QA1BzfQ",
+    title: "XBOX Arcade: Discover and Play Instantly",
+    description:
+      "A product pitch for XBOX Arcade, a cloud gaming concept built around instant matchmaking and game discovery.",
+    category: "Product Design",
+  },
+  {
     youtubeId: "2mzSQccg3mY",
     title: "Headphones of the Future: Project Open",
     description:

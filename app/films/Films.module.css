@@ -140,9 +140,9 @@
   place-items: center;
   width: 56px;
   height: 56px;
-  color: #fff;
+  color: #e9e7e2;
   background: rgb(0 0 0 / 45%);
-  border: 1.5px solid rgb(255 255 255 / 70%);
+  border: 1.5px solid rgb(233 231 226 / 70%);
   transform: translate(-50%, -50%) scale(0.9);
   opacity: 0.85;
   transition:
@@ -176,15 +176,18 @@
   font-size: var(--step-small);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgb(255 255 255 / 60%);
+  color: rgb(233 231 226 / 60%);
 }
 
 .eyebrow {
   margin-bottom: 0.5rem;
   font-size: var(--step-small);
   font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  /* Set as authored (content/films.ts is already title-cased), not forced to
+     caps. Tracking pulled in from the old 0.08em — sized for an all-caps run,
+     where wide gaps read as intentional; the same spacing on mixed-case text
+     just looks loose. */
+  letter-spacing: 0.01em;
   color: var(--ink-muted);
 }
 
@@ -246,7 +249,7 @@
   width: 100%;
   height: 100%;
   border: 0;
-  background: #000;
+  background: #2a2a2a;
 }
 
 .close {
@@ -257,7 +260,7 @@
   place-items: center;
   width: 44px;
   height: 44px;
-  color: rgb(255 255 255 / 80%);
+  color: rgb(233 231 226 / 80%);
   background: none;
   border: 0;
   cursor: pointer;
@@ -268,11 +271,11 @@
 
 .close:hover,
 .close:focus-visible {
-  color: #fff;
-  background: rgb(255 255 255 / 12%);
+  color: #e9e7e2;
+  background: rgb(233 231 226 / 12%);
 }
 
 .close:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid #e9e7e2;
   outline-offset: 2px;
 }

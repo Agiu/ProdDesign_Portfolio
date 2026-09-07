@@ -1,15 +1,24 @@
 /*
- * The white curtain. Sits above all page content, below the intro
- * LoadingScreen (z 9999), and is invisible + click-through at rest.
+ * The curtain. Sits above all page content and is click-through throughout.
  * PageTransition.tsx animates its opacity and toggles pointer-events during a
- * navigation. Pure --paper white, so the dip matches the site's own ground.
+ * navigation. Painted in --paper, so both the dip and the opening match the
+ * site's own ground.
+ *
+ * It starts *opaque*, which is the whole of the opening: the first paint is a
+ * sheet of cream, the page assembles behind it — fonts swapping, the hero
+ * measuring itself into a grid, the first slide arriving — and PageTransition
+ * lifts it once that is under way. Every state after the first is written
+ * inline by anime.js, so this value is only ever read once per page load.
+ *
+ * Without JS nothing would ever lift it; the <noscript> block in layout.tsx
+ * puts it back to 0 for that case.
  */
 .curtain {
   position: fixed;
   inset: 0;
   z-index: 9998;
   background: var(--paper);
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
   will-change: opacity;
 }

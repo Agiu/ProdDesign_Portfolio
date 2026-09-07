@@ -5,12 +5,11 @@
   min-height: clamp(340px, 42vw, 520px);
   overflow: hidden;
   background: var(--shade);
-  color: #fff;
+  color: #e9e7e2;
 }
 
-/* Taller than the section so it can drift without exposing an edge — same
-   trick as Hero.module.css's .media. The 30% of headroom here is what DRIFT
-   in useParallax.ts is allowed to consume. */
+/* Taller than the section so it can drift without exposing an edge. The 30%
+   of headroom here is what DRIFT in useParallax.ts is allowed to consume. */
 .media {
   position: absolute;
   top: -30%;
@@ -51,23 +50,25 @@
 
 .body {
   max-width: 38ch;
-  color: rgb(255 255 255 / 82%);
+  color: rgb(233 231 226 / 82%);
   text-wrap: pretty;
 }
 
+/*
+ * Layout only — the chip's own look (border, colour, hover-invert) is the
+ * shared .cta-chip class (globals.css), the same button the recruiter
+ * page's "read case study" CTAs use. This just places it a step below the
+ * body copy; it's a standalone link with nothing bigger around it, so unlike
+ * the case-study cards it can read its own :hover directly.
+ */
 .cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
   margin-top: 1.6rem;
-  padding-bottom: 3px;
-  font-weight: 600;
-  border-bottom: 1.5px solid rgb(255 255 255 / 35%);
-  transition: border-color var(--dur) var(--ease);
 }
 
-.cta:hover {
-  border-color: #fff;
+.cta:hover,
+.cta:focus-visible {
+  color: var(--shade);
+  background: #e9e7e2;
 }
 
 .arrow {
@@ -75,7 +76,7 @@
 }
 
 .cta:hover .arrow {
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
 @media (max-width: 640px) {

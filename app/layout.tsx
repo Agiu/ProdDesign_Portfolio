@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { openSauceTwo } from "./fonts";
-import { LoadingScreen } from "@/components/LoadingScreen";
 import { PageTransition } from "@/components/PageTransition";
 import "./globals.css";
 
@@ -26,12 +25,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${openSauceTwo.variable} ${sans.variable}`}>
       <body>
-        {/* Without JS, useReveal.ts never runs — nothing would ever lift
-            .reveal's blocks out of their hidden resting state. */}
+        {/* Without JS none of the three things that clear these ever runs:
+            useReveal.ts for .reveal's blocks, Hero.tsx for the name and
+            tagline, PageTransition.tsx for the cream curtain over the lot.
+            Left alone, the page would be a blank sheet. */}
         <noscript>
-          <style>{`.reveal { opacity: 1 !important; transform: none !important; }`}</style>
+          <style>{`
+            .reveal, [data-intro] { opacity: 1 !important; transform: none !important; }
+            [data-curtain] { opacity: 0 !important; }
+          `}</style>
         </noscript>
-        <LoadingScreen />
         <PageTransition />
         {children}
       </body>

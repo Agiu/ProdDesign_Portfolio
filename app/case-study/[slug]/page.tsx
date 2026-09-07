@@ -3,14 +3,15 @@ import path from "node:path";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { caseStudies } from "@/content/home";
+import { caseStudies, listedCaseStudies } from "@/content/home";
 import { parseCaseStudy, type Block, type InlineToken } from "@/lib/markdown";
 import { Footer } from "@/components/Footer";
 import { Toc } from "./Toc";
-import { CaseMeta } from "./CaseMeta";
+import { CaseHeroVitals, CaseMeta } from "./CaseMeta";
 import { FadeImage } from "./FadeImage";
 import { FigureImage } from "./FigureImage";
 import { HeroVideo } from "./HeroVideo";
+import { BackLink } from "./BackLink";
 import { MarkdownButton } from "./blocks/MarkdownButton";
 import { QuoteCarousel } from "./blocks/QuoteCarousel";
 import { CarouselBlock } from "./blocks/CarouselBlock";
@@ -18,7 +19,9 @@ import { StatsBlock } from "./blocks/StatsBlock";
 import { ModelViewer } from "./blocks/ModelViewer";
 import { ListBlock } from "./blocks/ListBlock";
 import { YouTubeEmbed } from "./blocks/YouTubeEmbed";
+import { LogoOrbit } from "./blocks/LogoOrbit";
 import { CodeBlock } from "./blocks/CodeBlock";
+import { Callout } from "./blocks/Callout";
 import { ArrowIcon } from "@/components/ArrowIcon";
 import styles from "./CaseStudy.module.css";
 
@@ -165,7 +168,10 @@ function BlockView({ block }: { block: Block }) {
       )
         return <ListBlock content={block.content} />;
       if (block.name === "youtube") return <YouTubeEmbed content={block.content} />;
+      if (block.name === "logo-orbit") return <LogoOrbit content={block.content} />;
       if (block.name === "ide") return <CodeBlock content={block.content} />;
+      if (block.name === "recruiter" || block.name === "masters")
+        return <Callout name={block.name} content={block.content} />;
       // Everything else keeps the labelled placeholder until it's built.
       return (
         <div className={styles.customBlock} data-block={block.name}>
@@ -189,13 +195,21 @@ export default async function CaseStudyPage({
   if (markdown === null) notFound();
 
   const { toc, blocks } = parseCaseStudy(markdown);
-  // Two other studies, as a light text list rather than full panels.
-  const recommended = caseStudies.filter((s) => s.slug !== slug).slice(0, 2);
+  // Two other studies, as a light text list rather than full panels. Archived
+  // studies are left out — a page of one still reads, it just doesn't send
+  // anyone onward to another.
+  const recommended = listedCaseStudies
+    .filter((s) => s.slug !== slug)
+    .slice(0, 2);
 
   return (
     <>
       <main className={styles.page}>
-      <header className={styles.hero}>
+      <BackLink />
+      {/* The dark run BackLink.tsx tracks to know when to flip its own tone —
+          always just the hero now that the vitals row below it (CaseMeta.tsx)
+          sits on paper rather than on a dark card of its own. */}
+      <header className={styles.hero} data-dark-run="">
         <FadeImage
           src={study.hero ?? study.cover}
           alt={study.title}
@@ -205,26 +219,18 @@ export default async function CaseStudyPage({
           className={styles.heroImage}
         />
         {study.video && <HeroVideo src={study.video} />}
-        <div className={styles.heroScrim} />
+        <div
+          className={[styles.heroScrim, study.video && styles.heroScrimVideo]
+            .filter(Boolean)
+            .join(" ")}
+        />
         <div className={styles.heroInner}>
-          <Link href="/#work" className={styles.back} aria-label="Back to case studies">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path
-                d="M19 12H5m0 0 6 6m-6-6 6-6"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
-          <h1 className={styles.title}>{study.title}</h1>
-          <p className={styles.summary}>
-            <span className={styles.plus} aria-hidden>
-              +
-            </span>
-            {study.summary}
-          </p>
+          <div className={styles.heroText}>
+            <h1 className={styles.title}>{study.title}</h1>
+            <p className={styles.summary}>{study.summary}</p>
+          </div>
+
+          {study.meta && <CaseHeroVitals meta={study.meta} />}
         </div>
       </header>
 

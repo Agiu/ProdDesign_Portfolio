@@ -1,0 +1,135 @@
+/*
+ * The scroll cue — see ScrollCue.tsx. A 2x2 block grid with the top-left cell
+ * left empty, so the cluster steps up out of the corner it stands on instead of
+ * sitting there as a square.
+ *
+ * `bottom: 100%` is the whole trick: the cue's parent is .stack (the wrapper
+ * holding everything below the hero), so this puts the cluster immediately
+ * *above* that wrapper's top edge — which is the top edge of the work section.
+ * It therefore travels with the section as the section climbs over the pinned
+ * hero, with no scroll handler of any kind, and leaves the screen when the
+ * section's own top edge does.
+ *
+ * Phones only. Hidden rather than not rendered, so the breakpoint is the one
+ * thing that decides — a component that mounts on a resize would have to guess
+ * at the width during SSR and then correct itself in front of the reader.
+ * display:none also takes it out of the tab order, so there is no invisible
+ * link for a keyboard to land on at desktop widths.
+ */
+.cue {
+  --u: clamp(2.5rem, 5.5vw, 3.25rem);
+
+  /*
+   * Three specified greys, brightest to darkest, stepping down the cluster's
+   * own path: the loose block off the corner, then the face under it, then the
+   * one furthest from the light. The darkest is a shade off --shade (#141414),
+   * so where the cluster meets the band it steps rather than dissolves.
+   *
+   * Literal, not mixed from --shade — these were picked, and a formula that
+   * happened to land near them would quietly drift the moment the token moved.
+   */
+  --block-high: #585858;
+  --block-mid: #2d2d2d;
+  --block-low: #1b1b1b;
+
+  position: absolute;
+  bottom: 100%;
+  /* The page's own margin, not the text column's: this is a corner ornament
+     like the footer mosaic, and it belongs to the edge of the band rather than
+     to the measure. On a phone that still clears the copy, which is stacked
+     down the left at this point in the hero. */
+  right: var(--gutter);
+
+  display: grid;
+  grid-template-columns: repeat(2, var(--u));
+  grid-template-rows: repeat(2, var(--u));
+}
+
+/* The same 640px the hero splits its own layout on (Hero.module.css), so the
+   cue appears exactly with the stacked, tear-off-the-top-edge phone hero it was
+   drawn for. */
+
+
+.high {
+  grid-area: 1 / 2;
+  background: var(--block-high);
+  /* Out of step with the chevron's own beat on purpose — two ornaments nodding
+     in time read as one mechanism, which is the opposite of the mosaic idiom
+     this is borrowed from. Narrow, too: the grey is a specified value, so the
+     breath may lift it off the paper but must not wash it into another colour. */
+  animation: breathe 5200ms var(--ease-inout) 800ms infinite alternate;
+  transition: background-color var(--dur-slow) var(--ease-inout);
+}
+
+.low {
+  grid-area: 2 / 1;
+  background: var(--block-low);
+  transition: background-color var(--dur-slow) var(--ease-inout);
+}
+
+.face {
+  grid-area: 2 / 2;
+  display: grid;
+  place-items: center;
+  background: var(--block-mid);
+  color: var(--paper);
+  transition: background-color var(--dur-slow) var(--ease-inout);
+}
+
+.chevron {
+  width: 45%;
+  height: 45%;
+  /* One dip near the end of a long cycle, then a rest — a chevron bobbing
+     continuously is a loading spinner. Under reduced motion the global rule in
+     globals.css collapses this to its final keyframe, which is the resting
+     position, so it simply doesn't move. */
+  animation: nudge 3200ms var(--ease-inout) infinite;
+}
+
+@keyframes breathe {
+  from {
+    opacity: 0.8;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nudge {
+  0%,
+  58%,
+  100% {
+    transform: translateY(0);
+  }
+
+  74% {
+    transform: translateY(20%);
+  }
+
+  88% {
+    transform: translateY(0);
+  }
+}
+
+/* Hover lifts the whole cluster a step toward the paper it sits on, rather than
+   moving anything — the cue is already the one thing on the screen in motion. */
+.cue:hover .low,
+.cue:focus-visible .low {
+  background: color-mix(in srgb, var(--block-low) 84%, var(--paper));
+}
+
+.cue:hover .face,
+.cue:focus-visible .face {
+  background: color-mix(in srgb, var(--block-mid) 84%, var(--paper));
+}
+
+.cue:hover .high,
+.cue:focus-visible .high {
+  background: color-mix(in srgb, var(--block-high) 84%, var(--paper));
+}
+
+.cue:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
