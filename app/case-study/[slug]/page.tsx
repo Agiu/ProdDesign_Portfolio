@@ -20,6 +20,7 @@ import { StatsBlock } from "./blocks/StatsBlock";
 import { ModelViewer } from "./blocks/ModelViewer";
 import { ListBlock } from "./blocks/ListBlock";
 import { YouTubeEmbed } from "./blocks/YouTubeEmbed";
+import { VideoEmbed } from "./blocks/VideoEmbed";
 import { LogoOrbit } from "./blocks/LogoOrbit";
 import { CodeBlock } from "./blocks/CodeBlock";
 import { Callout } from "./blocks/Callout";
@@ -170,6 +171,7 @@ function BlockView({ block }: { block: Block }) {
       )
         return <ListBlock content={block.content} />;
       if (block.name === "youtube") return <YouTubeEmbed content={block.content} />;
+      if (block.name === "video") return <VideoEmbed content={block.content} />;
       if (block.name === "logo-orbit") return <LogoOrbit content={block.content} />;
       if (block.name === "ide") return <CodeBlock content={block.content} />;
       if (block.name === "recruiter" || block.name === "masters")

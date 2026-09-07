@@ -135,6 +135,10 @@ As a group we decided to go create some workable prototypes from our ideas. Taki
 
 This polling station idea had your friends from a Discord call hop in and add games to a queue from their respective game libraries (from Game Pass + independent libraries). Your friends (and yourself) will then vote on what game they would get to play in a matter of minutes; the time limit could be altered by the person who started the polling station, of course.
 
+```video
+https://media.kaelub.com/Xbox/RankingPrototype.mp4
+```
+
 This idea is intended to cause conversation and some controversy, which is always great for gaming. After the video game is picked, you and your friends will then either instantly queue up into the game or complete a group buy. ==From our research we found that gifting is a very common practice within gamer communities, so that everyone in the same call wouldn't feel left out.== I thought this would be a fantastic new business model/venture if I were to set it at a slightly discounted rate.
 
 Spin the Wheel prototype was just a fun idea that I brought up internally. I ended up prototyping it just to play around and it worked pretty well for its use case of picking out a game on a whim. I thought up a few interactions it would send out into the Discord chats and in the platform itself.
