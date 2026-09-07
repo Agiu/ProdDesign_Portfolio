@@ -230,48 +230,45 @@
 }
 
 /*
- * Matches Filmmaker's "See the films" CTA: an underlined text link, not an
- * uppercase eyebrow label. `.lines` is a stretch-by-default flex column, so
- * `width: fit-content` keeps the underline hugging the text instead of
- * stretching to the panel's full width.
+ * Deliberately not the bordered .cta-chip Filmmaker and the recruiter page
+ * use (globals.css) — a card is already dense with its own boxes (the tags,
+ * the frame), and a second bordered, filled button on top of a hovering
+ * photo read as one control too many. Plain text and the arrow carry it
+ * instead: no stroke, no fill, just the colour brightening on hover — the
+ * same restraint the site's quieter links (Footer's, say) already use.
+ *
+ * `width: fit-content` keeps it hugging its own label rather than stretching
+ * to `.lines`'s full width.
  */
 .cta {
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  gap: 0.3rem;
-  /* No margin-top here — .summary's margin-bottom spaces it from the row
-     above on mobile. Desktop overrides this to `margin-top: auto` below. */
-  padding-bottom: 3px;
+  gap: 0.4rem;
   font-size: var(--step-small);
   font-weight: 600;
   color: var(--fg-soft);
-  border-bottom: 1.5px solid rgb(233 231 226 / 35%);
-  transition: border-color var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease);
 }
 
 /* Excludes .cardFeatured: it isn't a link itself (see CaseCard.tsx), so
-   hovering its plain-text title/summary shouldn't darken the CTA underline —
-   only hovering .frame or .cta itself should (scoped rule further below). */
+   hovering its plain-text title/summary shouldn't brighten the CTA — only
+   hovering .frame or .cta itself should (the scoped rule further below). */
 .card:not(.cardFeatured):hover .cta {
-  border-color: var(--fg);
+  color: var(--fg);
 }
 
 .cardFeatured:has(a:hover) .cta,
 .cardFeatured:has(a:focus-visible) .cta {
-  border-color: var(--fg);
+  color: var(--fg);
 }
 
 .arrow {
-  /* The glyph is drawn from x=5 in a 24-wide viewBox, so it carries ~0.2em of
-   * empty space on its left. Pull it back so the visible gap to the text is the
-   * flex `gap` alone, not gap plus that internal padding. */
-  margin-left: -0.2em;
   transition: transform var(--dur) var(--ease);
 }
 
 .card:hover .arrow {
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
 
@@ -432,26 +429,13 @@
     overflow: hidden;
   }
 
-  /*
-   * Sits on the panel floor, past the description. Dark-panel version of the
-   * same underline — see the base .cta rule above.
-   *
-   * The panel is only ever visible while .card is already hovered, so the
-   * base `.card:hover .cta` rule (same specificity, defined earlier) would
-   * otherwise win and force the light-mode border-color here. Restated at
-   * equal specificity so this later declaration takes it by source order.
-   */
-  /* Was `margin-top: auto` to push it to the panel floor — .foot stands on the
-     floor now, so all this owes the summary is the gap above it. */
+  /* Sits on the panel floor, past the description. Was `margin-top: auto` to
+     push it there — .foot stands on the floor now, so all this owes the
+     summary is the gap above it. The chip's own colours already read fine
+     over the veil at rest, so there's nothing left to override here but the
+     spacing. */
   .card:not(.cardFeatured) .cta {
-    margin-top: 0;
     padding-top: 0.9rem;
-    color: var(--fg);
-    border-color: rgb(233 231 226 / 55%);
-  }
-
-  .card:not(.cardFeatured):hover .cta {
-    border-color: var(--fg);
   }
 
   /*

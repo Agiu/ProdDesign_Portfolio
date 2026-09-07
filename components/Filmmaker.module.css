@@ -54,19 +54,21 @@
   text-wrap: pretty;
 }
 
+/*
+ * Layout only — the chip's own look (border, colour, hover-invert) is the
+ * shared .cta-chip class (globals.css), the same button the recruiter
+ * page's "read case study" CTAs use. This just places it a step below the
+ * body copy; it's a standalone link with nothing bigger around it, so unlike
+ * the case-study cards it can read its own :hover directly.
+ */
 .cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
   margin-top: 1.6rem;
-  padding-bottom: 3px;
-  font-weight: 600;
-  border-bottom: 1.5px solid rgb(233 231 226 / 35%);
-  transition: border-color var(--dur) var(--ease);
 }
 
-.cta:hover {
-  border-color: #e9e7e2;
+.cta:hover,
+.cta:focus-visible {
+  color: var(--shade);
+  background: #e9e7e2;
 }
 
 .arrow {
@@ -74,7 +76,7 @@
 }
 
 .cta:hover .arrow {
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
 @media (max-width: 640px) {

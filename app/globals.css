@@ -19,12 +19,12 @@
      Filmmaker — and, below, for the footer, so every dark surface on the page
      is the same dark and the page reads as one ground interrupted by cream
      rather than as three different darks stacked up. */
-  --shade: #141414;
+  --shade: #111111;
   /* A plate lifted off that band: the card panel that slides over an image,
      and the tint under a picture that hasn't loaded. Lighter than the band
      rather than darker — at this depth there is nothing left below. */
-  --void: #1f1f1f;
-  --night: #141414;
+  --void: #111111;
+  --night: #111111;
 
   /* The content column. Figma's 4321px frame is a 3x canvas; this is the
      real-world equivalent of its ~60% centered column. */
@@ -180,4 +180,41 @@ a {
   [data-intro] {
     opacity: 1;
   }
+}
+
+/*
+ * The bordered chip a "read/see this" CTA renders as — the recruiter page's
+ * own button (Recruiter.module.css, `.chip`), lifted here now that a third
+ * dark-ground section wants the same one (Filmmaker, and both case-study
+ * card layouts — CaseStudies.module.css). Global rather than composed or
+ * repeated per module, for the same reason `.reveal` above is: it's one
+ * idiom several unrelated components need to agree on, not something scoped
+ * to any one of them.
+ *
+ * A cream-ground CTA restates this itself instead of using it (About.tsx's
+ * `.more`, styled after the same button) — that context needs different
+ * colours outright, not just a different ground, so there's nothing left to
+ * share past the shape, and the shape alone isn't worth a class for.
+ *
+ * This sets the chip's rest state only, deliberately with no `:hover` of its
+ * own. Everywhere it's used, the chip sits inside something bigger that's
+ * already the click target — a whole card, a whole link — so the hover
+ * trigger is wider than the chip itself, and each caller restates the invert
+ * against whatever that wider trigger actually is (see Filmmaker.module.css
+ * and CaseStudies.module.css for the two shapes that takes).
+ */
+.cta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.6rem 1rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #e9e7e2;
+  border: 1px solid #e9e7e2;
+  background: transparent;
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 }

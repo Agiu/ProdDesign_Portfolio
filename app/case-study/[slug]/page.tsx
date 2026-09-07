@@ -19,6 +19,7 @@ import { StatsBlock } from "./blocks/StatsBlock";
 import { ModelViewer } from "./blocks/ModelViewer";
 import { ListBlock } from "./blocks/ListBlock";
 import { YouTubeEmbed } from "./blocks/YouTubeEmbed";
+import { LogoOrbit } from "./blocks/LogoOrbit";
 import { CodeBlock } from "./blocks/CodeBlock";
 import { Callout } from "./blocks/Callout";
 import { ArrowIcon } from "@/components/ArrowIcon";
@@ -167,6 +168,7 @@ function BlockView({ block }: { block: Block }) {
       )
         return <ListBlock content={block.content} />;
       if (block.name === "youtube") return <YouTubeEmbed content={block.content} />;
+      if (block.name === "logo-orbit") return <LogoOrbit content={block.content} />;
       if (block.name === "ide") return <CodeBlock content={block.content} />;
       if (block.name === "recruiter" || block.name === "masters")
         return <Callout name={block.name} content={block.content} />;
@@ -217,7 +219,11 @@ export default async function CaseStudyPage({
           className={styles.heroImage}
         />
         {study.video && <HeroVideo src={study.video} />}
-        <div className={styles.heroScrim} />
+        <div
+          className={[styles.heroScrim, study.video && styles.heroScrimVideo]
+            .filter(Boolean)
+            .join(" ")}
+        />
         <div className={styles.heroInner}>
           <div className={styles.heroText}>
             <h1 className={styles.title}>{study.title}</h1>

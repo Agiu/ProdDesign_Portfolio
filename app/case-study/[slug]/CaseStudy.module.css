@@ -93,6 +93,21 @@
   );
 }
 
+/* A playing video keeps cycling through brighter frames a still photo never
+   does, so a video hero (HeroVideo.tsx) gets a heavier scrim than the shared
+   default above — darker throughout and reaching further up the frame,
+   rather than just at the bottom-left. */
+.heroScrimVideo {
+  background: linear-gradient(
+    to top,
+    rgb(0 0 0 / 94%) 0%,
+    rgb(0 0 0 / 78%) 35%,
+    rgb(0 0 0 / 46%) 65%,
+    rgb(0 0 0 / 14%) 88%,
+    transparent 100%
+  );
+}
+
 .heroInner {
   position: relative;
   max-width: var(--measure);
@@ -1795,5 +1810,144 @@
 
   .recommendedList {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Custom block: logo-orbit (LogoOrbit.tsx) ---------------------------
+ * Stands in for a screenshot when the point is "too many places to choose
+ * from" — five platform badges circling a shared center on two rings. No
+ * ground of its own: the badges sit straight on the page's paper, the way a
+ * transparent PNG figure does (.figureImg), so the colour in the marks is the
+ * only colour in the block. Outer ring turns clockwise, inner
+ * counter-clockwise, each icon counter-spinning against its own ring so the
+ * badge itself stays upright while it travels (see the orbit-counter-*
+ * keyframes below).
+ */
+.orbitStage {
+  --radius-outer: clamp(92px, 16vw, 156px);
+  --radius-inner: clamp(52px, 9vw, 92px);
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+
+.orbitGuide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px dashed rgb(42 42 42 / 14%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.orbitGuideOuter {
+  width: calc(var(--radius-outer) * 2);
+  height: calc(var(--radius-outer) * 2);
+}
+
+.orbitGuideInner {
+  width: calc(var(--radius-inner) * 2);
+  height: calc(var(--radius-inner) * 2);
+}
+
+.orbitRing {
+  position: absolute;
+  inset: 0;
+  animation: orbit-cw var(--ring-dur) linear infinite;
+}
+
+.orbitRingOuter {
+  --ring-dur: 34s;
+}
+
+.orbitRingInner {
+  --ring-dur: 22s;
+  animation-name: orbit-ccw;
+}
+
+.orbitIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: rotate(var(--angle)) translateX(var(--radius));
+}
+
+.orbitRingOuter .orbitIcon {
+  --radius: var(--radius-outer);
+}
+
+.orbitRingInner .orbitIcon {
+  --radius: var(--radius-inner);
+}
+
+.orbitGlyph {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  /* Light enough to lift the chip off the cream without reading as a drop
+     shadow — the dark ground that used to carry them is gone. */
+  box-shadow: 0 4px 14px rgb(0 0 0 / 12%);
+  transform: translate(-50%, -50%) rotate(calc(-1 * var(--angle)));
+  animation: orbit-counter-cw var(--ring-dur) linear infinite;
+}
+
+.orbitGlyphOuter {
+  width: clamp(38px, 6.4vw, 58px);
+  height: clamp(38px, 6.4vw, 58px);
+}
+
+.orbitGlyphInner {
+  width: clamp(30px, 5.2vw, 46px);
+  height: clamp(30px, 5.2vw, 46px);
+  animation-name: orbit-counter-ccw;
+}
+
+.orbitBadge {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes orbit-cw {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-ccw {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes orbit-counter-cw {
+  from {
+    transform: translate(-50%, -50%) rotate(calc(-1 * var(--angle)));
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(calc(-1 * var(--angle) - 360deg));
+  }
+}
+
+@keyframes orbit-counter-ccw {
+  from {
+    transform: translate(-50%, -50%) rotate(calc(-1 * var(--angle)));
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(calc(-1 * var(--angle) + 360deg));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbitRing,
+  .orbitGlyph {
+    animation: none;
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { animate, cubicBezier } from "animejs";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import styles from "./CaseStudy.module.css";
 
@@ -18,6 +18,36 @@ import styles from "./CaseStudy.module.css";
 const INTRO_LEAD = 280;
 const INTRO_MS = 520;
 const INTRO_EASE = cubicBezier(0.4, 0, 0.2, 1);
+
+/*
+ * Where "back" actually goes: the homepage's case-study list, unless this
+ * study was reached from the recruiter page (Timeline.tsx tags that CTA's
+ * href with `?from=recruiter`), in which case back means back there instead.
+ *
+ * Read through `useSyncExternalStore` rather than a plain effect: the query
+ * string is browser-only state, and this page is fully static
+ * (`generateStaticParams`, `dynamicParams = false`) — its build-time HTML
+ * always says "/#work", so a naive read-and-setState-on-mount would flip the
+ * link out from under React a frame after paint, or worse, disagree with the
+ * static markup on the very first client render and trip a hydration
+ * mismatch whenever the query string actually was `?from=recruiter`. This
+ * hook is React's own answer to exactly that: `getServerSnapshot` supplies
+ * the same "/#work" both the static build and the first client render agree
+ * on, and `getSnapshot` only takes over once hydration has actually
+ * finished. Deliberately not `useSearchParams` — that Next hook is tracked
+ * for prerendering and would force this static page's whole component tree
+ * into a `<Suspense>` boundary just to read one flag.
+ *
+ * `subscribe` is a no-op: the query string doesn't change while this page
+ * stays mounted (a visitor who wants a different one loads a new page), so
+ * there is nothing to actually listen for — but the hook requires a
+ * subscribe function regardless, and a listener that never fires is the
+ * honest one for a value that's fixed for the life of the page.
+ */
+const subscribeToNothing = () => () => {};
+const readFromRecruiter = () =>
+  new URLSearchParams(window.location.search).get("from") === "recruiter";
+const fromRecruiterOnServer = () => false;
 
 /**
  * The back control, pinned to the top-left corner of the viewport rather than
@@ -41,6 +71,15 @@ export function BackLink() {
   const ref = useRef<HTMLAnchorElement>(null);
   // Which ground is under the link: the dark hero/meta run, or the page body.
   const [onDark, setOnDark] = useState(true);
+
+  const fromRecruiter = useSyncExternalStore(
+    subscribeToNothing,
+    readFromRecruiter,
+    fromRecruiterOnServer,
+  );
+  const back = fromRecruiter
+    ? { href: "/recruiter", label: "Back to recruiter page" }
+    : { href: "/#work", label: "Back to case studies" };
 
   /*
    * Fades in once, on mount. `[data-intro]` (globals.css) is what holds it at
@@ -114,11 +153,11 @@ export function BackLink() {
   return (
     <Link
       ref={ref}
-      href="/#work"
+      href={back.href}
       className={styles.back}
       data-intro
       data-ground={onDark ? "dark" : "paper"}
-      aria-label="Back to case studies"
+      aria-label={back.label}
     >
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
         <path

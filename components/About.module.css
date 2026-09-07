@@ -290,14 +290,138 @@
 }
 
 /*
- * The résumé, then the education under it. Neither is headed, so this gap is
- * the only thing separating them — set well wider than the rows inside either
+ * Education, then the résumé under it. Neither is headed, so this gap is the
+ * only thing separating them — set well wider than the rows inside either
  * stack, or the two would read as one long list.
+ *
+ * --pad-x is the box's own padding, read a second time by .educationInset:
+ * the two lists share one grid (.entry, below), and that grid's tracks are
+ * fractions (`fr`) of whatever contains it — so the box's padding, which
+ * narrows the résumé's containing block, has to be matched by an equal inset
+ * on the education list's, or the same track sizes resolve to two different
+ * widths and the columns stop lining up between the two stacks. One
+ * variable, so the box can't be repadded without the education list
+ * following it.
  */
 .credentials {
+  --pad-x: clamp(1.25rem, 3vw, 2.25rem);
+
   display: flex;
   flex-direction: column;
   gap: clamp(2.25rem, 4vw, 3rem);
+}
+
+.educationInset {
+  padding-inline: var(--pad-x);
+}
+
+/*
+ * The roles, their frame, and the link hanging off it, held together as one
+ * block so the gap in .credentials stays the boundary between the two lists
+ * rather than something the link floats in the middle of.
+ *
+ * --stem is the drop between the frame and the button, spent twice: once as
+ * the button's own margin, once as the height of the line that crosses it.
+ * One number, so the line can't come up short of the thing it connects to.
+ */
+.roles {
+  --stem: clamp(1.4rem, 3vw, 1.9rem);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/*
+ * The frame around the résumé, and only the résumé: the education list
+ * stays loose, which is what keeps the two readable as two lists.
+ *
+ * Ruled in the same full ink as the connector and the button below — three
+ * strokes that read as one continuous line of thought (frame, stem, chip)
+ * rather than a quiet container with one dark-edged control hanging off it.
+ */
+.rolesBox {
+  /* .roles centres nothing and starts everything at its left edge, so the
+     frame has to ask for the full width the rows want. */
+  align-self: stretch;
+  padding: var(--pad-x);
+  border: 1px solid var(--ink);
+}
+
+/*
+ * The one way out of this section, to the same career told at length
+ * (/recruiter).
+ *
+ * Deliberately the recruiter page's own CTA chip (Recruiter.module.css,
+ * `.chip`), restated rather than shared: a CSS module is scoped to its file,
+ * and the two live in different ones. The same trick as the arrow flip the
+ * quote carousel and the shot strip each write out for themselves. If a
+ * third place ever wants this, that is the point to lift it somewhere
+ * common rather than write it a third time.
+ *
+ * Bordered at rest and inverted on hover, which is the "the ink comes to
+ * meet you" move the rest of the site's buttons make.
+ */
+.more {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  /* The drop the stem below crosses. Well inside .credentials' own gap under
+     it, so the button reads as hanging off the frame rather than sitting
+     between the two lists. */
+  margin-top: var(--stem);
+  padding: 0.6rem 1rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  background: transparent;
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.more:hover,
+.more:focus-visible {
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.moreArrow {
+  font-size: 1.1em;
+  flex: none;
+  transition: transform var(--dur) var(--ease);
+}
+
+.more:hover .moreArrow,
+.more:focus-visible .moreArrow {
+  transform: translateX(3px);
+}
+
+/*
+ * The lead line from the frame down into the button, drawn as the button's
+ * own pseudo-element so nothing has to be added to the markup for it and the
+ * two can never drift apart: `bottom: 100%` pins it to the top edge of the
+ * button, and its height is the same --stem that put the button there.
+ *
+ * `+ 1px` on the height corrects for something `bottom: 100%` doesn't know
+ * about: an absolutely positioned element sizes itself against its
+ * containing block's *padding* box, not its border box, and `.more` carries
+ * a 1px border of its own. Without the correction the stem's own bottom edge
+ * sits exactly at the button's padding edge — a pixel inside its visible
+ * top — which pushes the top of the stem a pixel short of the frame's own
+ * border and leaves a hairline gap between the two instead of a join.
+ */
+.more::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 1px;
+  height: calc(var(--stem) + 1px);
+  background: var(--ink);
 }
 
 .list {
@@ -332,6 +456,9 @@
 .period {
   color: var(--ink-dim);
   font-variant-numeric: tabular-nums;
+  /* "1½ yrs", "2025 – 2026": one short fact either way, and never one worth
+     breaking over two lines. */
+  white-space: nowrap;
 }
 
 .name {
@@ -371,7 +498,46 @@
  * held against the right edge, and what it was drops underneath the name — so
  * a row becomes two lines rather than three columns crushed into one.
  */
-@media (max-width: 700px) {
+/*
+ * The table, held together further down than it used to hold.
+ *
+ * Three columns are the whole shape of this thing now that a frame is drawn
+ * round them, so the width where they give up is worth pushing: tighter
+ * tracks, a tighter gap, and a step down in type buy the rows about 140px,
+ * which carries the layout from the old 700px breakpoint down to 520. The
+ * type is the lever here rather than the columns because a résumé row is
+ * three short facts, and three short facts set small still read as a table,
+ * while two of them stacked stop being one.
+ */
+@media (max-width: 760px) {
+  .entry {
+    /* Wide enough for a written-out year range ("2025 – 2026") at this size:
+       the education list shares these tracks, and at 4.5rem it was breaking
+       those across two lines. Fixed rather than max-content because each row
+       is its own grid, and only a stated width makes the columns line up
+       down the list. */
+    grid-template-columns: 5.25rem minmax(0, 1fr) minmax(0, 1.5fr);
+    gap: 0.75rem;
+    font-size: var(--step-small);
+  }
+
+  /* Redefines the one variable .rolesBox and .educationInset both read,
+     rather than repeating the value in each — the two insets can't go out of
+     step with each other at this width if there's only one number to change. */
+  .credentials {
+    --pad-x: clamp(0.9rem, 3vw, 1.25rem);
+  }
+}
+
+/*
+ * Under 520px there is no honest way to keep three columns: the third would
+ * be breaking "Software Development Intern" over three lines to do it. The
+ * row becomes two lines instead — the span moves to the end of the first,
+ * held against the right edge, and what it was drops under the name — so a
+ * row is still one row, just folded. The frame and the link stay exactly as
+ * they are above; it is only the rows inside them that fold.
+ */
+@media (max-width: 520px) {
   .list {
     gap: 1.25rem;
   }

@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { about, duration } from "@/content/home";
+import { ArrowIcon } from "./ArrowIcon";
 import { PixelPortrait } from "./PixelPortrait";
 import { useReveal } from "./useReveal";
 import styles from "./About.module.css";
@@ -97,26 +99,47 @@ export function About() {
           </div>
         </div>
 
-        {/* Work first, schooling under it: the roles are what the bio above
-            them is claiming, and the degrees are the footnote to that rather
-            than the other way round. */}
+        {/* Schooling first, the roles under it — the shorter, quieter list
+            leads into the one the bio above is actually making its case
+            with. */}
         <div className={styles.credentials}>
-          <Stack
-            rows={about.experience.map((role) => ({
-              period: duration(role.months),
-              name: role.org,
-              what: role.title,
-            }))}
-          />
+          {/* Inset to match the résumé box's own padding (.rolesBox), so the
+              two stacks' shared grid (.entry) resolves to the same column
+              widths in both — see .educationInset for why. */}
+          <div className={styles.educationInset}>
+            <Stack
+              rows={about.education.map((entry) => ({
+                period: entry.period,
+                name: entry.institution,
+                what: entry.detail,
+                muted: entry.muted,
+              }))}
+            />
+          </div>
 
-          <Stack
-            rows={about.education.map((entry) => ({
-              period: entry.period,
-              name: entry.institution,
-              what: entry.detail,
-              muted: entry.muted,
-            }))}
-          />
+          {/* The roles, their frame, and their one link, grouped so the link
+              sits tight under the list it expands on. Left loose in
+              .credentials it would take that flex gap on both sides and read
+              as floating between the two stacks, which is the one thing the
+              gap between them is there to say. */}
+          <div className={styles.roles}>
+            <div className={styles.rolesBox}>
+              <Stack
+                rows={about.experience.map((role) => ({
+                  period: duration(role.months),
+                  name: role.org,
+                  what: role.title,
+                }))}
+              />
+            </div>
+
+            {/* Arrow first, label after, exactly as the recruiter page's own
+                CTAs are built (Timeline.tsx, `Cta`). */}
+            <Link href={about.more.href} className={styles.more}>
+              <ArrowIcon className={styles.moreArrow} />
+              {about.more.label}
+            </Link>
+          </div>
         </div>
       </div>
     </section>

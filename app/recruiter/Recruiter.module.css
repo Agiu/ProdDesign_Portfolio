@@ -1,0 +1,1354 @@
+/*
+ * The recruiter page (`/recruiter`).
+ *
+ * Same system as the rest of the site — cream ground, warm charcoal ink, four
+ * type sizes, no rounded corners anywhere — arranged for one reader doing one
+ * thing: scanning a career from the top down and deciding whether to click
+ * through. So the page is a single column with a rail down its left edge, and
+ * every position hangs off that rail in the same order every time: who, what
+ * it was, when, what it changed, what it looked like, where to see it.
+ *
+ * Placeholders are a first-class state here rather than an absence (see
+ * content/recruiter.ts). Anything still to be written carries the hazard
+ * hatching the case-study callout uses — an unfinished entry should look
+ * unfinished on the page, not merely thin.
+ */
+
+.page {
+  /* The contact band closes on the dark ground the footer continues, so
+     nothing is owed at the foot of the page itself. */
+  padding-bottom: 0;
+}
+
+/* ---- Hero ---------------------------------------------------------------
+ * The title sits a little down the page rather than pinned to the top edge —
+ * there is no sheet of paper to hang off here, and a greeting reads better
+ * with air over it.
+ */
+
+.hero {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  padding-top: clamp(3.5rem, 8vw, 6.5rem);
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.back {
+  position: fixed;
+  top: clamp(1.5rem, 4vh, 2.5rem);
+  left: calc(var(--gutter) - 0.4rem);
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  color: var(--ink-soft);
+  transition:
+    transform var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.back:hover {
+  color: var(--ink);
+  transform: translateX(-3px);
+}
+
+.back[data-ground="dark"] {
+  color: rgb(233 231 226 / 85%);
+}
+
+.back[data-ground="dark"]:hover {
+  color: #e9e7e2;
+}
+
+/* Display size and weight come from the global h1 rule; only the measure and
+   the wrap are this page's business. */
+/*
+ * "Hi <word>," — kept from breaking a second way, between "Hi" and the word,
+ * on a narrow phone showing the longest salutation ("Hi Headhunter,"). The
+ * word itself already can't break (`.word` is `nowrap`); this stops "Hi"
+ * splitting away from it instead. The clamp()ed display size is what
+ * actually keeps the line fitting — it scales down with the viewport well
+ * before this would bind. The forced break onto the second line is authored
+ * in the markup (RecruiterHero.tsx) as a literal `<br />`, not here.
+ */
+.lead {
+  white-space: nowrap;
+}
+
+/*
+ * The rotating salutation.
+ *
+ * Unlike the homepage tagline's word (Hero.module.css, .word), which holds a
+ * box open at its longest option's width, this one's width is animated per
+ * word by useStretchingWordRotator.ts — so the box itself carries no fixed
+ * size here, only the properties that let JS resize it smoothly.
+ *
+ * `overflow` has to stay `visible` — the default, stated here so nothing
+ * later in the file can accidentally set it. Two reasons: the width tween's
+ * midpoints sit between two words' widths, so the box is briefly narrower
+ * than whichever one is rendered, and anything but `visible` would clip that
+ * as the word getting cut off rather than the box measuring it; and on an
+ * inline-block, anything but `visible` also moves the baseline to the box's
+ * own bottom margin edge, which would lift the word off the surrounding
+ * line. `.current` renders in normal flow rather than absolutely positioned
+ * for the same reason `.word`'s width has to stay real rather than implied:
+ * an absolutely-positioned child leaves the box with no in-flow content of
+ * its own to draw a baseline from either.
+ */
+.word {
+  display: inline-block;
+  vertical-align: baseline;
+  overflow: visible;
+  white-space: nowrap;
+}
+
+/* Opacity is written by anime.js (useStretchingWordRotator.ts) — no
+   transition here, or it would fight the fade. */
+.current {
+  white-space: nowrap;
+}
+
+.intro {
+  max-width: 58ch;
+  margin-top: clamp(1.25rem, 3vw, 1.75rem);
+  font-size: var(--step-lead);
+  line-height: 1.35;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/*
+ * The two shortcuts under the intro. Quiet on purpose — the ask is made at the
+ * foot of the page, and these exist only so a reader who wants the PDF and
+ * nothing else doesn't have to scroll a career to find it.
+ */
+.shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.5rem;
+  margin-top: clamp(1.25rem, 3vw, 1.75rem);
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.shortcut {
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--ink-muted);
+  padding-bottom: 2px;
+  transition:
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+.shortcut:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+/* ---- Timeline ----------------------------------------------------------- */
+
+.timeline {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  padding-bottom: clamp(4rem, 9vw, 7rem);
+}
+
+/*
+ * ---- Quick nav ----
+ * One chip per position, in the same order the rail below runs — the way in
+ * for a reader who already knows which stop they want, rather than a scroll
+ * past however many come before it. First thing in the section, so it also
+ * carries the divider that separates the hero above from everything here.
+ */
+.quickNav {
+  padding-top: clamp(1.5rem, 4vw, 2.5rem);
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  border-top: 1px solid var(--ink-muted);
+}
+
+.quickNavLabel {
+  margin-bottom: 0.75rem;
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink-muted);
+}
+
+/*
+ * Wraps rather than scrolls. Every chip here is short, so all seven fit one
+ * row at any desktop measure — "horizontal" falls out of that, it doesn't
+ * need enforcing — and flex-wrap just lets a phone fall back to a couple of
+ * short rows instead of adding a horizontal-scroll strip next to the page's
+ * own vertical one.
+ */
+.quickNavList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  list-style: none;
+}
+
+/* Bordered, never filled — unlike the rail's own `.chip` CTAs further down,
+   this is navigation around the page rather than a call to leave it, and the
+   two shouldn't read as the same kind of button. */
+.quickNavLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.85rem;
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  border: 1px solid var(--ink-muted);
+  transition:
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+.quickNavLink:hover,
+.quickNavLink:focus-visible {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.quickNavLink:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.timelineHeading {
+  max-width: 20ch;
+  /* A step under the display size the global rule gives it: the page already
+     has a title, and this is the label on its one section. */
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+}
+
+.timelineNote {
+  max-width: 56ch;
+  margin-top: 0.9rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.entries {
+  list-style: none;
+}
+
+/*
+ * One position: the rail, then everything hanging off it.
+ *
+ * The space between entries is the entry's own bottom padding rather than a
+ * gap on the list, and the rail is then pulled back down through it (see
+ * .rail). That is what keeps the line continuous: a `gap` on the list would
+ * cut the spine between every position, and the rail would read as a column of
+ * dashes rather than as one line drawn down the career.
+ */
+.entry {
+  --rail: clamp(56px, 8vw, 88px);
+  --mark: clamp(44px, 6vw, 64px);
+  --entry-gap: clamp(2.75rem, 6vw, 4.5rem);
+
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.25rem);
+  padding-bottom: var(--entry-gap);
+}
+
+.entries > li:last-child {
+  padding-bottom: 0;
+}
+
+/*
+ * Grid items stretch to the content box, which stops short of the entry's
+ * bottom padding — so the rail is given that padding back as negative margin
+ * and runs to the entry's true bottom edge, where the next one's mark picks
+ * it up.
+ */
+.rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: calc(var(--entry-gap) * -1);
+}
+
+/*
+ * The mark on the rail. A square plate on paper with the organisation's logo
+ * or initials in it — the one place on this page a brand is allowed to speak
+ * for itself, and the thing the eye actually travels down.
+ *
+ * Opacity and scale are written by anime.js (Timeline.tsx) on arrival, so
+ * nothing here may transition them.
+ */
+.mark {
+  display: grid;
+  place-items: center;
+  width: var(--mark);
+  height: var(--mark);
+  flex: none;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  transform-origin: center;
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 18%;
+}
+
+/* Initials, until a real mark lands. Tracked and set in the page's own face —
+   it should read as a stand-in drawn by the site, not as a fake logotype. */
+.monogram {
+  font-size: clamp(0.9rem, 0.75rem + 0.5vw, 1.15rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+
+/*
+ * The line itself. Fills whatever the entry's height leaves under the mark, so
+ * a long position draws a long segment and the rail is always exactly as tall
+ * as the career it is holding.
+ *
+ * scaleY is written by anime.js from 0 on arrival; transform-origin is what
+ * makes that a draw downward rather than a growth from the middle.
+ */
+.spine {
+  width: 1px;
+  flex: 1;
+  min-height: 2rem;
+  margin-top: 0.85rem;
+  background: var(--ink-muted);
+  transform-origin: top;
+}
+
+/* The last segment has nothing under it to arrive at, so it dissolves rather
+   than stopping on a hard end — the rail runs out of career, it doesn't hit a
+   wall. */
+.entries > li:last-child .spine {
+  mask-image: linear-gradient(to bottom, #000 40%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent);
+}
+
+/* Schooling, one degree quieter than employment: same rail, lighter plate. */
+.entry[data-kind="education"] .mark {
+  border-color: var(--ink-muted);
+}
+
+.entry[data-kind="education"] .monogram {
+  color: var(--ink-dim);
+}
+
+/* ---- An entry's body ---------------------------------------------------- */
+
+.body {
+  min-width: 0;
+  /* The type starts on the mark's own top line rather than at the top of its
+     plate, which sits a touch higher than the text reads. */
+  padding-top: 0.15rem;
+}
+
+.org {
+  /* No margin-top: this is the first thing in .body now that the level label
+     above it is gone, so .body's own padding-top (aligning it to the mark)
+     is the only clearance it needs. */
+  font-size: clamp(1.3rem, 1rem + 1.3vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* The title under the employer, not beside it: the organisation is what the
+   eye is scanning for, the role is what it reads once it has stopped. */
+.role {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: var(--step-lead);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--ink-soft);
+}
+
+.when {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 0.55rem;
+  font-size: var(--step-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-dim);
+}
+
+/* Separated by a dot rather than by a rule or a slash — the parts are one
+   line of facts, and the dot is the quietest thing that can divide them. */
+.whenPart + .whenPart::before {
+  content: "·";
+  margin-inline: 0.5rem;
+  color: var(--ink-muted);
+}
+
+.summary {
+  max-width: 62ch;
+  margin-top: 0.9rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* ---- Impacts -------------------------------------------------------------
+ * What the role changed, one per row, each hung off a short rule. The rule is
+ * doing what a bullet would, in the site's own vocabulary — the page has no
+ * dots or discs anywhere else and shouldn't grow some here.
+ */
+
+.impacts {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vw, 1.35rem);
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+  list-style: none;
+}
+
+.impact {
+  position: relative;
+  max-width: 64ch;
+  padding-left: clamp(0.9rem, 2vw, 1.25rem);
+  border-left: 2px solid var(--ink);
+}
+
+.impactHead {
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.impactDetail {
+  margin-top: 0.35rem;
+  font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* An impact's own CTAs — the same row .ctas is, just closer: it answers the
+   one bullet above it rather than the position as a whole, so it sits right
+   under that bullet's own detail instead of down with the position's general
+   links. Same chips (Timeline.tsx renders these through the same Cta
+   component position.links uses), just less air above them. */
+.impactCtas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+/*
+ * A line still to be written. The rule turns to hazard hatching — the same
+ * caution-tape gradient the case-study callout uses, since the site has no
+ * accent colour to spend on "unfinished" — and the type drops to the dimmest
+ * ink, so a placeholder can't be mistaken for a claim at a glance.
+ */
+.impact[data-placeholder] {
+  border-left-color: transparent;
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--ink-muted) 0 4px,
+    transparent 4px 9px
+  );
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
+.impact[data-placeholder] .impactHead,
+.impact[data-placeholder] .impactDetail {
+  color: var(--ink-muted);
+}
+
+/* Names the state outright rather than leaving the hatching to imply it —
+   this page gets sent to people, and a "TODO" that only the author can
+   recognise is worse than one anybody can. */
+.impact[data-placeholder] .impactHead::after {
+  content: "to fill in";
+  margin-left: 0.6rem;
+  padding: 0.1em 0.45em;
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink-dim);
+  border: 1px solid var(--ink-muted);
+  white-space: nowrap;
+}
+
+/* ---- Shots ---------------------------------------------------------------
+ * Pictures of the work, lifted from the case studies. Evidence for the
+ * impacts above them rather than a gallery, so they run as a strip that
+ * shows three at a time and pages for anything past that (ShotCarousel.tsx),
+ * instead of growing the page a row taller for every photo an entry carries.
+ */
+
+.shotCarousel {
+  position: relative;
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+}
+
+/*
+ * The strip itself, and the one place the column count is decided. It is a
+ * real scrolling element rather than a transformed track: a touch screen
+ * gets to swipe it for nothing, snapping keeps every stop square, and the
+ * arrows can read where they are from its own scrollLeft instead of from a
+ * count JS would otherwise have to keep in step with these breakpoints.
+ *
+ * Its scrollbar is hidden the same way the home page hides the window's
+ * (globals.css): the arrows and the cut-off photo at the edge already say
+ * there is more, and a bar under every strip on the page would be five more
+ * horizontal rules competing with the rail.
+ */
+.shotStrip {
+  --shot-cols: 3;
+  --shot-gap: clamp(0.75rem, 2vw, 1.25rem);
+
+  display: flex;
+  gap: var(--shot-gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.shotStrip::-webkit-scrollbar {
+  display: none;
+}
+
+/* Exactly `--shot-cols` of them across the strip, gaps included, and no
+   shrinking: a photo is the same size in every entry on the page whether
+   that entry has one or a dozen. */
+.shotItem {
+  flex: 0 0
+    calc(
+      (100% - (var(--shot-cols) - 1) * var(--shot-gap)) / var(--shot-cols)
+    );
+  scroll-snap-align: start;
+}
+
+@media (max-width: 820px) {
+  .shotStrip {
+    --shot-cols: 2;
+  }
+}
+
+@media (max-width: 560px) {
+  .shotStrip {
+    --shot-cols: 1;
+  }
+}
+
+/*
+ * The two arrows, floated over the strip's own left and right edges. They
+ * sit outside the scroller (they would scroll away inside it) and over the
+ * outermost photo, which is the same "arrows live on the card" idiom the
+ * case studies' quote carousel uses. Styled like the films page's own play
+ * button: a dark scrim plus a light ring, since either has to stay legible
+ * over an arbitrary photograph, an NDA plate, or a hatched placeholder.
+ *
+ * Centred on the photograph rather than on the strip: the captions under
+ * the pictures make the strip taller than the pictures are, so a plain 50%
+ * here sits visibly low. `--shot-frame-h` is the frame's measured height,
+ * written by ShotCarousel.tsx on mount and on every resize, because CSS
+ * can't work it out on its own (the frame's height comes from its aspect
+ * ratio against a width that is a fraction of the strip, and a percentage
+ * in `top` resolves against height). The arrows are drawn by that same
+ * script, so there is never an arrow on the page without the measurement
+ * that places it.
+ */
+.shotNav {
+  position: absolute;
+  top: calc(var(--shot-frame-h, 50%) / 2);
+  z-index: 2;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  color: #e9e7e2;
+  background: rgb(0 0 0 / 45%);
+  border: 1.5px solid rgb(233 231 226 / 70%);
+  cursor: pointer;
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+.shotNav:hover,
+.shotNav:focus-visible {
+  background: rgb(0 0 0 / 65%);
+  border-color: #e9e7e2;
+}
+
+.shotNav:focus-visible {
+  outline: 2px solid #e9e7e2;
+  outline-offset: 2px;
+}
+
+.shotNavPrev {
+  left: 0.5rem;
+}
+
+.shotNavNext {
+  right: 0.5rem;
+}
+
+/* The site's one arrow (ArrowIcon.tsx) otherwise only ever points right. */
+.shotNavFlip {
+  transform: scaleX(-1);
+}
+
+.shotFrame {
+  /* A plain <div> for the placeholder variant, but a <span> when it's wrapped
+     in `.shotButton` (Timeline.tsx) — a <div> isn't valid content inside a
+     <button>. Stated explicitly so both give it the same block box; without
+     it the span's default `inline` would collapse the aspect-ratio away. */
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  /* Ground for a picture that hasn't loaded — a step off the paper rather than
+     a hole in it. */
+  background: var(--void);
+}
+
+.shotImage {
+  object-fit: cover;
+  transition: transform var(--dur) var(--ease);
+}
+
+/*
+ * Wraps a real shot's `.shotFrame` so it opens the lightbox (Lightbox.tsx) —
+ * a plain button reset, matching the films page's own `.card` for the same
+ * job. The caption stays a sibling `<p>` outside it rather than nested
+ * inside, so it's selectable prose rather than part of the click target —
+ * the same call CaseCard.tsx makes for its featured card's title.
+ */
+.shotButton {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.shotButton:hover .shotImage,
+.shotButton:focus-visible .shotImage {
+  transform: scale(1.035);
+}
+
+.shotButton:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* No picture yet: the frame stays and states what it's for. Hatched on paper
+   rather than filled dark, so an empty slot reads as a slot and not as an
+   image that failed to load. */
+.shotFrame[data-placeholder] {
+  display: grid;
+  place-items: center;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgb(0 0 0 / 6%) 0 6px,
+      transparent 6px 14px
+    ),
+    rgb(0 0 0 / 3%);
+  border: 1px solid var(--ink-muted);
+}
+
+.shotPlaceholder {
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+/*
+ * A shot that will never get an image (`Shot["nda"]`) — a solid plate rather
+ * than the hatched "still to add" one just above, so the two read as
+ * different states rather than the same gap left open two ways. Filled dark
+ * on purpose: the hatching's whole job is to say "paper, waiting" — this
+ * slot isn't waiting on anything, so it gets the site's other surface
+ * instead, the one every dark ground on the page is drawn in.
+ */
+.shotFrame[data-nda] {
+  display: grid;
+  place-items: center;
+  background: var(--shade);
+}
+
+/*
+ * Scanlines. Static texture, not motion — so this is the one part of the
+ * plate that stays under reduced motion, where it carries the whole "screen
+ * showing something it can't show" idea on its own. Kept close to invisible:
+ * enough that the ground reads as a display, never enough to resolve into
+ * stripes the label has to be read through.
+ */
+.ndaScan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(233 231 226 / 5%) 0 1px,
+    transparent 1px 4px
+  );
+}
+
+/*
+ * The band that passes down the plate every cycle. Starts invisible and
+ * parked: opacity and translateY are both written by anime.js
+ * (NdaPlate.tsx), and this is what it looks like before that runs at all —
+ * pre-hydration, without JS, and under reduced motion, where nothing ever
+ * moves it.
+ */
+.ndaSweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 36%;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgb(233 231 226 / 10%) 45%,
+    rgb(233 231 226 / 16%) 55%,
+    transparent
+  );
+}
+
+/* The content, over the texture. */
+.ndaStack {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.ndaLock {
+  display: inline-flex;
+}
+
+.shotNdaIcon {
+  font-size: 1.6rem;
+  color: rgb(233 231 226 / 55%);
+}
+
+.ndaLabelWrap {
+  position: relative;
+  display: inline-block;
+}
+
+.shotNdaLabel {
+  position: relative;
+  /* Over its own ghosts — the copy you read is never the one behind. */
+  z-index: 1;
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(233 231 226 / 65%);
+}
+
+/*
+ * The tear. Two copies of the label laid exactly over the real one and
+ * invisible at rest — anime.js flashes them either side of it for about
+ * 200ms a burst and puts them back. Cream at low alpha rather than an RGB
+ * split: the site has no accent colour, and a red/cyan tear would be the
+ * only hue on the entire page.
+ */
+.ndaGhost {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  white-space: nowrap;
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(233 231 226 / 65%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.shotCaption {
+  margin-top: 0.5rem;
+  font-size: var(--step-small);
+  line-height: 1.4;
+  color: var(--ink-dim);
+  text-wrap: pretty;
+}
+
+/* Still to add — quieter and unresolved, hence the italic. An NDA shot's
+   caption is the opposite: a settled fact about the entry, not a gap, so it
+   keeps the plain style above rather than picking this up too. */
+.shotCaption[data-placeholder] {
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+/* ---- CTAs ----------------------------------------------------------------
+ * The whole reason the page exists: one chip per thing a reader can go and
+ * look at. Bordered rather than filled at rest, and inverted on hover — the
+ * same "the ink comes to meet you" move the site's other buttons make.
+ */
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.6rem 1rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  background: transparent;
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.chip:hover,
+.chip:focus-visible {
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.chipIcon {
+  font-size: 1.1em;
+  flex: none;
+  transition: transform var(--dur) var(--ease);
+}
+
+/* Only the arrow travels — a play mark that slid sideways would read as a
+   skip-forward button rather than as "watch this". The test is "not video"
+   rather than naming every other kind, so a plain external citation
+   (PositionLink's "link" kind) gets the same travel as a case study. */
+.chip:not([data-kind="video"]):hover .chipIcon {
+  transform: translateX(3px);
+}
+
+/* A CTA whose URL hasn't landed. Inert — no anchor, no pointer, no hover — and
+   hatched down its left edge like the impacts, so it's clearly a gap in the
+   page rather than a link that's broken. */
+.chip[data-placeholder] {
+  color: var(--ink-muted);
+  border-color: var(--ink-muted);
+  border-left-width: 0;
+  padding-left: calc(1rem + 8px);
+  cursor: default;
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--ink-muted) 0 4px,
+    transparent 4px 9px
+  );
+  background-size: 8px 100%;
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
+.chipNote {
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-dim);
+  font-style: italic;
+}
+
+/* ---- Arrival ------------------------------------------------------------
+ * The resting state for everything anime.js animates in (Timeline.tsx). It
+ * lives in CSS, keyed off the entry's own data attribute, so the page is
+ * server-rendered already hidden rather than hidden by a script after the
+ * first paint. The attribute is cleared the moment the entry's timeline
+ * completes.
+ *
+ * Two ways out if that never happens: the reduced-motion block below, and the
+ * <noscript> override on the page itself (see page.tsx).
+ */
+
+.entry[data-anim="pending"] [data-row] {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.entry[data-anim="pending"] [data-mark] {
+  opacity: 0;
+  transform: scale(0.82);
+}
+
+.entry[data-anim="pending"] [data-spine] {
+  transform: scaleY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entry[data-anim="pending"] [data-row],
+  .entry[data-anim="pending"] [data-mark] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .entry[data-anim="pending"] [data-spine] {
+    transform: none;
+  }
+}
+
+/* ---- Contact -------------------------------------------------------------
+ * The band the page closes on, on the same dark as the footer under it — the
+ * two read as one dark ground rather than as two panels, which is the whole
+ * convention in globals.css. The footer is the site's standing invitation;
+ * this is the answer to the three questions a hiring read arrives with.
+ */
+
+.contact {
+  --fg: var(--paper);
+  --fg-soft: rgb(233 231 226 / 72%);
+  --fg-faint: rgb(233 231 226 / 45%);
+  --rule: rgb(233 231 226 / 14%);
+
+  background: var(--shade);
+  color: var(--fg);
+  /* A full section's worth top and bottom — this is the last thing on the
+     page now (no shared Footer follows it here), so the bottom edge has to
+     hold its own rather than leaving the close for a band beneath it to
+     supply. */
+  padding-block: clamp(3.5rem, 8vw, 6rem);
+}
+
+.contactInner {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.contactHeading {
+  max-width: 20ch;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+}
+
+/*
+ * Three facts, scanned rather than read: label over value, in a row that wraps
+ * to a stack when it runs out of width. Same label/value idiom as the footer's
+ * "now" list, which is deliberate — this is the same kind of information, said
+ * once for a different reader.
+ */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  margin-top: clamp(1.75rem, 4vw, 2.5rem);
+  padding-top: clamp(1.5rem, 3vw, 2rem);
+  border-top: 1px solid var(--rule);
+}
+
+.factLabel {
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--fg-faint);
+}
+
+.factValue {
+  margin-top: 0.4rem;
+  color: var(--fg-soft);
+  text-wrap: pretty;
+}
+
+/* Same hatching as the impacts above, in cream: a fact nobody has written yet
+   shouldn't look like one that has been. */
+.factValue[data-placeholder] {
+  padding-left: 0.65rem;
+  color: var(--fg-faint);
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--fg-faint) 0 4px,
+    transparent 4px 9px
+  );
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
+.contactNote {
+  max-width: 54ch;
+  margin-top: clamp(1.75rem, 4vw, 2.5rem);
+  color: var(--fg-soft);
+  text-wrap: pretty;
+}
+
+.contactActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+}
+
+/* The page's one filled button. Everything else on the page is a bordered chip
+   or a plain link, so this is unmistakably the thing to press. */
+.contactCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.4rem;
+  font-size: var(--step-body);
+  font-weight: 600;
+  color: var(--shade);
+  background: var(--fg);
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.contactCta:hover,
+.contactCta:focus-visible {
+  color: var(--fg);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--fg);
+}
+
+.contactArrow {
+  font-size: 1.1em;
+  transition: transform var(--dur) var(--ease);
+}
+
+.contactCta:hover .contactArrow {
+  transform: translateX(3px);
+}
+
+.contactLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.5rem;
+  list-style: none;
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.contactLink {
+  color: var(--fg-soft);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2px;
+  transition:
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+.contactLink:hover {
+  color: var(--fg);
+  border-color: var(--fg);
+}
+
+/* ---- Back to top ----------------------------------------------------------
+ * Off the right edge and fixed to the viewport (BackToTop.tsx) — chrome for
+ * reading the page rather than part of it, so it stays put while the rail
+ * scrolls under it instead of travelling with the content. Hidden until the
+ * hero has scrolled out from under it, and flips light once the page's own
+ * dark run (the contact band, then the footer) reaches it, the same crossing
+ * the case-study pages' BackLink makes.
+ */
+.toTop {
+  position: fixed;
+  right: var(--gutter);
+  bottom: clamp(1.25rem, 3vw, 2rem);
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  opacity: 0;
+  transform: translateY(8px);
+  /* Off the tab order and the pointer both while hidden — an invisible
+     control sitting over the corner of the page is worse than no control. */
+  pointer-events: none;
+  transition:
+    opacity var(--dur) var(--ease),
+    transform var(--dur) var(--ease),
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+.toTop[data-visible] {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.toTop:hover,
+.toTop:focus-visible {
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.toTop[data-ground="dark"] {
+  color: var(--paper);
+  background: var(--shade);
+  border-color: rgb(233 231 226 / 45%);
+}
+
+.toTop[data-ground="dark"]:hover,
+.toTop[data-ground="dark"]:focus-visible {
+  color: var(--shade);
+  background: var(--paper);
+  border-color: var(--paper);
+}
+
+.toTop:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Points up; the arrow is the site's own (ArrowIcon.tsx), which otherwise
+   only ever points right. */
+.toTopIcon {
+  font-size: 1.2rem;
+  transform: rotate(-90deg);
+}
+
+/* ---- Lightbox --------------------------------------------------------------
+ * Every real shot on the rail, seen full size — one modal shared by the whole
+ * timeline (Lightbox.tsx) rather than one per position, so Next carries past
+ * the entry a picture was clicked on into whatever comes after it on the
+ * page. Same dark-backdrop idiom as the films page's own video modal:
+ * click-to-close, animates in, and everything inside it holds still relative
+ * to that backdrop rather than the page underneath, which is locked from
+ * scrolling for as long as this is up.
+ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: rgb(0 0 0 / 88%);
+  animation: lightbox-in 220ms var(--ease-inout);
+}
+
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.lightboxFrame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: min(100%, 1100px);
+  max-height: 100%;
+}
+
+/*
+ * Sized to its own content (Lightbox.tsx uses a plain `<img>`, not
+ * next/image) rather than to a fixed frame — these are arbitrary case-study
+ * photos with no aspect ratio in common, and the lightbox's job is to show
+ * each one at its own shape, only capped by the viewport.
+ *
+ * Opacity is the crossfade between one shot and the next; everything else
+ * about the box (its size) is free to change as the image itself changes,
+ * which is what keeps a portrait shot from being stretched into a landscape
+ * one's leftover box.
+ */
+.lightboxImage {
+  display: block;
+  max-width: 100%;
+  max-height: 74vh;
+  margin-inline: auto;
+  transition: opacity 260ms var(--ease-inout);
+}
+
+.lightboxImage[data-hidden] {
+  opacity: 0;
+}
+
+.lightboxMeta {
+  max-width: 62ch;
+  text-align: center;
+  color: rgb(233 231 226 / 85%);
+  transition: opacity 260ms var(--ease-inout);
+}
+
+.lightboxMeta[data-hidden] {
+  opacity: 0;
+}
+
+.lightboxOrg {
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgb(233 231 226 / 55%);
+}
+
+.lightboxCaption {
+  margin-top: 0.4rem;
+  font-size: var(--step-body);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.lightboxCounter {
+  margin-top: 0.65rem;
+  font-size: var(--step-small);
+  font-variant-numeric: tabular-nums;
+  color: rgb(233 231 226 / 40%);
+}
+
+/*
+ * Close and the two nav arrows share one look — a plain glyph that firms up
+ * on hover, the same treatment the films page's `.close` uses.
+ *
+ * `z-index: 1` is load-bearing, not decorative: all three sit earlier in the
+ * DOM than `.lightboxFrame`, and `.lightboxFrame` is wide enough at most
+ * viewport widths to reach under the side arrows' own position. Elements
+ * with `z-index: auto` paint in DOM order within a stacking context, so
+ * without this the frame — later in the DOM, and its own `stopPropagation`
+ * click handler swallowing the click — would silently eat a click aimed at
+ * an arrow underneath it.
+ */
+.lightboxClose,
+.lightboxNav {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  color: rgb(233 231 226 / 80%);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition:
+    color var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
+}
+
+.lightboxClose:hover,
+.lightboxClose:focus-visible,
+.lightboxNav:hover,
+.lightboxNav:focus-visible {
+  color: #e9e7e2;
+  background: rgb(233 231 226 / 12%);
+}
+
+.lightboxClose:focus-visible,
+.lightboxNav:focus-visible {
+  outline: 2px solid #e9e7e2;
+  outline-offset: 2px;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: clamp(0.75rem, 2.5vw, 1.5rem);
+  right: clamp(0.75rem, 2.5vw, 1.5rem);
+  width: 44px;
+  height: 44px;
+}
+
+/* Fixed to the viewport rather than the frame — the picture beside them
+   changes size shot to shot, and an arrow that moved with it would be a
+   second thing shifting on every click instead of a steady place to aim
+   for. */
+.lightboxNav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+}
+
+.lightboxNav:hover,
+.lightboxNav:focus-visible {
+  transform: translateY(-50%);
+}
+
+.lightboxPrev {
+  left: clamp(0.5rem, 3vw, 2rem);
+}
+
+.lightboxNext {
+  right: clamp(0.5rem, 3vw, 2rem);
+}
+
+/* The site's one arrow (ArrowIcon.tsx) otherwise only ever points right. */
+.lightboxNavFlip {
+  transform: scaleX(-1);
+}
+
+@media (max-width: 640px) {
+  .lightboxNav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .lightboxPrev {
+    left: 0.4rem;
+  }
+
+  .lightboxNext {
+    right: 0.4rem;
+  }
+}
+
+/* ---- Narrow ------------------------------------------------------------- */
+
+/*
+ * The rail survives the phone, it just gets out of the way: a smaller plate and
+ * a narrower column, so the type keeps most of the width. Losing the rail
+ * entirely would cost the page the one thing that makes it a timeline.
+ */
+@media (max-width: 640px) {
+  .entry {
+    --rail: 44px;
+    --mark: 40px;
+    gap: 1rem;
+  }
+
+  .impact[data-placeholder] .impactHead::after {
+    /* On its own line rather than trailing a headline that now wraps. */
+    display: inline-block;
+    margin-left: 0;
+    margin-top: 0.4rem;
+  }
+
+  .contactActions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .toTop {
+    width: 40px;
+    height: 40px;
+  }
+}

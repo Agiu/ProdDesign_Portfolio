@@ -65,7 +65,7 @@ export function CaseMeta({ meta }: { meta: ProjectMeta }) {
         </div>
 
         <div className={styles.metaContribGroup}>
-          <p className={styles.metaLabel}>My Contributions</p>
+          <p className={styles.metaLabel}>Outcomes</p>
           <ul className={styles.metaContributions}>
             {meta.contributions.map((item, i) => (
               <li key={i}>{item}</li>

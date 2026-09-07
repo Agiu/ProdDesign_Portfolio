@@ -30,9 +30,9 @@ export function Filmmaker() {
       <div ref={reveal} className={`${styles.inner} reveal`}>
         <h2 className={styles.heading}>{filmmaker.heading}</h2>
         <p className={styles.body}>{filmmaker.body}</p>
-        <a href={filmmaker.href} className={styles.cta}>
-          <span>See the films</span>
+        <a href={filmmaker.href} className={`${styles.cta} cta-chip`}>
           <ArrowIcon className={styles.arrow} />
+          <span>See the films</span>
         </a>
       </div>
     </section>

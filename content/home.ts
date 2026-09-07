@@ -179,15 +179,16 @@ export const caseStudies: CaseStudy[] = [
     title: "Instant Matchmaking and Game Discovery",
     summary:
       "XBOX Arcade is matchmaking and game discovery combined, utilizing player data to help friend groups play.",
-    cover: "https://media.kaelub.com/Xbox/Xbox_casestudy_hero.jpg",
-    hero: "https://media.kaelub.com/Xbox/Xbox_casestudy_hero.jpg",
+    cover: "https://media.kaelub.com/Xbox/Xbox_casestudy_hero1.jpg",
+    hero: "https://media.kaelub.com/Xbox/Xbox_casestudy_hero1.jpg",
+    video: "https://media.kaelub.com/Xbox/xbox_vid.mp4",
     discipline: "Product Design",
     year: "2026",
     tags: ["Product Design", "Cloud Gaming", "Motion Design", "Prototyping"],
     meta: {
       role: "Prototyper, Story Strategist, and Designer",
       timeline: "7 months",
-      timelineDetail: "Feb 2026 – Aug 2026",
+      timelineDetail: "Feb 2026 - Aug 2026",
       team: [
         "Caleb Aguiar",
         "Clarisse Pelayo Sicat",
@@ -353,6 +354,17 @@ export const about = {
     { org: "Spend With Us", title: "Software Development Intern", months: 5 },
     { org: "Trinity University", title: "Creative Producer Intern", months: 32 },
   ] satisfies Role[],
+
+  /*
+   * The one link out of this section. It hangs off the résumé rows rather
+   * than off the pair of lists, because /recruiter is those rows at length:
+   * the same jobs with what each one changed, the work it produced, and a
+   * way to get in touch at the foot of it.
+   */
+  more: {
+    label: "See My Impact",
+    href: "/recruiter",
+  },
 
   education: [
     {

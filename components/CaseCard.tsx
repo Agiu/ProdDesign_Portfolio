@@ -248,8 +248,8 @@ export function CaseCard({
             <p className={styles.summary}>{study.summary}</p>
             {tags}
             <a href={href} className={styles.cta}>
-              View case study
               <ArrowIcon className={styles.arrow} />
+              View case study
             </a>
           </div>
         </div>
@@ -296,8 +296,8 @@ export function CaseCard({
           <div className={styles.foot} ref={foot}>
             <p className={styles.summary}>{study.summary}</p>
             <p className={styles.cta}>
-              View case study
               <ArrowIcon className={styles.arrow} />
+              View case study
             </p>
           </div>
 
