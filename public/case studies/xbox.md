@@ -118,24 +118,28 @@ Gifting Is a Ritual | Gifting games is a common practice so no one in the group 
 Game discovery is a group activity, not a solo one. | Players prefer finding games with their friends rather than alone | Friends
 ```
 
-## Comparing our research to current XBOX
-
-By conducting eight interviews, the overall concensus of current Xbox UX standards are mostly negative.
-
-![UX Teardown of multiple gaming-adjacent applications](https://media.kaelub.com/Xbox/UXT.jpg)
-
-In the process of finding evidence for the consensus, we had conducted ==in-depth UI/UX teardowns of various game platforms such as Steam, Roblox, Nintendo, and the various XBOX storefront experiences across platforms.== These teardowns helped to inform what was different with XBOX's desktop and console UX, but also allowed us to see more possible ways at altering how transactional a storefront could be.
-
-(list of different things)
 
 ## A Small Hackathon for Idea Generation
+
+(how did we get here)
 As a group we decided to go create some workable prototypes from our ideas. Taking our latest research round into account, I began wireframing some ideas on Figma.
 
-![Polling station wireframe](https://media.kaelub.com/Arcade/polling-station-wireframe.jpg)
+![You and your friends add a game to the queue, ideally before time runs out](https://media.kaelub.com/Xbox/Wireframe1.JPG)
 
-This polling station idea had your friends from a Discord call hop in and add games to a queue from their respective game libraries (from Game Pass + independent libraries). Your friends (and yourself) will then vote on what game they would get to play in a matter of minutes; the time limit could be altered by the person who started the polling station, of course.
+This ranking system idea had your friends from a Discord call hop in and add games to a queue from their respective game libraries (from Game Pass + independent libraries). Your friends (and yourself) will then vote on what game they would get to play in a matter of minutes; the time limit could be altered by the person who started the ranking system, of course.
+
+
+![Social nudges and tags for people to choose a game](https://media.kaelub.com/Xbox/Wireframe2.JPG)
 
 This idea is intended to cause conversation and some controversy, which is always great for gaming. After the video game is picked, you and your friends will then either instantly queue up into the game or complete a group buy. ==From our research we found that gifting is a very common practice within gamer communities, so that everyone in the same call wouldn't feel left out.== I thought this would be a fantastic new business model/venture if I were to set it at a slightly discounted rate.
+
+### Hi Def Prototype of the Ranking System
+
+```video
+https://media.kaelub.com/Xbox/RankingPrototype.mp4
+```
+
+To really show this ranking feature in action, I prototyped it with simulated friends on Discord was created with, Electron.
 
 Spin the Wheel prototype was just a fun idea that I brought up internally. I ended up prototyping it just to play around and it worked pretty well for its use case of picking out a game on a whim. I thought up a few interactions it would send out into the Discord chats and in the platform itself.
 
