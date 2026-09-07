@@ -50,7 +50,6 @@ const CUSTOM_BLOCKS = new Set([
   "quotes",
   "button",
   "youtube",
-  "video",
   "carousel",
   "rules",
   "questions",
