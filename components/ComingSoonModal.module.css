@@ -1,0 +1,154 @@
+/* Same fixed-overlay dialog mechanics as the case-study lightbox
+   (CaseStudy.module.css .lightbox) — kept as its own stylesheet since this
+   is mounted from three unrelated route trees. */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: rgb(0 0 0 / 55%);
+  animation: coming-soon-in 220ms var(--ease);
+  cursor: default;
+}
+
+@keyframes coming-soon-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.panel {
+  position: relative;
+  width: min(30rem, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: clamp(1.75rem, 4vw, 2.5rem);
+  background: var(--paper);
+  color: var(--ink);
+  animation: coming-soon-panel-in 260ms var(--ease);
+}
+
+@keyframes coming-soon-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+.close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  color: var(--ink-muted);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition:
+    color var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
+}
+
+.close:hover,
+.close:focus-visible {
+  color: var(--ink);
+  background: rgb(0 0 0 / 6%);
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.title {
+  margin: 0 0 0.75rem;
+  padding-right: 2rem;
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.body {
+  margin: 0 0 1.25rem;
+  font-size: var(--step-body);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.figmaLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.7rem 1.1rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  color: var(--paper);
+  background: var(--ink);
+  transition: opacity var(--dur) var(--ease);
+}
+
+.figmaLink:hover {
+  opacity: 0.85;
+}
+
+.prompt {
+  margin: 1.5rem 0 1rem;
+  font-size: var(--step-body);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.waitButton,
+.seeButton {
+  padding: 0.65rem 1rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+.waitButton {
+  color: var(--ink);
+  background: none;
+  border: 1.5px solid var(--ink-muted);
+}
+
+.waitButton:hover {
+  border-color: var(--ink);
+}
+
+.seeButton {
+  color: var(--ink);
+  background: none;
+  border: 1.5px solid transparent;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  text-decoration-color: var(--ink-muted);
+}
+
+.seeButton:hover {
+  text-decoration-color: var(--ink);
+}

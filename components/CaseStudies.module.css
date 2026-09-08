@@ -1,67 +1,38 @@
+/*
+ * The section inverts: a dark band the cards sit on, between the cream hero
+ * above it and the cream About below. The three tiers of type are declared
+ * once here, as local tokens, so every rule in the file reads its foreground
+ * from the ground it's standing on rather than restating a cream literal —
+ * the same idiom the footer uses on its own dark ground.
+ *
+ * Nothing heads the band — the cards are the whole content — so the top
+ * padding is a full section's worth: it starts under the fold, on its own
+ * terms, rather than crowding the hero above it.
+ */
 .section {
-  /* Top padding is deliberately tight: it and the heading below must both fit
-     inside --hero-reveal, or the heading is no longer visible under the hero. */
-  padding-block-start: clamp(1.75rem, 3.5svh, 2.75rem);
-  padding-block-end: clamp(4rem, 9vw, 7.5rem);
+  --fg: var(--paper);
+  --fg-soft: rgb(233 231 226 / 72%);
+  --fg-faint: rgb(233 231 226 / 45%);
+  --rule: rgb(233 231 226 / 14%);
+  /*
+   * What the hover panel multiplies the cover with (see the desktop block).
+   * Multiply scales the picture by this colour, so the value is the share of
+   * the cover that survives: about a fifth of it, which is dark enough to
+   * carry the caption at full strength and light enough that the picture is
+   * still legibly the picture. Neutral, not warm — a tinted veil pushes every
+   * cover toward one hue, and these covers arrive with their own.
+   */
+  --veil: #303030;
+
+  background: var(--shade);
+  color: var(--fg);
+  padding-block: clamp(4.5rem, 10vw, 8rem) clamp(4rem, 9vw, 7.5rem);
 }
 
 .inner {
   max-width: var(--measure);
   margin-inline: auto;
   padding-inline: var(--gutter);
-}
-
-/*
- * Heading left, note right. Baseline-aligned, so the note's first line sits on
- * the same line as the heading rather than floating against its cap height.
- *
- * The margin lives here rather than on .heading — the --hero-reveal calculation
- * depends on .section's top padding plus the heading's own height, and stashing
- * space *below* the header is what keeps that untouched.
- */
-.header {
-  display: flex;
-  justify-content: space-between;
-  gap: clamp(1.5rem, 5vw, 4rem);
-  margin-bottom: clamp(3rem, 6vw, 5.5rem);
-
-  /* Sits the note's LAST line on the heading's baseline, so the two blocks end
-     together. Plain `baseline` would hang its *first* line there and let the
-     rest of the note drop below the heading. Box-bottom alignment first, as a
-     fallback for anything that doesn't take `last baseline`. */
-  align-items: flex-end;
-  align-items: last baseline;
-}
-
-/*
- * Hold the heading on one line. It only needs ~340px on a single line, but the
- * note beside it claims its full 42ch, and with both flex items shrinkable the
- * row resolves its overflow by squeezing the heading until "case studies" wraps.
- * Pinning flex-shrink to 0 makes the note absorb the difference instead — it
- * already wraps to multiple lines and has the slack to give.
- */
-.header h2 {
-  flex-shrink: 0;
-}
-
-/*
- * Right-aligned prose. The "+" is inline rather than a flex sibling: as a
- * sibling the text got its own fixed-width box, and right-aligning inside it
- * shoved the first line away from the "+". Inline, the "+" joins the same line
- * flow and lands hard against the first word.
- */
-.note {
-  max-width: 42ch;
-  font-size: var(--step-lead);
-  line-height: 1.3;
-  color: var(--ink-dim);
-  text-align: right;
-  text-wrap: pretty;
-}
-
-.plus {
-  margin-right: 0.6rem;
-  color: var(--ink-muted);
 }
 
 .list {
@@ -71,33 +42,99 @@
   list-style: none;
 }
 
+/* The lead card is the first item and nothing announces it, so a little more
+   air under it than the list's own gap is what sets it apart from the rest —
+   enough to read as a group boundary, not enough to read as a divider. */
+.list > li:first-child {
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/*
+ * DESKTOP LAYOUT — the rest of the studies pair off into a 2-up grid while the
+ * lead keeps the full measure. Same single list either way: the lead is still
+ * just its first item, spanning both tracks, so nothing here changes what the
+ * list *is* — only how many of its rows sit side by side.
+ *
+ * Wider than the hover breakpoint below on purpose: the grid is a matter of
+ * how much room the column has, not of whether there's a pointer to reveal a
+ * panel with. A touch screen this wide gets the pairs too, with the caption
+ * under each card as usual.
+ */
+@media (min-width: 900px) {
+  .list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.75rem, 3.5vw, 3rem);
+    /* A short caption next to a long one shouldn't stretch its card. */
+    align-items: start;
+  }
+
+  .list > li:first-child {
+    grid-column: 1 / -1;
+  }
+
+  /*
+   * Half the measure now, so the wide banner ratio the base rule uses would
+   * leave a letterbox strip barely taller than the type on it. 3:2 gives the
+   * pair the presence of cards rather than of rows — and gives the panel
+   * below a box worth rising into.
+   */
+  .card:not(.cardFeatured) .frame {
+    aspect-ratio: 3 / 2;
+  }
+}
+
 .card {
   display: block;
 }
 
 .frame {
+  /* The featured card renders this as an <a> (see CaseCard.tsx) rather than a
+     <div>, so it needs an explicit block display — an anchor defaults to
+     inline, which would collapse the aspect-ratio box down to its content. */
+  display: block;
   position: relative;
   /* A touch taller than the Figma banner. The panel's height is the card's
      height, and a --step-lead title plus a description plus a CTA does not fit
      in a 3.7:1 strip — it overflowed at 900, 1440 and 1920px. */
   aspect-ratio: 1110 / 330;
   overflow: hidden;
-  /* No background here on purpose. The frame spans the full card above the
-     panel, so any fill on it would mask the panel as the cover narrows. */
+  /* No background here on purpose: the veil multiplies against whatever the
+     frame is showing, and a fill under the cover would be one more layer in
+     that stack for no gain. */
 }
 
 .cover {
   position: absolute;
   inset: 0;
-  /* Placeholder tint rides with the image instead of the frame. */
-  background: var(--shade);
-  /* Panned by anime.js on hover (CaseCard.tsx) — never resized, so the image's
-     object-fit stays put and the picture doesn't re-crop mid-move. */
-  will-change: transform;
+  /* Placeholder tint rides with the image instead of the frame. A step off the
+     band, or a cover that hasn't loaded would be invisible on it. */
+  background: var(--void);
 }
 
 .image {
   object-fit: cover;
+}
+
+/*
+ * The wash the hover panel lays over the cover. Off entirely at this size —
+ * below the desktop breakpoint the caption sits under the picture and there's
+ * nothing to veil. Its whole substance is in the desktop block near the
+ * bottom of the file.
+ */
+.veil {
+  display: none;
+}
+
+/*
+ * The featured (lead) card runs taller than the rest — closer to 16:9 than the
+ * wide banner ratio the others use. Above the mobile breakpoint only; the
+ * 640px override below keeps its own 4:3 ratio for every card.
+ */
+@media (min-width: 641px) {
+  .cardFeatured .frame {
+    aspect-ratio: 16 / 9;
+  }
 }
 
 /*
@@ -108,7 +145,7 @@
 .panel {
   /* Clear room off the image — was tight enough to read as squished. */
   padding-top: clamp(1.35rem, 5vw, 2rem);
-  color: var(--ink);
+  color: var(--fg);
 }
 
 /*
@@ -137,7 +174,7 @@
 
 .summary {
   margin-bottom: clamp(1rem, 4.5vw, 1.5rem);
-  color: var(--ink-soft);
+  color: var(--fg-soft);
   font-size: var(--step-body);
 }
 
@@ -166,12 +203,15 @@
   padding: 0.35em 0.7em;
   font-size: var(--step-small);
   font-weight: 500;
-  letter-spacing: 0.06em;
+  /* Set as authored (content/home.ts is already title-cased), not forced to
+     caps. Tracking pulled way in from the old 0.06em — that was sized for an
+     all-caps run, where wide gaps read as intentional; the same spacing on
+     mixed-case text just looks loose. */
+  letter-spacing: 0.01em;
   line-height: 1.2;
-  text-transform: uppercase;
   /* Quiet at rest — brightens on hover. */
-  color: var(--ink-muted);
-  border: 1px solid rgb(0 0 0 / 10%);
+  color: var(--fg-faint);
+  border: 1px solid var(--rule);
   white-space: nowrap;
   transition:
     color var(--dur) var(--ease),
@@ -179,8 +219,8 @@
 }
 
 .tag:hover {
-  color: var(--ink);
-  border-color: rgb(0 0 0 / 32%);
+  color: var(--fg);
+  border-color: rgb(233 231 226 / 45%);
 }
 
 /* The separate animated box is a desktop-only affordance — the inline .tags
@@ -190,113 +230,188 @@
 }
 
 /*
- * Matches Filmmaker's "See the films" CTA: an underlined text link, not an
- * uppercase eyebrow label. `.lines` is a stretch-by-default flex column, so
- * `width: fit-content` keeps the underline hugging the text instead of
- * stretching to the panel's full width.
+ * Deliberately not the bordered .cta-chip Filmmaker and the recruiter page
+ * use (globals.css) — a card is already dense with its own boxes (the tags,
+ * the frame), and a second bordered, filled button on top of a hovering
+ * photo read as one control too many. Plain text and the arrow carry it
+ * instead: no stroke, no fill, just the colour brightening on hover — the
+ * same restraint the site's quieter links (Footer's, say) already use.
+ *
+ * `width: fit-content` keeps it hugging its own label rather than stretching
+ * to `.lines`'s full width.
  */
 .cta {
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  gap: 0.3rem;
-  /* No margin-top here — .summary's margin-bottom spaces it from the row
-     above on mobile. Desktop overrides this to `margin-top: auto` below. */
-  padding-bottom: 3px;
+  gap: 0.4rem;
   font-size: var(--step-small);
   font-weight: 600;
-  color: var(--ink-soft);
-  border-bottom: 1.5px solid var(--ink-muted);
-  transition: border-color var(--dur) var(--ease);
+  color: var(--fg-soft);
+  transition: color var(--dur) var(--ease);
 }
 
-.card:hover .cta {
-  border-color: var(--ink);
+/* Excludes .cardFeatured: it isn't a link itself (see CaseCard.tsx), so
+   hovering its plain-text title/summary shouldn't brighten the CTA — only
+   hovering .frame or .cta itself should (the scoped rule further below). */
+.card:not(.cardFeatured):hover .cta {
+  color: var(--fg);
+}
+
+.cardFeatured:has(a:hover) .cta,
+.cardFeatured:has(a:focus-visible) .cta {
+  color: var(--fg);
 }
 
 .arrow {
-  /* The glyph is drawn from x=5 in a 24-wide viewBox, so it carries ~0.2em of
-   * empty space on its left. Pull it back so the visible gap to the text is the
-   * flex `gap` alone, not gap plus that internal padding. */
-  margin-left: -0.2em;
   transition: transform var(--dur) var(--ease);
 }
 
 .card:hover .arrow {
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
 
 /*
  * DESKTOP — the reveal.
  *
- * The panel rides *above* the image and slides in over it. The image itself only
- * drifts a little (IMAGE_DRIFT in CaseCard.tsx): the panel crossing its full
- * width while the image barely moves is what gives the parallax, the sense of
- * one plane in front of another.
+ * Nothing about the card's ground moves. The cover stays exactly where it is
+ * and simply darkens, the veil fading up over it (see .veil) rather than
+ * arriving from an edge — the picture doesn't leave, it steps back.
  *
- * Transforms here are written per-frame by anime.js, so there are deliberately
- * no transitions on them. The card clips the panel while it's offstage.
+ * The caption is the only thing that travels, and it opens rather than slides:
+ * the title drops in from the card's top edge while the summary and CTA rise
+ * from its bottom, each returning the way it came. That split is the whole
+ * motion, so the two halves have to stay on opposite edges — see .title and
+ * .foot for the resting offsets, and TEXT_RISE in CaseCard.tsx for the value
+ * they're paired with.
+ *
+ * Transforms and opacities here are written per-frame by anime.js, so there
+ * are deliberately no transitions on them.
+ *
+ * Every rule in this block is scoped away from .cardFeatured. The lead card
+ * keeps the base (caption-below-the-image) layout at all widths, and the
+ * cleanest way to give it that is to never override it in the first place —
+ * cheaper, and safer, than restating the base values here to undo each one.
  */
 @media (min-width: 900px) and (hover: hover) {
-  .card {
+  .card:not(.cardFeatured) {
     position: relative;
-    /* Clips the panel while it waits at -100% and after it exits to +100%. */
+    /* Keeps the caption's travel inside the card — a title at its resting
+       offset would otherwise ride up over the edge. */
     overflow: hidden;
+    /* The panel's veil multiplies against the cover, and nothing else — this
+       keeps that blend from reaching the dark band the card stands on. */
+    isolation: isolate;
   }
 
-  .panel {
+  .card:not(.cardFeatured) .panel {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
+    inset: 0;
     z-index: 2;
     display: flex;
-    width: 42%;
-    padding: clamp(1.25rem, 2.2vw, 2.25rem);
-    background: var(--void);
-    color: #fff;
-    transform: translateX(-100%);
+    padding: clamp(1.5rem, 2.6vw, 2.5rem);
+    /* No fill of its own: .veil in .frame is its background, kept on a layer
+       the type isn't sitting on so the blend can't reach it. */
+    color: var(--fg);
+    /* Sits over the card at all times — it's the rows inside it that are
+       hidden at rest, not the box. Harmless over the cover: the whole card is
+       one link, so the pointer never has anything else to reach here. */
   }
 
-  .lines {
-    /* Title and summary sit at the top; .footer claims the space below. */
-    justify-content: flex-start;
+  /*
+   * The veil — the panel's background, in every sense but the DOM's.
+   *
+   * Multiplying rather than laying an opaque plate over the cover is what
+   * keeps the picture in the card while the caption is up. Two things keep it
+   * out of .panel, where it would otherwise belong:
+   *
+   *   - A blend *on* .panel would take the type down with it. Blending applies
+   *     to an element and its descendants as one group, so cream type would
+   *     multiply into the photograph and vanish against it.
+   *   - A blend on a layer *inside* .panel would blend against nothing.
+   *     .panel is a stacking context of its own, which isolates it: a child's
+   *     backdrop stops at .panel's own (empty) box, and multiply against
+   *     nothing just paints the flat colour.
+   *
+   * So it sits in .frame instead, over the cover and under nothing, and comes
+   * up on opacity alone (CaseCard.tsx).
+   */
+  .card:not(.cardFeatured) .veil {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--veil);
+    mix-blend-mode: multiply;
+    opacity: 0;
+  }
+
+  /*
+   * The caption is two blocks pinned to opposite ends of the card, not a stack
+   * that sits somewhere in the middle of it: the title claims the top, the
+   * summary and its CTA claim the floor, and the picture reads through the gap
+   * between them. That gap is the layout — it's why this is space-between and
+   * not a column with margins.
+   */
+  .card:not(.cardFeatured) .lines {
+    justify-content: space-between;
     gap: 0;
     width: 100%;
     height: 100%;
   }
 
-  /* Resting state the rows animate in *from*. It lives here rather than being
-     set in JS, so the first hover has something to fade up from. Safe to hide:
-     the panel itself is offstage until hovered. */
-  .lines > * {
+  /*
+   * The resting state the two halves animate in *from*, each held off the edge
+   * it enters through. It lives here rather than in JS so the first hover has
+   * somewhere to come from. Safe to hide: the panel carries no background of
+   * its own, so a hidden caption leaves the bare cover.
+   *
+   * The 18px is TEXT_RISE in CaseCard.tsx — the exit animates back to these
+   * exact values, so the two have to agree.
+   */
+  .card:not(.cardFeatured) .lines > * {
     opacity: 0;
-    transform: translateY(8px);
+  }
+
+  .card:not(.cardFeatured) .title {
+    transform: translateY(-18px);
+  }
+
+  .card:not(.cardFeatured) .foot {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transform: translateY(18px);
   }
 
   /* Same size as the hero's hook (.tagline), so the two read as one voice —
      but bold, where the hook is regular. */
-  .title {
-    margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
-    color: #fff;
+  .card:not(.cardFeatured) .title {
+    /* .lines pins this to the top edge and the .foot to the floor, so there is
+       no row under it for a margin to hold off. */
+    margin-bottom: 0;
+    color: var(--fg);
     font-size: var(--step-lead);
     font-weight: 700;
     letter-spacing: -0.01em;
     line-height: 1.25;
   }
 
-  /* No on-image equivalent — desktop just drops the tags entirely. */
-  .tags {
+  /* No on-image equivalent — desktop just drops the tags entirely. The
+     featured card keeps them: its caption is on paper, with room for the row. */
+  .card:not(.cardFeatured) .tags {
     display: none;
   }
 
-  .summary {
+  .card:not(.cardFeatured) .summary {
     /* The mobile margin-bottom (for the group gap before the CTA) doesn't
        apply here — .cta's own `margin-top: auto` claims the remaining
        height instead, so this resets to avoid stacking both. */
     margin-bottom: 0;
-    color: rgb(255 255 255 / 78%);
+    /* Full strength, not --fg-soft: the veil is dark enough here that a 72%
+       cream reads as washed rather than as secondary. */
+    color: var(--fg);
     font-size: var(--step-body);
     font-weight: 400;
     line-height: 1.5;
@@ -314,45 +429,77 @@
     overflow: hidden;
   }
 
+  /* Sits on the panel floor, past the description. Was `margin-top: auto` to
+     push it there — .foot stands on the floor now, so all this owes the
+     summary is the gap above it. The chip's own colours already read fine
+     over the veil at rest, so there's nothing left to override here but the
+     spacing. */
+  .card:not(.cardFeatured) .cta {
+    padding-top: 0.9rem;
+  }
+
   /*
-   * Sits on the panel floor, past the description. Dark-panel version of the
-   * same underline — see the base .cta rule above.
-   *
-   * The panel is only ever visible while .card is already hovered, so the
-   * base `.card:hover .cta` rule (same specificity, defined earlier) would
-   * otherwise win and force the light-mode border-color here. Restated at
-   * equal specificity so this later declaration takes it by source order.
+   * The featured card's hover: the image scales up slightly, reading as it
+   * lifting toward the viewer rather than sliding in any direction. Lives on
+   * .frame itself, not .cardFeatured — the panel below it (title, tags,
+   * summary, CTA) stays put. The scale is the whole tell now that the cards
+   * carry no shadow, so it does the lifting on its own.
    */
-  .cta {
-    margin-top: auto;
-    padding-top: 1rem;
-    color: rgb(255 255 255 / 85%);
-    border-color: rgb(255 255 255 / 35%);
+  .cardFeatured .frame {
+    transition: transform var(--dur) var(--ease);
   }
 
-  .card:hover .cta {
-    border-color: rgb(255 255 255 / 65%);
-  }
-}
-
-@media (max-width: 760px) {
-  /* Side by side, the note is squeezed to a couple of words per line. Stack it
-     under the heading and let it read left-to-right like normal prose. */
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.1rem;
+  .cardFeatured .frame:hover,
+  .cardFeatured .frame:focus-visible {
+    transform: scale(1.03);
   }
 
-  .note {
-    max-width: 46ch;
-    font-size: var(--step-body);
-    text-align: left;
+  /* Full-bleed at this width, so the caption needs its own measure — a summary
+     running the whole 1100px column is a single unreadable line. */
+  .cardFeatured .summary,
+  .cardFeatured .title {
+    max-width: 62ch;
   }
 }
 
 @media (max-width: 640px) {
   .frame {
     aspect-ratio: 4 / 3;
+  }
+
+  /* Same clamp-bottoms-out issue as the tags/title/summary gaps below: on a
+     phone the cards themselves sit closer together than they should. */
+  .list {
+    gap: 3.5rem;
+  }
+
+  /*
+   * On a phone the card is the picture and what it is, nothing else.
+   *
+   * The summary and the CTA both belong to the desktop panel. The whole card
+   * is already the tap target here, so "View case study" is a second way to do
+   * the one thing left to do — and the summary is the first thing the case
+   * study itself says, a paragraph the reader is one tap from reading properly.
+   */
+  .summary,
+  .cta {
+    display: none;
+  }
+
+  /*
+   * Which leaves the tags reading as a caption under the title rather than as
+   * an eyebrow over it: with the summary gone there is nothing below them left
+   * to label. `order` rather than a source change — the desktop stagger runs
+   * over .lines's children in document order (CaseCard.tsx).
+   */
+  .tags {
+    order: 0;
+    margin-bottom: 0;
+  }
+
+  /* The desktop clamp reads fine at its own width, but on a phone it bottoms
+     out near its minimum and the title/tags pair reads cramped. */
+  .title {
+    margin-bottom: 0.8rem;
   }
 }

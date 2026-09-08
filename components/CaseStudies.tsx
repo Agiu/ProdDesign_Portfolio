@@ -1,43 +1,68 @@
 "use client";
 
-import { caseStudies, caseStudiesIntro } from "@/content/home";
+import { listedCaseStudies, type CaseStudy } from "@/content/home";
 import { CaseCard } from "./CaseCard";
 import { useReveal } from "./useReveal";
 import styles from "./CaseStudies.module.css";
 
-export function CaseStudies() {
-  // Only the card list reveals on scroll. The header stays put so the section
-  // title + note can peek above the fold from the hero — a cue that there's
-  // more to scroll to — rather than being hidden until the section arrives.
-  const reveal = useReveal<HTMLUListElement>();
+/**
+ * One row of the list. The reveal lives here rather than on the `<ul>` so each
+ * card fades up as it reaches the viewport, instead of the whole section
+ * arriving as a single slab.
+ *
+ * It sits on the `<li>` and not on the card itself on purpose: the card's own
+ * transforms are written per-frame by anime.js (CaseCard.tsx), and this way the
+ * entrance animation never has to share an element with them.
+ */
+function CaseItem({
+  study,
+  priority,
+  featured,
+}: {
+  study: CaseStudy;
+  priority: boolean;
+  featured: boolean;
+}) {
+  const reveal = useReveal<HTMLLIElement>();
 
+  return (
+    <li ref={reveal} className="reveal">
+      <CaseCard study={study} priority={priority} featured={featured} />
+    </li>
+  );
+}
+
+export function CaseStudies() {
+  const [lead, ...rest] = listedCaseStudies;
+
+  /*
+   * The section starts below the fold: the hero owns the whole first screen,
+   * and this band arrives on its own terms as the reader scrolls into it.
+   *
+   * One list, unheaded — the cards introduce themselves. The lead is simply its
+   * first item, set apart by a little extra air beneath it (see .list in the
+   * stylesheet) rather than by a divider.
+   */
   return (
     <section className={styles.section} id="work">
       <div className={styles.inner}>
-        <div className={styles.header}>
-          {/* Unclassed on purpose — the global h2 rule already carries the
-              display size and weight, and .header owns the spacing. */}
-          <h2>{caseStudiesIntro.heading}</h2>
+        <ul className={styles.list}>
+          <CaseItem
+            study={lead}
+            /* Usually above the fold on tall screens. */
+            priority
+            /* The lead card gets the taller frame and the caption-below layout
+               instead of the sliding panel — see CaseCard.tsx. */
+            featured
+          />
 
-          <p className={styles.note}>
-            {/* Inline, so it sits in the same right-aligned line flow as the
-                text and lands immediately before the first word. */}
-            <span className={styles.plus} aria-hidden>
-              +
-            </span>
-            {caseStudiesIntro.note}
-          </p>
-        </div>
-
-        <ul ref={reveal} className={`${styles.list} reveal`}>
-          {caseStudies.map((study, i) => (
-            <li key={study.slug}>
-              <CaseCard
-                study={study}
-                /* First card is usually above the fold on tall screens. */
-                priority={i === 0}
-              />
-            </li>
+          {rest.map((study) => (
+            <CaseItem
+              key={study.slug}
+              study={study}
+              priority={false}
+              featured={false}
+            />
           ))}
         </ul>
       </div>

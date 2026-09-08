@@ -20,6 +20,36 @@
 }
 
 /*
+ * The frame — the homepage hero's, on the same 18px and the same breakpoint
+ * (Hero.module.css), so a reader crossing from one to the other sees the same
+ * gesture rather than two near-misses. Open at the bottom for the same reason:
+ * the legs run down into the page below and the white simply carries on.
+ *
+ * Border rather than padding, because everything in here is absolutely
+ * positioned — .heroImage (Next's `fill`), .heroVideo and .heroScrim are all
+ * inset: 0, and an abs-positioned child lays out against its ancestor's
+ * *padding* box. Padding would leave all three exactly where they are and move
+ * only .heroInner. A border shrinks that padding box, so all four inset at once
+ * and the overflow clip comes in with them.
+ *
+ * box-sizing is border-box, so the 18px comes out of the height clamp instead
+ * of adding to it — the banner still occupies the same strip, and .heroInner's
+ * height: 100% still resolves against the content box.
+ *
+ * Every study gets it now, meta band or not: the vitals row that used to
+ * follow a study's hero was a dark card butted flush against it (no border
+ * between the two dark surfaces); now that row sits on plain paper, the same
+ * "white carries on below" assumption this frame was already making for a
+ * study with no metadata holds for every study.
+ */
+@media (min-width: 1024px) {
+  .hero {
+    border: 18px solid var(--paper);
+    border-bottom: 0;
+  }
+}
+
+/*
  * Load fade — shared by the hero banner image (FadeImage.tsx), every
  * markdown body image (FigureImage.tsx), and the hero video (HeroVideo.tsx).
  * All three start hidden and cross-fade in once actually ready, rather than
@@ -63,6 +93,21 @@
   );
 }
 
+/* A playing video keeps cycling through brighter frames a still photo never
+   does, so a video hero (HeroVideo.tsx) gets a heavier scrim than the shared
+   default above — darker throughout and reaching further up the frame,
+   rather than just at the bottom-left. */
+.heroScrimVideo {
+  background: linear-gradient(
+    to top,
+    rgb(0 0 0 / 94%) 0%,
+    rgb(0 0 0 / 78%) 35%,
+    rgb(0 0 0 / 46%) 65%,
+    rgb(0 0 0 / 14%) 88%,
+    transparent 100%
+  );
+}
+
 .heroInner {
   position: relative;
   max-width: var(--measure);
@@ -73,23 +118,141 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  color: #fff;
+  color: #e9e7e2;
 }
 
+/*
+ * Title + summary, as their own box now that .heroInner has a second thing to
+ * lay out beside them (.heroVitals) rather than being its only children.
+ * min-width: 0 so this is the side that gives if the two ever get tight —
+ * .heroVitals is short, fixed-content facts with nowhere shorter to wrap to.
+ */
+.heroText {
+  min-width: 0;
+}
+
+/*
+ * Role and Time (CaseHeroVitals in CaseMeta.tsx), set into the hero's own
+ * bottom-right — empty paper on a wide screen otherwise, while the study's
+ * two shortest facts queued up in the band below instead. Own colour scale
+ * rather than reusing .metaLabel/.metaValue: those are tuned for ink on
+ * paper, and this sits on the same scrim .summary reads against.
+ *
+ * Desktop only. A phone's hero is short on both height and width to spend on
+ * a second column — CaseMeta's own .metaMobileOnly groups carry the same two
+ * facts back into the band below at that width instead.
+ */
+.heroVitals {
+  display: none;
+}
+
+@media (min-width: 761px) {
+  .heroInner {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .heroVitals {
+    display: flex;
+    flex: none;
+    gap: clamp(1.5rem, 3vw, 2.75rem);
+    text-align: right;
+  }
+
+  .heroVitalsGroup {
+    flex: none;
+  }
+}
+
+.heroVitalsLabel {
+  margin-bottom: 0.4rem;
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgb(233 231 226 / 62%);
+}
+
+.heroVitalsValue {
+  max-width: 20ch;
+  font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.0625rem);
+  font-weight: 600;
+  line-height: 1.3;
+  color: #e9e7e2;
+}
+
+.heroVitalsDetail {
+  margin-top: 0.15rem;
+  font-size: var(--step-small);
+  line-height: 1.3;
+  color: rgb(233 231 226 / 62%);
+}
+
+/*
+ * The back control (BackLink.tsx). Fixed to the top-left corner of the
+ * viewport rather than stacked above the title, so it stays reachable for the
+ * whole study instead of scrolling away with the hero.
+ *
+ * `top` is the Navigation rail's own sticky offset, repeated verbatim — once
+ * the page is under the fold the link and the rail come to rest on the same
+ * line, and the link sits out in the left margin beside it. `left` is the page
+ * gutter, pulled back by the hit-area padding so the glyph itself — not its
+ * box — lands on the gutter line the rest of the page is set to.
+ *
+ * Below 1180px that margin closes up: the content column runs full-bleed to
+ * the gutter, which is where this link already is, so the rail would stick
+ * straight through it. It drops below the link instead — see the rule beside
+ * .nav further down.
+ */
 .back {
+  position: fixed;
+  top: clamp(1.5rem, 4vh, 2.5rem);
+  left: calc(var(--gutter) - 0.4rem);
+  z-index: 40;
   display: inline-flex;
   align-items: center;
-  width: fit-content;
-  /* Sits directly above the title, grouped with it at the bottom of the hero
-     rather than pinned to the top. */
-  margin-bottom: 0.9rem;
-  color: rgb(255 255 255 / 85%);
-  transition: transform var(--dur) var(--ease), color var(--dur) var(--ease);
+  justify-content: center;
+  padding: 0.4rem;
+  transition:
+    transform var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 }
 
 .back:hover {
-  color: #fff;
   transform: translateX(-3px);
+}
+
+/* Over the hero and the metadata band — cream ink on dark ground. */
+.back[data-ground="dark"] {
+  color: rgb(233 231 226 / 85%);
+}
+
+.back[data-ground="dark"]:hover {
+  color: #e9e7e2;
+}
+
+/*
+ * Over the page body. The ground it carries is the body's own cream, which is
+ * invisible out in the empty margin where this normally sits — it earns its
+ * keep only on the phone stack, where the link floats over running text and
+ * would otherwise tangle with it.
+ */
+.back[data-ground="paper"] {
+  color: var(--ink-soft);
+  background: var(--paper);
+  /* A halo of the same cream, solid at the glyph and feathered out past it.
+     Out in the desktop margin this paints cream on cream and is invisible; on
+     the phone stack, where the link floats over running text, it is the only
+     thing keeping the glyph off the words — and it feathers so the copy slips
+     under it rather than hitting a hard patch. */
+  box-shadow:
+    0 0 0 0.3rem var(--paper),
+    0 0 1.4rem 0.9rem var(--paper);
+}
+
+.back[data-ground="paper"]:hover {
+  color: var(--ink);
 }
 
 .title {
@@ -101,296 +264,173 @@
 }
 
 .summary {
-  position: relative;
   max-width: 46ch;
   margin-top: 0.75rem;
-  padding-left: 1.1rem;
   font-size: var(--step-body);
   line-height: 1.45;
-  color: rgb(255 255 255 / 88%);
-}
-
-.plus {
-  position: absolute;
-  left: 0;
-  color: rgb(255 255 255 / 60%);
+  color: rgb(233 231 226 / 88%);
 }
 
 /* ---- Project metadata band (CaseMeta.tsx) -----------------------------
- * From the Figma: a full-width dark card under the hero. A padded left area
- * holds Team Members + My Contributions (two columns on desktop); a flush
- * right stack holds two grey panels — My Role over Time. The shared pixel
- * ornament nests in the bottom-left corner. Everything collapses to one
- * column below the same 760px breakpoint the page body uses.
+ *
+ * The vitals under the hero, minus the two that now live in the hero itself
+ * (Role and Time — see .heroVitals below). What's left is a name list and a
+ * paragraph, which is short enough to sit in one row with no internal
+ * divider: Team on the left at its own width, Contributions taking the rest.
+ * On a phone, where the hero has nowhere to put Role/Time, .metaMobileOnly
+ * brings them back into Team's column instead — see CaseHeroVitals in
+ * CaseMeta.tsx for why that's a second copy in the DOM rather than one moved
+ * around with CSS `order`.
+ *
+ * No toggle. A row this short has nothing worth hiding.
  */
 .metaWrap {
   max-width: var(--measure);
   margin-inline: auto;
   padding-inline: var(--gutter);
-  /* Butts directly against the bottom of the hero — no gap in between. */
-  padding-top: 0;
+  padding-block: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 2.5vw, 1.75rem);
 }
 
-.metaCard {
-  position: relative;
-  background: #1b1b1b;
-  color: #fff;
-  overflow: hidden;
-}
-
-/* Full-width bar across the top — the collapse handle. Its hairline underline
-   drops away once collapsed, leaving a clean standalone bar. */
-.metaToggle {
+.metaRow {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  width: 100%;
-  padding: clamp(0.85rem, 2vw, 1.15rem) clamp(1.6rem, 3.2vw, 2.4rem);
-  background: #1b1b1b;
-  color: #fff;
-  border: 0;
-  border-bottom: 1px solid rgb(255 255 255 / 10%);
-  cursor: pointer;
-  text-align: left;
-  font: inherit;
-  transition: border-color var(--dur) var(--ease);
+  flex-wrap: wrap;
+  column-gap: clamp(2.5rem, 6vw, 4.5rem);
+  /* Also the whole of the spacing between groups once they stack on a phone,
+     which is why nothing in here carries a margin of its own for it. */
+  row-gap: clamp(1.5rem, 5vw, 1.75rem);
+  padding-block: 0 clamp(1.1rem, 2.2vw, 1.5rem);
+  /* Bottom only. The hero's own bottom edge is already the line this band
+     sits under; a second rule a few pixels beneath it just boxed it in. */
+  border-bottom: 1px solid rgb(0 0 0 / 12%);
 }
 
-.metaToggle[aria-expanded="false"] {
-  border-bottom-color: transparent;
-}
-
-.metaToggleLabel {
-  font-size: var(--step-small);
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: rgb(255 255 255 / 70%);
-  transition: color var(--dur) var(--ease);
-}
-
-.metaChevron {
+.metaGroup {
   flex: none;
-  color: rgb(255 255 255 / 70%);
-  transition: transform var(--dur) var(--ease), color var(--dur) var(--ease);
+  min-width: 11rem;
 }
 
-.metaChevronCollapsed {
-  transform: rotate(-180deg);
+/* The one value in the row that's actual prose — full sentences, not a name
+   or a phrase — so it's the one group that grows to fill whatever width
+   Team leaves it, and the one whose lines are capped for readability rather
+   than left to run the row's full, wrap-however-wide width. */
+.metaContribGroup {
+  flex: 1 1 22rem;
+  max-width: 58ch;
 }
 
-.metaToggle:hover .metaToggleLabel,
-.metaToggle:hover .metaChevron {
-  color: #fff;
+/*
+ * Role and Time. The hero carries them from 761px up (.heroVitals), so up
+ * there these two are simply not drawn.
+ */
+.metaMobileOnly {
+  display: none;
 }
 
-.metaToggle:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: -2px;
+@media (min-width: 761px) {
+  /*
+   * The one place anything is reordered. Source order is the phone's reading
+   * order (see CaseMeta.tsx), which leaves Contributions ahead of Team — but
+   * side by side in a row the name list belongs on the left, against the
+   * gutter, with the prose given the rest of the width.
+   */
+  .metaGroup {
+    order: 1;
+  }
+
+  .metaContribGroup {
+    order: 2;
+  }
 }
 
-/* Collapse mechanism: animate the single grid row from 1fr to 0fr while the
-   inner wrapper clips its overflow. Reduced motion flattens the transition
-   via the global rule, so this just snaps for those users. */
-.metaCollapse {
-  display: grid;
-  grid-template-rows: 1fr;
-  transition: grid-template-rows var(--dur) var(--ease);
+@media (max-width: 760px) {
+  .metaGroup,
+  .metaContribGroup {
+    flex-basis: 100%;
+  }
+
+  .metaMobileOnly {
+    display: block;
+  }
 }
 
-.metaCollapse[data-collapsed="true"] {
-  grid-template-rows: 0fr;
-}
-
-.metaClip {
-  min-height: 0;
-  overflow: hidden;
-}
-
-/* The content grid — the padded left area and the flush right stack. */
-.metaBody {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-}
-
-/* Left area — Team + Contributions. Padded away from the card edges; the
-   bottom padding also keeps the copy clear of the corner ornament. */
-.metaMain {
-  /* Locks the phone stack gap and the top inset to one value, so the space
-     from the hero down to Team Members matches the space between Team Members
-     and My Contributions. The desktop override below unlinks them. */
-  --meta-stack-gap: clamp(2.5rem, 6vw, 3.25rem);
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--meta-stack-gap);
-  padding: var(--meta-stack-gap) clamp(1.6rem, 3.2vw, 2.4rem)
-    clamp(2.75rem, 5vw, 3.5rem);
-}
-
-/* Small uppercase eyebrow over each field, on both the dark and grey panels. */
 .metaLabel {
-  margin-bottom: clamp(0.7rem, 1.6vw, 1rem);
+  margin-bottom: 0.5rem;
   font-size: var(--step-small);
   font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: rgb(255 255 255 / 55%);
+  letter-spacing: 0.02em;
+  color: var(--ink-muted);
 }
 
-/* A second label further down its column (e.g. Advisors under the team). */
+/* A second label further down its column (Advisors, under Team). */
 .metaLabelStacked {
-  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+  margin-top: 0.9rem;
+}
+
+.metaValue {
+  font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+/* The real date range, a step down under the rounded duration. */
+.metaTimeDetail {
+  margin-top: 0.15rem;
+  font-size: var(--step-small);
+  line-height: 1.3;
+  color: var(--ink-dim);
 }
 
 .metaTeam {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: clamp(0.35rem, 1vw, 0.6rem);
-  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem);
-  line-height: 1.25;
-  color: rgb(255 255 255 / 82%);
+  gap: 0.25rem;
+  font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+  line-height: 1.35;
+  color: var(--ink-soft);
 }
 
 /* The author, first in the list — read a step stronger than the rest. */
 .metaTeamLead {
   font-weight: 700;
-  color: #fff;
+  color: var(--ink);
 }
 
+/* One line per advisor — name, then role and org run in after a comma rather
+   than dropped to a line of their own. Two lines each was the single biggest
+   thing the old card spent height on for the studies that had them. */
+.metaAdvisors {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: var(--step-small);
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.metaAdvisorTitle {
+  color: var(--ink-dim);
+}
+
+/*
+ * No bullet and no hanging indent — the entries set flush left like the name
+ * list beside them, which is what keeps the two columns reading as one band
+ * rather than a list next to a paragraph.
+ *
+ * The gap is doing the work a marker used to, so it's wider than it was: with
+ * nothing but space between two wrapped sentences, too tight a gap reads them
+ * as one paragraph.
+ */
 .metaContributions {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: clamp(0.55rem, 1.4vw, 0.85rem);
-  max-width: 52ch;
-  font-size: clamp(0.9375rem, 0.9rem + 0.25vw, 1.0625rem);
+  gap: 0.7rem;
+  font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
   line-height: 1.4;
-  color: rgb(255 255 255 / 82%);
-}
-
-/* Square bullet in the site's no-radius language, hung in the left margin. */
-.metaContributions li {
-  position: relative;
-  padding-left: 1.35rem;
-}
-
-.metaContributions li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.5em;
-  width: 6px;
-  height: 6px;
-  background: rgb(255 255 255 / 55%);
-}
-
-/* Right stack — two grey panels, flush to the card's top/right/bottom edges.
-   Role auto-heights to its content; Time takes the remaining space so the
-   large value has room, echoing the Figma proportions. */
-.metaSide {
-  display: flex;
-  flex-direction: column;
-}
-
-.metaRole,
-.metaTime {
-  padding: clamp(1.4rem, 3vw, 2rem) clamp(1.5rem, 3.2vw, 2.15rem);
-}
-
-.metaRole {
-  background: #5e5e5e;
-}
-
-.metaTime {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  /* Extra room below the value on the phone stack, so Time doesn't sit tight
-     against the bottom edge. Reset to the shared inset on desktop below. */
-  padding-bottom: clamp(3rem, 11vw, 4.5rem);
-  /* A faint dot-grid clustered in the bottom-right for a bit of flare: the
-     dots tile the whole panel, then a linear gradient of the panel colour
-     fading to transparent covers all but the bottom-right corner. Kept at a
-     low alpha so it stays a texture, not a pattern. */
-  background-color: #353535;
-  background-image: linear-gradient(
-      to top left,
-      rgb(53 53 53 / 0) 0%,
-      #353535 55%
-    ),
-    radial-gradient(rgb(255 255 255 / 12%) 1px, transparent 1.5px);
-  background-repeat: no-repeat, repeat;
-  background-size:
-    100% 100%,
-    11px 11px;
-  background-position:
-    center,
-    right bottom;
-}
-
-/* Role + Time values share the Team Members size — bold, but not oversized. */
-.metaRoleValue,
-.metaTimeValue {
-  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem);
-  font-weight: 700;
-  line-height: 1.2;
-  color: #fff;
-}
-
-.metaRoleValue {
-  text-wrap: balance;
-}
-
-/* Pixel-square ornament nested in the bottom-left corner: a 2×2 grid with the
-   corner cell brightest, the two adjoining cells stepping down in grey and the
-   opposite cell empty — the same motif as the other dark cards, re-anchored. */
-.metaOrnament {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  width: clamp(40px, 6vw, 52px);
-  height: clamp(40px, 6vw, 52px);
-  pointer-events: none;
-}
-
-.metaOrnament i {
-  display: block;
-}
-
-.metaOrnament i:nth-child(1) {
-  grid-area: 1 / 1;
-  background: #bababa;
-}
-.metaOrnament i:nth-child(2) {
-  grid-area: 2 / 1;
-  background: #fff;
-}
-.metaOrnament i:nth-child(3) {
-  grid-area: 2 / 2;
-  background: #e5e5e5;
-}
-
-@media (min-width: 760px) {
-  .metaBody {
-    grid-template-columns: minmax(0, 1fr) minmax(230px, 300px);
-  }
-
-  .metaMain {
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    gap: clamp(2rem, 4.5vw, 4rem);
-    /* Side by side now — the top inset no longer needs to match the row gap. */
-    padding-top: clamp(1.6rem, 3.2vw, 2.4rem);
-  }
-
-  .metaTime {
-    padding-bottom: clamp(1.4rem, 3vw, 2rem);
-  }
+  color: var(--ink-soft);
 }
 
 /* ---- Body: nav rail + content ----------------------------------------- */
@@ -410,15 +450,27 @@
   position: sticky;
   top: clamp(1.5rem, 4vh, 2.5rem);
   align-self: start;
+  transition: opacity var(--dur) var(--ease);
 }
 
-.navLabel {
-  margin-bottom: 1rem;
-  font-size: var(--step-small);
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
+/* Set by Toc.tsx while a full-bleed block (e.g. PersonaCarousel.tsx's
+   `[data-nav-fade]`) is in view — see the effect there for why. */
+.navFaded {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/*
+ * Between the phone stack and the width where the page's outer margin opens
+ * up, the rail and the fixed back link share the same gutter — so the rail
+ * parks below the link rather than under it. Only the stuck position moves:
+ * in normal flow the rail starts well down the page, clear of the link
+ * anyway. See .back above.
+ */
+@media (min-width: 761px) and (max-width: 1179px) {
+  .nav {
+    top: calc(clamp(1.5rem, 4vh, 2.5rem) + 3.5rem);
+  }
 }
 
 .navList {
@@ -466,7 +518,9 @@
 .content > .cardList,
 .content > .model,
 .content > .video,
-.content > .code {
+.content > .code,
+.content > .callout,
+.content > .personaCarousel {
   margin-block: clamp(2.25rem, 4.5vw, 3.25rem);
 }
 
@@ -482,16 +536,19 @@
   color: var(--ink);
 }
 
-/* First heading sits directly under the hero — no extra top gap. */
-.content > .h2:first-child {
+/* First heading sits directly under the hero — no extra top gap. A callout
+   opening the study (the `masters` note) counts as the same starting position:
+   its own margin-bottom collapses through to space the heading below it. */
+.content > .h2:first-child,
+.content > .callout:first-child + .h2 {
   margin-top: 0;
 }
 
 .h3 {
   /* Subheadings get a clear gap too, but a step down from the main-heading
      gap so the hierarchy reads. */
-  margin-top: clamp(2.25rem, 4vw, 3rem);
-  font-size: 1.25rem;
+  margin-top: clamp(3rem, 5.5vw, 4.25rem);
+  font-size: 1.4rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--ink);
@@ -516,7 +573,7 @@
 .highlight {
   background: none;
   color: var(--ink);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .link {
@@ -549,10 +606,10 @@
 
 .figureImg {
   width: 100%;
-  /* Pure white, so a transparent PNG (product renders, sketches, diagrams)
-     sits on white rather than showing the old --shade grey through its
+  /* The page's own paper cream, so a transparent PNG (product renders,
+     sketches, diagrams) sits on paper rather than showing --shade grey through its
      transparent areas. Invisible behind fully opaque images. */
-  background: #fff;
+  background: #e9e7e2;
 }
 
 /* Corner affordance signalling the image is zoomable — quiet until hovered
@@ -565,7 +622,7 @@
   place-items: center;
   width: 32px;
   height: 32px;
-  color: #fff;
+  color: #e9e7e2;
   background: rgb(0 0 0 / 55%);
   opacity: 0;
   transition: opacity var(--dur) var(--ease);
@@ -582,7 +639,7 @@
 }
 
 /* ---- Lightbox ------------------------------------------------------------
- * Full-size view of a figure image. White frame (not black) so a transparent
+ * Full-size view of a figure image. Paper frame (not black) so a transparent
  * PNG reads the same way it does inline, just larger — see .figureImg.
  */
 .lightbox {
@@ -606,7 +663,7 @@
 .lightboxImg {
   max-width: 100%;
   max-height: 90vh;
-  background: #fff;
+  background: #e9e7e2;
   cursor: default;
   animation: lightbox-img-in 260ms var(--ease);
 }
@@ -626,7 +683,7 @@
   place-items: center;
   width: 44px;
   height: 44px;
-  color: rgb(255 255 255 / 80%);
+  color: rgb(233 231 226 / 80%);
   background: none;
   border: 0;
   cursor: pointer;
@@ -637,12 +694,12 @@
 
 .lightboxClose:hover,
 .lightboxClose:focus-visible {
-  color: #fff;
-  background: rgb(255 255 255 / 12%);
+  color: #e9e7e2;
+  background: rgb(233 231 226 / 12%);
 }
 
 .lightboxClose:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid #e9e7e2;
   outline-offset: 2px;
 }
 
@@ -671,7 +728,8 @@
   max-width: 62ch;
   padding-left: 1.25rem;
   border-left: 2px solid var(--ink);
-  font-size: var(--step-lead);
+  font-size: var(--step-body);
+  font-weight: 700;
   line-height: 1.5;
   color: var(--ink);
 }
@@ -694,8 +752,7 @@
   margin-bottom: 0.5rem;
   font-size: var(--step-label, 0.6875rem);
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--ink-dim);
 }
 
@@ -725,13 +782,13 @@
   margin-block: clamp(0.5rem, 1.5vw, 1rem);
   margin-inline: auto;
   padding: clamp(1.15rem, 2.5vw, 1.5rem) clamp(1.35rem, 3vw, 1.75rem);
-  background: #1b1b1b;
-  color: #fff;
+  background: #2a2a2a;
+  color: #e9e7e2;
   text-decoration: none;
   transition: transform var(--dur) var(--ease);
 }
 
-/* Hover lift only — the fill stays the single #1b1b1b (no darken-on-hover). */
+/* Hover lift only — the fill stays the single #2a2a2a (no darken-on-hover). */
 .mdButton:hover {
   transform: translateY(-2px);
 }
@@ -766,14 +823,14 @@
 .mdButtonRule {
   height: 3px;
   margin-top: clamp(0.5rem, 1.1vw, 0.75rem);
-  background: #fff;
+  background: #e9e7e2;
 }
 
 .mdButtonArrow {
   flex: none;
   width: clamp(1.75rem, 4vw, 2.25rem);
   height: clamp(1.75rem, 4vw, 2.25rem);
-  color: #fff;
+  color: #e9e7e2;
   transition: transform var(--dur) var(--ease);
 }
 
@@ -814,11 +871,11 @@
   flex-direction: column;
   min-height: clamp(220px, 20vw, 280px);
   padding: clamp(1.5rem, 3vw, 2.25rem);
-  color: #fff;
-  background-color: #1b1b1b;
+  color: #e9e7e2;
+  background-color: #2a2a2a;
   /* Faint dot-grid texture from the Figma card fill. */
   background-image: radial-gradient(
-    rgb(255 255 255 / 6%) 1px,
+    rgb(233 231 226 / 6%) 1px,
     transparent 1.5px
   );
   background-size: 13px 13px;
@@ -830,7 +887,7 @@
   font-size: clamp(0.9rem, 0.86rem + 0.2vw, 1rem);
   font-weight: 500;
   line-height: 1.3;
-  color: rgb(255 255 255 / 92%);
+  color: rgb(233 231 226 / 92%);
 }
 
 .statBottom {
@@ -854,7 +911,62 @@
   width: clamp(1.6rem, 3vw, 2.15rem);
   height: clamp(1.6rem, 3vw, 2.15rem);
   margin-bottom: 0.35rem;
-  color: #fff;
+  color: #e9e7e2;
+}
+
+/* ---- Custom block: insight toggle (InsightToggle.tsx) -------------------
+ * Two labelled tabs above a `cardList`, swapping which side's insights are
+ * shown. Tabs read as an underline-style pair (matching the section rule
+ * language elsewhere) rather than a boxed segmented control.
+ */
+.insightToggle {
+  margin-block: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.insightToggleTabs {
+  display: flex;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  border-bottom: 1px solid rgb(30 30 30 / 14%);
+}
+
+.insightToggleTab {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0 0 0.85rem;
+  font: inherit;
+  font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: rgb(30 30 30 / 45%);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.insightToggleTab:hover {
+  color: rgb(30 30 30 / 75%);
+}
+
+.insightToggleTab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: #1e1e1e;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.insightToggleTab[data-active] {
+  color: #1e1e1e;
+}
+
+.insightToggleTab[data-active]::after {
+  transform: scaleX(1);
 }
 
 /* ---- Custom block: List Component (ListBlock.tsx) ----------------------
@@ -876,8 +988,8 @@
   align-items: center;
   gap: clamp(1.15rem, 3vw, 1.85rem);
   padding: clamp(1.35rem, 3vw, 1.85rem) clamp(1.5rem, 3.5vw, 2.35rem);
-  background: #1b1b1b;
-  color: #fff;
+  background: #2a2a2a;
+  color: #e9e7e2;
   overflow: hidden;
 }
 
@@ -885,7 +997,7 @@
   flex: none;
   width: clamp(2rem, 4.5vw, 2.75rem);
   height: clamp(2rem, 4.5vw, 2.75rem);
-  color: #fff;
+  color: #e9e7e2;
 }
 
 .cardListBody {
@@ -899,7 +1011,7 @@
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  color: #fff;
+  color: #e9e7e2;
 }
 
 .cardListDesc {
@@ -907,7 +1019,7 @@
   max-width: 68ch;
   font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
   line-height: 1.45;
-  color: rgb(255 255 255 / 74%);
+  color: rgb(233 231 226 / 74%);
   text-wrap: pretty;
 }
 
@@ -919,7 +1031,7 @@
   font-size: clamp(1rem, 0.94rem + 0.3vw, 1.1875rem);
   font-weight: 500;
   line-height: 1.4;
-  color: #fff;
+  color: #e9e7e2;
   text-wrap: pretty;
 }
 
@@ -971,7 +1083,7 @@
 .cardListOrnament[data-corner="tr"] i:nth-child(2),
 .cardListOrnament[data-corner="bl"] i:nth-child(3),
 .cardListOrnament[data-corner="br"] i:nth-child(4) {
-  background: #fff;
+  background: #e9e7e2;
 }
 
 @media (max-width: 520px) {
@@ -985,6 +1097,92 @@
   }
 }
 
+/* ---- Custom block: callout (Callout.tsx) -------------------------------
+ * The `recruiter` and `masters` fences — a notice card, on paper rather than
+ * on the dark card fill the other blocks use, so it reads as an aside about
+ * the study instead of another piece of it.
+ *
+ * There's no accent colour in the palette to spend on "warning", so the
+ * caution comes from a hatched bar down the left edge — caution tape, drawn
+ * in ink. `masters` swaps the hatching for a solid bar: same card, one
+ * degree quieter, which is the whole difference between the two tones.
+ */
+.callout {
+  /* Named so the bar's width can be reused by the padding that clears it. */
+  --bar: clamp(10px, 1.6vw, 14px);
+
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(0.9rem, 2.2vw, 1.35rem);
+  padding: clamp(1.15rem, 2.6vw, 1.5rem) clamp(1.35rem, 3vw, 1.75rem);
+  padding-left: calc(var(--bar) + clamp(1.35rem, 3vw, 1.75rem));
+  border: 1px solid var(--ink);
+  /* Just off paper — enough to separate the card from the page without
+     becoming another grey surface. */
+  background: rgb(0 0 0 / 3%);
+}
+
+.calloutBar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--bar);
+  /* Hazard hatching. The gaps are transparent rather than white so the card's
+     own fill shows through and the bar sits *in* the card, not on it. */
+  background: repeating-linear-gradient(
+    45deg,
+    var(--ink) 0 4px,
+    transparent 4px 9px
+  );
+}
+
+/* The quiet tone: a solid rule, no hazard. */
+.callout[data-tone="note"] .calloutBar {
+  background: var(--ink);
+}
+
+.calloutIcon {
+  flex: none;
+  width: clamp(1.5rem, 3.2vw, 2rem);
+  height: clamp(1.5rem, 3.2vw, 2rem);
+  /* Optically centres the glyph on the label line rather than on the label's
+     box, which sits a touch higher than the text reads. */
+  margin-top: -0.1rem;
+  color: var(--ink);
+}
+
+.calloutBody {
+  min-width: 0;
+}
+
+/* Eyebrow treatment — the same tracked idiom as the other labels on the page,
+   at full ink weight so it carries the notice. Set as authored, not forced to
+   caps (see .metaLabel above for why). */
+.calloutLabel {
+  font-size: var(--step-small);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.calloutText {
+  margin-top: 0.45rem;
+  max-width: 62ch;
+  font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+@media (max-width: 520px) {
+  .callout {
+    gap: 0.85rem;
+  }
+}
+
 /* ---- Custom block: youtube (YouTubeEmbed.tsx) -------------------------
  * "Just a video frame": a dark 16:9 frame. Click-to-load facade — thumbnail
  * + a play button styled like the quote nav arrows.
@@ -992,14 +1190,14 @@
 .video {
   /* A thin dark border framing the video. */
   padding: clamp(6px, 1vw, 10px);
-  background: #1b1b1b;
+  background: #2a2a2a;
 }
 
 .videoStage {
   position: relative;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  background: #000;
+  background: #2a2a2a;
 }
 
 .videoFrame {
@@ -1050,9 +1248,9 @@
   place-items: center;
   width: clamp(52px, 9vw, 72px);
   height: clamp(52px, 9vw, 72px);
-  color: #fff;
-  background: #1b1b1b;
-  border: 1.5px solid #fff;
+  color: #e9e7e2;
+  background: #2a2a2a;
+  border: 1.5px solid #e9e7e2;
   overflow: hidden;
   transition: color var(--dur) var(--ease);
 }
@@ -1061,7 +1259,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: #fff;
+  background: #e9e7e2;
   transform: translate(-100%, 100%);
   transition: transform var(--dur) var(--ease);
 }
@@ -1073,7 +1271,7 @@
 
 .videoButton:hover .videoPlay,
 .videoButton:focus-visible .videoPlay {
-  color: #1b1b1b;
+  color: #2a2a2a;
 }
 
 .videoPlay svg {
@@ -1096,7 +1294,7 @@
  * 0xRRGGBB literals render in their own colour (see CodeBlock.tsx).
  */
 .code {
-  background: #1b1b1b;
+  background: #2a2a2a;
   overflow: hidden;
 }
 
@@ -1104,7 +1302,7 @@
   display: flex;
   align-items: center;
   padding: clamp(0.7rem, 1.5vw, 0.9rem) clamp(1rem, 2.5vw, 1.4rem);
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid #e9e7e2;
 }
 
 .codeDots {
@@ -1118,7 +1316,7 @@
   height: 11px;
 }
 .codeDots i:nth-child(1) {
-  background: #fff;
+  background: #e9e7e2;
 }
 .codeDots i:nth-child(2) {
   background: #8f8f8f;
@@ -1170,7 +1368,7 @@
   height: 0.72em;
   margin-right: 0.35em;
   vertical-align: -0.05em;
-  border: 1px solid #fff;
+  border: 1px solid #e9e7e2;
 }
 
 /* ---- Custom block: 3D model viewer (ModelViewer.tsx) -------------------
@@ -1181,7 +1379,7 @@
   position: relative;
   margin-block: clamp(1.5rem, 3vw, 2.25rem);
   min-height: clamp(320px, 44vw, 520px);
-  background: #1b1b1b;
+  background: #2a2a2a;
   overflow: hidden;
 }
 
@@ -1204,7 +1402,7 @@
   z-index: 1;
   width: clamp(1.75rem, 4vw, 2.5rem);
   height: clamp(1.75rem, 4vw, 2.5rem);
-  color: #fff;
+  color: #e9e7e2;
   pointer-events: none;
 }
 
@@ -1222,7 +1420,7 @@
   place-items: center;
   font-size: var(--step-small);
   letter-spacing: 0.02em;
-  color: rgb(255 255 255 / 55%);
+  color: rgb(233 231 226 / 55%);
   pointer-events: none;
 }
 
@@ -1242,7 +1440,7 @@
     clamp(1.75rem, 4vw, 2.5rem);
   min-height: clamp(245px, 33vw, 335px);
   display: flex;
-  background: #1b1b1b;
+  background: #2a2a2a;
   overflow: hidden;
 }
 
@@ -1291,7 +1489,7 @@
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(3.5rem, 8vw, 5rem);
   line-height: 0.4;
-  color: #fff;
+  color: #e9e7e2;
 }
 
 .quoteText {
@@ -1300,7 +1498,7 @@
   font-size: clamp(1.0625rem, 0.95rem + 0.6vw, 1.375rem);
   font-weight: 600;
   line-height: 1.3;
-  color: #fff;
+  color: #e9e7e2;
   text-wrap: pretty;
 }
 
@@ -1328,7 +1526,7 @@
 }
 .quoteOrnament i:nth-child(2) {
   grid-area: 1 / 2;
-  background: #fff;
+  background: #e9e7e2;
 }
 .quoteOrnament i:nth-child(3) {
   grid-area: 2 / 2;
@@ -1346,9 +1544,9 @@
   width: clamp(32px, 4.5vw, 40px);
   height: clamp(44px, 7vw, 56px);
   padding: 0;
-  background: #1b1b1b;
-  border: 1.5px solid #fff;
-  color: #fff;
+  background: #2a2a2a;
+  border: 1.5px solid #e9e7e2;
+  color: #e9e7e2;
   cursor: pointer;
   overflow: hidden;
   transition: color var(--dur) var(--ease);
@@ -1373,7 +1571,7 @@
   top: 0;
   bottom: 0;
   width: 5px;
-  background: #fff;
+  background: #e9e7e2;
 }
 .quoteNavNext::after {
   right: 100%;
@@ -1388,7 +1586,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: #fff;
+  background: #e9e7e2;
   transform: translate(-100%, 100%);
   transition: transform var(--dur) var(--ease);
 }
@@ -1400,7 +1598,7 @@
 
 .quoteNav:hover,
 .quoteNav:focus-visible {
-  color: #1b1b1b;
+  color: #2a2a2a;
 }
 
 .quoteNav:focus-visible {
@@ -1515,7 +1713,7 @@
   width: clamp(74px, 13vw, 104px);
   aspect-ratio: 1;
   padding: 0.65rem;
-  background: #1b1b1b;
+  background: #2a2a2a;
   text-align: center;
   animation: carousel-counter-spin 34s linear infinite;
   transition: background-color var(--dur) var(--ease);
@@ -1542,14 +1740,14 @@
 }
 
 .carouselItem:focus-visible .carouselChip {
-  outline: 2px solid #fff;
+  outline: 2px solid #e9e7e2;
   outline-offset: 2px;
 }
 
 .carouselIcon {
   width: clamp(1.15rem, 2.4vw, 1.5rem);
   height: clamp(1.15rem, 2.4vw, 1.5rem);
-  color: #fff;
+  color: #e9e7e2;
 }
 
 .carouselLabel {
@@ -1560,7 +1758,7 @@
   font-size: clamp(0.6875rem, 0.6rem + 0.35vw, 0.8rem);
   font-weight: 500;
   line-height: 1.25;
-  color: rgb(255 255 255 / 88%);
+  color: rgb(233 231 226 / 88%);
 }
 
 /* Quiet centre mark the ring turns around — echoes the "+" glyph used
@@ -1586,6 +1784,810 @@
     width: clamp(62px, 20vw, 82px);
     padding: 0.5rem;
   }
+}
+
+/* ---- Custom block: image carousel (ImageCarousel.tsx) -------------------
+ * `image-carousel` — one `src | caption` per line. A paged sequence of
+ * photos, one shown at a time, with a caption underneath that updates as
+ * you step through. Shares its arrows-and-dots posture and crossfade timing
+ * with the quotes carousel above, but renders light rather than on a dark
+ * card — arrows sit as quiet dark chips directly on the image, echoing the
+ * zoom-hint corner affordance on standalone figures (.zoomHint).
+ *
+ * The frame takes its `aspect-ratio` inline, from the first slide's natural
+ * size (see ImageCarousel.tsx) — fixed once known, so paging through images
+ * of differing dimensions doesn't reflow the frame. Every slide is then
+ * `object-fit: cover`'d into that fixed box.
+ */
+.imageCarousel {
+  margin-block: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+.imageCarouselFrame {
+  position: relative;
+  overflow: hidden;
+  background: #e9e7e2;
+}
+
+.imageCarouselImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.imageCarouselImgHidden {
+  opacity: 0;
+}
+
+.imageCarouselNav {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: #e9e7e2;
+  background: rgb(0 0 0 / 55%);
+  border: 0;
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease);
+}
+
+.imageCarouselNav:hover,
+.imageCarouselNav:focus-visible {
+  background: rgb(0 0 0 / 78%);
+}
+
+.imageCarouselNav:focus-visible {
+  outline: 2px solid #e9e7e2;
+  outline-offset: -4px;
+}
+
+.imageCarouselNavPrev {
+  left: 0.75rem;
+}
+
+.imageCarouselNavNext {
+  right: 0.75rem;
+}
+
+.imageCarouselNav svg {
+  width: 1.1em;
+  height: 1.1em;
+  font-size: 0.95rem;
+}
+
+.imageCarouselNavFlip {
+  transform: scaleX(-1);
+}
+
+.imageCarouselCaption {
+  margin-top: 0.85rem;
+  font-size: var(--step-small);
+  line-height: 1.45;
+  color: var(--ink-dim);
+  text-align: center;
+  text-wrap: pretty;
+  opacity: 1;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.imageCarouselCaptionHidden {
+  opacity: 0;
+}
+
+.imageCarouselDots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.imageCarouselDot {
+  width: 6px;
+  height: 6px;
+  background: rgb(0 0 0 / 18%);
+  transition: background-color var(--dur) var(--ease);
+}
+
+.imageCarouselDotActive {
+  background: var(--ink);
+}
+
+@media (max-width: 520px) {
+  .imageCarouselNav {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* ---- Custom block: compare (ImageCompare.tsx) ---------------------------
+ * A segmented control ("Side by side", then one button per image) picks the
+ * view — every image in a row, or any one alone at full size. Light, on
+ * paper, same material as .imageCarouselFrame: these are photos meant to be
+ * seen clearly, not text meant to pop off a dark card.
+ */
+.compare {
+  margin-block: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+.compareControls {
+  display: inline-flex;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.compareControl {
+  padding: 0.4rem 0.9rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  color: var(--ink-muted);
+  background: rgb(0 0 0 / 4%);
+  border: 1px solid rgb(0 0 0 / 10%);
+  cursor: pointer;
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+.compareControl:hover {
+  color: var(--ink-soft);
+}
+
+.compareControlActive,
+.compareControlActive:hover {
+  color: var(--paper);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.compareSide {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.comparePane,
+.compareSingle {
+  background: #e9e7e2;
+  overflow: hidden;
+}
+
+.compareImg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---- Custom block: chart (ChangeChart.tsx) -------------------------------
+ * Rename/change log — one `Before -> After` row per line. Light and
+ * text-first like .compare rather than a dark .statCard: this answers an
+ * inline "here's what changed", not a headline number. The prior term is
+ * struck through and dimmed, the arrow marks direction, and the resolved
+ * term carries full ink weight so the eye lands on the name that shipped.
+ */
+.chart {
+  margin-block: clamp(1.75rem, 3.5vw, 2.75rem);
+  border-top: 1px solid rgb(0 0 0 / 10%);
+}
+
+.chartRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.85rem;
+  padding-block: clamp(0.85rem, 1.8vw, 1.15rem);
+  font-size: var(--step-body);
+  border-bottom: 1px solid rgb(0 0 0 / 10%);
+}
+
+.chartBefore {
+  color: var(--ink-dim);
+  text-decoration: line-through;
+  text-decoration-color: rgb(0 0 0 / 25%);
+  text-decoration-thickness: 1.5px;
+}
+
+.chartArrow {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  color: var(--ink-muted);
+}
+
+.chartAfter {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.compareCaption {
+  margin-top: 0.85rem;
+  font-size: var(--step-small);
+  line-height: 1.45;
+  color: var(--ink-dim);
+  text-align: center;
+  text-wrap: pretty;
+}
+
+/* ---- Custom block: board (BoardCanvas.tsx) ------------------------------
+ * A pannable jam board of pinned concepts. Breaks out of `.content`'s column
+ * the same way .personaCarousel does, and for the same reason its bleed is a
+ * measured inline margin rather than the usual `calc(50% - 50vw)` — see the
+ * comment there. Inset a little from the true viewport edges, so it reads as
+ * a surface laid on the page rather than a band cut through it.
+ */
+.board {
+  width: 100vw;
+  /* Fallback until BoardCanvas.tsx measures the real column edge. */
+  margin-left: calc(50% - 50vw);
+  margin-block: clamp(2.25rem, 4.5vw, 3.25rem);
+  padding-inline: clamp(0.75rem, 2vw, 2rem);
+}
+
+.boardViewport {
+  position: relative;
+  height: clamp(420px, 62vh, 680px);
+  overflow: hidden;
+  /* The page's own background, not a distinct tone, and no border either —
+     nothing marks out a box here. The board reads as a surface laid
+     directly on the page rather than a panel cut into it; only the notes
+     and the faded-out grid (.boardGrid) say a reader can do anything with
+     this stretch of it. */
+  background-color: var(--paper);
+  cursor: grab;
+  /* Vertical swipes stay with the page — a canvas mid-article that eats the
+     scroll is a trap. Horizontal ones pan the board, and this is also what
+     stops the browser's own native pinch-zoom from contesting the two-finger
+     handling in BoardCanvas.tsx. */
+  touch-action: pan-y;
+}
+
+.boardViewport:active {
+  cursor: grabbing;
+}
+
+/*
+ * Everything pannable — the grid and the notes together — lives inside this
+ * one wrapper so a single mask fades both of them identically, right where
+ * .boardViewport's own `overflow: hidden` would otherwise hard-clip a note
+ * mid-image. By the time a note reaches that boundary it's already faded to
+ * fully transparent, so the clip has nothing left to cut — which is the
+ * point: no element should visibly end in a straight line at the frame.
+ *
+ * Two perpendicular linear-gradients, `intersect`ed, rather than one radial
+ * one: a radial vignette wide enough to clear this board's corners fades
+ * deep into a wide, short frame's left and right thirds along the way,
+ * eating into exactly the width a horizontally-scattered board most needs.
+ * Two independent edge-fades — one per axis — leave the whole middle of the
+ * frame untouched and only take a fixed band off each of the four sides,
+ * fading twice as fast exactly at a corner where both bands overlap.
+ *
+ * This box itself never moves or scales, staying pinned to the viewport at
+ * `inset: 0` regardless of pan/zoom — see .boardGrid for why that matters.
+ */
+.boardStage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  --board-fade: clamp(1.5rem, 6vw, 4.5rem);
+  -webkit-mask-image:
+    linear-gradient(
+      to right,
+      transparent,
+      #000 var(--board-fade),
+      #000 calc(100% - var(--board-fade)),
+      transparent
+    ),
+    linear-gradient(
+      to bottom,
+      transparent,
+      #000 var(--board-fade),
+      #000 calc(100% - var(--board-fade)),
+      transparent
+    );
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(
+      to right,
+      transparent,
+      #000 var(--board-fade),
+      #000 calc(100% - var(--board-fade)),
+      transparent
+    ),
+    linear-gradient(
+      to bottom,
+      transparent,
+      #000 var(--board-fade),
+      #000 calc(100% - var(--board-fade)),
+      transparent
+    );
+  mask-composite: intersect;
+}
+
+/*
+ * The jam-board grid, on its own layer rather than .boardViewport's own
+ * background — kept separate from .boardCanvas so BoardCanvas.tsx can
+ * rewrite its `background-position`/`background-size` on every pan and zoom
+ * (matching .boardCanvas's own transform) without that same transform
+ * warping the note images sitting on the grid. Two background layers: a
+ * faint rule every 24px, and a stronger dot where they'd cross, so the
+ * surface reads as a board at any zoom without ever competing with the
+ * notes on it. Fades along with everything else via the parent .boardStage's
+ * mask — it doesn't need one of its own.
+ */
+.boardGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(rgb(0 0 0 / 10%) 1px, transparent 1.5px),
+    linear-gradient(rgb(0 0 0 / 3.5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(0 0 0 / 3.5%) 1px, transparent 1px);
+  background-size:
+    96px 96px,
+    24px 24px,
+    24px 24px;
+}
+
+.boardCanvas {
+  /* Sticky-note paper. Low chroma on purpose — these sit on a cream page
+     beside dark cards, and a wall of full-strength sticky yellow would
+     outshout every screenshot pinned to it. Read by .boardNote's `--tint`,
+     which BoardCanvas.tsx points at one of these per note. */
+  --board-tint-0: #f0e5b0;
+  --board-tint-1: #dbe7f2;
+  --board-tint-2: #f1dade;
+  --board-tint-3: #dfe9d9;
+  --board-tint-4: #f0e2d2;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  /* Nothing here is prose, and a stray text selection mid-drag reads as a
+     bug rather than a feature. */
+  user-select: none;
+}
+
+/* ---- The notes ---- */
+
+.boardNote {
+  --lift: 1;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 264px;
+  padding: 10px 10px 0;
+  text-align: left;
+  background: var(--tint);
+  border: 0;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 12%),
+    0 12px 24px -8px rgb(0 0 0 / 28%);
+  cursor: pointer;
+  transform: translate(var(--x), var(--y)) rotate(var(--rot)) scale(var(--lift));
+  /* The note's placement lives in --x/--y/--rot so hover can compose a scale
+     onto it here without the transform having to be rewritten in JS. */
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.boardNote:hover,
+.boardNote:focus-visible {
+  --lift: 1.04;
+  z-index: 2;
+  box-shadow:
+    0 2px 4px rgb(0 0 0 / 14%),
+    0 22px 38px -10px rgb(0 0 0 / 34%);
+}
+
+.boardNote:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.boardNoteFrame {
+  display: block;
+  height: 178px;
+  overflow: hidden;
+  background: #e9e7e2;
+}
+
+.boardNoteImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.boardNoteLabel {
+  display: block;
+  padding: 0.6rem 0.15rem 0.7rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+/* ---- Toolbar ---- */
+
+.boardTools {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  pointer-events: none;
+}
+
+.boardHint {
+  font-size: var(--step-small);
+  color: var(--ink-dim);
+}
+
+.boardZoom {
+  display: flex;
+  gap: 0.35rem;
+  pointer-events: auto;
+}
+
+.boardZoomButton {
+  min-width: 34px;
+  height: 34px;
+  padding-inline: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink);
+  background: rgb(255 255 255 / 82%);
+  border: 1px solid rgb(0 0 0 / 14%);
+  cursor: pointer;
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+.boardZoomButton:hover,
+.boardZoomButton:focus-visible {
+  background: #fff;
+  border-color: rgb(0 0 0 / 30%);
+}
+
+/* ---- Context panel ---- */
+
+.boardDetail {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 3vw, 2rem);
+  background: rgb(20 20 20 / 55%);
+}
+
+.boardDetailCard {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  background: var(--paper);
+  box-shadow: 0 24px 48px -16px rgb(0 0 0 / 45%);
+}
+
+.boardDetailClose {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  color: var(--ink);
+  background: rgb(233 231 226 / 85%);
+  border: 0;
+  cursor: pointer;
+}
+
+.boardDetailClose:hover,
+.boardDetailClose:focus-visible {
+  background: #fff;
+}
+
+.boardDetailImg {
+  width: 100%;
+  background: #e9e7e2;
+}
+
+.boardDetailText {
+  margin-top: 0.9rem;
+}
+
+.boardDetailTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.boardDetailBody {
+  margin-top: 0.35rem;
+  font-size: var(--step-small);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+@media (max-width: 560px) {
+  .boardHint {
+    display: none;
+  }
+}
+
+/* ---- Custom block: personas (PersonaCarousel.tsx) -----------------------
+ * The eight interviewee-category cards. Unlike every other custom block,
+ * this one breaks out of `.content`'s column and runs the full width of the
+ * viewport. `body` already carries `overflow-x: hidden` (globals.css) for
+ * the homepage's own full-bleed sections, so this rides the same safety net
+ * rather than needing one of its own.
+ *
+ * `margin-left` below is only the fallback, and it's the classic
+ * `calc(50% - 50vw)` full-bleed trick — which is exactly what it *shouldn't*
+ * be here, kept only because it's a harmless default until JS overwrites it.
+ * That trick only lands on the true viewport edge when the bleeding
+ * element's ancestor is itself centred in the viewport (the `%` resolves
+ * against the ancestor's width, not the viewport's) — true of a plain
+ * centred blog column, not of `.content`, which is the second track of the
+ * nav-rail grid and sits pushed right with nothing matching it on the left.
+ * PersonaCarousel.tsx's layout effect measures `.content`'s real distance
+ * from the viewport edge and sets this inline instead, which is what
+ * actually reaches edge to edge regardless of the rail's resolved width.
+ */
+.personaCarousel {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+/*
+ * A real horizontally-scrolling element, same as ShotCarousel.tsx on the
+ * recruiter page — a touch screen swipes it for nothing, and the scrubber
+ * below reads its own position from scrollLeft rather than a column count
+ * kept in step with a breakpoint. There's no scroll-snap: the scrubber
+ * writes straight to scrollLeft on every pointer move (PersonaCarousel.tsx),
+ * and a snap point would fight that by yanking the strip to the nearest
+ * card mid-drag instead of gliding with it.
+ *
+ * `padding-inline` is only the fallback — a flat gutter-based approximation
+ * for SSR and the first frame, before the layout effect measures the real
+ * content-column edge and overwrites it inline (see the comment above
+ * .personaCarousel; the same measurement drives both). Either way, the
+ * first card ends up flush with the content column's own left edge at
+ * rest, and `mask-image` fades the strip to transparent past that, over the
+ * last stretch on each side, as the cue that there's more once you've
+ * scrolled beyond the aligned start.
+ */
+.personaStrip {
+  display: flex;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  list-style: none;
+  padding-block: 0.25rem;
+  padding-inline: max(var(--gutter), calc((100vw - var(--measure)) / 2 + var(--gutter)));
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 clamp(1.5rem, 6vw, 4.5rem),
+    #000 calc(100% - clamp(1.5rem, 6vw, 4.5rem)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 clamp(1.5rem, 6vw, 4.5rem),
+    #000 calc(100% - clamp(1.5rem, 6vw, 4.5rem)),
+    transparent
+  );
+}
+
+.personaStrip::-webkit-scrollbar {
+  display: none;
+}
+
+/*
+ * `--accent` is set inline per card (PersonaCarousel.tsx, one of eight hues
+ * assigned by position) and read by everything below that's meant to carry
+ * the category's colour: the top edge, the id chip, and the name. Eight
+ * cards this close in shape and copy would otherwise read as one grey run;
+ * the accent is what lets an eye scanning across the strip tell them apart
+ * without reading a word.
+ */
+.personaCard {
+  position: relative;
+  flex: 0 0 clamp(230px, 26vw, 300px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: clamp(1.4rem, 2.5vw, 1.75rem);
+  color: #e9e7e2;
+  background-color: #2a2a2a;
+  /* Same dot-grid fill as .statCard, for one consistent "dark card" material
+     across the case study's custom blocks. */
+  background-image: radial-gradient(rgb(233 231 226 / 6%) 1px, transparent 1.5px);
+  background-size: 13px 13px;
+  border-top: 3px solid var(--accent);
+  overflow: hidden;
+}
+
+.personaIdRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.personaDot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.personaId {
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.personaName {
+  font-size: clamp(1.05rem, 0.98rem + 0.3vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--accent);
+  text-wrap: balance;
+}
+
+.personaGroupLabel {
+  margin-top: 0.15rem;
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgb(233 231 226 / 55%);
+}
+
+.personaChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+}
+
+.personaChip {
+  padding: 0.3rem 0.6rem;
+  font-size: var(--step-small);
+  line-height: 1.2;
+  color: rgb(233 231 226 / 92%);
+  background: rgb(233 231 226 / 10%);
+  border: 1px solid rgb(233 231 226 / 16%);
+}
+
+.personaChipMuted {
+  color: rgb(233 231 226 / 70%);
+  background: transparent;
+}
+
+.personaTag {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  color: rgb(233 231 226 / 78%);
+}
+
+/*
+ * The scrubber — the strip's only navigation control. Sits back inside the
+ * ordinary content measure (unlike the strip above it, which runs
+ * full-bleed) — the same relationship OpenAI's incident-timeline carousel
+ * draws between its edge-to-edge cards and the narrower control underneath,
+ * so the page's normal reading margin returns for the one element meant to
+ * be read as a control rather than a card.
+ *
+ * A plain `<input type="range">`, restyled: dragging it writes directly to
+ * the strip's scrollLeft (PersonaCarousel.tsx), so the thumb's position and
+ * the strip's own scroll position are always the same number. That also
+ * means it's free keyboard and screen-reader support — a native range
+ * needs no extra ARIA wiring to be operable with arrow keys.
+ *
+ * The track itself is two-toned rather than one flat line: darker ink from
+ * the left up to the thumb (what's already been scrolled past), muted from
+ * the thumb to the end (what's still ahead) — a straight progress-bar read
+ * of where the strip is, not just where the thumb sits. `--progress` is set
+ * inline (PersonaCarousel.tsx, same 0–100 value as the range) and the split
+ * point is drawn with a hard-stop `linear-gradient` at that percentage.
+ * Firefox needs its own copy on `::-moz-range-track` — unlike the thumb,
+ * that pseudo-element doesn't inherit the host's own `background`.
+ */
+.personaScrub {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+.personaScrubInput {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1px;
+  margin: 0.6rem 0;
+  background: linear-gradient(
+    to right,
+    var(--ink) calc(var(--progress, 0) * 1%),
+    var(--ink-muted) calc(var(--progress, 0) * 1%)
+  );
+  cursor: pointer;
+}
+
+.personaScrubInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ink);
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease);
+}
+
+.personaScrubInput::-moz-range-track {
+  height: 1px;
+  border: none;
+  background: linear-gradient(
+    to right,
+    var(--ink) calc(var(--progress, 0) * 1%),
+    var(--ink-muted) calc(var(--progress, 0) * 1%)
+  );
+}
+
+.personaScrubInput::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background: var(--ink);
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease);
+}
+
+.personaScrubInput:hover::-webkit-slider-thumb,
+.personaScrubInput:focus-visible::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+
+.personaScrubInput:hover::-moz-range-thumb,
+.personaScrubInput:focus-visible::-moz-range-thumb {
+  transform: scale(1.2);
+}
+
+.personaScrubInput:focus-visible {
+  outline: none;
 }
 
 /* ---- Recommended ------------------------------------------------------- */
@@ -1623,8 +2625,7 @@
   margin-bottom: 0.6rem;
   font-size: var(--step-small);
   font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--ink-muted);
 }
 
@@ -1678,5 +2679,352 @@
 
   .recommendedList {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Custom block: logo-orbit (LogoOrbit.tsx) ---------------------------
+ * A three-beat network diagram rather than a decorative carousel of logos.
+ * Beat one is a mesh: seven platforms bowed to each other across an empty
+ * middle, dashed lines flowing in conflicting directions. Beat two swings
+ * them into one ring revolving around Discord. Beat three contracts the ring
+ * until every badge is hidden behind the Discord mark and only Discord is
+ * left. Each beat holds long enough to read on its own.
+ *
+ * No ground of its own — the badges sit straight on the page's paper, the way
+ * a transparent PNG figure does (.figureImg), so the colour in the marks and
+ * the blurple of the hub are the only colour in the block.
+ *
+ * Per-badge groups use `transform-box: fill-box` + a centred origin so a
+ * rotate or scale turns about the badge's own centre. The whole-set revolve
+ * (.orbitField / .orbitSpin) instead uses `<animateTransform>` in the markup
+ * with a literal numeric pivot — see the comment in LogoOrbit.tsx for why.
+ */
+.orbitStage {
+  position: relative;
+  max-width: min(100%, 720px);
+  margin-inline: auto;
+}
+
+.orbitSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* Let the badges' drop shadows spill past the viewBox instead of being
+     sliced off by the SVG viewport. */
+  overflow: visible;
+}
+
+/* Phase eyebrow. Kept in HTML rather than as SVG <text> so it stays at caption
+   size instead of scaling with the diagram — which is also why it sits in the
+   flow above the stage rather than overlaying its top-left corner: the label
+   holds its px size as the diagram shrinks, so on a phone it takes a much
+   larger share of the width and the scattered badges run straight into it. */
+.orbitLabel {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  margin: 0 0 0.35rem;
+  font-size: var(--step-small);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-dim);
+}
+
+.orbitLabelDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-muted);
+  transition:
+    background 600ms var(--ease-inout),
+    box-shadow 600ms var(--ease-inout);
+}
+
+.orbitOrbiting .orbitLabelDot,
+.orbitTucked .orbitLabelDot {
+  background: #5865f2;
+  box-shadow: 0 0 0 4px rgb(88 101 242 / 18%);
+}
+
+/* Every label sits in one grid cell so the chip never resizes mid-swap. */
+.orbitLabelSlot {
+  display: grid;
+}
+
+.orbitLabelSlot > span {
+  grid-area: 1 / 1;
+}
+
+/* Shared crossfade for the stacked eyebrows and the stacked captions. */
+.orbitFadeIn,
+.orbitFadeOut {
+  transition: opacity 450ms var(--ease-inout);
+}
+
+.orbitFadeIn {
+  opacity: 1;
+  transition-delay: 240ms;
+}
+
+.orbitFadeOut {
+  opacity: 0;
+}
+
+/* --- Beat one: the mesh --- */
+.orbitMesh {
+  fill: none;
+  stroke: rgb(42 42 42 / 32%);
+  stroke-width: 1.4;
+  transition: opacity 420ms var(--ease-inout);
+}
+
+/* Dashes running in opposite directions at unrelated speeds: traffic every
+   which way at once, which is the noise the last beat clears. */
+.orbitMeshForward,
+.orbitMeshBack {
+  stroke-dasharray: 5 7;
+  animation: orbit-mesh-flow 2.6s linear infinite;
+}
+
+.orbitMeshBack {
+  animation-duration: 3.4s;
+  animation-direction: reverse;
+}
+
+.orbitScattered .orbitMesh {
+  opacity: 1;
+  /* Waits for the badges to be back in place before re-wiring them. */
+  transition-delay: 620ms;
+}
+
+.orbitOrbiting .orbitMesh,
+.orbitTucked .orbitMesh {
+  opacity: 0;
+  transition-duration: 300ms;
+}
+
+/* --- Beats two and three: the hub --- */
+.orbitHalo,
+.orbitGuide {
+  transition: opacity 500ms var(--ease-inout);
+}
+
+.orbitGuide {
+  fill: none;
+  stroke: rgb(42 42 42 / 13%);
+  stroke-width: 1;
+  stroke-dasharray: 3 6;
+}
+
+.orbitScattered .orbitHalo,
+.orbitScattered .orbitGuide {
+  opacity: 0;
+  transition-duration: 260ms;
+}
+
+.orbitOrbiting .orbitHalo,
+.orbitOrbiting .orbitGuide {
+  opacity: 1;
+  transition-delay: 300ms;
+}
+
+/* Nothing is travelling the path any more, so it goes; the halo stays and
+   carries the hub once the badges have disappeared into it. */
+.orbitTucked .orbitGuide {
+  opacity: 0;
+}
+
+.orbitTucked .orbitHalo {
+  opacity: 1;
+}
+
+.orbitHub {
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 6px 18px rgb(88 101 242 / 32%));
+  transition:
+    transform 700ms var(--ease),
+    opacity 500ms var(--ease-inout);
+}
+
+/* Gone entirely for the first beat — an empty middle is the claim. */
+.orbitScattered .orbitHub {
+  opacity: 0;
+  transform: scale(0.4);
+  transition-duration: 400ms, 260ms;
+}
+
+.orbitOrbiting .orbitHub {
+  opacity: 1;
+  transform: scale(1);
+  transition-delay: 340ms;
+}
+
+/* A beat larger once it has taken everything in. */
+.orbitTucked .orbitHub {
+  opacity: 1;
+  transform: scale(1.12);
+  transition-delay: 480ms;
+}
+
+.orbitPulseRing {
+  fill: none;
+  stroke: #5865f2;
+  stroke-width: 1.4;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* One beat, shared by the hub's pulse and the badges' breath below. */
+.orbitOrbiting .orbitPulseRing,
+.orbitTucked .orbitPulseRing {
+  animation: orbit-pulse 2600ms var(--ease-inout) 900ms infinite;
+}
+
+.orbitOrbiting .orbitPulseRingLate,
+.orbitTucked .orbitPulseRingLate {
+  animation-delay: 2200ms;
+}
+
+/* --- The badges --- */
+
+/* orbitField (the revolve) and orbitSpin (its per-badge counter-rotation) are
+   animated in the markup with `<animateTransform>`, not here — see the
+   comment in LogoOrbit.tsx. Both stay plain, un-transformed groups as far as
+   CSS is concerned. */
+
+.orbitNode {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 1;
+  /* Dimmed and desaturated while scattered: undifferentiated noise, not yet
+     something the group is choosing between. */
+  filter: saturate(0.58) drop-shadow(0 3px 8px rgb(0 0 0 / 16%));
+  transition:
+    transform 1150ms var(--ease) calc((6 - var(--i)) * 38ms),
+    filter 900ms var(--ease-inout) calc((6 - var(--i)) * 38ms),
+    opacity 260ms linear calc((6 - var(--i)) * 38ms);
+}
+
+.orbitOrbiting .orbitNode {
+  filter: saturate(1) drop-shadow(0 4px 12px rgb(0 0 0 / 18%));
+  transition:
+    transform 1150ms var(--ease) calc(var(--i) * 52ms),
+    filter 900ms var(--ease-inout) calc(var(--i) * 52ms),
+    opacity 260ms linear calc(var(--i) * 52ms);
+}
+
+/* Staggered wider on the way in, so they slip under the mark one after another
+   rather than all vanishing at once. They shrink to nothing rather than to
+   badge-sized: relying on the hub disc to cover them means any browser that
+   lands the scaled group a pixel or two off centre leaves an edge poking out.
+   The opacity fade is the backstop — it only starts once the badge is already
+   too small to see, so the shrink still reads as being swallowed. */
+.orbitTucked .orbitNode {
+  opacity: 0;
+  filter: saturate(1) drop-shadow(0 4px 12px rgb(0 0 0 / 18%));
+  transition:
+    transform 900ms var(--ease) calc(var(--i) * 78ms),
+    filter 900ms var(--ease-inout) calc(var(--i) * 78ms),
+    opacity 220ms linear calc(var(--i) * 78ms + 660ms);
+}
+
+.orbitDrift {
+  transform-box: fill-box;
+  transform-origin: center;
+  /* Each badge on its own duration and a negative delay that starts it
+     mid-cycle, so no two are ever in step. */
+  animation: orbit-drift var(--drift-dur) var(--ease-inout) var(--drift-delay)
+    infinite alternate;
+}
+
+/* Gathered, every badge runs the same animation on the same clock — in phase
+   with each other and with the hub. Same seven platforms, one tempo. */
+.orbitOrbiting .orbitDrift,
+.orbitTucked .orbitDrift {
+  animation: orbit-breathe 2600ms var(--ease-inout) 900ms infinite;
+}
+
+@keyframes orbit-mesh-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@keyframes orbit-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+
+  18% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+@keyframes orbit-drift {
+  from {
+    transform: translate(-7px, 5px) rotate(-3deg);
+  }
+
+  to {
+    transform: translate(7px, -6px) rotate(3.5deg);
+  }
+}
+
+@keyframes orbit-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  22% {
+    transform: scale(1.075);
+  }
+
+  46% {
+    transform: scale(1);
+  }
+}
+
+/* Captions stacked in one grid cell — the block's height is fixed by the
+   longest of them, so the page never reflows as they swap. */
+.orbitCaption {
+  display: grid;
+}
+
+.orbitCaption > span {
+  grid-area: 1 / 1;
+}
+
+/* Nothing loops for a reader who's asked for less motion; they get the middle
+   beat as a still, with the mesh left faint underneath so the one frame still
+   carries the tangle and the thing that replaces it. Must follow the phase
+   rules above to outrank them. */
+.orbitStill .orbitMesh {
+  opacity: 0.16;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbitNode,
+  .orbitDrift,
+  .orbitMesh,
+  .orbitMeshForward,
+  .orbitMeshBack,
+  .orbitHalo,
+  .orbitGuide,
+  .orbitHub,
+  .orbitPulseRing,
+  .orbitLabelDot,
+  .orbitFadeIn,
+  .orbitFadeOut {
+    transition: none;
+    animation: none;
   }
 }

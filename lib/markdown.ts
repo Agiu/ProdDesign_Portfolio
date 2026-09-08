@@ -12,7 +12,9 @@
  *   - `> ...` blockquotes and `* ` / `- ` lists.
  *   - ```` ```type ```` fenced blocks (stats, insights, quotes, button, …).
  *     These carry rich custom syntax that renders as a labelled placeholder
- *     for now — the real block renderers come later.
+ *     for now — the real block renderers come later. The name may be written
+ *     however reads best in the source (```` ```Image Carousel ````); it is
+ *     normalised to kebab-case (`image-carousel`) before it reaches the page.
  *
  * The parser returns plain data (strings and inline-token arrays); turning
  * that into JSX is the page's job, so this file stays free of React.
@@ -43,6 +45,8 @@ export type ParsedCaseStudy = { toc: TocEntry[]; blocks: Block[] };
 const CUSTOM_BLOCKS = new Set([
   "stats",
   "insights",
+  "insight-toggle",
+  "image-carousel",
   "hmw",
   "quotes",
   "button",
@@ -51,8 +55,14 @@ const CUSTOM_BLOCKS = new Set([
   "rules",
   "questions",
   "recruiter",
+  "masters",
   "ide",
   "3d-model",
+  "logo-orbit",
+  "personas",
+  "compare",
+  "board",
+  "chart",
 ]);
 
 /** Kebab-case slug for heading anchors / TOC targets. */
@@ -121,11 +131,13 @@ export function parseCaseStudy(markdown: string): ParsedCaseStudy {
     const line = lines[i];
     const trimmed = line.trim();
 
-    // Fenced block: consume until the closing fence.
-    const fence = trimmed.match(/^```([a-z0-9-]*)$/i);
+    // Fenced block: consume until the closing fence. The name after the
+    // fence may be written however reads best in the source ("Image
+    // Carousel") — normalised to kebab-case so it matches CUSTOM_BLOCKS.
+    const fence = trimmed.match(/^```([a-z0-9][a-z0-9\s-]*)?$/i);
     if (fence) {
       flushParagraph();
-      const name = fence[1] || "code";
+      const name = fence[1] ? fence[1].trim().toLowerCase().replace(/\s+/g, "-") : "code";
       const body: string[] = [];
       i++;
       while (i < lines.length && lines[i].trim() !== "```") {
