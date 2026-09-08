@@ -59,6 +59,10 @@ const CUSTOM_BLOCKS = new Set([
   "ide",
   "3d-model",
   "logo-orbit",
+  "personas",
+  "compare",
+  "board",
+  "chart",
 ]);
 
 /** Kebab-case slug for heading anchors / TOC targets. */

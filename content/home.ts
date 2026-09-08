@@ -74,6 +74,21 @@ export type CaseStudy = {
    * the foot of a study. Use `listedCaseStudies` for anything that shows work.
    */
   archived?: boolean;
+  /**
+   * Marks a study whose own page isn't worth landing on yet. Every place the
+   * site would otherwise link straight to it — the homepage grid, a
+   * position's "Read case study" chip, another study's "Recommended"
+   * footer — opens `ComingSoonModal` instead: the in-progress Figma file
+   * directly, or an escape hatch to a finished study. The page itself still
+   * exists at its slug for anyone with a direct link.
+   */
+  comingSoon?: {
+    figmaUrl: string;
+    /** Slug of a finished study to offer as the alternative. */
+    seeInstead: string;
+    /** That study's title, so callers don't each have to look it up. */
+    seeInsteadTitle: string;
+  };
 };
 
 export type Credential = {
@@ -176,7 +191,7 @@ export const hero = {
 export const caseStudies: CaseStudy[] = [
   {
     slug: "xbox",
-    title: "Instant Matchmaking and Game Discovery",
+    title: "Collaborative Matchmaking and Game Discovery",
     summary:
       "XBOX Arcade is matchmaking and game discovery combined, utilizing player data to help friend groups play.",
     cover: "https://media.kaelub.com/Xbox/Xbox_casestudy_hero1.jpg",
@@ -206,15 +221,26 @@ export const caseStudies: CaseStudy[] = [
     },
   },
   {
-    slug: "trinity-search",
-    title: "Creating a Searching Suite for Trinity University",
+    slug: "trinity-edu",
+    title: "Recentering Perspectives on Trinity.edu",
     summary:
-      "Due to new technology, Trinity.edu hired me to redesign their searching experience for their new SearchStax system.",
-    cover: "https://media.kaelub.com/Trinity-Search/Hero.jpg",
+      "It's time for a renvisioning of a site with numerous perspectives to convince and support.",
+    cover: "https://media.kaelub.com/Trinity-Redesign/Hero.jpg",
     hero: "https://media.kaelub.com/trinity-banner.jpg",
-    discipline: "Information Architecture",
+    discipline: "UX Research",
     year: "2024",
-    tags: ["Search UX", "Information Architecture", "Higher Ed"],
+    tags: ["UX Research", "Higher Ed", "Website"],
+    meta: {
+      role: "UX Designer Intern",
+      timeline: "2024",
+      team: ["Caleb Aguiar"],
+      advisors: [{ name: "Steph Enoch", title: "Director" }],
+      contributions: [
+        "Built five user journey maps: current student, prospective student, job applicant, alumni, and donor — to surface pain points across Trinity.edu, pulled in interview data for this.",
+        "Developed an AI auditing agent from those journey maps that reviewed all 4,000+ pages on the site, cutting audit time by months.",
+        "Led wireframes and prototypes for school, department, and program pages, reordering the page hierarchy around outcomes before marketing copy.",
+      ],
+    },
   },
   {
     slug: "audio",
@@ -245,16 +271,22 @@ export const caseStudies: CaseStudy[] = [
     },
   },
   {
-    slug: "trinity-edu",
-    title: "Recentering Student Perspectives on Trinity.edu",
+    slug: "trinity-search",
+    title: "Creating a Searching Suite for Trinity University",
     summary:
-      "It's time for a renvisioning of a site with numerous perspectives to convince and support.",
-    cover: "https://media.kaelub.com/Trinity-Redesign/Hero.jpg",
+      "Due to new technology, Trinity.edu hired me to redesign their searching experience for their new SearchStax system.",
+    cover: "https://media.kaelub.com/Trinity-Search/Hero.jpg",
     hero: "https://media.kaelub.com/trinity-banner.jpg",
-    discipline: "UX Research",
+    discipline: "Information Architecture",
     year: "2024",
-    tags: ["UX Research", "Higher Ed", "Website"],
     archived: true,
+    tags: ["Search UX", "Information Architecture", "Higher Ed"],
+    comingSoon: {
+      figmaUrl:
+        "https://www.figma.com/design/GXBBaodKgwj4SOgDDWU8sz/Trinity-Design-Work?node-id=8-144",
+      seeInstead: "xbox",
+      seeInsteadTitle: "Collaborative Matchmaking and Game Discovery",
+    },
   },
   {
     slug: "wos",
@@ -277,7 +309,7 @@ export const caseStudies: CaseStudy[] = [
     discipline: "Product Design",
     year: "2025",
     tags: ["Web", "Shopping UX", "Gaming"],
-    archived: true,
+    archived: false,
   },
   {
     slug: "minigolf",

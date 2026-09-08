@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { createTimeline, cubicBezier, stagger } from "animejs";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { duration } from "@/content/home";
+import { caseStudies, duration } from "@/content/home";
+import { ComingSoonModal } from "@/components/ComingSoonModal";
 import {
   positions,
   timeline,
@@ -81,6 +82,8 @@ function PlayIcon({ className }: { className?: string }) {
  * carry, so an unfinished entry looks unfinished.
  */
 function Cta({ link }: { link: PositionLink }) {
+  const [comingSoonOpen, setComingSoonOpen] = useState(false);
+
   const glyph =
     link.kind === "video" ? (
       <PlayIcon className={styles.chipIcon} />
@@ -95,6 +98,38 @@ function Cta({ link }: { link: PositionLink }) {
         {link.label}
         <span className={styles.chipNote}>link to come</span>
       </span>
+    );
+  }
+
+  /* A "study" chip pointing at a case study that isn't ready for its own
+     page yet opens the same heads-up modal every other entry point into it
+     does, rather than sending a reader here to a barren page. */
+  const studySlug =
+    link.kind === "study" ? link.href.replace(/^\/case-study\//, "") : null;
+  const study = studySlug ? caseStudies.find((s) => s.slug === studySlug) : undefined;
+  const comingSoon = study?.comingSoon;
+
+  if (comingSoon) {
+    return (
+      <>
+        <button
+          type="button"
+          className={styles.chip}
+          data-kind={link.kind}
+          onClick={() => setComingSoonOpen(true)}
+        >
+          {glyph}
+          {link.label}
+        </button>
+        <ComingSoonModal
+          open={comingSoonOpen}
+          onClose={() => setComingSoonOpen(false)}
+          title={study.title}
+          figmaUrl={comingSoon.figmaUrl}
+          seeInsteadHref={`/case-study/${comingSoon.seeInstead}`}
+          seeInsteadLabel={comingSoon.seeInsteadTitle}
+        />
+      </>
     );
   }
 

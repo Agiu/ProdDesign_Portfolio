@@ -8,6 +8,11 @@ Who Owns Seattle is a data visualizer that presents a timeline of ownership thro
 
 ![](https://media.kaelub.com/WOS/3.png)
 
+### Old Video Demo
+```youtube
+XTSZty1by-c
+```
+
 
 ## A little history | ==An urban studies interest of mine, sorry==
 

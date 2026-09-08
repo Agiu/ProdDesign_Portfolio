@@ -820,11 +820,16 @@
   margin-top: clamp(1.5rem, 3vw, 2rem);
 }
 
+/* Also rendered as a <button> (Timeline.tsx, for a `comingSoon` study, which
+   opens a dialog rather than navigating) — hence the font/cursor, which an
+   <a> gets for free but a <button> does not. */
 .chip {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
   padding: 0.6rem 1rem;
+  font-family: inherit;
+  cursor: pointer;
   font-size: var(--step-small);
   font-weight: 600;
   letter-spacing: 0.02em;

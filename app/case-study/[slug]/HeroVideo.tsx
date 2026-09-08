@@ -8,11 +8,17 @@ import styles from "./CaseStudy.module.css";
  * autoplaying (muted, so browsers allow it without a gesture) the moment it
  * mounts, hidden at opacity 0 until it can actually play smoothly — so
  * revealing it is a plain fade, never a playback restart — then cross-fades
- * in over the poster (styles.fadeImage / .loaded, shared with FadeImage and
- * FigureImage). Reduced motion leaves the poster as the resting state, same
+ * in over the still (styles.fadeImage / .loaded, shared with FadeImage and
+ * FigureImage). Reduced motion leaves the still as the resting state, same
  * as the homepage hero.
+ *
+ * `poster` is the same hero/cover image FadeImage is already showing
+ * underneath — belt-and-suspenders for the sliver of time before this
+ * component's own opacity logic takes over, and for a browser that never
+ * gets `canplay` (a slow network, or the src 404ing) with JS otherwise
+ * disabled, since that's the one path FadeImage's fade doesn't cover.
  */
-export function HeroVideo({ src }: { src: string }) {
+export function HeroVideo({ src, poster }: { src: string; poster?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
 
@@ -37,6 +43,7 @@ export function HeroVideo({ src }: { src: string }) {
         .filter(Boolean)
         .join(" ")}
       src={src}
+      poster={poster}
       muted
       loop
       playsInline

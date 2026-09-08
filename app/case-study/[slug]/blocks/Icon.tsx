@@ -234,6 +234,41 @@ const GLYPHS: Record<string, ReactNode> = {
       <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
     </>
   ),
+  MapPin: (
+    <>
+      <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+      <circle cx="12" cy="10" r="3" />
+    </>
+  ),
+  Mic: (
+    <>
+      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+      <line x1="12" y1="19" x2="12" y2="22" />
+    </>
+  ),
+  ClipboardList: (
+    <>
+      <rect x="8" y="2" width="8" height="4" rx="1" />
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+      <path d="M12 11h4" />
+      <path d="M12 16h4" />
+      <path d="M8 11h.01" />
+      <path d="M8 16h.01" />
+    </>
+  ),
+  User: (
+    <>
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </>
+  ),
+  StickyNote: (
+    <>
+      <path d="M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9.5a2 2 0 0 0 1.414-.586l4.5-4.5A2 2 0 0 0 21 14.5V5a2 2 0 0 0-2-2Z" />
+      <path d="M15 21v-5a1 1 0 0 1 1-1h5" />
+    </>
+  ),
   Default: (
     <>
       <circle cx="12" cy="12" r="9" />
@@ -247,12 +282,27 @@ const GLYPHS: Record<string, ReactNode> = {
 // component name 1:1, mapped onto the closest glyph already above.
 GLYPHS["Magnifying Glass"] = GLYPHS.Search;
 GLYPHS.Friends = GLYPHS.Users;
+// xbox.md's own, less formal shorthand for the same handful of glyphs.
+GLYPHS.Interview = GLYPHS.Mic;
+GLYPHS.form = GLYPHS.ClipboardList;
+GLYPHS.player = GLYPHS.User;
+GLYPHS.People = GLYPHS.Users;
+GLYPHS.Gaming = GLYPHS.Gamepad2;
+GLYPHS.noteboard = GLYPHS.StickyNote;
 
 export function Icon({ name, className }: { name: string; className?: string }) {
   const glyph = GLYPHS[name] ?? GLYPHS.Default;
   return (
     <svg
       className={className}
+      // Every caller sizes this through its own CSS class (`.statIcon`,
+      // `.cardListIcon`, ...), which always wins once the stylesheet is in —
+      // but with no intrinsic size of its own, an SVG falls back to the UA
+      // default replaced-element size (300×150) for however long that takes,
+      // flashing a huge icon on a hard refresh. These just match the viewBox
+      // so the pre-CSS frame is a plain 24×24, not that.
+      width={24}
+      height={24}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"

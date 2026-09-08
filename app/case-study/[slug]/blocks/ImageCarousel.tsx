@@ -47,9 +47,9 @@ export function ImageCarousel({ content }: { content: string }) {
   const [index, setIndex] = useState(0);
   const [shown, setShown] = useState(0);
   const visible = shown === index;
-  // Locked to the first slide's natural aspect ratio once it loads, so
-  // stepping through images of different sizes doesn't resize the frame —
-  // later slides are cropped (object-fit: cover) into that fixed box.
+  // The frame's aspect ratio, recomputed for whichever slide is showing —
+  // stepping through images of different sizes resizes the frame to match
+  // rather than cropping every later slide into the first one's shape.
   const [ratio, setRatio] = useState<number | null>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
@@ -115,9 +115,6 @@ export function ImageCarousel({ content }: { content: string }) {
           alt={slide.caption}
           loading="lazy"
           onLoad={(e) => {
-            // Only the first slide sets the frame's ratio — a later slide
-            // loading (after stepping forward) shouldn't resize it.
-            if (ratio !== null || shown !== 0) return;
             const img = e.currentTarget;
             setRatio(img.naturalWidth / img.naturalHeight);
           }}
