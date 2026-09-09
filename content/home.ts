@@ -89,6 +89,15 @@ export type CaseStudy = {
     /** That study's title, so callers don't each have to look it up. */
     seeInsteadTitle: string;
   };
+  /**
+   * Client work under NDA. The study still shows up everywhere a normal
+   * study does — homepage grid, hero carousel, recommendations — but its own
+   * page renders a password prompt (`PasswordGate.tsx`) in place of the body
+   * until the right password is submitted. Configure the password via the
+   * `CASE_STUDY_PASSWORD_<SLUG>` env var (see `lib/caseStudyAuth.ts`); there
+   * is no in-repo default.
+   */
+  protected?: boolean;
 };
 
 export type Credential = {
@@ -310,6 +319,33 @@ export const caseStudies: CaseStudy[] = [
     year: "2025",
     tags: ["Web", "Shopping UX", "Gaming"],
     archived: false,
+  },
+  {
+    slug: "foreflight",
+    title: "Connecting Logbooks to Track Logs at ForeFlight",
+    summary:
+      "A summer on ForeFlight's Logbook pod: quality-of-life fixes for pilots, and a project that automatically reconciles GPS track logs with a pilot's digital logbook. (Password protected — client work under NDA.)",
+    cover: "/logos/foreflight-mark.png",
+    hero: "/logos/foreflight-mark.png",
+    discipline: "Software Engineering",
+    year: "2024",
+    tags: ["Software Engineering", "Aviation", "Product Design Collab"],
+    protected: true,
+    meta: {
+      role: "Software Engineer Intern",
+      timeline: "Summer 2024",
+      timelineDetail: "12 weeks",
+      team: [
+        "Caleb Aguiar",
+        "Engineering Mentor (name withheld)",
+        "Product Designer (name withheld)",
+      ],
+      contributions: [
+        "Shipped quality-of-life fixes to the digital logbook and flight-plan review flows, sourced from support tickets and pilot session recordings.",
+        "Led engineering on a matching engine that reconciles GPS track logs against open logbook entries, auto-filling flight time, route, and aircraft.",
+        "Partnered with product design on the review/confirm flow pilots use to approve an auto-matched entry, covering touch-and-goes, diversions, and multi-leg flights.",
+      ],
+    },
   },
   {
     slug: "minigolf",

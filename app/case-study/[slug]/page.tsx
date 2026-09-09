@@ -1,11 +1,14 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { caseStudies, listedCaseStudies } from "@/content/home";
 import { parseCaseStudy, type Block, type InlineToken } from "@/lib/markdown";
+import { cookieNameFor, isUnlocked } from "@/lib/caseStudyAuth";
 import { Footer } from "@/components/Footer";
 import { Toc } from "./Toc";
+import { PasswordGate } from "./PasswordGate";
 import { CaseHeroVitals, CaseMeta } from "./CaseMeta";
 import { FadeImage } from "./FadeImage";
 import { FigureImage } from "./FigureImage";
@@ -207,6 +210,15 @@ export default async function CaseStudyPage({
   const markdown = await readMarkdown(slug);
   if (markdown === null) notFound();
 
+  // Reading a cookie is a Request-time API — it opts *this* rendered page out
+  // of static generation, not the other studies' pages, since none of them
+  // reach this branch (see the `protected` field on CaseStudy for why).
+  let locked = false;
+  if (study.protected) {
+    const store = await cookies();
+    locked = !isUnlocked(slug, store.get(cookieNameFor(slug))?.value);
+  }
+
   const { toc, blocks } = parseCaseStudy(markdown);
   // Two other studies, as a light text list rather than full panels. Archived
   // studies are left out — a page of one still reads, it just doesn't send
@@ -256,19 +268,25 @@ export default async function CaseStudyPage({
             <p className={styles.summary}>{study.summary}</p>
           </div>
 
-          {study.meta && <CaseHeroVitals meta={study.meta} />}
+          {study.meta && !locked && <CaseHeroVitals meta={study.meta} />}
         </div>
       </header>
 
-      {study.meta && <CaseMeta meta={study.meta} />}
+      {study.meta && !locked && <CaseMeta meta={study.meta} />}
 
       <div className={styles.body}>
-        <Toc toc={toc} />
-        <article className={styles.content}>
-          {blocks.map((block, i) => (
-            <BlockView key={i} block={block} />
-          ))}
-        </article>
+        {locked ? (
+          <PasswordGate slug={slug} title={study.title} />
+        ) : (
+          <>
+            <Toc toc={toc} />
+            <article className={styles.content}>
+              {blocks.map((block, i) => (
+                <BlockView key={i} block={block} />
+              ))}
+            </article>
+          </>
+        )}
       </div>
 
       {recommended.length > 0 && (
