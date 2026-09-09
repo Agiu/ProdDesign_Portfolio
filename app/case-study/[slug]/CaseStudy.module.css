@@ -520,7 +520,11 @@
 .content > .video,
 .content > .code,
 .content > .callout,
-.content > .personaCarousel {
+.content > .personaCarousel,
+.content > .variantCarousel,
+.content > .submenuStage,
+.content > .logbookStage,
+.content > .logbookCompareStage {
   margin-block: clamp(2.25rem, 4.5vw, 3.25rem);
 }
 
@@ -3027,4 +3031,1945 @@
     transition: none;
     animation: none;
   }
+}
+
+/* ---- Password gate (PasswordGate.tsx) -----------------------------------
+ * Stands in for the Toc + article body on a `protected` study until the
+ * right password is submitted. Sits on the dark card fill the other custom
+ * blocks use (.mdButton, .code) rather than on paper — the same "this is a
+ * widget, not prose" cue — with the NDA plate's lock glyph for continuity
+ * with the one other place on the site that says "you can't see this yet"
+ * (NdaPlate.tsx, on /recruiter).
+ */
+.lockWrap {
+  grid-column: 1 / -1;
+  display: grid;
+  place-items: center;
+  padding-block: clamp(2.5rem, 7vw, 5rem);
+}
+
+.lockCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 26rem;
+  padding: clamp(2rem, 5vw, 2.75rem) clamp(1.5rem, 4vw, 2.25rem);
+  background: #2a2a2a;
+  color: #e9e7e2;
+  text-align: center;
+}
+
+.lockIcon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 1.1rem;
+  font-size: 1.35rem;
+  color: rgb(233 231 226 / 70%);
+  border: 1px solid rgb(233 231 226 / 30%);
+  border-radius: 50%;
+}
+
+.lockEyebrow {
+  font-size: var(--step-small);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(233 231 226 / 55%);
+}
+
+.lockTitle {
+  margin-top: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.lockText {
+  margin-top: 0.6rem;
+  max-width: 34ch;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: rgb(233 231 226 / 70%);
+}
+
+.lockForm {
+  display: flex;
+  width: 100%;
+  max-width: 20rem;
+  gap: 0.6rem;
+  margin-top: 1.75rem;
+}
+
+.lockInput {
+  flex: 1;
+  min-width: 0;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.9375rem;
+  color: #e9e7e2;
+  background: rgb(233 231 226 / 8%);
+  border: 1px solid rgb(233 231 226 / 30%);
+  transition: border-color var(--dur) var(--ease);
+}
+
+.lockInput::placeholder {
+  color: rgb(233 231 226 / 45%);
+}
+
+.lockInput:focus-visible {
+  outline: none;
+  border-color: #e9e7e2;
+}
+
+.lockInput[aria-invalid="true"] {
+  border-color: rgb(233 231 226 / 60%);
+}
+
+.lockSubmit {
+  flex: none;
+  padding: 0.7rem 1.15rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #2a2a2a;
+  background: #e9e7e2;
+  border: 0;
+  cursor: pointer;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.lockSubmit:hover {
+  opacity: 0.85;
+}
+
+.lockSubmit:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.lockSubmit:focus-visible {
+  outline: 2px solid #e9e7e2;
+  outline-offset: 2px;
+}
+
+.lockError {
+  margin-top: 0.9rem;
+  font-size: 0.875rem;
+  color: rgb(233 231 226 / 80%);
+}
+
+/* ---- Recorded stream (`stream`) ----------------------------------------
+ * The prose list it replaces, hung off a spine: same size, same measure, same
+ * ink as `.list` above, so it reads as part of the paragraph flow rather than
+ * as a widget dropped into it. The spine and its marks are the only thing
+ * added, and they exist to be animated — see TrackStream.tsx for the two
+ * beats they carry.
+ */
+
+.stream {
+  position: relative;
+  max-width: 68ch;
+  margin-block: clamp(1rem, 2vw, 1.4rem);
+  padding-left: 1.3rem;
+}
+
+/* Drawn from the top down, which is why the origin is set here rather than
+   left to its default centre. */
+.streamSpine {
+  position: absolute;
+  top: 0.45rem;
+  bottom: 0.45rem;
+  left: 0;
+  width: 1px;
+  background: var(--ink-muted);
+  transform-origin: top center;
+}
+
+.streamList {
+  list-style: none;
+  font-size: var(--step-body);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.streamItem {
+  position: relative;
+}
+
+.streamItem + .streamItem {
+  margin-top: 0.5rem;
+}
+
+/* Sits on the spine, not beside it — the mark is the row's own point on the
+   line, so a pulse running down them reads as the line being written. */
+.streamMark {
+  position: absolute;
+  top: 0.62em;
+  left: calc(-1.3rem - 2px);
+  width: 5px;
+  height: 5px;
+  background: var(--ink-muted);
+  transition:
+    background-color 140ms var(--ease-inout),
+    transform 140ms var(--ease-inout);
+}
+
+.streamMark[data-live="true"] {
+  background: var(--ink);
+  transform: scale(1.6);
+}
+
+/*
+ * Resting state, server-rendered rather than applied by script after first
+ * paint. Both ways out settle it: the reduced-motion block below, and the
+ * <noscript> override on the case-study page.
+ */
+.stream[data-anim="pending"] [data-row] {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.stream[data-anim="pending"] [data-spine] {
+  transform: scaleY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stream[data-anim="pending"] [data-row] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .stream[data-anim="pending"] [data-spine] {
+    transform: none;
+  }
+
+  .streamMark {
+    transition: none;
+  }
+}
+
+/* ---- Custom block: linked flow (LinkFlow.tsx) --------------------------
+ * The ForeFlight track-log → logbook flow, played on a dark app surface: the
+ * track logs on one side, the entry on the other, and every recorded field
+ * crossing the gap between them. Dark because that is what the product is —
+ * the same charcoal plate as the `ide` and `stats` blocks, so it reads as an
+ * application on the page rather than a fourth kind of card.
+ *
+ * The rule the rest of this file follows holds here too: what is written
+ * plainly below is the *finished* state. `[data-anim="pending"]` winds it
+ * back to the state the block is served in, and the reduced-motion block (as
+ * well as the <noscript> override in page.tsx) unwinds that again — so a
+ * reader with no JS, or no motion, gets the filled entry rather than an
+ * empty one.
+ */
+
+.flow {
+  position: relative;
+  margin-block: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.flowStage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(0.9rem, 2vw, 1.4rem);
+  padding: clamp(1.1rem, 2.5vw, 1.9rem);
+  color: #e9e7e2;
+  background-color: #2a2a2a;
+  /* Same faint dot-grid fill as the stat cards. */
+  background-image: radial-gradient(rgb(233 231 226 / 6%) 1px, transparent 1.5px);
+  background-size: 13px 13px;
+  overflow: hidden;
+}
+
+/* Three tracks from tablet up: source, the gap the data crosses, target. The
+   entry side takes the extra width — it carries eight rows of values against
+   two rows of route. */
+@media (min-width: 720px) {
+  .flowStage {
+    grid-template-columns: minmax(0, 0.8fr) clamp(2.5rem, 5vw, 4rem) minmax(0, 1.25fr);
+    align-items: start;
+  }
+}
+
+.flowSide {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.flowColLabel {
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgb(233 231 226 / 45%);
+}
+
+/* ---- source: the track log rows ---- */
+
+.flowLog {
+  position: relative;
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.75rem 2.1rem 0.8rem 0.85rem;
+  background: rgb(233 231 226 / 6%);
+  border: 1px solid rgb(233 231 226 / 14%);
+}
+
+.flowLogRoute {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.flowLogMeta {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  color: rgb(233 231 226 / 55%);
+}
+
+/* Reads as a state on the row rather than a label of it — hence the filled
+   chip and the same small caps the column headers use. */
+.flowLinked {
+  justify-self: start;
+  margin-top: 0.4rem;
+  padding: 0.12rem 0.4rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #2a2a2a;
+  background: #e9e7e2;
+  transition: opacity 260ms var(--ease-inout);
+}
+
+.flowKebab {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.6rem;
+  display: grid;
+  gap: 2px;
+  padding: 0.25rem 0.35rem;
+}
+
+.flowKebab i {
+  display: block;
+  width: 3px;
+  height: 3px;
+  background: #e9e7e2;
+}
+
+/* Hangs off the kebab. Absolutely positioned so opening it never reflows the
+   row underneath — and so it can be measured at rest, for the pointer to aim
+   at, while it is still invisible. */
+.flowMenu {
+  position: absolute;
+  top: 1.9rem;
+  right: 0.5rem;
+  z-index: 3;
+  display: grid;
+  min-width: 9.5rem;
+  padding: 0.3rem 0;
+  background: #e9e7e2;
+  box-shadow: 0 12px 30px rgb(17 17 17 / 35%);
+  transform-origin: top right;
+  opacity: 0;
+}
+
+.flowMenuItem {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8125rem;
+  color: #2a2a2a;
+  transition: background-color 140ms var(--ease-inout);
+}
+
+.flowMenuItem[data-menu-item="link"] {
+  font-weight: 600;
+}
+
+.flowMenuItem[data-hot] {
+  background: rgb(42 42 42 / 12%);
+}
+
+/* ---- the gap ---- */
+
+.flowWire {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.5rem;
+}
+
+/* Dashes running the direction of travel, still by default and moving only
+   while the fields are actually crossing (`data-wire="flowing"`). */
+.flowWireLine {
+  width: 100%;
+  height: 1px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgb(233 231 226 / 45%) 0 4px,
+    transparent 4px 11px
+  );
+  background-size: 11px 1px;
+}
+
+@media (min-width: 720px) {
+  .flowWire {
+    align-self: stretch;
+    min-height: 8rem;
+  }
+}
+
+.flow[data-wire="flowing"] .flowWireLine {
+  animation: flowWire 500ms linear infinite;
+}
+
+@keyframes flowWire {
+  to {
+    background-position-x: 11px;
+  }
+}
+
+/* ---- target: the logbook entry ---- */
+
+.flowEntry {
+  position: relative;
+  padding: clamp(0.85rem, 2vw, 1.1rem);
+  background: rgb(233 231 226 / 6%);
+  border: 1px solid rgb(233 231 226 / 14%);
+}
+
+.flowEntryTitle {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Sits exactly where the title will, so the head never jumps when the real
+   one resolves over it. */
+.flowEntryGhost {
+  position: absolute;
+  top: clamp(0.85rem, 2vw, 1.1rem);
+  left: clamp(0.85rem, 2vw, 1.1rem);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: rgb(233 231 226 / 32%);
+  opacity: 0;
+}
+
+.flowRows {
+  margin-top: 0.7rem;
+}
+
+.flowRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.32rem 0;
+  border-bottom: 1px solid rgb(233 231 226 / 10%);
+  transition: border-color 200ms var(--ease-inout);
+}
+
+.flowRowLabel {
+  flex: none;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: rgb(233 231 226 / 78%);
+  transition: color 200ms var(--ease-inout);
+}
+
+.flowRowValue {
+  min-width: 0;
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  text-align: right;
+  color: #e9e7e2;
+}
+
+.flowEntryFoot {
+  margin-top: 0.7rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: rgb(233 231 226 / 55%);
+}
+
+/* The card as it stands before there is an entry to link to. Opaque, and
+   laid over the finished shell, so the shell can arrive with the rest of the
+   panel and still go unseen until it is created. */
+.flowEmpty {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  font-size: 0.8125rem;
+  text-align: center;
+  color: rgb(233 231 226 / 55%);
+  background: #2f2f2f;
+  border: 1px dashed rgb(233 231 226 / 25%);
+  opacity: 0;
+}
+
+/* ---- what crosses ---- */
+
+.flowChip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.2rem 0.45rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.6875rem;
+  white-space: nowrap;
+  color: #2a2a2a;
+  background: #e9e7e2;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.flowChip b {
+  font-family: inherit;
+  font-weight: 700;
+}
+
+.flowCursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  width: 13px;
+  height: 13px;
+  margin: -6.5px 0 0 -6.5px;
+  border: 2px solid #e9e7e2;
+  border-radius: 50%;
+  background: rgb(233 231 226 / 20%);
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* ---- the captions, on paper under the panel ---- */
+
+.flowSteps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+  margin-top: clamp(0.9rem, 2vw, 1.2rem);
+  list-style: none;
+  counter-reset: flowStep;
+}
+
+@media (min-width: 720px) {
+  .flowSteps {
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: clamp(0.75rem, 2vw, 1.25rem);
+  }
+}
+
+.flowStep {
+  counter-increment: flowStep;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgb(30 30 30 / 14%);
+  transition: border-color 240ms var(--ease-inout);
+}
+
+.flowStep[data-active] {
+  border-top-color: var(--ink);
+}
+
+.flowStepTitle {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink-dim);
+  transition: color 240ms var(--ease-inout);
+}
+
+.flowStepTitle::before {
+  content: counter(flowStep) ". ";
+  font-variant-numeric: tabular-nums;
+}
+
+.flowStep[data-active] .flowStepTitle {
+  color: var(--ink);
+}
+
+.flowStepNote {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--ink-muted);
+}
+
+.flowReplay {
+  margin-top: 0.9rem;
+  padding: 0;
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgb(30 30 30 / 20%);
+  cursor: pointer;
+  transition:
+    color 200ms var(--ease-inout),
+    border-color 200ms var(--ease-inout);
+}
+
+.flowReplay:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+.flowReplay:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/*
+ * Resting state, server-rendered rather than applied by script after first
+ * paint: the entry empty, none of the fields sent yet. `measure` is that
+ * same state with the arrival offset lifted — LinkFlow.tsx flips the block
+ * into it for one synchronous pass so each chip is aimed at where its row
+ * will *be*, not at where the pending offset is holding it.
+ */
+.flow[data-anim="pending"] [data-row],
+.flow[data-anim="measure"] [data-row] {
+  opacity: 0;
+}
+
+.flow[data-anim="pending"] [data-row] {
+  transform: translateY(14px);
+}
+
+.flow[data-anim="pending"] [data-value],
+.flow[data-anim="measure"] [data-value] {
+  opacity: 0;
+}
+
+.flow[data-anim="pending"] [data-empty],
+.flow[data-anim="measure"] [data-empty],
+.flow[data-anim="pending"] [data-ghost],
+.flow[data-anim="measure"] [data-ghost] {
+  opacity: 1;
+}
+
+/* The badge is a `[data-value]` too — hidden with the rest until it is true —
+   so the rule above already holds it back; this is only the reveal. */
+.flow[data-anim="pending"] [data-leg][data-linked] .flowLinked {
+  opacity: 1;
+}
+
+/* A row that hasn't been filled yet is present but unlit, so the entry reads
+   as a set of empty slots waiting on data rather than as a short list. Dimmed
+   as a whole row, on its own data attribute, so the <noscript> override in
+   page.tsx can reach it — a hashed class name is not addressable from there. */
+.flow[data-anim="pending"] [data-field-row],
+.flow[data-anim="measure"] [data-field-row] {
+  opacity: 0.42;
+  transition: opacity 220ms var(--ease-inout);
+}
+
+.flow[data-anim="pending"] [data-field-row][data-filled] {
+  opacity: 1;
+  border-bottom-color: rgb(233 231 226 / 30%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow[data-anim="pending"] [data-row],
+  .flow[data-anim="pending"] [data-value] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .flow[data-anim="pending"] [data-empty],
+  .flow[data-anim="pending"] [data-ghost] {
+    opacity: 0;
+  }
+
+  .flow[data-anim="pending"] [data-field-row] {
+    opacity: 1;
+  }
+
+  .flowRow,
+  .flowRowLabel,
+  .flowLinked,
+  .flowStep,
+  .flowStepTitle,
+  .flowMenuItem {
+    transition: none;
+  }
+
+  /* Nothing played, so there is nothing to play again. */
+  .flowReplay {
+    display: none;
+  }
+}
+
+/* ---- Custom block: variants (VariantCarousel.tsx) -----------------------
+ * The seven passes at the Logbook Link modal, run along the same full-bleed
+ * scrubbable strip the Xbox study's interviewee categories use — see the
+ * comment above .personaCarousel for why the bleed and the first card's
+ * alignment are measured in JS rather than calc()'d here, and why the
+ * `margin-left` below is only the fallback for SSR and the first paint.
+ *
+ * Everything inside a modal is a Figma number multiplied by `--s`: the file
+ * drew these at 168px wide with 6px body copy, which is honest to the modal's
+ * real size in the product and unreadable on a portfolio page. Keeping the
+ * numbers and scaling them keeps the proportions exactly as designed while
+ * putting the type at a size that can be read, and re-sizing the whole set is
+ * one declaration.
+ */
+
+.variantCarousel {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+/*
+ * A grid rather than a flex row, so the three bands — the label, the modal,
+ * the note — line up across cards whose modals are deliberately different
+ * heights (that difference is half of what is being compared). `subgrid` is
+ * what carries the parent's rows into each cell; without it each cell simply
+ * sizes its own rows and the bands sit ragged, which is a fair degradation.
+ *
+ * No scroll-snap, for the same reason as .personaStrip: the scrubber writes
+ * straight to scrollLeft, and a snap point would yank the strip to the
+ * nearest card mid-drag instead of gliding with it.
+ */
+.variantStrip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  grid-template-rows: auto auto auto;
+  column-gap: clamp(1rem, 2.5vw, 1.75rem);
+  row-gap: 0.75rem;
+  /* Cells stretch across all three rows deliberately — a subgrid item has to
+     fill its span for the parent's rows to size against its contents. The
+     top-alignment that matters happens inside the cell instead, on the modal
+     and the note. */
+  align-items: stretch;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  list-style: none;
+  /* Room for the cards' own shadow and hover lift, which would otherwise be
+     clipped by the scroll container. */
+  padding-block: 0.5rem 0.75rem;
+  padding-inline: max(var(--gutter), calc((100vw - var(--measure)) / 2 + var(--gutter)));
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 clamp(1.5rem, 6vw, 4.5rem),
+    #000 calc(100% - clamp(1.5rem, 6vw, 4.5rem)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 clamp(1.5rem, 6vw, 4.5rem),
+    #000 calc(100% - clamp(1.5rem, 6vw, 4.5rem)),
+    transparent
+  );
+}
+
+.variantStrip::-webkit-scrollbar {
+  display: none;
+}
+
+.variantCell {
+  display: grid;
+  grid-row: 1 / -1;
+  grid-template-rows: subgrid;
+  align-content: start;
+  /* The modal sets its own width; the cell takes it rather than the other way
+     round, so the two narrow passes stay narrow. */
+  width: max-content;
+  max-width: 100%;
+}
+
+.variantLabel {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.variantIndex {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+}
+
+.variantNote {
+  align-self: start;
+  max-width: 34ch;
+  font-size: var(--step-small);
+  line-height: 1.45;
+  color: var(--ink-muted);
+  text-wrap: pretty;
+}
+
+/* ---- the modal itself ---- */
+
+/*
+ * `--s` is the one number that sizes everything below; `--w` is the Figma
+ * frame width, 168px for the furnished passes and 127px for the two narrow
+ * ones. Both drop on small screens so a card still fits a phone's column
+ * beside the strip's own gutter.
+ */
+.variantModal {
+  --s: 1.9;
+  --w: 168;
+  align-self: start;
+  width: calc(var(--w) * var(--s) * 1px);
+  border-radius: calc(8 * var(--s) * 1px);
+  background: #fdfefc;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgb(24 55 73 / 10%), 0 10px 24px -12px rgb(24 55 73 / 35%);
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    opacity var(--dur) var(--ease);
+}
+
+.variantModal[data-narrow] {
+  --w: 127;
+}
+
+@media (max-width: 560px) {
+  .variantModal {
+    --s: 1.55;
+  }
+}
+
+.variantModal:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 4px rgb(24 55 73 / 12%), 0 18px 34px -14px rgb(24 55 73 / 42%);
+}
+
+/* Dismissed: the card goes, briefly, so the close control reads as the
+   control it is. It comes back on its own (VariantCarousel.tsx). */
+.variantModal[data-state="dismissed"] {
+  transform: scale(0.96);
+  opacity: 0.18;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.variantBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(12 * var(--s) * 1px);
+  height: calc(36 * var(--s) * 1px);
+  padding-inline: calc(11 * var(--s) * 1px);
+  background: #183749;
+}
+
+.variantBarTitle {
+  font-size: calc(11 * var(--s) * 1px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.variantClose {
+  display: grid;
+  place-items: center;
+  width: calc(11 * var(--s) * 1px);
+  height: calc(11 * var(--s) * 1px);
+  padding: 0;
+  border: none;
+  background: none;
+  color: #97a6b9;
+  cursor: pointer;
+  transition: color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.variantClose svg {
+  width: 100%;
+  height: 100%;
+}
+
+.variantClose:hover:not(:disabled),
+.variantClose:focus-visible:not(:disabled) {
+  color: #ffffff;
+  transform: scale(1.12);
+}
+
+.variantClose:disabled {
+  cursor: default;
+}
+
+.variantBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(7 * var(--s) * 1px);
+  padding: calc(11 * var(--s) * 1px) calc(12 * var(--s) * 1px)
+    calc(16 * var(--s) * 1px);
+  text-align: center;
+}
+
+.variantGlyphs {
+  display: flex;
+  align-items: center;
+  gap: calc(5 * var(--s) * 1px);
+  color: #050505;
+}
+
+/* The plane is 15×12 in the file and the book 16×16 — different boxes, kept
+   different, because side by side they read as two objects rather than one
+   icon set. */
+.variantGlyphs svg:first-child {
+  width: calc(15 * var(--s) * 1px);
+  height: calc(12 * var(--s) * 1px);
+}
+
+.variantGlyphs svg:last-child:not(:first-child) {
+  width: calc(16 * var(--s) * 1px);
+  height: calc(16 * var(--s) * 1px);
+}
+
+.variantPlus {
+  font-size: calc(10 * var(--s) * 1px);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.variantRoute {
+  font-size: calc(11 * var(--s) * 1px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #000;
+  white-space: nowrap;
+}
+
+.variantRule {
+  width: calc(95 * var(--s) * 1px);
+  max-width: 100%;
+  height: 1px;
+  background: rgb(5 5 5 / 18%);
+}
+
+.variantBlurb {
+  max-width: calc(116 * var(--s) * 1px);
+  font-size: calc(6.4 * var(--s) * 1px);
+  line-height: 1.45;
+  color: #050505;
+}
+
+.variantAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(4 * var(--s) * 1px);
+  width: calc(76 * var(--s) * 1px);
+  margin-top: calc(4 * var(--s) * 1px);
+  padding-block: calc(6 * var(--s) * 1px);
+  font: inherit;
+  font-size: calc(6.4 * var(--s) * 1px);
+  color: #050505;
+  background: #d9d9d9;
+  border: none;
+  border-radius: calc(3 * var(--s) * 1px);
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.variantAction:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.variantAction:hover,
+.variantAction:focus-visible {
+  background: #c9cbcc;
+}
+
+.variantAction:active {
+  transform: scale(0.97);
+}
+
+/* ---- the confirmation ---- */
+
+/*
+ * What every variant resolves to, and the seventh variant's resting state:
+ * the green bar with the check, and the line underneath. Pressing any card's
+ * button plays this in place of that card's body for a beat, so the strip
+ * compares seven ways of asking the same question against the one answer.
+ */
+.variantConfirmBar {
+  display: grid;
+  place-items: center;
+  width: calc(127 * var(--s) * 1px);
+  max-width: 100%;
+  height: calc(27 * var(--s) * 1px);
+  color: #74b776;
+  background: #e6fce7;
+  border-radius: calc(3 * var(--s) * 1px);
+}
+
+.variantConfirmBar svg {
+  width: calc(15 * var(--s) * 1px);
+  height: calc(15 * var(--s) * 1px);
+}
+
+.variantConfirmNote {
+  font-size: calc(6.4 * var(--s) * 1px);
+  line-height: 1.45;
+  color: #050505;
+}
+
+/* ---- resting state ------------------------------------------------------
+ * As everywhere else in this file, what is written above is the finished
+ * state; this winds the cards back to what they are served as, and the two
+ * blocks below unwind it again for a reader with no motion or no JS (the
+ * <noscript> override in page.tsx already covers `[data-row]`).
+ */
+
+.variantCarousel[data-anim="pending"] [data-row] {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .variantCarousel[data-anim="pending"] [data-row] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .variantModal,
+  .variantClose,
+  .variantAction {
+    transition: none;
+  }
+
+  .variantModal:hover {
+    transform: none;
+  }
+}
+
+/* The scrubber is the persona strip's, unchanged — same control, same
+   behaviour, so it reuses .personaScrubInput and only the wrapper differs. */
+.variantScrub {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+/* ---- Custom block: submenu (LinkSubmenu.tsx) -----------------------------
+ * The Logbook Link modal's last pass — one card, not a strip, so it sits
+ * centred in the content column on a light "stage" rather than bleeding to
+ * the viewport edge the way .variantCarousel and .personaCarousel do. The
+ * modal itself is `.variantModal` and its children, unchanged: this and
+ * VariantCarousel.tsx's seventh variant are two views of the same design, so
+ * they share the chrome rather than each styling "Logbook Link" separately.
+ *
+ * Every number in the picker below is the Figma frame's own, multiplied by
+ * the same `--s` the modal carries: the panel is 104px wide and inset 7px,
+ * its rows are 6px type on a 13px pitch, and the hairline scrollbar sits 7px
+ * from the right edge. Reading them off the file rather than eyeballing them
+ * is what makes the picker sit on the button's exact top edge.
+ */
+
+.submenuStage {
+  display: flex;
+  justify-content: center;
+  /* Asymmetric on purpose: the picker overhangs the card by about 41 design
+     px, and the extra room below keeps it on this surface rather than
+     spilling onto the page when it opens. */
+  padding: clamp(2.5rem, 5vw, 3.5rem) var(--gutter) clamp(5rem, 10vw, 7.5rem);
+  background-color: var(--paper);
+  /* Same faint dot-grid fill the dark cards use (.flowStage, .personaCard),
+     lightened for a paper-coloured surface instead of a charcoal one — the
+     stage reads as a surface the modal sits *on*, not a plain gutter. */
+  background-image: radial-gradient(rgb(42 42 42 / 5%) 1px, transparent 1.5px);
+  background-size: 13px 13px;
+  border-radius: 12px;
+}
+
+/*
+ * `.variantModal` clips its overflow so the header bar's square corners are
+ * cut by the card's radius. This card can't: the picker opens *past* its
+ * bottom edge, and clipping is what sliced the picker in half. So overflow
+ * comes off here and the bar rounds its own two top corners instead.
+ */
+.submenuModal {
+  overflow: visible;
+}
+
+.submenuModal .variantBar {
+  border-radius: calc(8 * var(--s) * 1px) calc(8 * var(--s) * 1px) 0 0;
+}
+
+/*
+ * The action slot: whichever of [button] / [picker] / [confirmation] is
+ * current (LinkSubmenu.tsx). The button stays in the layout while the picker
+ * is open — hidden, not unmounted — so the card keeps the height it has
+ * closed, which is what the two Figma frames show (both bodies are 130px).
+ */
+.submenuAction {
+  position: relative;
+  display: flex;
+  /* A column, with `.variantBody`'s own gap: in the confirming stage this
+     slot holds the green bar *and* the line under it, which a row would sit
+     side by side. */
+  flex-direction: column;
+  align-items: center;
+  gap: calc(7 * var(--s) * 1px);
+}
+
+.submenuAction[data-open] .variantAction {
+  visibility: hidden;
+}
+
+/* The rotated boxicons:link glyph between the plane and the book — 10px
+   square in the file, already drawn at 45° there, which is why the rotation
+   is applied here rather than baked into the path data. */
+.submenuLinkIcon {
+  width: calc(10 * var(--s) * 1px);
+  height: calc(10 * var(--s) * 1px);
+  transform: rotate(45deg);
+}
+
+/* The caret on "Link Track Log" — the one cue, before a press, that this
+   button opens a picker rather than acting immediately. */
+.submenuChevron {
+  width: calc(5.5 * var(--s) * 1px);
+  height: calc(3.7 * var(--s) * 1px);
+  color: #050505;
+  transition: transform var(--dur) var(--ease);
+}
+
+.submenuChevron[data-open] {
+  transform: rotate(180deg);
+}
+
+/*
+ * The picker. It opens on the button's own top edge rather than below it
+ * (hence the `top` offset, which cancels `.variantAction`'s margin-top) and
+ * is wider than the button, so it covers it completely — the button is gone
+ * while this is open, exactly as the frame draws it.
+ */
+.submenuPanel {
+  position: absolute;
+  top: calc(4 * var(--s) * 1px);
+  left: 50%;
+  z-index: 3;
+  width: calc(104 * var(--s) * 1px);
+  max-width: calc(100vw - 2 * var(--gutter));
+  padding: calc(6 * var(--s) * 1px) calc(7 * var(--s) * 1px);
+  background: #d9d9d9;
+  border-radius: calc(3 * var(--s) * 1px);
+  box-shadow:
+    0 1px 2px rgb(24 55 73 / 12%),
+    0 14px 28px -12px rgb(24 55 73 / 38%);
+  text-align: left;
+  transform: translateX(-50%);
+  transform-origin: top center;
+  animation: submenuIn 160ms var(--ease);
+}
+
+@keyframes submenuIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .submenuPanel {
+    animation: none;
+  }
+}
+
+/*
+ * One scrolling column for the whole list — group labels included, because
+ * that's what the file's own scrollbar implies: it runs the full height of
+ * the panel, past both headers, so the headers scroll with the rows rather
+ * than pinning above their own little list. Its native scrollbar is hidden;
+ * the visible one is drawn below from the real scroll position.
+ *
+ * The height is five rows, which is what the 78px panel in the file holds.
+ */
+.submenuScroll {
+  max-height: calc(67 * var(--s) * 1px);
+  padding-right: calc(6 * var(--s) * 1px);
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+}
+
+.submenuScroll::-webkit-scrollbar {
+  display: none;
+}
+
+.submenuScrollTrack {
+  position: absolute;
+  top: calc(7 * var(--s) * 1px);
+  bottom: calc(7 * var(--s) * 1px);
+  right: calc(7 * var(--s) * 1px);
+  width: 1px;
+  background: #b2b2b2;
+  border-radius: 4px;
+}
+
+.submenuScrollThumb {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: #7c7c7c;
+  border-radius: 4px;
+}
+
+/* The gap where the second group's rule would have been — the file leaves
+   the last row of a group unruled and opens a little air before the next
+   header instead. */
+.submenuGroup + .submenuGroup {
+  margin-top: calc(6 * var(--s) * 1px);
+}
+
+.submenuList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Every row in the panel — header or track log — is the same shape: 6px
+ * type, left aligned, with a hairline under it. Only the colours separate
+ * them, and they're the file's: headers in #424242 over a rule of the same,
+ * rows in #7c7c7c over a lighter one.
+ */
+.submenuGroupLabel,
+.submenuItem {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: calc(2.5 * var(--s) * 1px) 0 calc(3 * var(--s) * 1px);
+  font: inherit;
+  font-size: calc(6 * var(--s) * 1px);
+  line-height: 1.2;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.submenuGroupLabel {
+  color: #424242;
+  border-bottom: 1px solid #424242;
+}
+
+.submenuItem {
+  color: #7c7c7c;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgb(124 124 124 / 60%);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+
+/* The last row of a group carries no rule — the group's own spacing, or the
+   panel's bottom padding, ends it instead. */
+.submenuList > li:last-child .submenuItem {
+  border-bottom: none;
+}
+
+.submenuItem:hover,
+.submenuItem:focus-visible {
+  color: #1e1e1e;
+  background: rgb(0 0 0 / 6%);
+}
+
+/* ---- Custom block: logbook (LogbookPicker.tsx) ---------------------------
+ * The final design, in ForeFlight's own web system rather than the tablet
+ * idiom the two blocks above borrow. Two things change the presentation as
+ * well as the modal:
+ *
+ *   - the stage is dark, not paper. The source is a screenshot of the real
+ *     dialog over the app's own dimmed background, and keeping that reading
+ *     is also what separates this block from the two sketch stages above it
+ *     — those are drawings on a desk, this is the product.
+ *   - the modal is close to its real size (327px wide) rather than a 168px
+ *     card blown up, so `--s` here is a nudge (1.2) rather than a doubling.
+ *
+ * The palette is stated once, in role terms, and everything below refers to
+ * it. Values are sampled from the design: the header slate, the action blue
+ * that carries the primary fill, the secondary's outline, "Show More" and
+ * the date column, the warm grey of the group strip, and the hairline
+ * between rows.
+ */
+
+.logbookStage {
+  display: flex;
+  justify-content: center;
+  padding: clamp(2.5rem, 6vw, 4rem) var(--gutter);
+  background-color: #39423d;
+  border-radius: 12px;
+}
+
+.logbookModal {
+  --s: 1.2;
+
+  --ff-navy: #264653;
+  --ff-blue: #0a87b5;
+  --ff-green: #4f9a6b;
+  --ff-red: #d64545;
+  --ff-grey: #8a9296;
+  --ff-strip: #ecf1eb;
+  --ff-rule: #e2e4e1;
+  --ff-ink: #111111;
+  --ff-slate: #43616a;
+  --ff-paper: #ffffff;
+
+  width: min(calc(327 * var(--s) * 1px), 100%);
+  border-radius: calc(6 * var(--s) * 1px);
+  background: var(--ff-paper);
+  overflow: hidden;
+  box-shadow: 0 18px 40px -16px rgb(0 0 0 / 55%);
+  transition:
+    transform var(--dur) var(--ease),
+    opacity var(--dur) var(--ease);
+}
+
+@media (max-width: 460px) {
+  .logbookModal {
+    --s: 1;
+  }
+}
+
+/* Dismissed: the same brief vanish the two blocks above give their × , so
+   the control reads as the control it is. It comes back on its own. */
+.logbookModal[data-state="dismissed"] {
+  transform: scale(0.97);
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+/* ---- header ---- */
+
+.logbookBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(12 * var(--s) * 1px);
+  height: calc(47 * var(--s) * 1px);
+  padding-inline: calc(15 * var(--s) * 1px);
+  background: var(--ff-navy);
+}
+
+.logbookBarTitle {
+  font-size: calc(15 * var(--s) * 1px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.logbookClose {
+  display: grid;
+  place-items: center;
+  width: calc(14 * var(--s) * 1px);
+  height: calc(14 * var(--s) * 1px);
+  padding: 0;
+  border: none;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.logbookClose svg {
+  width: 100%;
+  height: 100%;
+}
+
+.logbookClose:hover,
+.logbookClose:focus-visible {
+  transform: scale(1.12);
+  opacity: 0.8;
+}
+
+/* ---- body ---- */
+
+.logbookBody {
+  padding: calc(16 * var(--s) * 1px) calc(17 * var(--s) * 1px)
+    calc(13 * var(--s) * 1px);
+}
+
+/* Regular weight at a larger size, not bold — the design leans on scale for
+   the heading and saves weight for the rows. */
+.logbookHeading {
+  margin: 0;
+  font-size: calc(15 * var(--s) * 1px);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--ff-ink);
+}
+
+.logbookBlurb {
+  margin: calc(7 * var(--s) * 1px) 0 0;
+  font-size: calc(11.5 * var(--s) * 1px);
+  line-height: 1.5;
+  color: var(--ff-ink);
+}
+
+/* ---- the group strip ---- */
+
+.logbookGroup {
+  margin: 0;
+  padding: calc(7 * var(--s) * 1px) calc(14 * var(--s) * 1px);
+  font-size: calc(9 * var(--s) * 1px);
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ff-slate);
+  background: var(--ff-strip);
+  border-radius: calc(5 * var(--s) * 1px);
+}
+
+/* One group is "Recent Entries", the other "Recommended Entries" — both
+   live in the same scrolling region (see .logbookScroll), so the second
+   needs its own top gap rather than relying on anything the list provides. */
+.logbookGroupBlock + .logbookGroupBlock {
+  margin-top: calc(14 * var(--s) * 1px);
+}
+
+/* ---- the scrolling region ---- */
+
+/*
+ * Recent and Recommended sit in one fixed-height, scrolling column — about
+ * four and a half rows tall, the half-row on purpose (a row sliced by the
+ * edge reads as "more below" without needing a hint of its own). Scrolling
+ * *is* what reveals Recommended; there's no button that used to do this job.
+ *
+ * The native scrollbar is hidden and a real one is drawn from `scrollTop`
+ * instead (LogbookPicker.tsx), the same technique LinkSubmenu.tsx's picker
+ * uses — `position: relative` here is what anchors that drawn track.
+ */
+.logbookScrollWrap {
+  position: relative;
+  margin-top: calc(15 * var(--s) * 1px);
+}
+
+.logbookScroll {
+  max-height: calc(232 * var(--s) * 1px);
+  padding-right: calc(10 * var(--s) * 1px);
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+}
+
+.logbookScroll::-webkit-scrollbar {
+  display: none;
+}
+
+.logbookScrollTrack {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  right: 0;
+  width: 3px;
+  background: var(--ff-rule);
+  border-radius: 4px;
+}
+
+.logbookScrollThumb {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: #9fb3ba;
+  border-radius: 4px;
+}
+
+/* ---- the rows ---- */
+
+.logbookList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.logbookRow + .logbookRow {
+  border-top: 1px solid var(--ff-rule);
+}
+
+/*
+ * LogbookPickerBefore.tsx only: the moment a row is ticked, every other row
+ * falls back — dimmed and desaturated, so the one that's picked reads as the
+ * only live thing on the card. Nothing here is disabled — the selection is
+ * exclusive (ticking a different row clears this one), so a dimmed row is
+ * still one press away from becoming the pick, and hovering or focusing it
+ * brings it back toward full strength so that's never unclear. The current
+ * design (LogbookPicker.tsx) never sets `data-active`/`data-picked`, so this
+ * rule is inert there.
+ */
+.logbookRow {
+  transition: opacity var(--dur) var(--ease), filter var(--dur) var(--ease);
+}
+
+.logbookList[data-active] .logbookRow:not([data-picked]) {
+  opacity: 0.4;
+  filter: grayscale(65%);
+}
+
+.logbookList[data-active] .logbookRow:not([data-picked]):hover,
+.logbookList[data-active] .logbookRow:not([data-picked]):has(:focus-visible) {
+  opacity: 0.75;
+  filter: grayscale(20%);
+}
+
+/*
+ * `auto minmax(0,1fr) auto`: the row's own control leads on the left (the
+ * checkbox's old position, in LogbookPickerBefore.tsx's checkbox rows as
+ * much as this one's circular button), flexible content in the middle,
+ * date/total pinned right.
+ */
+.logbookPick {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: calc(11 * var(--s) * 1px);
+  padding: calc(11 * var(--s) * 1px) calc(4 * var(--s) * 1px);
+  transition: background-color var(--dur) var(--ease);
+}
+
+.logbookPick:hover {
+  background: rgb(10 135 181 / 5%);
+}
+
+/*
+ * LogbookPickerBefore.tsx's checkbox — a thin dark square on white unticked,
+ * the action blue with a CSS-drawn tick (two borders of a rotated box)
+ * ticked. The current design doesn't render one at all.
+ */
+.logbookCheck {
+  appearance: none;
+  position: relative;
+  width: calc(14 * var(--s) * 1px);
+  height: calc(14 * var(--s) * 1px);
+  margin: 0;
+  background: #fff;
+  border: 1.5px solid #2b2b2b;
+  border-radius: calc(2 * var(--s) * 1px);
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.logbookCheck:checked {
+  background: var(--ff-blue);
+  border-color: var(--ff-blue);
+}
+
+.logbookCheck:checked::after {
+  content: "";
+  position: absolute;
+  top: 8%;
+  left: 30%;
+  width: 28%;
+  height: 58%;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.logbookCheck:focus-visible {
+  outline: 2px solid var(--ff-blue);
+  outline-offset: 2px;
+}
+
+.logbookWhat {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2 * var(--s) * 1px);
+  min-width: 0;
+}
+
+.logbookRoute {
+  font-size: calc(13 * var(--s) * 1px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ff-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logbookTail {
+  font-size: calc(12 * var(--s) * 1px);
+  line-height: 1.2;
+  color: var(--ff-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The tag that makes a filled, linked check legible on its own, without
+   asking the reader to notice the fill colour or find the hover state to
+   learn what it means. */
+.logbookLinkedTag {
+  font-size: calc(10 * var(--s) * 1px);
+  font-weight: 600;
+  color: var(--ff-slate);
+}
+
+.logbookWhen {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2 * var(--s) * 1px);
+  text-align: right;
+}
+
+/* The date is the row's one blue thing — in this system that reads as the
+   entry's own link, the same blue as every other action on the card. */
+.logbookDate {
+  font-size: calc(12 * var(--s) * 1px);
+  line-height: 1.2;
+  color: var(--ff-blue);
+  white-space: nowrap;
+}
+
+.logbookTotal {
+  font-size: calc(12 * var(--s) * 1px);
+  line-height: 1.2;
+  color: var(--ff-ink);
+  white-space: nowrap;
+}
+
+/*
+ * The row's own action, replacing the card-wide "Add to Logbook Entry" the
+ * first pass had — pressing this one circle both picks the row and acts on
+ * it. Two variants, both live (neither is ever disabled now):
+ *
+ *   link      — grey, a plus: an offer, not yet a state, so it stays out of
+ *               the blue/green/red the rest of the card's actions carry.
+ *               Pressing it links this entry.
+ *   connected — green, a check: a state, not an offer. Hovering or focusing
+ *               swaps the mark and the fill to red ×, previewing what a
+ *               press does — pressing it unlinks.
+ */
+.logbookRowAction {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: calc(22 * var(--s) * 1px);
+  height: calc(22 * var(--s) * 1px);
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.logbookRowAction svg {
+  width: 46%;
+  height: 46%;
+}
+
+.logbookRowAction[data-variant="link"] {
+  color: #fff;
+  background: var(--ff-grey);
+}
+
+.logbookRowAction[data-variant="link"]:hover,
+.logbookRowAction[data-variant="link"]:focus-visible {
+  background: #6f7679;
+  transform: scale(1.08);
+}
+
+.logbookRowAction[data-variant="connected"] {
+  color: #fff;
+  background: var(--ff-green);
+}
+
+.logbookRowAction[data-variant="connected"]:hover,
+.logbookRowAction[data-variant="connected"]:focus-visible {
+  background: var(--ff-red);
+  transform: scale(1.08);
+}
+
+/* The two marks overlap exactly (both `inset: 0`, centred) and cross-fade —
+   the linked check is what's on top at rest, the unlink × on top on hover. */
+.logbookRowIconLinked,
+.logbookRowIconUnlink {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.logbookRowIconUnlink {
+  opacity: 0;
+}
+
+.logbookRowAction:hover .logbookRowIconLinked,
+.logbookRowAction:focus-visible .logbookRowIconLinked {
+  opacity: 0;
+}
+
+.logbookRowAction:hover .logbookRowIconUnlink,
+.logbookRowAction:focus-visible .logbookRowIconUnlink {
+  opacity: 1;
+}
+
+/* ---- LogbookPickerBefore.tsx only: show more, and the primary it led to ---- */
+
+.logbookMore {
+  display: block;
+  width: 100%;
+  padding: calc(13 * var(--s) * 1px) 0;
+  font: inherit;
+  font-size: calc(12.5 * var(--s) * 1px);
+  font-weight: 600;
+  color: var(--ff-blue);
+  text-align: center;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--ff-rule);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease);
+}
+
+.logbookMore:hover,
+.logbookMore:focus-visible {
+  color: #075f7f;
+}
+
+/*
+ * "Add to Logbook Entry" — the second press the current design removed
+ * (picking a row now acts immediately). Disabled until a row is ticked,
+ * since exclusive selection means there's nothing to add before then.
+ */
+.logbookPrimary {
+  display: block;
+  width: calc(100% - calc(38 * var(--s) * 1px));
+  margin-inline: auto;
+  margin-top: calc(8 * var(--s) * 1px);
+  padding-block: calc(8 * var(--s) * 1px);
+  font: inherit;
+  font-size: calc(13 * var(--s) * 1px);
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+  background: var(--ff-blue);
+  border: 1.5px solid var(--ff-blue);
+  border-radius: calc(4 * var(--s) * 1px);
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.logbookPrimary:hover,
+.logbookPrimary:focus-visible {
+  background: #0a769c;
+  border-color: #0a769c;
+}
+
+.logbookPrimary:disabled {
+  color: rgb(255 255 255 / 70%);
+  background: #9fb3ba;
+  border-color: #9fb3ba;
+  cursor: not-allowed;
+}
+
+.logbookPrimary:disabled:hover {
+  background: #9fb3ba;
+  border-color: #9fb3ba;
+}
+
+/* ---- the remaining action ---- */
+
+/*
+ * The one button left under the list in the current design —
+ * "Create New Entry" — inset further than the rows above it, the same as
+ * the pair the first pass drew, so it still reads as a card-level decision
+ * rather than another row.
+ */
+.logbookSecondary {
+  display: block;
+  width: calc(100% - calc(38 * var(--s) * 1px));
+  margin-inline: auto;
+  margin-top: calc(15 * var(--s) * 1px);
+  padding-block: calc(8 * var(--s) * 1px);
+  font: inherit;
+  font-size: calc(13 * var(--s) * 1px);
+  font-weight: 700;
+  text-align: center;
+  color: var(--ff-blue);
+  background: #fff;
+  border: 1.5px solid var(--ff-blue);
+  border-radius: calc(4 * var(--s) * 1px);
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.logbookSecondary:hover,
+.logbookSecondary:focus-visible {
+  background: rgb(10 135 181 / 8%);
+}
+
+/* The current design only: disabled when the fence has no `new-entry` line
+   for it to build a row from, so a press has nothing to do. LogbookPickerBefore.tsx
+   never sets `disabled` on its own copy of this button. */
+.logbookSecondary:disabled {
+  color: rgb(10 135 181 / 45%);
+  border-color: rgb(10 135 181 / 45%);
+  cursor: not-allowed;
+}
+
+.logbookSecondary:disabled:hover {
+  background: none;
+}
+
+/* ---- the confirmation ---- */
+
+/*
+ * Not in the source image — the design is one resting state — so it is put
+ * together out of what the card already carries: the action blue, the same
+ * type sizes as the rows, and the line the two earlier passes both end on.
+ * It replaces the list and the buttons, keeping the heading above it, so
+ * the card doesn't jump to a different subject on the way out.
+ */
+.logbookDone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(6 * var(--s) * 1px);
+  margin-top: calc(18 * var(--s) * 1px);
+  padding: calc(20 * var(--s) * 1px) calc(14 * var(--s) * 1px);
+  text-align: center;
+  background: var(--ff-strip);
+  border-radius: calc(5 * var(--s) * 1px);
+}
+
+.logbookDoneMark {
+  display: grid;
+  place-items: center;
+  width: calc(26 * var(--s) * 1px);
+  height: calc(26 * var(--s) * 1px);
+  color: #fff;
+  background: var(--ff-blue);
+  border-radius: 50%;
+}
+
+.logbookDoneMark svg {
+  width: 62%;
+  height: 62%;
+}
+
+.logbookDoneHeadline {
+  margin: calc(2 * var(--s) * 1px) 0 0;
+  font-size: calc(13 * var(--s) * 1px);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--ff-ink);
+}
+
+.logbookDoneNote {
+  margin: 0;
+  font-size: calc(12 * var(--s) * 1px);
+  line-height: 1.4;
+  color: var(--ff-slate);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logbookModal,
+  .logbookClose,
+  .logbookRow,
+  .logbookPick,
+  .logbookCheck,
+  .logbookRowAction,
+  .logbookRowIconLinked,
+  .logbookRowIconUnlink,
+  .logbookMore,
+  .logbookPrimary,
+  .logbookSecondary {
+    transition: none;
+  }
+
+  .logbookClose:hover,
+  .logbookClose:focus-visible,
+  .logbookRowAction:hover,
+  .logbookRowAction:focus-visible {
+    transform: none;
+  }
+}
+
+/* ---- Custom block: logbook-compare (LogbookCompare.tsx) -----------------
+ * The `logbook` fence, rendered twice on one shared stage — the exact same
+ * dark, dimmed-page surface `.logbookStage` draws for a single card, just
+ * wide enough for two and holding both `bare` modals directly rather than
+ * each drawing its own copy of that surface.
+ */
+
+.logbookCompareStage {
+  padding: clamp(2.5rem, 6vw, 4rem) var(--gutter);
+  background-color: #39423d;
+  border-radius: 12px;
+}
+
+.logbookCompareGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  justify-items: center;
+}
+
+/* One column below the width both cards need side by side. */
+@media (max-width: 620px) {
+  .logbookCompareGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.logbookCompareCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.1rem);
+  min-width: 0;
+}
+
+.logbookCompareLabel {
+  margin: 0;
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.logbookCompareLabel[data-side="before"] {
+  color: rgb(233 231 226 / 55%);
+}
+
+.logbookCompareLabel[data-side="after"] {
+  color: #8fd4a8;
 }

@@ -1,11 +1,14 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { caseStudies, listedCaseStudies } from "@/content/home";
 import { parseCaseStudy, type Block, type InlineToken } from "@/lib/markdown";
+import { cookieNameFor, isUnlocked } from "@/lib/caseStudyAuth";
 import { Footer } from "@/components/Footer";
 import { Toc } from "./Toc";
+import { PasswordGate } from "./PasswordGate";
 import { CaseHeroVitals, CaseMeta } from "./CaseMeta";
 import { FadeImage } from "./FadeImage";
 import { FigureImage } from "./FigureImage";
@@ -26,6 +29,12 @@ import { PersonaCarousel } from "./blocks/PersonaCarousel";
 import { ImageCompare } from "./blocks/ImageCompare";
 import { BoardCanvas } from "./blocks/BoardCanvas";
 import { ChangeChart } from "./blocks/ChangeChart";
+import { TrackStream } from "./blocks/TrackStream";
+import { LinkFlow } from "./blocks/LinkFlow";
+import { VariantCarousel } from "./blocks/VariantCarousel";
+import { LinkSubmenu } from "./blocks/LinkSubmenu";
+import { LogbookPicker } from "./blocks/LogbookPicker";
+import { LogbookCompare } from "./blocks/LogbookCompare";
 import { CodeBlock } from "./blocks/CodeBlock";
 import { Callout } from "./blocks/Callout";
 import { RecommendedCard } from "./RecommendedCard";
@@ -182,6 +191,14 @@ function BlockView({ block }: { block: Block }) {
       if (block.name === "compare") return <ImageCompare content={block.content} />;
       if (block.name === "board") return <BoardCanvas content={block.content} />;
       if (block.name === "chart") return <ChangeChart content={block.content} />;
+      if (block.name === "stream") return <TrackStream content={block.content} />;
+      if (block.name === "flow") return <LinkFlow content={block.content} />;
+      if (block.name === "variants")
+        return <VariantCarousel content={block.content} />;
+      if (block.name === "submenu") return <LinkSubmenu content={block.content} />;
+      if (block.name === "logbook") return <LogbookPicker content={block.content} />;
+      if (block.name === "logbook-compare")
+        return <LogbookCompare content={block.content} />;
       if (block.name === "ide") return <CodeBlock content={block.content} />;
       if (block.name === "recruiter" || block.name === "masters")
         return <Callout name={block.name} content={block.content} />;
@@ -207,6 +224,15 @@ export default async function CaseStudyPage({
   const markdown = await readMarkdown(slug);
   if (markdown === null) notFound();
 
+  // Reading a cookie is a Request-time API — it opts *this* rendered page out
+  // of static generation, not the other studies' pages, since none of them
+  // reach this branch (see the `protected` field on CaseStudy for why).
+  let locked = false;
+  if (study.protected) {
+    const store = await cookies();
+    locked = !isUnlocked(slug, store.get(cookieNameFor(slug))?.value);
+  }
+
   const { toc, blocks } = parseCaseStudy(markdown);
   // Two other studies, as a light text list rather than full panels. Archived
   // studies are left out — a page of one still reads, it just doesn't send
@@ -228,6 +254,34 @@ export default async function CaseStudyPage({
 
   return (
     <>
+      {/* The resting states on this page a script has to clear: without JS
+          the `stream` block's rows, and the `flow` block's whole filled
+          entry, would stay hidden forever. Named here rather than in
+          layout.tsx for the same reason the recruiter page keeps its own —
+          they're this page's blocks, not the site's. Everything below is
+          addressed by data attribute because a CSS-module class name is
+          hashed and can't be written by hand. */}
+      <noscript>
+        <style>{`
+          [data-anim="pending"] [data-row] {
+            opacity: 1 !important;
+            transform: none !important;
+          }
+          [data-anim="pending"] [data-spine] { transform: none !important; }
+          [data-anim="pending"] [data-value] {
+            opacity: 1 !important;
+            transform: none !important;
+          }
+          [data-anim="pending"] [data-field-row] { opacity: 1 !important; }
+          [data-anim="pending"] [data-empty],
+          [data-anim="pending"] [data-ghost] { opacity: 0 !important; }
+          [data-anim="pending"] [data-chip],
+          [data-anim="pending"] [data-cursor],
+          [data-anim="pending"] [data-menu] { display: none !important; }
+          [data-flow-replay] { display: none !important; }
+        `}</style>
+      </noscript>
+
       <main className={styles.page}>
       <BackLink />
       {/* The dark run BackLink.tsx tracks to know when to flip its own tone —
@@ -256,19 +310,25 @@ export default async function CaseStudyPage({
             <p className={styles.summary}>{study.summary}</p>
           </div>
 
-          {study.meta && <CaseHeroVitals meta={study.meta} />}
+          {study.meta && !locked && <CaseHeroVitals meta={study.meta} />}
         </div>
       </header>
 
-      {study.meta && <CaseMeta meta={study.meta} />}
+      {study.meta && !locked && <CaseMeta meta={study.meta} />}
 
       <div className={styles.body}>
-        <Toc toc={toc} />
-        <article className={styles.content}>
-          {blocks.map((block, i) => (
-            <BlockView key={i} block={block} />
-          ))}
-        </article>
+        {locked ? (
+          <PasswordGate slug={slug} title={study.title} />
+        ) : (
+          <>
+            <Toc toc={toc} />
+            <article className={styles.content}>
+              {blocks.map((block, i) => (
+                <BlockView key={i} block={block} />
+              ))}
+            </article>
+          </>
+        )}
       </div>
 
       {recommended.length > 0 && (

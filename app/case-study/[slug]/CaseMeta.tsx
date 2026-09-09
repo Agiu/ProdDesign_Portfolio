@@ -74,18 +74,28 @@ export function CaseMeta({ meta }: { meta: ProjectMeta }) {
         </div>
 
         <div className={styles.metaGroup}>
-          <p className={styles.metaLabel}>Team Members</p>
-          <ul className={styles.metaTeam}>
-            {meta.team.map((name, i) => (
-              <li key={i} className={i === 0 ? styles.metaTeamLead : undefined}>
-                {name}
-              </li>
-            ))}
-          </ul>
+          {meta.team.length > 0 && (
+            <>
+              <p className={styles.metaLabel}>Team Members</p>
+              <ul className={styles.metaTeam}>
+                {meta.team.map((name, i) => (
+                  <li key={i} className={i === 0 ? styles.metaTeamLead : undefined}>
+                    {name}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
 
           {meta.advisors && meta.advisors.length > 0 && (
             <>
-              <p className={`${styles.metaLabel} ${styles.metaLabelStacked}`}>
+              <p
+                className={
+                  meta.team.length > 0
+                    ? `${styles.metaLabel} ${styles.metaLabelStacked}`
+                    : styles.metaLabel
+                }
+              >
                 Advisors
               </p>
               <ul className={styles.metaAdvisors}>

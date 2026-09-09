@@ -89,6 +89,15 @@ export type CaseStudy = {
     /** That study's title, so callers don't each have to look it up. */
     seeInsteadTitle: string;
   };
+  /**
+   * Client work under NDA. The study still shows up everywhere a normal
+   * study does — homepage grid, hero carousel, recommendations — but its own
+   * page renders a password prompt (`PasswordGate.tsx`) in place of the body
+   * until the right password is submitted. Configure the password via the
+   * `CASE_STUDY_PASSWORD_<SLUG>` env var (see `lib/caseStudyAuth.ts`); there
+   * is no in-repo default.
+   */
+  protected?: boolean;
 };
 
 export type Credential = {
@@ -217,6 +226,35 @@ export const caseStudies: CaseStudy[] = [
         "Led prototyping and strategy of key features such as an immediate group decision-making tool and adaptive information cards per group and category.",
         "Led art and design direction for hi-fi mockups, and implemented animation and motion design into our prototype for a smoother user experience.",
         "Co-directed and produced a product pitch that fits the realm of Xbox and Discord, with funding from Netflix.",
+      ],
+    },
+  },
+  {
+    slug: "foreflight",
+    title: "Summer at ForeFlight as a Software Engineer Intern",
+    summary:
+      "At ForeFlight I worked on a myriad of things, more importantly a data heavy system  within the debrief team.",
+    cover: "https://media.kaelub.com/Foreflight/ff_hero.jpg",
+    hero: "https://media.kaelub.com/Foreflight/ff_banner.jpg",
+    discipline: "Software Engineering",
+    year: "2024",
+    tags: ["Software Engineering", "Aviation", "Product Design Collab", "Design Engineering"],
+    protected: true,
+    meta: {
+      role: "Software Engineer Intern",
+      timeline: "Summer 2024",
+      timelineDetail: "12 weeks",
+      team: [
+      ],
+      advisors: [
+        { name: "Jason Cooper", title: "Engineering Manager"},
+        { name: "Haley Nelson", title: "Senior Product Designer"},
+        { name: "Jeremy Miller", title: "Staff Product Designer"}
+      ],
+      contributions: [
+        "Shipped bug fixes to the digital logbook and flight-plan review flows, sourced from support tickets and pilot session recordings.",
+        "Led engineering on a Track Log and Logbook communication system, auto-filling flight time, route, and aircraft telemetry into a nice archival logbook.",
+        "Partnered with product design on the review/confirm flow pilots use (and general user flows) to approve an auto-matched entry, covering touch-and-goes, diversions, and multi-leg flights.",
       ],
     },
   },
