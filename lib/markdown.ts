@@ -63,6 +63,12 @@ const CUSTOM_BLOCKS = new Set([
   "compare",
   "board",
   "chart",
+  "stream",
+  "flow",
+  "variants",
+  "submenu",
+  "logbook",
+  "logbook-compare",
 ]);
 
 /** Kebab-case slug for heading anchors / TOC targets. */

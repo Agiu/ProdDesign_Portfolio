@@ -1,64 +1,204 @@
-## Brief Context| ForeFlight builds the electronic flight bag most U.S. general aviation pilots fly with — flight planning, weather briefings, charts, and a digital logbook that has to hold up the same way a paper one does. I joined the Logbook pod for the summer as a software engineer working directly alongside product design.
+## Brief Context| ForeFlight builds the electronic flight bag most U.S. general aviation pilots fly with — flight planning, weather briefings, charts, and a digital logbook that has to hold up the same way a paper one does. I joined the Debriefing team for the summer as a software engineer intern working alongside product design.
 
-```recruiter
-Heads Up | Some specifics below are generalized — this project touches live pilot and flight data, so exact numbers, internal names, and teammates are intentionally softened or withheld.
-```
 
-Two things filled the twelve weeks: a running list of quality-of-life fixes the Logbook and flight-plan review teams had been meaning to get to, and one larger project — automatically reconciling a pilot's recorded track logs with their logbook.
+## Mini Project: More Nuanced Error bar
 
-## Quality-of-Life, One Ticket at a Time | Before the bigger project had a shape, I spent the first few weeks pairing with product design on smaller friction points pilots had been flagging through support tickets and in-app feedback.
+The ForeFlight debriefing system would grade a pilot based on the flight data taken on the app and the hardware ForeFlight creates.
 
-- Logbook entries that required re-entering the same tail number and aircraft type on every flight
-- A flight-plan review screen that buried weight-and-balance warnings below the fold
-- Manual entry fields with no validation, quietly letting in bad dates and durations
-- Currency and rating reminders that couldn't be dismissed once a pilot had already acted on them
+==To make sure a pilot receives a grade in the first place and that all flight data is collected, ForeFlight uses a system called Track Logs to keep all their flights organized.==
 
-Working from design mocks and the existing design system, I shipped each of these end to end — front end and the API changes behind them — reviewed by an engineering mentor and checked against the design team's own pilot testing panel before merging.
+The data that Track Logs collects:
 
-## The Bigger Project: Logbooks Meet Track Logs | ForeFlight already records a GPS track log for nearly every flight. Pilots still fill out their logbook by hand afterward, copying over times and routes ForeFlight had already recorded automatically.
-
-```stats
-12 | weeks on the Logbook pod | Clock
-4 | quality-of-life fixes shipped | ClipboardList
-1 | matching engine, spec to pilot testing | Route
+```stream
+Telemetry - skew, speed (in knots), fuel, etc..
+Flight paths
+Distance
+Airport codes
+Dates
+Total Times
+Each location the plane has landed and disembarked from
+Coordinates
 
 ```
 
-The idea: when a pilot opens an unfinished logbook entry, match it against a recent track log and offer to fill it in — total time, route, and aircraft — for a one-tap confirm instead of a blank form.
+There is much more; if you'd like to see all the data it tracks, [click here.](https://support.foreflight.com/hc/en-us/articles/205696557-What-kind-of-flight-data-is-recorded-in-a-track-log-CSV-file)
 
-### Why Matching Isn't Trivial
+### The Problem
 
-A clean one-to-one match between a track log and a logbook entry is the easy case. Most real flights aren't that clean.
+However, when we wanted to run a QA test at ForeFlight, or when a legitimate error showed up on a customer's dashboard, the existing design wouldn't tell you exactly what the issue was or even if it was an error. ==I set out to design and implement a few variants of this error bar for ForeFlight internal testing as well as for consumer purposes.==
 
-```insights
-Touch-and-goes look like several flights to a naive matcher | A single pattern session can produce a dozen short landing-to-landing segments that should collapse into one logbook line. | Route
-Diversions break simple start/end matching | A flight that lands somewhere other than its filed destination still needs to match the entry the pilot actually logs. | MapPin
-Multi-leg trips span more than one track log | A pilot flying three legs in a day may want one entry per leg, or one combined entry — the matcher has to support either. | Waves
-Overlapping and duplicate tracks | Two devices recording the same flight, or a re-imported track after a sync issue, shouldn't offer the same match twice. | SplitSquareHorizontal
+> one note with the demo below: the error code will be printed out in the console within the inspect element viewer for QA testing.
 
-```
-
-==I designed the matching engine around a scoring pass rather than a strict rule set:== candidate track logs are scored against an open entry on time overlap, airport proximity at each end, and aircraft, then the highest-confidence match is surfaced — never auto-applied. The pilot always sees and confirms what's being filled in before it touches their logbook.
-
-### Building the Review Flow With Design
-
-Because a logbook is a legal record pilots may need for a checkride or an FAA audit, we treated auto-fill as a suggestion the pilot approves, never a silent write. I worked closely with product design on a small set of rules for the review screen:
-
-```rules
-Show the match, don't just apply it — every suggested entry surfaces the track log it came from before it fills anything in.
-Make the low-confidence case visible — segmented or ambiguous matches are flagged instead of picked silently.
-Leave a way out — a pilot can always detach a suggested match and fill in the entry by hand instead.
+```youtube
+NB2-N-zX2jw | unmute
 
 ```
 
-### Where It Landed
+> Excuse my bad hair in this video. I moved directly from Australia to the United States and hadn't had time to fix myself up. Perfect for a software engineering job though!
 
-By the end of the internship, the matching engine was reconciling track logs against open entries end to end, with the review screen in front of it in testing with the design team's usability panel. ==The goal going into launch is to get a pilot from an empty logbook entry to a single confirm tap== for the flights where a track log already has everything ForeFlight needs.
+
+![Error bar variants as seen on the demo video above](https://media.kaelub.com/Foreflight/err_variants.jpg)
+
+
+### Outcome
+==Since this was an internal improvement that people really wanted, many of the engineers and QA testers were praising this change, despite its size in the grand-scheme of software at ForeFlight. This was my first collaboration with the people in product design; lots of great feedback came from these meetings I set up.==
+
+
+## Ending Project: Track logs and Log Books Connectivity | While ForeFlight’s iPad app allowed mid-flight pilots to seamlessly link their Track Logs to their logbooks, the web application lacked this capability.
+
+Pilots need to connect these systems to automate their flight time calculations, attach visual debriefing data to their permanent records, and consolidate fragmented tracking data—like a multi-leg cross-country trip or an interrupted recording—into a single, clean logbook entry.
+
+### Automating Accuracy
+Track logs capture exact telemetry—takeoff time, landing time, route, and distance. By linking a log directly to a logbook entry, pilots eliminate manual data entry, reduce the math required to calculate exact flight hours, and prevent human error.
+
+### Consolidating Fragmented Journeys
+A pilot's day might consist of multiple short hops (e.g., flying from airport A to B, grabbing lunch, then flying to C), or a single flight might get split into multiple Track Logs if the iPad overheats or the app is accidentally paused. Linking multiple Track Logs into one logbook entry allows the pilot to accurately record the entire day's journey or fix fragmented data without creating cluttered, redundant logbook entries.
+
+### Post-Flight Debriefing 
+A logbook is a training tool. By attaching the track log, a pilot (or their flight instructor) can look back at an entry months later and visually review the exact path flown, including practice maneuvers, holding patterns, and approach vectors.
+
+### Proof of Experience
+Aviation is highly regulated. Having GPS-backed telemetry explicitly linked to a logbook entry provides undisputed proof of the flight for insurance purposes, FAA currency requirements, or check-ride preparations.
+
+### The Flow
+
+Design-wise, it's very simple, however underneath the design I need to code a way to connect all the telemetry data and mutate or create new data within the logbook entry. That's the difficult part.
+
+```flow
+step: Use the kebab menu | On any track log row in the web app.
+step: Press "Link Logbook" | One press, no matching screen, no form.
+step: No entry yet? One is made | Created empty, then filled for you.
+step: Telemetry crosses over | Every recorded field lands on its row.
+step: Legs consolidate | Two or more Track Logs, one clean entry.
+
+leg: KHYI → KAUS | 14 Jun 2024 · 0.9 hr
+leg: KAUS → KSAT | 14 Jun 2024 · 0.7 hr
+
+field: Telemetry | 118 kt · 12.4 gal · skew ±3° | 1
+field: Flight paths | 2 legs · 1,412 fixes | 1
+field: Distance | 96.4 nm | 1
+field: Airport codes | KHYI · KAUS · KSAT | 2
+field: Dates | 14 Jun 2024 | 1
+field: Landings & departures | 3 stops · 2 landings | 2
+field: Coordinates | 29.89°N 97.86°W | 2
+field: Total times | 1.6 hr | both
+
+entry: Cross-country — KHYI to KSAT
+```
+
+### Designing the Variants
+
+The flow only works if a pilot presses the thing in the first place, so the modal itself went through seven passes. These variants were created to see what IA would work best at first viewing. It's a modal, so it shouldn't have too much cognitive load.
+
+```variants
+title: Logbook Link
+route: 68ME → 68ME
+blurb: You have a logbook available for this track log. Link it to gain more insight about your flight.
+action: Link Track Log
+confirm: Redirecting you to logbook...
+
+variant: Route and a button | narrow, route, action | The barest version. It tells you the flight and offers the link, and assumes you already know what a logbook link is — which most pilots on the web app didn't.
+variant: The sentence added | narrow, route, blurb, action | One line of copy explaining what linking buys you. The card grows, and the button stops being the only thing to read.
+variant: The flight, drawn | plane, route, blurb, action | Wider frame, and the aircraft above the route — so the prompt reads as being about a flight before you've read a word of it.
+variant: A rule under the route | plane, route, rule, blurb, action | The same card with a hairline between the flight and the copy about the flight. Two things instead of one paragraph.
+variant: Both halves of the link | plane, book, route, blurb, action | Plane plus book: the two records being joined, stated as the icon pair rather than in the sentence underneath.
+variant: Both halves, ruled | plane, book, route, rule, blurb, action | The icon pair and the rule together — the most furnished pass, and the one that says the most before it's read.
+variant: What the press leads to | confirm | Every variant resolves here: a confirmation and a hand-off to the logbook, so the press has an end rather than a dismissal.
+```
+
+
+### Adding a submenu and a story
+
+Every variant above assumed there was exactly one track log to link, but a pilot's day is rarely one flight, and "Link Track Log" pressed against whichever entry happened to be open might accidentally pick the wrong one.
+
+So the button the variants ended on grew a submenu: press it, and instead of acting immediately it opens a small picker; recent Track Logs first, one recommended pick underneath it (the flight that actually matches this entry).
+
+```submenu
+title: Logbook Link
+route: 68ME → 68ME
+blurb: You have a logbook available for this track log. Link it to gain more insight about your flight.
+action: Link Track Log
+confirm: Redirecting you to logbook...
+recent-label: Recent Track Logs
+recommended-label: Recommended
+
+recent: KHYI → KAUS
+recent: KAUS → KSAT
+recent: 68ME → 68ME
+recent: KSAT → KHYI
+recent: KAUS → KAUS
+recent: KHYI → KHYI
+
+recommended: 68ME → 68ME
+```
+
+> Many issues with this: cannot create a new logbook entry, nor can you decipher if a certain airport code is the one you want (you need more information to determine that). It's also unclear if you're selecting a track log to link to the logbook or linking a logbook to a specific track log — which is incorrect from the user flow.
+
+
+### Final Designs
+
+==So what I did differently with the final designs is reverse the process. Instead of getting confused about if you're linking a track log to a logbook or the other way around; You will instead link the track log you have clicked before even entering the modal.==
+
+```logbook
+title: Add to Logbook
+heading: Select a Logbook entry
+blurb: You have a logbook available for this track log. Link it to gain more insight about your flight.
+group: Recent Entries
+recommended-group: Recommended Entries
+connected-note: Already linked
+secondary: Create New Entry
+confirm: Redirecting you to logbook...
+confirm-new: New logbook entry created
+new-entry: 68ME → 68ME | N1327T (PA32) | Today | 0.8 Total
+
+entry: KAUS to KDAL | N1327T (PA32) | Dec 7, 2023 | 1.1 Total
+entry: KHYI to KAUS | N1327T (PA32) | Jun 14, 2024 | 0.9 Total | linked
+entry: KAUS to KSAT | N1327T (PA32) | Jun 14, 2024 | 0.7 Total | linked
+entry: KSAT to KHYI | N4592B (C172) | Jun 12, 2024 | 1.4 Total
+entry: KDAL to KAUS | N1327T (PA32) | Dec 6, 2023 | 1.2 Total
+entry: KHYI to KHYI | N4592B (C172) | Nov 28, 2023 | 0.6 Total
+
+recommended: KAUS to KHYI | N1327T (PA32) | Jun 14, 2024 | 1.6 Total
+recommended: KSAT to KAUS | N4592B (C172) | Jun 20, 2024 | 0.8 Total
+```
+
+### Making the interaction cleaner
+
+I got ahead of myself on purpose. Before I even considered redoing the interaction design, there was another design of this modal that included checkboxes and more buttons!
+
+```logbook-compare
+title: Add to Logbook
+heading: Select a Logbook entry
+blurb: You have a logbook available for this track log. Link it to gain more insight about your flight.
+group: Recent Entries
+recommended-group: Recommended Entries
+connected-note: Already linked
+secondary: Create New Entry
+confirm: Redirecting you to logbook...
+confirm-new: New logbook entry created
+new-entry: 68ME → 68ME | N1327T (PA32) | Today | 0.8 Total
+
+entry: KAUS to KDAL | N1327T (PA32) | Dec 7, 2023 | 1.1 Total
+entry: KHYI to KAUS | N1327T (PA32) | Jun 14, 2024 | 0.9 Total | linked
+entry: KAUS to KSAT | N1327T (PA32) | Jun 14, 2024 | 0.7 Total | linked
+entry: KSAT to KHYI | N4592B (C172) | Jun 12, 2024 | 1.4 Total
+entry: KDAL to KAUS | N1327T (PA32) | Dec 6, 2023 | 1.2 Total
+entry: KHYI to KHYI | N4592B (C172) | Nov 28, 2023 | 0.6 Total
+
+recommended: KAUS to KHYI | N1327T (PA32) | Jun 14, 2024 | 1.6 Total
+recommended: KSAT to KAUS | N4592B (C172) | Jun 20, 2024 | 0.8 Total
+```
+
+I've removed the checkbox mechanism and instead turned it into a checkmark / removal process. Less cognitive load and clicks overall, and it allows you to easily un-link the tracklog if you've made a mistake.
+
+If a pilot needed to create a new logbook entry, no fuss; when clicking the "Create New Entry" button, the software automatically takes in the track log data and forms a new logbook entry. It also automatically links the tracklog, because obviously.
+
+Try it out above, see how both feel.
 
 ## Reflection
 
-This was my first time writing software where a mistake doesn't just look bad — it can misstate a legal flight record — which changed how I thought about defaults, confirmations, and what a system should never do silently. Aviation software also runs on its own vocabulary (touch-and-goes, currency, weight-and-balance) that took real conversation with pilots and the design team to actually understand before I could design a matcher around it.
+What's not in this case study is the code itself and a few screens of the logbook data getting imported. Unfortunately, I don't have any screenshots of those sections and because I'm under NDA I cannot show any code given that my job was code-heavy and less design-oriented (despite my want and desire to design UI more).
 
-I came into the internship as the engineer on a design-heavy pod, and I left with a much better sense of how to sit next to a product designer through an entire flow — not just build what a spec says, but push back on what a review screen should show, hide, or ask twice before it writes to something a pilot can't easily undo.
+I hope the prototypes above make up for the lack of code. On the topic of code itself, the project took about 6 weeks to create and during the last week I redid the entire project. ==The comparison above was that last week of time before demo day. I re-designed it and hand coded the logic behind it.==
 
-**- Caleb Aguiar**
+ForeFlight was a wonderful working environment to expand my passion for code. I'm appreciative that they let me have weekly meetings with the Product Design team so that they could critique my work.

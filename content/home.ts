@@ -230,6 +230,35 @@ export const caseStudies: CaseStudy[] = [
     },
   },
   {
+    slug: "foreflight",
+    title: "Summer at ForeFlight as a Software Engineer Intern",
+    summary:
+      "At ForeFlight I worked on a myriad of things, more importantly a data heavy system  within the debrief team.",
+    cover: "https://media.kaelub.com/Foreflight/ff_hero.jpg",
+    hero: "https://media.kaelub.com/Foreflight/ff_banner.jpg",
+    discipline: "Software Engineering",
+    year: "2024",
+    tags: ["Software Engineering", "Aviation", "Product Design Collab", "Design Engineering"],
+    protected: true,
+    meta: {
+      role: "Software Engineer Intern",
+      timeline: "Summer 2024",
+      timelineDetail: "12 weeks",
+      team: [
+      ],
+      advisors: [
+        { name: "Jason Cooper", title: "Engineering Manager"},
+        { name: "Haley Nelson", title: "Senior Product Designer"},
+        { name: "Jeremy Miller", title: "Staff Product Designer"}
+      ],
+      contributions: [
+        "Shipped bug fixes to the digital logbook and flight-plan review flows, sourced from support tickets and pilot session recordings.",
+        "Led engineering on a Track Log and Logbook communication system, auto-filling flight time, route, and aircraft telemetry into a nice archival logbook.",
+        "Partnered with product design on the review/confirm flow pilots use (and general user flows) to approve an auto-matched entry, covering touch-and-goes, diversions, and multi-leg flights.",
+      ],
+    },
+  },
+  {
     slug: "trinity-edu",
     title: "Recentering Perspectives on Trinity.edu",
     summary:
@@ -319,33 +348,6 @@ export const caseStudies: CaseStudy[] = [
     year: "2025",
     tags: ["Web", "Shopping UX", "Gaming"],
     archived: false,
-  },
-  {
-    slug: "foreflight",
-    title: "Connecting Logbooks to Track Logs at ForeFlight",
-    summary:
-      "A summer on ForeFlight's Logbook pod: quality-of-life fixes for pilots, and a project that automatically reconciles GPS track logs with a pilot's digital logbook. (Password protected — client work under NDA.)",
-    cover: "/logos/foreflight-mark.png",
-    hero: "/logos/foreflight-mark.png",
-    discipline: "Software Engineering",
-    year: "2024",
-    tags: ["Software Engineering", "Aviation", "Product Design Collab"],
-    protected: true,
-    meta: {
-      role: "Software Engineer Intern",
-      timeline: "Summer 2024",
-      timelineDetail: "12 weeks",
-      team: [
-        "Caleb Aguiar",
-        "Engineering Mentor (name withheld)",
-        "Product Designer (name withheld)",
-      ],
-      contributions: [
-        "Shipped quality-of-life fixes to the digital logbook and flight-plan review flows, sourced from support tickets and pilot session recordings.",
-        "Led engineering on a matching engine that reconciles GPS track logs against open logbook entries, auto-filling flight time, route, and aircraft.",
-        "Partnered with product design on the review/confirm flow pilots use to approve an auto-matched entry, covering touch-and-goes, diversions, and multi-leg flights.",
-      ],
-    },
   },
   {
     slug: "minigolf",
