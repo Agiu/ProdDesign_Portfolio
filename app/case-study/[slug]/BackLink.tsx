@@ -60,17 +60,13 @@ const fromRecruiterOnServer = () => false;
  * CaseStudy.module.css for how that offset is derived, and what happens at
  * widths where the margin can't hold it).
  *
- * Second, it crosses grounds. The hero is dark and so is the metadata band
- * directly under it, but the page body below them is cream — a single ink
- * would be invisible on one side or the other. So this tracks the bottom edge
- * of that dark run and flips its tone the moment the cream reaches the link,
- * not the moment the hero leaves: switching at the hero would strand a dark
- * glyph on the dark metadata card for the length of that band.
+ * Second, it crosses grounds. The page is cream, but the hero media partway
+ * down is dark, so the link flips to light ink only while that media
+ * (`[data-dark-run]`) is actually behind it.
  */
 export function BackLink() {
   const ref = useRef<HTMLAnchorElement>(null);
-  // Which ground is under the link: the dark hero/meta run, or the page body.
-  const [onDark, setOnDark] = useState(true);
+  const [onDark, setOnDark] = useState(false);
 
   const fromRecruiter = useSyncExternalStore(
     subscribeToNothing,
@@ -117,19 +113,14 @@ export function BackLink() {
 
     const update = () => {
       frame = 0;
-      // The last dark surface on the page — the metadata band when a study has
-      // one, otherwise the hero itself. Queried per-frame rather than cached:
-      // it costs nothing next to the rect read below, and it keeps this honest
-      // if the band is ever collapsed or removed.
-      const dark =
-        document.querySelector<HTMLElement>("[data-dark-run]") ?? null;
+      const dark = document.querySelector<HTMLElement>("[data-dark-run]");
       if (!dark) return;
 
-      // Flip when the dark run's bottom passes the link's own bottom edge, so
-      // the tone changes exactly as the boundary crosses the glyph rather than
-      // a scroll-length early or late.
-      const cut = el.getBoundingClientRect().bottom;
-      const next = dark.getBoundingClientRect().bottom > cut;
+      // Dark only while the media spans the glyph's vertical centre.
+      const link = el.getBoundingClientRect();
+      const mid = (link.top + link.bottom) / 2;
+      const media = dark.getBoundingClientRect();
+      const next = media.top <= mid && media.bottom >= mid;
       if (next === last) return;
       last = next;
       setOnDark(next);

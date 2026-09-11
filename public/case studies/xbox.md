@@ -145,7 +145,8 @@ At this point in the process, we had a few ideas for our design direction, but [
 
 To validate the sentiments we gathered from the conventions on a broader scale, we deployed a targeted survey focusing on how multiplayer friend groups discover games and interact with Game Pass.
 
-## Surveying and Interviewing the XBOX Audience
+^Sharpening the focus
+## A Game Pass survey surfaced the real gap: great social features nobody can find.
 
 The nudge Genevieve gave us let us discover something new about Xbox
 
@@ -178,8 +179,8 @@ P6 | Casual Social Gamer (Passive) | PC Focused, Solo and Multiplayer | Steam-ma
 P7 | Scout | PC Daily Player, Group Discoverer | Daily with friends, long-time group | Game Pass: Ultimate
 P8 | Night Shift Gamer | PC 1-2X/WEEK, Schedule Limited, Solo+Co-op | Hard to align schedules, Long-time gamer | Game Pass: Ultimate
 ```
-
-## Research Findings | By going to conventions and holding small interviews with gamers there were many insights that inadvertently would guide us away from storefronts.
+^What the research told us
+## Xbox shows up last in the journey, hides its best features, and ignores how little time friends have.
 
 ```insight-toggle
 ## Business Insights
@@ -197,13 +198,13 @@ Game discovery is a group activity, not a solo one. | Players prefer finding gam
 > So, given these insights, how might we design a nook for a group of gamers that allows game discovery and coordination without it feeling transactional?
 
 ^Ideation
-## A Small Hackathon for Idea Generation
+## Everyone had a different fix, so we prototyped four in parallel to see what stuck.
 
 ![](https://media.kaelub.com/Xbox/hackathon.jpg)
 
 Everyone on the team had a different vision for how to address these insights. We took a few days to build wireframes and prototypes to share with one another and determine our next steps.
 
-### The Ranking System
+### I built a ranking tool that turns "what should we play" into a "x"-minute group decision.
 
 ![You and your friends add a game to the queue, ideally before time runs out](https://media.kaelub.com/Xbox/Wireframe1.JPG)
 
@@ -243,12 +244,12 @@ https://media.kaelub.com/Xbox/caleb.png | Caleb · Ranking System | I created a 
 
 ```
 
-### Too Much Noise and No Clear Product
+### I argued we should stop guessing the perfect game and design for the arguments friends actually have.
 
 To unify the product, we had to redefine our core value proposition. I insisted that gamers don't actually struggle to discover games; they struggle to coordinate five people with different hardware, budgets, and tastes into the same lobby at the same time.
 
-^Refining the Concept
-## Cutting Out the Noise, Pushing for Cohesion
+^Committing to a direction
+## Cloud gaming let us drop the storefront entirely: no buying, no tiers, just play
 
 ==Instead of solely trying to algorithmically guess the perfect game for a group of players, we leaned into how friends actually operate. We began building a series of tools that facilitate the exact conversations required to get a group aligned and playing together all within one place.==
 
@@ -327,8 +328,8 @@ Vertical video didn't make sense since gaming content displayed on desktop is 16
 https://media.kaelub.com/Xbox/ending/Desktop%202026-09-08%202-02-43%20AM.mp4
 ```
 
-^User Testing
-## User Testing Our Solidified Concept
+^Testing with real groups
+## Watching friend groups play showed us exactly where discovery and decision collided.
 
 ```stats
 ~16 | People to test with, ideally already friends | People
@@ -353,7 +354,7 @@ Our homepage changed drastically throughout this phase, a few users found the sp
 
 ==We moved mixes (now known as Playlists) into a separate tab so that discovery happens first instead of decision making steps.==
 
-### Let's move the wheel!
+### Players wanted the wheel everywhere, so it moved from a buried page into the navbar.
 
 Players loved spinning the wheel, but they saw each other wanting to spin it even while not in a mix page, which it lived in. ==I began thinking of different ways for this ending sequence to be played out and immediately thought of the Amazon shopping cart.== Despite our app not being transactional in any main part of our product story, there are certain metaphors that we can make with storefront that keeps our product somewhat generally understood. So, because our ending feature is a spinning wheel, we should place it in the navbar so it could be accessed anytime.
 
@@ -378,7 +379,8 @@ Test Our Prototype | https://xboxarcade.netlify.app/
 
 ```
 
-## Reflection
+^Reflection
+## What I'd carry into the next one.
 This is one of the largest projects I've ever worked on. We got lots of praise from the head of design at Xbox, as well as the director of research at Xbox for taking our research into a human-oriented direction but also applying our research into our designs.
 
 After completing this project, I think of this project as a future for cloud gaming services rather than a coordination tool. Much like Roblox, where cheap games are treated as experiences and entertainment, what value would this tool set for video games in the future? Will it dwindle? Games are currently expensive for consumers, so it could help prices in that way. I would have enjoyed thinking about what business model this could serve future XBOX.
