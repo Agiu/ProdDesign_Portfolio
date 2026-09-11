@@ -252,8 +252,6 @@ To unify the product, we had to redefine our core value proposition. I insisted 
 
 ==Instead of solely trying to algorithmically guess the perfect game for a group of players, we leaned into how friends actually operate. We began building a series of tools that facilitate the exact conversations required to get a group aligned and playing together all within one place.==
 
-## Cutting Out the Noise, Pushing for Cohesion | As we're coming near the end of the project timeline, we further the coordination mission and begin user testing with our concepts as well as filming our product video.
-
 ![Trying to rewrite our video the day of shooting and also a good photo for how these last few weeks felt](https://media.kaelub.com/Xbox/frustration.jpg)
 
 After much deliberation, we removed some concepts. Instead of creating a storefront for Xbox on Discord, we discussed a solution that will remove ourselves from the transactional standpoint and place us back into starting our product within the discovery realm -- which will then lead to coordination.
@@ -329,7 +327,8 @@ Vertical video didn't make sense since gaming content displayed on desktop is 16
 https://media.kaelub.com/Xbox/ending/Desktop%202026-09-08%202-02-43%20AM.mp4
 ```
 
-## User Testing Our Solidified Concept | We had about two weeks left to film our video and make our prototype grounded.
+^User Testing
+## User Testing Our Solidified Concept
 
 ```stats
 ~16 | People to test with, ideally already friends | People
@@ -344,9 +343,6 @@ https://media.kaelub.com/Xbox/multiview.mp4
 
 The video above demonstrates the multiview capabilities that we prototyped in the backend by using ==Firebase's realtime database.== Pretty great idea on Sauhee's part to include this. This allowed us to see if there were any bugs people encountered doing user testing and also see how each person responded to an interaction without all of them having to share their screens on Discord.
 
-
-^User Testing
-## User Testing Our Solidified Concept
 
 ```compare
 https://media.kaelub.com/Xbox/ending/homepage1.JPG | Home page comparison | Before
