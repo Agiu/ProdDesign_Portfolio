@@ -9,6 +9,7 @@ Who Owns Seattle is a data visualizer that presents a timeline of ownership thro
 ![](https://media.kaelub.com/WOS/3.png)
 
 
+^History
 ## A little history | ==An urban studies interest of mine, sorry==
 
 Seattle’s downtown area has seen a dramatic price increase in the last few decades. What once was a shipyard and supply chain dock is now one of the most important tech centers on Earth. I recently visited downtown and was struck by the aesthetic architectural differences between two neighborhoods located downtown: Pioneer Square and South Lake Union. Pioneer square still exudes old Seattle—exposed brick, not ADA compliant or earthquake proof, but still lots of character; while the other pushes a corporate and sleek narrative meant only for tech bros, salarymen, and wealthy individuals. 
@@ -17,6 +18,7 @@ These neighborhoods are just a few miles apart from each other, and in the same 
 
 ![](https://media.kaelub.com/WOS/4.jpg)
 
+^South Lake Union
 ## Look at how different the buildings look, now!
 Through Paul Allen’s assistance (Co Founder of Microsoft), in the 90s, South Lake Union was meant to become something similar to New York City’s Central Park through an initiative titled the ‘Seattle Commons’.
 
@@ -40,6 +42,7 @@ Downtown Seattle has many owners, obviously, but the richest tend to dictate who
 
 In short, large corporations can dictate a geographical economy easily and influence attributes of a city that goes past economics. It shapes the look and the experience people strolling around the city. 
 
+^The Build
 ## Parsing King County Data | ==For fun I tend to look at King County's Parcel Viewer, my interest in maps collides heavily with real estate data using this platform.==
 
 ### Legality Disclaimer

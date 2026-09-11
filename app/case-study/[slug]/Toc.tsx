@@ -46,7 +46,7 @@ export function Toc({ toc }: { toc: TocEntry[] }) {
               }
               aria-current={entry.id === active ? "true" : undefined}
             >
-              {entry.title}
+              {entry.eyebrow}
             </a>
           </li>
         ))}

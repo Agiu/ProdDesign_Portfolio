@@ -1,16 +1,18 @@
-## Brief Context| Games are easier than ever to make and ship, but for friend groups, more games just means more hassle coordinating and discovering what to play.
-
-==For many friend groups who play together; when more noise exists, there's typically more hassle to coordinate and discover their next game. There's just so much to choose from.==
+^Problem
+## Making games has never been easier. Getting your friends to actually play one together still is.
 
 ```logo-orbit
 The tangle of launchers, storefronts, and apps a player has to juggle to find something to play
 ```
 
+For many friend groups who play together; when more noise exists, there's typically more hassle to coordinate and discover their next game. There's just so much to choose from.
+
 There are many different mediums to communicate and share games from, but one that stays consistent throughout the entire process is ==Discord==. Gamers communicate most via Discord due to its one-stop-shop for all things communication. Much like Slack, it provides features for gamers that have kept them loyal to their platform such as free voice channels, gifs, roles, privileges, and more. Each server, which contains voice channels and text channels, acts as a small feudalistic city for each friend group. This is a perfect area for passing around information and keeping it all in one place, avoiding the fragmentation seen throughout the game discovery phase.
 
-## The Solution
+^Solution
+## Xbox Arcade: discover, decide, and instantly play together, without leaving Discord.
 
-We designed ==Xbox Arcade: a one-stop shop for game discovery and coordination, delivered within a subscription tier.==
+We designed a one-stop shop experience for game discovery and coordination, delivered within a subscription tier.
 
 ![All your friends, games, an coordination in one place](https://media.kaelub.com/Xbox/Xbox_casestudy_hero1.jpg)
 
@@ -32,13 +34,14 @@ As a byproduct of creating an app to aid in coordination and game discovery, we'
 oO-0QA1BzfQ
 ```
 
-## So How Did We Get Here?
+^Research
+## We set out to design a storefront. Players told us that was the wrong problem.
 
 ![Homepage interface after subscribing to Discord Nitro + Gamepass](https://media.kaelub.com/Xbox/ex4.jpg)
 
 > When first developing the project, we had a corporate connection to storefronts and publishing within XBOX that swayed us toward potentially designing for a storefront setting. Much of our initial research was through that lens.
 
-### Understanding Our Players
+### 500 Reddit posts pointed to one recurring feeling: Xbox ships at players, not with them.
 
 When first searching for a problem in the gaming space, we wanted to build up context for what our players are like and what their needs are. ==I think Reddit is a great place to discuss and contemplate about things that are in the news, but its also a great area to find player sentiment about a certain topic.== So, I went ahead and created a parsing tool, which collected around 500 responses from different XBOX communities about player sentiment on storefronts.
 
@@ -70,7 +73,7 @@ From the quotes, player alienation is a recurring problem around Xbox, where man
 
 Because gamers take precedence, we needed to truly understand their sentiments, the only way to do that is talk to them in person and see their environment.
 
-### Understanding Our Players: Attending conventions to listen to players
+### So we brought the questions to the players, at two conventions and 225+ sticky notes.
 
 ```Image Carousel
     https://media.kaelub.com/Xbox/Carousel1.jpeg | Us At Emerald City Comic Con dressed up as sims. Costumes helped us with gathering people to interview.
@@ -126,6 +129,7 @@ Game discovery is a group activity, not a solo one. | Players prefer finding gam
 
 > So, given these insights, how might we design a nook for a group of gamers that allows game discovery and coordination without it feeling transactional?
 
+^Ideation
 ## A Small Hackathon for Idea Generation
 
 ![Each of our ideas for what our app could be based on our research insights](https://media.kaelub.com/Xbox/hackathon.jpg)
@@ -167,6 +171,7 @@ Meera created this.
 ![Clarisse's storefront within Discord](https://media.kaelub.com/Arcade/clarisse-storefront.jpg)
 Clarisse created a storefront within Discord.
 
+^Refining the Concept
 ## Cutting Out the Noise, Pushing for Cohesion
 
 Since our ideas went after very different motives we needed to trim a good chunk of fat to make the overall product cohesive.
@@ -205,6 +210,7 @@ Vertical video didn't make sense, since alot of the gaming content displayed on 
 (show side by side)
 
 
+^User Testing
 ## User Testing Our Solidified Concept
  (before and after)
 

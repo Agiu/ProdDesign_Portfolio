@@ -105,7 +105,12 @@ function BlockView({ block }: { block: Block }) {
     case "heading":
       return (
         <>
-          <h2 id={block.id} className={styles.h2}>
+          {block.eyebrow && (
+            <p id={block.id} className={styles.h2Eyebrow}>
+              {block.eyebrow}
+            </p>
+          )}
+          <h2 id={block.eyebrow ? undefined : block.id} className={styles.h2}>
             {block.title}
           </h2>
           {block.lead && (

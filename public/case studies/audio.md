@@ -2,6 +2,7 @@
 ```
 
 
+^Problem
 ## So, What's The Problem? | Today's audio wearables fail to deliver consistent comfort and performance across real-world use. ==Earbuds trap heat and moisture, fall out, or cause pain, while over-ear headphones are bulky and heavy for extended wear.== What's the solution and middleground?
 
 
@@ -15,6 +16,7 @@ My team of design friends and I came together to try and address these frustrati
 This project ended up turning into a big lesson on team dynamics, team management, and learning on the fly to create a high quality product. Collectively we all had interests in wearable devices and we thought there could be something within the audio space, however we had little to no experience in industrial design.
 
 
+^Research
 ## Building Out the Problem Space 
 
 To narrow down our problem space, I insited on gathering heuristic assumptions firstly, then validating those assumptions with research. ==Our assumptions were around comfort and general frustrations like ear pressure, heat build-up, and instability.== These needed to be validated, of course; maybe through some user research?
@@ -142,6 +144,7 @@ This was it. I modeled a speaker with holes for wiring that sat right above the 
 
 ![Final Headphones Render](https://media.kaelub.com/Audio/image_placeholder_8.png)
 
+^Final Design
 ## Final Designs & Specifications
 * **The Design:** A highly comfortable, small, bandless headset that avoids pressure points and is printed in different sizes to accommodate all users.
 * **Materials:** Constructed from PTB Plastic to ensure a durable and lightweight fit.

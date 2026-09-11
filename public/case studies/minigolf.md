@@ -8,6 +8,7 @@ The challenge for this project sat in finding the balance between complexity and
 
 ![Final Experience](https://media.kaelub.com/Minigolf/1.png)
 
+^Concepting
 ## Collaborative Golf As A Concept
 
 To start out this journey, we sketched out numerous concepts and interactions which ranged from different game design styles to all out themes that our players could experience. ==As a group and as a requirement for the course, we figured it would be ideal to create many concepts to both find out what we enjoyed most as a group and appease our instructor's wishes.==
@@ -36,6 +37,7 @@ From what we saw during the critique session, there was a recurring hesitation w
 
 After much deliberation, we went on to create prototypes for an idea that seemed most feasible, which was a new version of ==‘Draw Together’==.
 
+^Theming
 ## A Theme That Upholds Our Interactions for Draw Together
 
 Framing our interactive idea was essential in grounding our entire project inside a cohesive storyline. We explored old arcade games, amusement parks, and water concepts before falling for circus theming. Circuses invite spontaneity and lean on organic materials like wood and greenery, and we saw the theme as a way to add potential fun rather than friction and also to lean back on nostalgic minigolf.
@@ -44,6 +46,7 @@ Framing our interactive idea was essential in grounding our entire project insid
 
 ![Initial ideas and potential aesthetics to use for our project](https://media.kaelub.com/Minigolf/2.jpg)
 
+^Iteration & Testing
 ## Creating a Fun Game Is Hard...
 
 To sell the idea to the class, I created a video that would demonstrate what this new ‘Draw Together’ concept is:
@@ -117,6 +120,7 @@ Create clearer instructions.
 v5mqxpzxcH8
 ```
 
+^Building the Course
 ## Onwards, Toward the Finish Line
 
 ==One of my groupmates and I went to Home Depot to start building out the environment.== We bought the cheapest wood we could find to act as our floorboards — and to attach interactive materials.
@@ -203,6 +207,7 @@ I personally felt like we didn’t have enough to bring in the surprise element 
 ![Work in progress picture of the shortcut a player could make. Built it in a few hours and solidified it for play the next day.](https://media.kaelub.com/Minigolf/7.jpg)
 
 
+^Reflection
 ## A Minigolf Course Built On Nostalgia and Spontaneity 
 
 ```youtube

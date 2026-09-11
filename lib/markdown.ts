@@ -5,7 +5,12 @@
  * this project's bespoke additions:
  *
  *   - `## Heading | lead sentence`  → a section heading whose text after the
- *     pipe becomes a lead paragraph (and drives the "Navigation" TOC).
+ *     pipe becomes a lead paragraph.
+ *   - `^Eyebrow` on its own line directly above a `##` heading → a short
+ *     kicker label rendered above that heading. The "Navigation" TOC shows
+ *     this eyebrow (falling back to the heading text when a section has
+ *     none), since it's the short, scannable label — the heading itself is
+ *     free to be a longer, more narrative line.
  *   - `### Subheading`
  *   - `![alt](src)`                → figure with the alt text as its caption.
  *   - `==highlight==`, `**bold**`, `[text](url)`, `*italic*` inline.
@@ -28,7 +33,13 @@ export type InlineToken =
   | { type: "link"; value: string; href: string };
 
 export type Block =
-  | { kind: "heading"; id: string; title: string; lead: InlineToken[] | null }
+  | {
+      kind: "heading";
+      id: string;
+      title: string;
+      eyebrow: string | null;
+      lead: InlineToken[] | null;
+    }
   | { kind: "subheading"; text: InlineToken[] }
   | { kind: "paragraph"; text: InlineToken[] }
   | { kind: "image"; src: string; alt: string }
@@ -36,7 +47,7 @@ export type Block =
   | { kind: "quote"; lines: InlineToken[][] }
   | { kind: "custom"; name: string; content: string };
 
-export type TocEntry = { id: string; title: string };
+export type TocEntry = { id: string; title: string; eyebrow: string };
 
 export type ParsedCaseStudy = { toc: TocEntry[]; blocks: Block[] };
 
@@ -115,6 +126,8 @@ export function parseCaseStudy(markdown: string): ParsedCaseStudy {
   let i = 0;
   // Buffer of consecutive plain-text lines forming one paragraph.
   let paragraph: string[] = [];
+  // Set by a `^Eyebrow` line and consumed by the very next heading.
+  let pendingEyebrow: string | null = null;
 
   const flushParagraph = () => {
     if (paragraph.length) {
@@ -141,6 +154,7 @@ export function parseCaseStudy(markdown: string): ParsedCaseStudy {
         i++;
       }
       i++; // skip closing fence
+      pendingEyebrow = null;
       blocks.push({ kind: "custom", name, content: body.join("\n").trim() });
       continue;
     }
@@ -155,7 +169,18 @@ export function parseCaseStudy(markdown: string): ParsedCaseStudy {
     const img = trimmed.match(IMAGE_RE);
     if (img) {
       flushParagraph();
+      pendingEyebrow = null;
       blocks.push({ kind: "image", alt: img[1], src: img[2] });
+      i++;
+      continue;
+    }
+
+    // Eyebrow: a short kicker line that attaches to the heading right after
+    // it. Any other block resets it below, so a stray `^` line ahead of
+    // something other than a heading doesn't bleed into a later section.
+    if (trimmed.startsWith("^")) {
+      flushParagraph();
+      pendingEyebrow = trimmed.slice(1).trim();
       i++;
       continue;
     }
@@ -163,6 +188,7 @@ export function parseCaseStudy(markdown: string): ParsedCaseStudy {
     // Headings. `##` is a section (with optional ` | lead`); `###` a subhead.
     if (trimmed.startsWith("### ")) {
       flushParagraph();
+      pendingEyebrow = null;
       blocks.push({ kind: "subheading", text: parseInline(trimmed.slice(4)) });
       i++;
       continue;
@@ -174,11 +200,14 @@ export function parseCaseStudy(markdown: string): ParsedCaseStudy {
       const title = (pipe === -1 ? rest : rest.slice(0, pipe)).trim();
       const leadText = pipe === -1 ? "" : rest.slice(pipe + 1).trim();
       const id = slugify(title);
-      toc.push({ id, title });
+      const eyebrow = pendingEyebrow;
+      pendingEyebrow = null;
+      toc.push({ id, title, eyebrow: eyebrow ?? title });
       blocks.push({
         kind: "heading",
         id,
         title,
+        eyebrow,
         lead: leadText ? parseInline(leadText) : null,
       });
       i++;
@@ -188,6 +217,7 @@ export function parseCaseStudy(markdown: string): ParsedCaseStudy {
     // Blockquote: gather the run of `>` lines.
     if (trimmed.startsWith(">")) {
       flushParagraph();
+      pendingEyebrow = null;
       const quoteLines: InlineToken[][] = [];
       while (i < lines.length && lines[i].trim().startsWith(">")) {
         const content = lines[i].trim().replace(/^>\s?/, "");
@@ -201,6 +231,7 @@ export function parseCaseStudy(markdown: string): ParsedCaseStudy {
     // Unordered list: gather the run of `*`/`-` items.
     if (/^[*-]\s+/.test(trimmed)) {
       flushParagraph();
+      pendingEyebrow = null;
       const items: InlineToken[][] = [];
       while (i < lines.length && /^[*-]\s+/.test(lines[i].trim())) {
         items.push(parseInline(lines[i].trim().replace(/^[*-]\s+/, "")));
@@ -211,6 +242,7 @@ export function parseCaseStudy(markdown: string): ParsedCaseStudy {
     }
 
     // Otherwise it's paragraph text.
+    pendingEyebrow = null;
     paragraph.push(trimmed);
     i++;
   }

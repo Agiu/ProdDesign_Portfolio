@@ -1,3 +1,4 @@
+^Context
 ## Trinity is on the rise — but its digital presence hasn't caught up.
 
 ==Founded in 1869==, Trinity University sits on a 125-acre hilltop campus near downtown San Antonio and is consistently ranked among the nation's top liberal arts colleges. The academic experience centers on close mentorship, with a student-to-faculty ratio around 9 to 1 across a student body of roughly 2,500 to 2,600.
@@ -21,6 +22,7 @@ Yes there are issues with broken components, messy text, and layouts that make e
 
 > **Image slot:** the annotated current-site screenshots from slides 6–8 (the zig-zag eye path and the broken components), as `![caption](https://media.kaelub.com/TrinityEdu/2.png)`.
 
+^Roadmap
 ## The Roadmap | The goal, the reasoning behind it, and where the project actually landed.
 
 ### The goal
@@ -36,6 +38,7 @@ Due to a change in leadership, this project was completely disbanded in favor of
 
 > **Add here:** which pieces survived into the full redesign and why those were the ones worth keeping — plus what you'd have done differently knowing the project would be folded into something bigger.
 
+^UX Goal
 ## The User Experience Goal | Not "make it look nice." Make it fast to skim.
 
 The overall goal wasn't to get the website to merely look nice — although that was definitely one of our sub-goals — but to give our numerous personas a way to get to insightful information from the website quickly.

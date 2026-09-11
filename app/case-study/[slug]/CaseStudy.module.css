@@ -518,7 +518,8 @@
 .h2 {
   scroll-margin-top: 2rem;
   /* Main section headings open a large gap so each section reads as a fresh
-     start. */
+     start — unless an eyebrow (below) already opened it, in which case this
+     sits tight underneath instead. */
   margin-top: clamp(4rem, 8vw, 6.5rem);
   font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.125rem);
   font-weight: 700;
@@ -527,11 +528,32 @@
   color: var(--ink);
 }
 
+/* Eyebrow kicker (BlockView's heading case, page.tsx) — a short label that
+   carries the section's own place in the "Navigation" rail, set above the
+   longer, more narrative heading beside it. It opens the section's big gap;
+   the heading itself then sits close underneath. Same tracked-caption idiom
+   as .recEyebrow, not forced to caps (see .metaLabel for why). */
+.h2Eyebrow {
+  scroll-margin-top: 2rem;
+  margin-top: clamp(4rem, 8vw, 6.5rem);
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-muted);
+}
+
+.h2Eyebrow + .h2 {
+  margin-top: 0.4rem;
+}
+
 /* First heading sits directly under the hero — no extra top gap. A callout
    opening the study (the `masters` note) counts as the same starting position:
-   its own margin-bottom collapses through to space the heading below it. */
+   its own margin-bottom collapses through to space the heading (or its
+   eyebrow, if it has one) below it. */
 .content > .h2:first-child,
-.content > .callout:first-child + .h2 {
+.content > .h2Eyebrow:first-child,
+.content > .callout:first-child + .h2,
+.content > .callout:first-child + .h2Eyebrow {
   margin-top: 0;
 }
 
@@ -1981,7 +2003,8 @@
     position: static;
   }
 
-  .content > .h2:first-child {
+  .content > .h2:first-child,
+  .content > .h2Eyebrow:first-child {
     margin-top: 0;
   }
 
