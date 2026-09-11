@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import { animate, cubicBezier, utils } from "animejs";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
 import type { CaseStudy } from "@/content/home";
 import { ArrowIcon } from "./ArrowIcon";
+import { ComingSoonModal } from "./ComingSoonModal";
 import styles from "./CaseStudies.module.css";
 
 /*
@@ -208,6 +209,28 @@ export function CaseCard({
 
   const href = `/case-study/${study.slug}`;
 
+  const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  const comingSoon = study.comingSoon;
+  const onCardClick = comingSoon
+    ? (e: MouseEvent) => {
+        e.preventDefault();
+        setComingSoonOpen(true);
+      }
+    : undefined;
+  /* Keeps PageTransition's capture-phase interceptor off this link, so the
+     click reaches the handler above instead of committing the route. */
+  const noCurtain = comingSoon ? "" : undefined;
+  const comingSoonModal = comingSoon && (
+    <ComingSoonModal
+      open={comingSoonOpen}
+      onClose={() => setComingSoonOpen(false)}
+      title={study.title}
+      figmaUrl={comingSoon.figmaUrl}
+      seeInsteadHref={`/case-study/${comingSoon.seeInstead}`}
+      seeInsteadLabel={comingSoon.seeInsteadTitle}
+    />
+  );
+
   // Same tags markup either way — pulled out so both branches below read the
   // same list rather than drifting apart if one gets edited and not the other.
   const tags = study.tags && study.tags.length > 0 && (
@@ -229,7 +252,13 @@ export function CaseCard({
   if (featured) {
     return (
       <div className={`${styles.card} ${styles.cardFeatured}`}>
-        <a href={href} className={styles.frame} aria-label={`View case study: ${study.title}`}>
+        <a
+          href={href}
+          className={styles.frame}
+          aria-label={`View case study: ${study.title}`}
+          onClick={onCardClick}
+          data-no-curtain={noCurtain}
+        >
           <div className={styles.cover}>
             <Image
               src={study.cover}
@@ -247,17 +276,24 @@ export function CaseCard({
             <h3 className={styles.title}>{study.title}</h3>
             <p className={styles.summary}>{study.summary}</p>
             {tags}
-            <a href={href} className={styles.cta}>
+            <a
+              href={href}
+              className={styles.cta}
+              onClick={onCardClick}
+              data-no-curtain={noCurtain}
+            >
               <ArrowIcon className={styles.arrow} />
               View case study
             </a>
           </div>
         </div>
+        {comingSoonModal}
       </div>
     );
   }
 
   return (
+    <>
     <a
       href={href}
       className={styles.card}
@@ -265,6 +301,8 @@ export function CaseCard({
       onPointerLeave={onLeave}
       onFocus={onEnter}
       onBlur={onLeave}
+      onClick={onCardClick}
+      data-no-curtain={noCurtain}
     >
       <div className={styles.frame}>
         <div className={styles.cover}>
@@ -308,5 +346,7 @@ export function CaseCard({
         </div>
       </div>
     </a>
+    {comingSoonModal}
+    </>
   );
 }

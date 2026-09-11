@@ -1326,6 +1326,7 @@ export function Hero() {
                 }}
                 className={styles.slideVideo}
                 src={slide.video}
+                poster={slide.image}
                 muted
                 loop
                 playsInline

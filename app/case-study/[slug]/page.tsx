@@ -1,7 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { caseStudies, listedCaseStudies } from "@/content/home";
 import { parseCaseStudy, type Block, type InlineToken } from "@/lib/markdown";
@@ -23,9 +22,13 @@ import { InsightToggle } from "./blocks/InsightToggle";
 import { YouTubeEmbed } from "./blocks/YouTubeEmbed";
 import { VideoBlock } from "./blocks/VideoBlock";
 import { LogoOrbit } from "./blocks/LogoOrbit";
+import { PersonaCarousel } from "./blocks/PersonaCarousel";
+import { ImageCompare } from "./blocks/ImageCompare";
+import { BoardCanvas } from "./blocks/BoardCanvas";
+import { ChangeChart } from "./blocks/ChangeChart";
 import { CodeBlock } from "./blocks/CodeBlock";
 import { Callout } from "./blocks/Callout";
-import { ArrowIcon } from "@/components/ArrowIcon";
+import { RecommendedCard } from "./RecommendedCard";
 import styles from "./CaseStudy.module.css";
 
 /** Prerender one page per known study at build time. */
@@ -180,6 +183,10 @@ function BlockView({ block }: { block: Block }) {
       if (block.name === "youtube") return <YouTubeEmbed content={block.content} />;
       if (block.name === "video") return <VideoBlock content={block.content} />;
       if (block.name === "logo-orbit") return <LogoOrbit content={block.content} />;
+      if (block.name === "personas") return <PersonaCarousel content={block.content} />;
+      if (block.name === "compare") return <ImageCompare content={block.content} />;
+      if (block.name === "board") return <BoardCanvas content={block.content} />;
+      if (block.name === "chart") return <ChangeChart content={block.content} />;
       if (block.name === "ide") return <CodeBlock content={block.content} />;
       if (block.name === "recruiter" || block.name === "masters")
         return <Callout name={block.name} content={block.content} />;
@@ -209,9 +216,20 @@ export default async function CaseStudyPage({
   // Two other studies, as a light text list rather than full panels. Archived
   // studies are left out — a page of one still reads, it just doesn't send
   // anyone onward to another.
-  const recommended = listedCaseStudies
-    .filter((s) => s.slug !== slug)
-    .slice(0, 2);
+  //
+  // The next two studies after this one, wrapping around the list, rather
+  // than a fixed pair — a static "first two" meant most studies never got
+  // recommended from anywhere at all. An archived study (not in the list)
+  // falls back to the first two overall, same as before.
+  const idx = listedCaseStudies.findIndex((s) => s.slug === slug);
+  const n = listedCaseStudies.length;
+  const recommended =
+    idx === -1
+      ? listedCaseStudies.slice(0, 2)
+      : Array.from(
+          { length: Math.min(2, n - 1) },
+          (_, i) => listedCaseStudies[(idx + 1 + i) % n],
+        );
 
   return (
     <>
@@ -229,7 +247,9 @@ export default async function CaseStudyPage({
           sizes="100vw"
           className={styles.heroImage}
         />
-        {study.video && <HeroVideo src={study.video} />}
+        {study.video && (
+          <HeroVideo src={study.video} poster={study.hero ?? study.cover} />
+        )}
         <div
           className={[styles.heroScrim, study.video && styles.heroScrimVideo]
             .filter(Boolean)
@@ -262,14 +282,7 @@ export default async function CaseStudyPage({
           <ul className={styles.recommendedList}>
             {recommended.map((s) => (
               <li key={s.slug}>
-                <Link href={`/case-study/${s.slug}`} className={styles.recItem}>
-                  <span className={styles.recEyebrow}>{s.discipline}</span>
-                  <h3 className={styles.recTitle}>
-                    {s.title}
-                    <ArrowIcon className={styles.recArrow} />
-                  </h3>
-                  <p className={styles.recDesc}>{s.summary}</p>
-                </Link>
+                <RecommendedCard study={s} />
               </li>
             ))}
           </ul>

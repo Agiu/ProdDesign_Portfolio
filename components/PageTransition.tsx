@@ -91,6 +91,12 @@ export function PageTransition() {
       if (!anchor || !href) return;
       if (anchor.hasAttribute("download")) return;
       if (anchor.target && anchor.target !== "_self") return;
+      /* A link that opens something in place instead of navigating — a study
+         that isn't ready for its own page opens a dialog (ComingSoonModal).
+         It has to opt out here rather than just calling preventDefault in its
+         own handler: this listener is on the capture phase, so it would have
+         committed the route before that handler ever ran. */
+      if (anchor.hasAttribute("data-no-curtain")) return;
 
       const url = new URL(href, window.location.href);
       // External, mailto:, tel:, etc. — different origin, leave it be.

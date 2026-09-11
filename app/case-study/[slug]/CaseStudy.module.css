@@ -450,6 +450,14 @@
   position: sticky;
   top: clamp(1.5rem, 4vh, 2.5rem);
   align-self: start;
+  transition: opacity var(--dur) var(--ease);
+}
+
+/* Set by Toc.tsx while a full-bleed block (e.g. PersonaCarousel.tsx's
+   `[data-nav-fade]`) is in view — see the effect there for why. */
+.navFaded {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /*
@@ -511,7 +519,8 @@
 .content > .model,
 .content > .video,
 .content > .code,
-.content > .callout {
+.content > .callout,
+.content > .personaCarousel {
   margin-block: clamp(2.25rem, 4.5vw, 3.25rem);
 }
 
@@ -1920,6 +1929,689 @@
   }
 }
 
+/* ---- Custom block: compare (ImageCompare.tsx) ---------------------------
+ * A segmented control ("Side by side", then one button per image) picks the
+ * view — every image in a row, or any one alone at full size. Light, on
+ * paper, same material as .imageCarouselFrame: these are photos meant to be
+ * seen clearly, not text meant to pop off a dark card.
+ */
+.compare {
+  margin-block: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+.compareControls {
+  display: inline-flex;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.compareControl {
+  padding: 0.4rem 0.9rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  color: var(--ink-muted);
+  background: rgb(0 0 0 / 4%);
+  border: 1px solid rgb(0 0 0 / 10%);
+  cursor: pointer;
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+.compareControl:hover {
+  color: var(--ink-soft);
+}
+
+.compareControlActive,
+.compareControlActive:hover {
+  color: var(--paper);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.compareSide {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.comparePane,
+.compareSingle {
+  background: #e9e7e2;
+  overflow: hidden;
+}
+
+.compareImg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---- Custom block: chart (ChangeChart.tsx) -------------------------------
+ * Rename/change log — one `Before -> After` row per line. Light and
+ * text-first like .compare rather than a dark .statCard: this answers an
+ * inline "here's what changed", not a headline number. The prior term is
+ * struck through and dimmed, the arrow marks direction, and the resolved
+ * term carries full ink weight so the eye lands on the name that shipped.
+ */
+.chart {
+  margin-block: clamp(1.75rem, 3.5vw, 2.75rem);
+  border-top: 1px solid rgb(0 0 0 / 10%);
+}
+
+.chartRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.85rem;
+  padding-block: clamp(0.85rem, 1.8vw, 1.15rem);
+  font-size: var(--step-body);
+  border-bottom: 1px solid rgb(0 0 0 / 10%);
+}
+
+.chartBefore {
+  color: var(--ink-dim);
+  text-decoration: line-through;
+  text-decoration-color: rgb(0 0 0 / 25%);
+  text-decoration-thickness: 1.5px;
+}
+
+.chartArrow {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  color: var(--ink-muted);
+}
+
+.chartAfter {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.compareCaption {
+  margin-top: 0.85rem;
+  font-size: var(--step-small);
+  line-height: 1.45;
+  color: var(--ink-dim);
+  text-align: center;
+  text-wrap: pretty;
+}
+
+/* ---- Custom block: board (BoardCanvas.tsx) ------------------------------
+ * A pannable jam board of pinned concepts. Breaks out of `.content`'s column
+ * the same way .personaCarousel does, and for the same reason its bleed is a
+ * measured inline margin rather than the usual `calc(50% - 50vw)` — see the
+ * comment there. Inset a little from the true viewport edges, so it reads as
+ * a surface laid on the page rather than a band cut through it.
+ */
+.board {
+  width: 100vw;
+  /* Fallback until BoardCanvas.tsx measures the real column edge. */
+  margin-left: calc(50% - 50vw);
+  margin-block: clamp(2.25rem, 4.5vw, 3.25rem);
+  padding-inline: clamp(0.75rem, 2vw, 2rem);
+}
+
+.boardViewport {
+  position: relative;
+  height: clamp(420px, 62vh, 680px);
+  overflow: hidden;
+  /* The page's own background, not a distinct tone, and no border either —
+     nothing marks out a box here. The board reads as a surface laid
+     directly on the page rather than a panel cut into it; only the notes
+     and the faded-out grid (.boardGrid) say a reader can do anything with
+     this stretch of it. */
+  background-color: var(--paper);
+  cursor: grab;
+  /* Vertical swipes stay with the page — a canvas mid-article that eats the
+     scroll is a trap. Horizontal ones pan the board, and this is also what
+     stops the browser's own native pinch-zoom from contesting the two-finger
+     handling in BoardCanvas.tsx. */
+  touch-action: pan-y;
+}
+
+.boardViewport:active {
+  cursor: grabbing;
+}
+
+/*
+ * Everything pannable — the grid and the notes together — lives inside this
+ * one wrapper so a single mask fades both of them identically, right where
+ * .boardViewport's own `overflow: hidden` would otherwise hard-clip a note
+ * mid-image. By the time a note reaches that boundary it's already faded to
+ * fully transparent, so the clip has nothing left to cut — which is the
+ * point: no element should visibly end in a straight line at the frame.
+ *
+ * Two perpendicular linear-gradients, `intersect`ed, rather than one radial
+ * one: a radial vignette wide enough to clear this board's corners fades
+ * deep into a wide, short frame's left and right thirds along the way,
+ * eating into exactly the width a horizontally-scattered board most needs.
+ * Two independent edge-fades — one per axis — leave the whole middle of the
+ * frame untouched and only take a fixed band off each of the four sides,
+ * fading twice as fast exactly at a corner where both bands overlap.
+ *
+ * This box itself never moves or scales, staying pinned to the viewport at
+ * `inset: 0` regardless of pan/zoom — see .boardGrid for why that matters.
+ */
+.boardStage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  --board-fade: clamp(1.5rem, 6vw, 4.5rem);
+  -webkit-mask-image:
+    linear-gradient(
+      to right,
+      transparent,
+      #000 var(--board-fade),
+      #000 calc(100% - var(--board-fade)),
+      transparent
+    ),
+    linear-gradient(
+      to bottom,
+      transparent,
+      #000 var(--board-fade),
+      #000 calc(100% - var(--board-fade)),
+      transparent
+    );
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(
+      to right,
+      transparent,
+      #000 var(--board-fade),
+      #000 calc(100% - var(--board-fade)),
+      transparent
+    ),
+    linear-gradient(
+      to bottom,
+      transparent,
+      #000 var(--board-fade),
+      #000 calc(100% - var(--board-fade)),
+      transparent
+    );
+  mask-composite: intersect;
+}
+
+/*
+ * The jam-board grid, on its own layer rather than .boardViewport's own
+ * background — kept separate from .boardCanvas so BoardCanvas.tsx can
+ * rewrite its `background-position`/`background-size` on every pan and zoom
+ * (matching .boardCanvas's own transform) without that same transform
+ * warping the note images sitting on the grid. Two background layers: a
+ * faint rule every 24px, and a stronger dot where they'd cross, so the
+ * surface reads as a board at any zoom without ever competing with the
+ * notes on it. Fades along with everything else via the parent .boardStage's
+ * mask — it doesn't need one of its own.
+ */
+.boardGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(rgb(0 0 0 / 10%) 1px, transparent 1.5px),
+    linear-gradient(rgb(0 0 0 / 3.5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(0 0 0 / 3.5%) 1px, transparent 1px);
+  background-size:
+    96px 96px,
+    24px 24px,
+    24px 24px;
+}
+
+.boardCanvas {
+  /* Sticky-note paper. Low chroma on purpose — these sit on a cream page
+     beside dark cards, and a wall of full-strength sticky yellow would
+     outshout every screenshot pinned to it. Read by .boardNote's `--tint`,
+     which BoardCanvas.tsx points at one of these per note. */
+  --board-tint-0: #f0e5b0;
+  --board-tint-1: #dbe7f2;
+  --board-tint-2: #f1dade;
+  --board-tint-3: #dfe9d9;
+  --board-tint-4: #f0e2d2;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  /* Nothing here is prose, and a stray text selection mid-drag reads as a
+     bug rather than a feature. */
+  user-select: none;
+}
+
+/* ---- The notes ---- */
+
+.boardNote {
+  --lift: 1;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 264px;
+  padding: 10px 10px 0;
+  text-align: left;
+  background: var(--tint);
+  border: 0;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 12%),
+    0 12px 24px -8px rgb(0 0 0 / 28%);
+  cursor: pointer;
+  transform: translate(var(--x), var(--y)) rotate(var(--rot)) scale(var(--lift));
+  /* The note's placement lives in --x/--y/--rot so hover can compose a scale
+     onto it here without the transform having to be rewritten in JS. */
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.boardNote:hover,
+.boardNote:focus-visible {
+  --lift: 1.04;
+  z-index: 2;
+  box-shadow:
+    0 2px 4px rgb(0 0 0 / 14%),
+    0 22px 38px -10px rgb(0 0 0 / 34%);
+}
+
+.boardNote:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.boardNoteFrame {
+  display: block;
+  height: 178px;
+  overflow: hidden;
+  background: #e9e7e2;
+}
+
+.boardNoteImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.boardNoteLabel {
+  display: block;
+  padding: 0.6rem 0.15rem 0.7rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+/* ---- Toolbar ---- */
+
+.boardTools {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  pointer-events: none;
+}
+
+.boardHint {
+  font-size: var(--step-small);
+  color: var(--ink-dim);
+}
+
+.boardZoom {
+  display: flex;
+  gap: 0.35rem;
+  pointer-events: auto;
+}
+
+.boardZoomButton {
+  min-width: 34px;
+  height: 34px;
+  padding-inline: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink);
+  background: rgb(255 255 255 / 82%);
+  border: 1px solid rgb(0 0 0 / 14%);
+  cursor: pointer;
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+.boardZoomButton:hover,
+.boardZoomButton:focus-visible {
+  background: #fff;
+  border-color: rgb(0 0 0 / 30%);
+}
+
+/* ---- Context panel ---- */
+
+.boardDetail {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 3vw, 2rem);
+  background: rgb(20 20 20 / 55%);
+}
+
+.boardDetailCard {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  background: var(--paper);
+  box-shadow: 0 24px 48px -16px rgb(0 0 0 / 45%);
+}
+
+.boardDetailClose {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  color: var(--ink);
+  background: rgb(233 231 226 / 85%);
+  border: 0;
+  cursor: pointer;
+}
+
+.boardDetailClose:hover,
+.boardDetailClose:focus-visible {
+  background: #fff;
+}
+
+.boardDetailImg {
+  width: 100%;
+  background: #e9e7e2;
+}
+
+.boardDetailText {
+  margin-top: 0.9rem;
+}
+
+.boardDetailTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.boardDetailBody {
+  margin-top: 0.35rem;
+  font-size: var(--step-small);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+@media (max-width: 560px) {
+  .boardHint {
+    display: none;
+  }
+}
+
+/* ---- Custom block: personas (PersonaCarousel.tsx) -----------------------
+ * The eight interviewee-category cards. Unlike every other custom block,
+ * this one breaks out of `.content`'s column and runs the full width of the
+ * viewport. `body` already carries `overflow-x: hidden` (globals.css) for
+ * the homepage's own full-bleed sections, so this rides the same safety net
+ * rather than needing one of its own.
+ *
+ * `margin-left` below is only the fallback, and it's the classic
+ * `calc(50% - 50vw)` full-bleed trick — which is exactly what it *shouldn't*
+ * be here, kept only because it's a harmless default until JS overwrites it.
+ * That trick only lands on the true viewport edge when the bleeding
+ * element's ancestor is itself centred in the viewport (the `%` resolves
+ * against the ancestor's width, not the viewport's) — true of a plain
+ * centred blog column, not of `.content`, which is the second track of the
+ * nav-rail grid and sits pushed right with nothing matching it on the left.
+ * PersonaCarousel.tsx's layout effect measures `.content`'s real distance
+ * from the viewport edge and sets this inline instead, which is what
+ * actually reaches edge to edge regardless of the rail's resolved width.
+ */
+.personaCarousel {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+/*
+ * A real horizontally-scrolling element, same as ShotCarousel.tsx on the
+ * recruiter page — a touch screen swipes it for nothing, and the scrubber
+ * below reads its own position from scrollLeft rather than a column count
+ * kept in step with a breakpoint. There's no scroll-snap: the scrubber
+ * writes straight to scrollLeft on every pointer move (PersonaCarousel.tsx),
+ * and a snap point would fight that by yanking the strip to the nearest
+ * card mid-drag instead of gliding with it.
+ *
+ * `padding-inline` is only the fallback — a flat gutter-based approximation
+ * for SSR and the first frame, before the layout effect measures the real
+ * content-column edge and overwrites it inline (see the comment above
+ * .personaCarousel; the same measurement drives both). Either way, the
+ * first card ends up flush with the content column's own left edge at
+ * rest, and `mask-image` fades the strip to transparent past that, over the
+ * last stretch on each side, as the cue that there's more once you've
+ * scrolled beyond the aligned start.
+ */
+.personaStrip {
+  display: flex;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  list-style: none;
+  padding-block: 0.25rem;
+  padding-inline: max(var(--gutter), calc((100vw - var(--measure)) / 2 + var(--gutter)));
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 clamp(1.5rem, 6vw, 4.5rem),
+    #000 calc(100% - clamp(1.5rem, 6vw, 4.5rem)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 clamp(1.5rem, 6vw, 4.5rem),
+    #000 calc(100% - clamp(1.5rem, 6vw, 4.5rem)),
+    transparent
+  );
+}
+
+.personaStrip::-webkit-scrollbar {
+  display: none;
+}
+
+/*
+ * `--accent` is set inline per card (PersonaCarousel.tsx, one of eight hues
+ * assigned by position) and read by everything below that's meant to carry
+ * the category's colour: the top edge, the id chip, and the name. Eight
+ * cards this close in shape and copy would otherwise read as one grey run;
+ * the accent is what lets an eye scanning across the strip tell them apart
+ * without reading a word.
+ */
+.personaCard {
+  position: relative;
+  flex: 0 0 clamp(230px, 26vw, 300px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: clamp(1.4rem, 2.5vw, 1.75rem);
+  color: #e9e7e2;
+  background-color: #2a2a2a;
+  /* Same dot-grid fill as .statCard, for one consistent "dark card" material
+     across the case study's custom blocks. */
+  background-image: radial-gradient(rgb(233 231 226 / 6%) 1px, transparent 1.5px);
+  background-size: 13px 13px;
+  border-top: 3px solid var(--accent);
+  overflow: hidden;
+}
+
+.personaIdRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.personaDot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.personaId {
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.personaName {
+  font-size: clamp(1.05rem, 0.98rem + 0.3vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--accent);
+  text-wrap: balance;
+}
+
+.personaGroupLabel {
+  margin-top: 0.15rem;
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgb(233 231 226 / 55%);
+}
+
+.personaChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+}
+
+.personaChip {
+  padding: 0.3rem 0.6rem;
+  font-size: var(--step-small);
+  line-height: 1.2;
+  color: rgb(233 231 226 / 92%);
+  background: rgb(233 231 226 / 10%);
+  border: 1px solid rgb(233 231 226 / 16%);
+}
+
+.personaChipMuted {
+  color: rgb(233 231 226 / 70%);
+  background: transparent;
+}
+
+.personaTag {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  color: rgb(233 231 226 / 78%);
+}
+
+/*
+ * The scrubber — the strip's only navigation control. Sits back inside the
+ * ordinary content measure (unlike the strip above it, which runs
+ * full-bleed) — the same relationship OpenAI's incident-timeline carousel
+ * draws between its edge-to-edge cards and the narrower control underneath,
+ * so the page's normal reading margin returns for the one element meant to
+ * be read as a control rather than a card.
+ *
+ * A plain `<input type="range">`, restyled: dragging it writes directly to
+ * the strip's scrollLeft (PersonaCarousel.tsx), so the thumb's position and
+ * the strip's own scroll position are always the same number. That also
+ * means it's free keyboard and screen-reader support — a native range
+ * needs no extra ARIA wiring to be operable with arrow keys.
+ *
+ * The track itself is two-toned rather than one flat line: darker ink from
+ * the left up to the thumb (what's already been scrolled past), muted from
+ * the thumb to the end (what's still ahead) — a straight progress-bar read
+ * of where the strip is, not just where the thumb sits. `--progress` is set
+ * inline (PersonaCarousel.tsx, same 0–100 value as the range) and the split
+ * point is drawn with a hard-stop `linear-gradient` at that percentage.
+ * Firefox needs its own copy on `::-moz-range-track` — unlike the thumb,
+ * that pseudo-element doesn't inherit the host's own `background`.
+ */
+.personaScrub {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+.personaScrubInput {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1px;
+  margin: 0.6rem 0;
+  background: linear-gradient(
+    to right,
+    var(--ink) calc(var(--progress, 0) * 1%),
+    var(--ink-muted) calc(var(--progress, 0) * 1%)
+  );
+  cursor: pointer;
+}
+
+.personaScrubInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ink);
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease);
+}
+
+.personaScrubInput::-moz-range-track {
+  height: 1px;
+  border: none;
+  background: linear-gradient(
+    to right,
+    var(--ink) calc(var(--progress, 0) * 1%),
+    var(--ink-muted) calc(var(--progress, 0) * 1%)
+  );
+}
+
+.personaScrubInput::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background: var(--ink);
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease);
+}
+
+.personaScrubInput:hover::-webkit-slider-thumb,
+.personaScrubInput:focus-visible::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+
+.personaScrubInput:hover::-moz-range-thumb,
+.personaScrubInput:focus-visible::-moz-range-thumb {
+  transform: scale(1.2);
+}
+
+.personaScrubInput:focus-visible {
+  outline: none;
+}
+
 /* ---- Recommended ------------------------------------------------------- */
 
 .recommended {
@@ -2014,140 +2706,348 @@
 }
 
 /* ---- Custom block: logo-orbit (LogoOrbit.tsx) ---------------------------
- * Stands in for a screenshot when the point is "too many places to choose
- * from" — five platform badges circling a shared center on two rings. No
- * ground of its own: the badges sit straight on the page's paper, the way a
- * transparent PNG figure does (.figureImg), so the colour in the marks is the
- * only colour in the block. Outer ring turns clockwise, inner
- * counter-clockwise, each icon counter-spinning against its own ring so the
- * badge itself stays upright while it travels (see the orbit-counter-*
- * keyframes below).
+ * A three-beat network diagram rather than a decorative carousel of logos.
+ * Beat one is a mesh: seven platforms bowed to each other across an empty
+ * middle, dashed lines flowing in conflicting directions. Beat two swings
+ * them into one ring revolving around Discord. Beat three contracts the ring
+ * until every badge is hidden behind the Discord mark and only Discord is
+ * left. Each beat holds long enough to read on its own.
+ *
+ * No ground of its own — the badges sit straight on the page's paper, the way
+ * a transparent PNG figure does (.figureImg), so the colour in the marks and
+ * the blurple of the hub are the only colour in the block.
+ *
+ * Per-badge groups use `transform-box: fill-box` + a centred origin so a
+ * rotate or scale turns about the badge's own centre. The whole-set revolve
+ * (.orbitField / .orbitSpin) instead uses `<animateTransform>` in the markup
+ * with a literal numeric pivot — see the comment in LogoOrbit.tsx for why.
  */
 .orbitStage {
-  --radius-outer: clamp(92px, 16vw, 156px);
-  --radius-inner: clamp(52px, 9vw, 92px);
   position: relative;
-  display: grid;
-  place-items: center;
+  max-width: min(100%, 720px);
+  margin-inline: auto;
+}
+
+.orbitSvg {
+  display: block;
   width: 100%;
-  aspect-ratio: 3 / 2;
-  overflow: hidden;
+  height: auto;
+  /* Let the badges' drop shadows spill past the viewBox instead of being
+     sliced off by the SVG viewport. */
+  overflow: visible;
+}
+
+/* Phase eyebrow. Kept in HTML rather than as SVG <text> so it stays at caption
+   size instead of scaling with the diagram — which is also why it sits in the
+   flow above the stage rather than overlaying its top-left corner: the label
+   holds its px size as the diagram shrinks, so on a phone it takes a much
+   larger share of the width and the scattered badges run straight into it. */
+.orbitLabel {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  margin: 0 0 0.35rem;
+  font-size: var(--step-small);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-dim);
+}
+
+.orbitLabelDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-muted);
+  transition:
+    background 600ms var(--ease-inout),
+    box-shadow 600ms var(--ease-inout);
+}
+
+.orbitOrbiting .orbitLabelDot,
+.orbitTucked .orbitLabelDot {
+  background: #5865f2;
+  box-shadow: 0 0 0 4px rgb(88 101 242 / 18%);
+}
+
+/* Every label sits in one grid cell so the chip never resizes mid-swap. */
+.orbitLabelSlot {
+  display: grid;
+}
+
+.orbitLabelSlot > span {
+  grid-area: 1 / 1;
+}
+
+/* Shared crossfade for the stacked eyebrows and the stacked captions. */
+.orbitFadeIn,
+.orbitFadeOut {
+  transition: opacity 450ms var(--ease-inout);
+}
+
+.orbitFadeIn {
+  opacity: 1;
+  transition-delay: 240ms;
+}
+
+.orbitFadeOut {
+  opacity: 0;
+}
+
+/* --- Beat one: the mesh --- */
+.orbitMesh {
+  fill: none;
+  stroke: rgb(42 42 42 / 32%);
+  stroke-width: 1.4;
+  transition: opacity 420ms var(--ease-inout);
+}
+
+/* Dashes running in opposite directions at unrelated speeds: traffic every
+   which way at once, which is the noise the last beat clears. */
+.orbitMeshForward,
+.orbitMeshBack {
+  stroke-dasharray: 5 7;
+  animation: orbit-mesh-flow 2.6s linear infinite;
+}
+
+.orbitMeshBack {
+  animation-duration: 3.4s;
+  animation-direction: reverse;
+}
+
+.orbitScattered .orbitMesh {
+  opacity: 1;
+  /* Waits for the badges to be back in place before re-wiring them. */
+  transition-delay: 620ms;
+}
+
+.orbitOrbiting .orbitMesh,
+.orbitTucked .orbitMesh {
+  opacity: 0;
+  transition-duration: 300ms;
+}
+
+/* --- Beats two and three: the hub --- */
+.orbitHalo,
+.orbitGuide {
+  transition: opacity 500ms var(--ease-inout);
 }
 
 .orbitGuide {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  border: 1px dashed rgb(42 42 42 / 14%);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
+  fill: none;
+  stroke: rgb(42 42 42 / 13%);
+  stroke-width: 1;
+  stroke-dasharray: 3 6;
 }
 
-.orbitGuideOuter {
-  width: calc(var(--radius-outer) * 2);
-  height: calc(var(--radius-outer) * 2);
+.orbitScattered .orbitHalo,
+.orbitScattered .orbitGuide {
+  opacity: 0;
+  transition-duration: 260ms;
 }
 
-.orbitGuideInner {
-  width: calc(var(--radius-inner) * 2);
-  height: calc(var(--radius-inner) * 2);
+.orbitOrbiting .orbitHalo,
+.orbitOrbiting .orbitGuide {
+  opacity: 1;
+  transition-delay: 300ms;
 }
 
-.orbitRing {
-  position: absolute;
-  inset: 0;
-  animation: orbit-cw var(--ring-dur) linear infinite;
+/* Nothing is travelling the path any more, so it goes; the halo stays and
+   carries the hub once the badges have disappeared into it. */
+.orbitTucked .orbitGuide {
+  opacity: 0;
 }
 
-.orbitRingOuter {
-  --ring-dur: 34s;
+.orbitTucked .orbitHalo {
+  opacity: 1;
 }
 
-.orbitRingInner {
-  --ring-dur: 22s;
-  animation-name: orbit-ccw;
+.orbitHub {
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 6px 18px rgb(88 101 242 / 32%));
+  transition:
+    transform 700ms var(--ease),
+    opacity 500ms var(--ease-inout);
 }
 
-.orbitIcon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  transform: rotate(var(--angle)) translateX(var(--radius));
+/* Gone entirely for the first beat — an empty middle is the claim. */
+.orbitScattered .orbitHub {
+  opacity: 0;
+  transform: scale(0.4);
+  transition-duration: 400ms, 260ms;
 }
 
-.orbitRingOuter .orbitIcon {
-  --radius: var(--radius-outer);
+.orbitOrbiting .orbitHub {
+  opacity: 1;
+  transform: scale(1);
+  transition-delay: 340ms;
 }
 
-.orbitRingInner .orbitIcon {
-  --radius: var(--radius-inner);
+/* A beat larger once it has taken everything in. */
+.orbitTucked .orbitHub {
+  opacity: 1;
+  transform: scale(1.12);
+  transition-delay: 480ms;
 }
 
-.orbitGlyph {
-  position: absolute;
-  top: 0;
-  left: 0;
+.orbitPulseRing {
+  fill: none;
+  stroke: #5865f2;
+  stroke-width: 1.4;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* One beat, shared by the hub's pulse and the badges' breath below. */
+.orbitOrbiting .orbitPulseRing,
+.orbitTucked .orbitPulseRing {
+  animation: orbit-pulse 2600ms var(--ease-inout) 900ms infinite;
+}
+
+.orbitOrbiting .orbitPulseRingLate,
+.orbitTucked .orbitPulseRingLate {
+  animation-delay: 2200ms;
+}
+
+/* --- The badges --- */
+
+/* orbitField (the revolve) and orbitSpin (its per-badge counter-rotation) are
+   animated in the markup with `<animateTransform>`, not here — see the
+   comment in LogoOrbit.tsx. Both stay plain, un-transformed groups as far as
+   CSS is concerned. */
+
+.orbitNode {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 1;
+  /* Dimmed and desaturated while scattered: undifferentiated noise, not yet
+     something the group is choosing between. */
+  filter: saturate(0.58) drop-shadow(0 3px 8px rgb(0 0 0 / 16%));
+  transition:
+    transform 1150ms var(--ease) calc((6 - var(--i)) * 38ms),
+    filter 900ms var(--ease-inout) calc((6 - var(--i)) * 38ms),
+    opacity 260ms linear calc((6 - var(--i)) * 38ms);
+}
+
+.orbitOrbiting .orbitNode {
+  filter: saturate(1) drop-shadow(0 4px 12px rgb(0 0 0 / 18%));
+  transition:
+    transform 1150ms var(--ease) calc(var(--i) * 52ms),
+    filter 900ms var(--ease-inout) calc(var(--i) * 52ms),
+    opacity 260ms linear calc(var(--i) * 52ms);
+}
+
+/* Staggered wider on the way in, so they slip under the mark one after another
+   rather than all vanishing at once. They shrink to nothing rather than to
+   badge-sized: relying on the hub disc to cover them means any browser that
+   lands the scaled group a pixel or two off centre leaves an edge poking out.
+   The opacity fade is the backstop — it only starts once the badge is already
+   too small to see, so the shrink still reads as being swallowed. */
+.orbitTucked .orbitNode {
+  opacity: 0;
+  filter: saturate(1) drop-shadow(0 4px 12px rgb(0 0 0 / 18%));
+  transition:
+    transform 900ms var(--ease) calc(var(--i) * 78ms),
+    filter 900ms var(--ease-inout) calc(var(--i) * 78ms),
+    opacity 220ms linear calc(var(--i) * 78ms + 660ms);
+}
+
+.orbitDrift {
+  transform-box: fill-box;
+  transform-origin: center;
+  /* Each badge on its own duration and a negative delay that starts it
+     mid-cycle, so no two are ever in step. */
+  animation: orbit-drift var(--drift-dur) var(--ease-inout) var(--drift-delay)
+    infinite alternate;
+}
+
+/* Gathered, every badge runs the same animation on the same clock — in phase
+   with each other and with the hub. Same seven platforms, one tempo. */
+.orbitOrbiting .orbitDrift,
+.orbitTucked .orbitDrift {
+  animation: orbit-breathe 2600ms var(--ease-inout) 900ms infinite;
+}
+
+@keyframes orbit-mesh-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@keyframes orbit-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+
+  18% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+@keyframes orbit-drift {
+  from {
+    transform: translate(-7px, 5px) rotate(-3deg);
+  }
+
+  to {
+    transform: translate(7px, -6px) rotate(3.5deg);
+  }
+}
+
+@keyframes orbit-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  22% {
+    transform: scale(1.075);
+  }
+
+  46% {
+    transform: scale(1);
+  }
+}
+
+/* Captions stacked in one grid cell — the block's height is fixed by the
+   longest of them, so the page never reflows as they swap. */
+.orbitCaption {
   display: grid;
-  place-items: center;
-  border-radius: 50%;
-  /* Light enough to lift the chip off the cream without reading as a drop
-     shadow — the dark ground that used to carry them is gone. */
-  box-shadow: 0 4px 14px rgb(0 0 0 / 12%);
-  transform: translate(-50%, -50%) rotate(calc(-1 * var(--angle)));
-  animation: orbit-counter-cw var(--ring-dur) linear infinite;
 }
 
-.orbitGlyphOuter {
-  width: clamp(38px, 6.4vw, 58px);
-  height: clamp(38px, 6.4vw, 58px);
+.orbitCaption > span {
+  grid-area: 1 / 1;
 }
 
-.orbitGlyphInner {
-  width: clamp(30px, 5.2vw, 46px);
-  height: clamp(30px, 5.2vw, 46px);
-  animation-name: orbit-counter-ccw;
-}
-
-.orbitBadge {
-  width: 100%;
-  height: 100%;
-}
-
-@keyframes orbit-cw {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes orbit-ccw {
-  to {
-    transform: rotate(-360deg);
-  }
-}
-
-@keyframes orbit-counter-cw {
-  from {
-    transform: translate(-50%, -50%) rotate(calc(-1 * var(--angle)));
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(calc(-1 * var(--angle) - 360deg));
-  }
-}
-
-@keyframes orbit-counter-ccw {
-  from {
-    transform: translate(-50%, -50%) rotate(calc(-1 * var(--angle)));
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(calc(-1 * var(--angle) + 360deg));
-  }
+/* Nothing loops for a reader who's asked for less motion; they get the middle
+   beat as a still, with the mesh left faint underneath so the one frame still
+   carries the tangle and the thing that replaces it. Must follow the phase
+   rules above to outrank them. */
+.orbitStill .orbitMesh {
+  opacity: 0.16;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .orbitRing,
-  .orbitGlyph {
+  .orbitNode,
+  .orbitDrift,
+  .orbitMesh,
+  .orbitMeshForward,
+  .orbitMeshBack,
+  .orbitHalo,
+  .orbitGuide,
+  .orbitHub,
+  .orbitPulseRing,
+  .orbitLabelDot,
+  .orbitFadeIn,
+  .orbitFadeOut {
+    transition: none;
     animation: none;
   }
 }

@@ -175,10 +175,11 @@ export const positions: Position[] = [
         caption: "Xbox Arcade, the cloud gaming nook / made using photoshop, lightroom, and blender",
       },
       {
-        src: "",
-        alt: "",
-        caption: "A prototype screen or a motion still from Xbox Arcade",
+        src: "https://media.kaelub.com/Xbox/ex3.jpg",
+        alt: "Ranking, Spin the Wheel, and social proof tools surfaced together in Arcade",
+        caption: "Ranking, the Wheel, and social proof, working together",
       },
+
     ],
     /* The pitch video now sits with the impact it backs (above); the case
        study is the position's own, so it stays here. */
@@ -245,8 +246,8 @@ export const positions: Position[] = [
         caption: "One of the multimedia lectures for the cohort",
       },
       {
-        src: "https://media.kaelub.com/WOS/3.png",
-        alt: "Who Owns Seattle, a loading state over a skeleton of the South Lake Union ownership map",
+        src: "https://media.kaelub.com/WOS/2.png",
+        alt: "Who Owns Seattle, a color-coded 3D map of South Lake Union parcels by owner, scrubbed to 2017",
         caption: "Who Owns Seattle, the ownership map",
       },
       {
@@ -283,13 +284,20 @@ export const positions: Position[] = [
         detail:
           "Brought in to rebuild the searching suite on top of the new platform, the shortcut students reach for when the navigation fails them.",
         links: [
-          { label: "Read case study", href: "/case-study/trinity-search", kind: "study" },
+          {
+            label: "View Designs for Trinity Search",
+            href: "https://www.figma.com/design/GXBBaodKgwj4SOgDDWU8sz/Trinity-Design-Work?node-id=8-144",
+            kind: "link",
+          },
         ],
       },
       {
         headline: "Rebuilt school, department, and program templates around the end user",
         detail:
           "Reconfigured navigation for the prospective students who turned out to be most of the traffic, while holding consistency with the rest of Trinity.edu.",
+        links: [
+          { label: "Read case study", href: "/case-study/trinity-edu", kind: "study" },
+        ],
       },
       {
         headline: "Migrated and created content for new design system",
@@ -309,8 +317,9 @@ export const positions: Position[] = [
         caption: "Trinity.edu school and program templates",
       },
     ],
-    /* The one link here now sits with the impact it backs (the search
-       redesign, above) rather than at the position's own foot. */
+    /* Each link here sits with the impact it backs (the search redesign and
+       the department templates, above) rather than at the position's own
+       foot. */
   },
   {
     org: "ForeFlight: A Boeing Company",
