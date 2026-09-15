@@ -1,26 +1,26 @@
 ^Problem
-## Making games has never been easier. Getting your friends to actually play one together still is.
+## Playing games on your own has never been easier. Getting your friends to play one together is a whole other story.
+
+For many friend groups who play together; when more noise exists, there's typically more hassle to coordinate and discover their next game. There's just so much to choose from.
 
 ```logo-orbit
 No easy place to discover and decide a game with friends. | Instead, use the place where everyone meets to discover and decide. | Coordinating and discovery is now easier on Discord.
 ```
 
-For many friend groups who play together; when more noise exists, there's typically more hassle to coordinate and discover their next game. There's just so much to choose from.
-
-There are many different mediums to communicate and share games from, but one that stays consistent throughout the entire process is ==Discord==. Gamers communicate most via Discord due to its one-stop-shop for all things communication. Much like Slack, it provides features for gamers that have kept them loyal to their platform such as free voice channels, gifs, roles, privileges, and more. Each server, which contains voice channels and text channels, acts as a small feudalistic city for each friend group. This is a perfect area for passing around information and keeping it all in one place, avoiding the fragmentation seen throughout the game discovery phase.
+In the gaming world, gamers use plenty of platforms to talk and share games, but one stays constant: Discord. Each server acts as a home base for a friend group, the natural place to keep discovery from getting fragmented across a dozen apps. So we've made it a key part of this app, to meet players where they're at.
 
 ^Solution
 ## Xbox Arcade: discover, decide, and instantly play together, without leaving Discord.
 
 We designed a one-stop shop experience for game discovery and coordination, delivered within a subscription tier.
 
-![All your friends, games, and coordination in one place](https://media.kaelub.com/Xbox/Xbox_casestudy_hero1.jpg)
+![Homepage interface after subscribing to Discord Nitro + Gamepass](https://media.kaelub.com/Xbox/ex4.jpg)
 
 Arcade draws on player data from Xbox and Discord to recommend and assemble mixes of games — internally called Playlists — for a group to play, based on filters and criteria the group sets together.
 
 ![Arcade mixing games based on your group's filters, also known as a Playlist](https://media.kaelub.com/Xbox/ex1.jpg)
 
-More importantly, ==Arcade removes the hardware barrier by running on cloud gaming==, letting a group queue up together instantly.
+More importantly, Arcade removes the hardware barrier by running on cloud gaming, letting a group queue up together instantly.
 
 ![Queue up with friends instantly once a game is selected by the wheel](https://media.kaelub.com/Xbox/ex2.jpg)
 
@@ -28,7 +28,7 @@ Most of the tools in Arcade exist to help a group decide what to play. The app s
 
 ![Ranking, Spin the Wheel, and social proof tools to make game coordination and decision easier](https://media.kaelub.com/Xbox/ex3.jpg)
 
-As a byproduct of creating an app to aid in coordination and game discovery, we've created ==a new type of game delivery experience that houses all instantly playable XBOX games within one price tag.==
+As a byproduct of creating an app to aid in coordination and game discovery, we've created a new type of game delivery experience that houses all instantly playable XBOX games within one price tag.
 
 ```youtube
 oO-0QA1BzfQ | unmuted
@@ -37,13 +37,13 @@ oO-0QA1BzfQ | unmuted
 ^Research
 ## We set out to design a storefront. Players told us that was the wrong problem.
 
-![Homepage interface after subscribing to Discord Nitro + Gamepass](https://media.kaelub.com/Xbox/ex4.jpg)
+![All your friends, games, and coordination in one place](https://media.kaelub.com/Xbox/Xbox_casestudy_hero1.jpg)
 
 > When first developing the project, we had a corporate connection to storefronts and publishing within XBOX that swayed us toward potentially designing for a storefront setting. Much of our initial research was through that lens.
 
 ### 500 Reddit posts pointed to one recurring feeling: Xbox ships at players, not with them.
 
-When first searching for a problem in the gaming space, we wanted to build up context for what our players are like and what their needs are. ==I think Reddit is a great place to discuss and contemplate things that are in the news, but it's also a great area to find player sentiment about a certain topic.== So, I went ahead and created a parsing tool, which Sauhee used to collect nearly 500 responses from different XBOX communities about player sentiment on storefronts.
+When first searching for a problem in the gaming space, we wanted to build up context for what our players are like and what their needs are. I think Reddit is a great place to discuss and contemplate things that are in the news, but it's also a great area to find player sentiment about a certain topic. So, I went ahead and created a parsing tool, which Sauhee used to collect nearly 500 responses from different XBOX communities about player sentiment on storefronts.
 
 
 ```quotes
@@ -83,7 +83,7 @@ View All Scraped Data | https://docs.google.com/spreadsheets/d/1simp5TxkqfrUDZ8C
     
 ```
 
-==To build up more context we found that comic and anime conventions are a fantastic area to do this guerrilla research, because we have:==
+To build up more context we found that comic and anime conventions are a fantastic area to do this guerrilla research, because we have:
 
 - A potentially large and diverse sample size of players, XBOX players
 - Anime and comic book enjoyers have lots of double dipping within the gaming sector, similar fan-bases
@@ -109,7 +109,7 @@ At our first on-site research event, we asked a general audience of gamers:
 - What makes and online game store experience meaningful, or not?
 - Describe this platform in one word (Playstation, Xbox, Steam, and Nintendo)
 
-==These were general questions that the group and I thought through. Our main goal is to try and get some sentiment analysis done on gamers and gamers who play on all XBOX platforms.==
+These were general questions that the group and I thought through. Our main goal is to try and get some sentiment analysis done on gamers and gamers who play on all XBOX platforms.
 
 To keep it in line with Xbox-oriented research, we asked each person that added to our sentiment chart if they were an XBOX gamer. If yes, then we provided them with a survey to ask more specific questions about Xbox sentiment.
 
@@ -128,9 +128,9 @@ View XBOX-Specific Sentiment Data| https://docs.google.com/spreadsheets/d/1w4cQP
     
 ```
 
-==Using audience-tailored affinity mapping and an idea co-creation, we found that while many saw storefronts as corporate and transactional, they enjoyed reworking a storefront's motive—some as a player progression map, others as a cozy bookstore to sift through and discover something new.==
+Using audience-tailored affinity mapping and an idea co-creation, we found that while many saw storefronts as corporate and transactional, they enjoyed reworking a storefront's motive—some as a player progression map, others as a cozy bookstore to sift through and discover something new.
 
-After leaving both conventions, we organized together and found patterns between our interviews and sentiment boards that we used to decide what area to look into next, ==especially within discovery.==
+After leaving both conventions, we organized together and found patterns between our interviews and sentiment boards that we used to decide what area to look into next, especially within discovery.
 
 
 ```insights
@@ -141,7 +141,7 @@ Personalization for meaningful storefront experiences | Players prefer having a 
 
 ```
 
-At this point in the process, we had a few ideas for our design direction, but [Genevieve Conley Gambill](https://www.linkedin.com/in/genevieveconley/), Director of Xbox Research, mentioned to us that Game Pass might be a direction we could go down and potentially integrate into our user flow, ==given that it was such a large section of their business and most players use it to discover new games.==
+At this point in the process, we had a few ideas for our design direction, but [Genevieve Conley Gambill](https://www.linkedin.com/in/genevieveconley/), Director of Xbox Research, mentioned to us that Game Pass might be a direction we could go down and potentially integrate into our user flow, given that it was such a large section of their business and most players use it to discover new games.
 
 To validate the sentiments we gathered from the conventions on a broader scale, we deployed a targeted survey focusing on how multiplayer friend groups discover games and interact with Game Pass.
 
@@ -157,17 +157,17 @@ The nudge Genevieve gave us let us discover something new about Xbox
 
 ```
 
-> Play styles vary, but social gaming dominates: ==62.8% identify as hybrid solo/multiplayer gamers, 23.3% play purely multiplayer==, and only 14% play purely solo.
+> Play styles vary, but social gaming dominates: 62.8% identify as hybrid solo/multiplayer gamers, 23.3% play purely multiplayer, and only 14% play purely solo.
 
 
 We found that the Game Pass library's value is unrealized due to poor searchability. Users typically discover games outside the Xbox ecosystem first mostly on Steam, then return just to check if the game is available on Game Pass, creating a fragmented experience.
 
-==People do not know the full capabilities of Game Pass. Crucial social features like co-op filters go largely undiscovered, meaning the platform delivers less value than it is capable of.==
+People do not know the full capabilities of Game Pass. Crucial social features like co-op filters go largely undiscovered, meaning the platform delivers less value than it is capable of.
 
 
 ### Player Interviews
 
-We conducted around ==12 interviews== with XBOX gamers and found out that we could categorize them into 8 different categories. Despite 12 interviews being somewhat small, due to lack of time we had to cut back. On the bright side, the categorization hit many aspects and niches of the XBOX gaming community.
+We conducted around 12 interviews with XBOX gamers and found out that we could categorize them into 8 different categories. Despite 12 interviews being somewhat small, due to lack of time we had to cut back. On the bright side, the categorization hit many aspects and niches of the XBOX gaming community.
 
 ```personas
 P1 | Veteran Gamer | Past Game Pass, Cross Console, Solo+Co-op | Steam-majority, Small group, Frequent Co-op
@@ -217,7 +217,7 @@ To use this ranking system, friends join a Discord call and click on the games t
 
 This idea is intended to cause conversation and some controversy, which is always great for gaming. 
 
-After the video game is picked, you and your friends will then either instantly queue up into the game or complete a group buy. ==From our research we found that gifting is a very common practice within gamer communities, so that everyone in the same call wouldn't feel left out.== I thought this would be a fantastic new business model/venture if I were to set it at a slightly discounted rate.
+After the video game is picked, you and your friends will then either instantly queue up into the game or complete a group buy. From our research we found that gifting is a very common practice within gamer communities, so that everyone in the same call wouldn't feel left out. I thought this would be a fantastic new business model/venture if I were to set it at a slightly discounted rate.
 
 ### Hi Def Prototype of the Ranking System
 
@@ -251,7 +251,7 @@ To unify the product, we had to redefine our core value proposition. I insisted 
 ^Committing to a direction
 ## Cloud gaming let us drop the storefront entirely: no buying, no tiers, just play
 
-==Instead of solely trying to algorithmically guess the perfect game for a group of players, we leaned into how friends actually operate. We began building a series of tools that facilitate the exact conversations required to get a group aligned and playing together all within one place.==
+Instead of solely trying to algorithmically guess the perfect game for a group of players, we leaned into how friends actually operate. We began building a series of tools that facilitate the exact conversations required to get a group aligned and playing together all within one place.
 
 ![Trying to rewrite our video the day of shooting and also a good photo for how these last few weeks felt](https://media.kaelub.com/Xbox/frustration.jpg)
 
@@ -261,13 +261,13 @@ After much deliberation, we removed some concepts. Instead of creating a storefr
 
 ![I went out to find some inspiration for our art direction; old xbox feel with a modern twist.](https://media.kaelub.com/Xbox/artdirection.JPG)
 
-We sat down together and came up with the ==cloud gaming== idea to really solve all of our problems. With cloud gaming we do not have to consider the logistics of buying games for each other, and do not have to consider the complexities of different types of subscription tiers where some players have varied access to games than others; this cloud gaming idea would already be associated with the Discord + Xbox partnership tier.
+We sat down together and came up with the cloud gaming idea to really solve all of our problems. With cloud gaming we do not have to consider the logistics of buying games for each other, and do not have to consider the complexities of different types of subscription tiers where some players have varied access to games than others; this cloud gaming idea would already be associated with the Discord + Xbox partnership tier.
 
 ![Our Product's new frontpage, using my art direction](https://media.kaelub.com/Xbox/new_frontpage.JPG)
 
-With this solution, we removed the storefront experience entirely. ==If the experience is cloud-based and paid ahead of time, there's no need for a transactional experience when discovering games.== 
+With this solution, we removed the storefront experience entirely. If the experience is cloud-based and paid ahead of time, there's no need for a transactional experience when discovering games. 
 
-We have a home page, a library of games to sift through which are compatible with the subscription tier, and a "mixes page", ==a page made to curate games for you and your friends in the Discord call==.
+We have a home page, a library of games to sift through which are compatible with the subscription tier, and a "mixes page", a page made to curate games for you and your friends in the Discord call.
 
 
 Instead we took the opportunity to build out different types of info cards that would entice the player to look into a certain game and catch their attention, and to have a central area for discovery.
@@ -286,7 +286,7 @@ This came out of a need to continue pushing games at players, so they could pote
 
 ### Spinning the Wheel, to make a quick decision
 
-==At this point, within the mix page, there exists a pretty important decision making tool.==
+At this point, within the mix page, there exists a pretty important decision making tool.
 
 ![Initial spin the wheel design, where it was placed](https://media.kaelub.com/Xbox/ending/wheel1.JPG)
 
@@ -294,13 +294,13 @@ Spin the Wheel was just a fun idea that I brought up internally with my team abo
 
 By the end of the spin, all players within the party will get alerted that a game has been picked from a spin, which you can then queue up to play all together. If not everyone queues in, you can either spin again until someone likes the game or play without that one person that didn't accept.
 
-==Sometimes design has a bit of spontaneity and that's okay.==
+Sometimes design has a bit of spontaneity and that's okay.
 
 ### Social Proofing
 
 ![quasi-historical-social proofing image within the mixes](https://media.kaelub.com/Xbox/ending/socialproof2.JPG)
 
-Originally, I brought in the ideas for social proofing which allows players to see what their friends have played in the past, what they recommend, and what they think. I'm glad to say that my group mates took it to heart and put it within the homepage and mix pages. ==Under an ethical lens, peer pressuring is a real thing and friends do it even when deciding what games to play,== so we wanted to offer a bit of that similar nudge on the homepage. ==A few of our interviewees actually mentioned that they would rather read what their friends have to say over a random person on the internet, because of pre-built trust.== 
+Originally, I brought in the ideas for social proofing which allows players to see what their friends have played in the past, what they recommend, and what they think. I'm glad to say that my group mates took it to heart and put it within the homepage and mix pages. Under an ethical lens, peer pressuring is a real thing and friends do it even when deciding what games to play, so we wanted to offer a bit of that similar nudge on the homepage. A few of our interviewees actually mentioned that they would rather read what their friends have to say over a random person on the internet, because of pre-built trust. 
 
 ![first iteration of the content details page](https://media.kaelub.com/Xbox/ending/contentdetail.JPG)
 
@@ -322,7 +322,7 @@ https://media.kaelub.com/Xbox/ending/Desktop%202026-09-08%202-00-06%20AM.mp4
 
 ```
 
-Vertical video didn't make sense since gaming content displayed on desktop is 16:9, so I switched it to a landscape aspect ratio, which allowed me to add buttons to add into a Playlist or share with friends. ==This was it.==
+Vertical video didn't make sense since gaming content displayed on desktop is 16:9, so I switched it to a landscape aspect ratio, which allowed me to add buttons to add into a Playlist or share with friends. This was it.
 
 ```video
 https://media.kaelub.com/Xbox/ending/Desktop%202026-09-08%202-02-43%20AM.mp4
@@ -342,7 +342,7 @@ https://media.kaelub.com/Xbox/ending/Desktop%202026-09-08%202-02-43%20AM.mp4
 https://media.kaelub.com/Xbox/multiview.mp4
 ```
 
-The video above demonstrates the multiview capabilities that we prototyped in the backend by using ==Firebase's realtime database.== Pretty great idea on Sauhee's part to include this. This allowed us to see if there were any bugs people encountered doing user testing and also see how each person responded to an interaction without all of them having to share their screens on Discord.
+The video above demonstrates the multiview capabilities that we prototyped in the backend by using Firebase's realtime database. Pretty great idea on Sauhee's part to include this. This allowed us to see if there were any bugs people encountered doing user testing and also see how each person responded to an interaction without all of them having to share their screens on Discord.
 
 
 ```compare
@@ -352,16 +352,16 @@ https://media.kaelub.com/Xbox/ending/homepage2.JPG | After change | After
 
 Our homepage changed drastically throughout this phase, a few users found the spacing to be a little much or confused by showing the subscription tier button when the players should already be subscribed and seeing game pass information.
 
-==We moved mixes (now known as Playlists) into a separate tab so that discovery happens first instead of decision making steps.==
+We moved mixes (now known as Playlists) into a separate tab so that discovery happens first instead of decision making steps.
 
 ### Players wanted the wheel everywhere, so it moved from a buried page into the navbar.
 
-Players loved spinning the wheel, but they saw each other wanting to spin it even while not in a mix page, which it lived in. ==I began thinking of different ways for this ending sequence to be played out and immediately thought of the Amazon shopping cart.== Despite our app not being transactional in any main part of our product story, there are certain metaphors that we can make with storefront that keeps our product somewhat generally understood. So, because our ending feature is a spinning wheel, we should place it in the navbar so it could be accessed anytime.
+Players loved spinning the wheel, but they saw each other wanting to spin it even while not in a mix page, which it lived in. I began thinking of different ways for this ending sequence to be played out and immediately thought of the Amazon shopping cart. Despite our app not being transactional in any main part of our product story, there are certain metaphors that we can make with storefront that keeps our product somewhat generally understood. So, because our ending feature is a spinning wheel, we should place it in the navbar so it could be accessed anytime.
 
 ![spinning wheel button moved to navbar](https://media.kaelub.com/Xbox/ending/wheel.JPG)
 ![Last iteration of the spinning wheel](https://media.kaelub.com/Xbox/ending/wheel3.JPG)
 
-==When redoing user tests, the same individuals preferred this option. It allowed for quicker discovery and decision making pipelines.==
+When redoing user tests, the same individuals preferred this option. It allowed for quicker discovery and decision making pipelines.
 
 Lastly, much of our nomenclature was temporary: mixes, Xbox party, rankings, etc., were not meant to be pushed to the public yet. So we decided to come up with a new language for our app.
 

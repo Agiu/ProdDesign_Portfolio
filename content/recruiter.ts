@@ -277,7 +277,7 @@ export const positions: Position[] = [
        write it however the résumé does. */
     place: "San Antonio, TX",
     summary:
-      "I was Trinity's in-house ux designer for the web team. I helped reenvision the search experience; the school, department, and program pages. Which proactively assisted a larger redesign project later in the year.",
+      "I was Trinity's in-house ux designer for the web team. I helped reimagine the search experience; the school, department, and program pages. Which proactively assisted a larger redesign project later in the year.",
     impacts: [
       {
         headline: "Redesigned the university's search experience for SearchStax",

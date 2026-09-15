@@ -49,11 +49,11 @@ const RING_RADIUS = 150;
 
 type Phase = "scattered" | "orbiting" | "tucked";
 
-/** The loop: which beat, how long it holds before the next, and its eyebrow. */
-const BEATS: { phase: Phase; hold: number; label: string }[] = [
-  { phase: "scattered", hold: 4000, label: "Every group, on its own" },
-  { phase: "orbiting", hold: 4400, label: "Circling one place" },
-  { phase: "tucked", hold: 3000, label: "One app they're already in" },
+/** The loop: which beat, and how long it holds before the next. */
+const BEATS: { phase: Phase; hold: number }[] = [
+  { phase: "scattered", hold: 4000 },
+  { phase: "orbiting", hold: 4400 },
+  { phase: "tucked", hold: 3000 },
 ];
 
 type Point = { x: number; y: number };
@@ -237,24 +237,6 @@ export function LogoOrbit({ content }: { content: string }) {
   return (
     <figure className={styles.figure}>
       <div className={stageClass} ref={stageRef}>
-        {/* All three eyebrows stacked in one grid cell so the chip never
-            resizes as the wording swaps. */}
-        <p className={styles.orbitLabel} aria-hidden>
-          <span className={styles.orbitLabelDot} />
-          <span className={styles.orbitLabelSlot}>
-            {BEATS.map((entry) => (
-              <span
-                key={entry.phase}
-                className={
-                  entry.phase === phase ? styles.orbitFadeIn : styles.orbitFadeOut
-                }
-              >
-                {entry.label}
-              </span>
-            ))}
-          </span>
-        </p>
-
         <svg
           className={styles.orbitSvg}
           viewBox={`0 0 ${VIEW.w} ${VIEW.h}`}

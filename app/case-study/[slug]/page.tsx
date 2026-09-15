@@ -267,12 +267,16 @@ export default async function CaseStudyPage({
       </div>
 
       <div className={styles.body}>
-        <Toc toc={toc} />
-        <article className={styles.content}>
-          {blocks.map((block, i) => (
-            <BlockView key={i} block={block} />
-          ))}
-        </article>
+        <div className={styles.centerCol}>
+          <div className={styles.navSlot}>
+            <Toc toc={toc} />
+          </div>
+          <article className={styles.content}>
+            {blocks.map((block, i) => (
+              <BlockView key={i} block={block} />
+            ))}
+          </article>
+        </div>
       </div>
 
       {recommended.length > 0 && (

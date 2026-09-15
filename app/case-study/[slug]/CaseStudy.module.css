@@ -298,6 +298,14 @@
   align-items: start;
 }
 
+/* Purely structural below the wide-desktop breakpoint further down — see the
+   comment there — so .nav and .content stay direct children of .body's grid,
+   exactly as if these two wrappers (page.tsx) weren't there at all. */
+.centerCol,
+.navSlot {
+  display: contents;
+}
+
 .nav {
   position: sticky;
   top: clamp(1.5rem, 4vh, 2.5rem);
@@ -322,6 +330,59 @@
 @media (min-width: 761px) and (max-width: 1179px) {
   .nav {
     top: calc(clamp(1.5rem, 4vh, 2.5rem) + 3.5rem);
+  }
+}
+
+/*
+ * Wide desktop: recentre the page on the markdown column instead of on the
+ * nav+content pair — below this, .body's two-column grid (above) keeps
+ * centring the pair as a block, so the content column's own centre sits
+ * right of the page's (the rail borrows real width from the row on its own,
+ * with nothing matching it on the right).
+ *
+ * .centerCol and .navSlot (page.tsx) are inert wrappers below this
+ * breakpoint — `display: contents` drops them from the box tree so .body's
+ * grid still parents .nav/.content directly, unchanged from the rule above.
+ * Here they switch on: .centerCol becomes the centred box, sized to
+ * --content-measure — recomputed with the same terms .body used to size the
+ * content column with (measure, gutter, the rail's own width, the gap), so
+ * the markdown stays exactly the width it always was, just centred on its
+ * own now rather than as part of the pair. .navSlot floats .nav in the
+ * margin that opens up to the left of it: absolutely positioned (so it
+ * can't affect .centerCol's centring), stretched top-to-bottom to give
+ * .nav's own `position: sticky` a containing block as tall as .content to
+ * travel within, same as it had sharing a grid row with it before.
+ */
+@media (min-width: 1400px) {
+  .body {
+    display: block;
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  .centerCol {
+    --nav-w: 210px;
+    --nav-gap: clamp(2rem, 5vw, 4.5rem);
+    --content-measure: calc(
+      var(--measure) - (var(--gutter) * 2) - var(--nav-w) - var(--nav-gap)
+    );
+    display: block;
+    position: relative;
+    max-width: var(--content-measure);
+    margin-inline: auto;
+  }
+
+  .navSlot {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(100% + var(--nav-gap));
+    width: var(--nav-w);
+  }
+
+  .content {
+    width: 100%;
   }
 }
 
@@ -2590,48 +2651,7 @@
   overflow: visible;
 }
 
-/* Phase eyebrow. Kept in HTML rather than as SVG <text> so it stays at caption
-   size instead of scaling with the diagram — which is also why it sits in the
-   flow above the stage rather than overlaying its top-left corner: the label
-   holds its px size as the diagram shrinks, so on a phone it takes a much
-   larger share of the width and the scattered badges run straight into it. */
-.orbitLabel {
-  display: flex;
-  gap: 0.55rem;
-  align-items: center;
-  margin: 0 0 0.35rem;
-  font-size: var(--step-small);
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--ink-dim);
-}
-
-.orbitLabelDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--ink-muted);
-  transition:
-    background 600ms var(--ease-inout),
-    box-shadow 600ms var(--ease-inout);
-}
-
-.orbitOrbiting .orbitLabelDot,
-.orbitTucked .orbitLabelDot {
-  background: #5865f2;
-  box-shadow: 0 0 0 4px rgb(88 101 242 / 18%);
-}
-
-/* Every label sits in one grid cell so the chip never resizes mid-swap. */
-.orbitLabelSlot {
-  display: grid;
-}
-
-.orbitLabelSlot > span {
-  grid-area: 1 / 1;
-}
-
-/* Shared crossfade for the stacked eyebrows and the stacked captions. */
+/* Shared crossfade for the stacked captions (LogoOrbit.tsx's figcaption). */
 .orbitFadeIn,
 .orbitFadeOut {
   transition: opacity 450ms var(--ease-inout);
@@ -2897,7 +2917,6 @@
   .orbitGuide,
   .orbitHub,
   .orbitPulseRing,
-  .orbitLabelDot,
   .orbitFadeIn,
   .orbitFadeOut {
     transition: none;

@@ -191,9 +191,9 @@ export const hero = {
 export const caseStudies: CaseStudy[] = [
   {
     slug: "xbox",
-    title: "Collaborative Matchmaking and Game Discovery",
+    title: "XBOX Arcade",
     summary:
-      "XBOX Arcade is matchmaking and game discovery combined, utilizing player data to help friend groups play.",
+      "A game-night decision tool that turned into a full cloud-gaming product, built with the head of design and director of research at Xbox.",
     cover: "https://media.kaelub.com/Xbox/Xbox_casestudy_hero1.jpg",
     hero: "https://media.kaelub.com/Xbox/Xbox_casestudy_hero1.jpg",
     video: "https://media.kaelub.com/Xbox/xbox_vid.mp4",
@@ -214,8 +214,8 @@ export const caseStudies: CaseStudy[] = [
         { name: "Yessenia Garcia", title: "Technical Program Manager, Xbox" },
       ],
       contributions: [
-        "Led prototyping and strategy of key features such as an immediate group decision-making tool and adaptive information cards per group and category.",
-        "Led art and design direction for hi-fi mockups, and implemented animation and motion design into our prototype for a smoother user experience.",
+        "Prototyped the tools that help a group decide what to play, including cards that adapt to each group and category.",
+        "Set the visual direction and brought our mockups to life with animation and motion.",
         "Co-directed and produced a product pitch that fits the realm of Xbox and Discord, with funding from Netflix.",
       ],
     },
@@ -226,7 +226,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       "It's time for a renvisioning of a site with numerous perspectives to convince and support.",
     cover: "https://media.kaelub.com/Trinity-Redesign/Hero.jpg",
-    hero: "https://media.kaelub.com/trinity-banner.jpg",
+    hero: "https://media.kaelub.com/Trinity-Redesign/Hero.jpg",
     discipline: "UX Research",
     year: "2024",
     tags: ["UX Research", "Higher Ed", "Website"],
@@ -249,8 +249,8 @@ export const caseStudies: CaseStudy[] = [
       "Project Open is an audio form factor designed to improve the shortcomings of current headphones and earphones.",
     cover: "/images/case-1.webp",
     hero: "/images/hero-1.webp",
-    video: "https://media.kaelub.com/headphones_background_v1%20(2160p).mp4",
-    discipline: "Interaction Design",
+    video: "https://media.kaelub.com/%20headphones_background_v1%20(2160p).mp4",
+    discipline: "Product Design",
     year: "2025",
     tags: ["3D Modeling", "Interaction Design", "Prototyping"],
     meta: {

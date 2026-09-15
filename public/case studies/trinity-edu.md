@@ -1,15 +1,13 @@
 ^Context
-## Trinity is on the rise — but its digital presence hasn't caught up.
+## Trinity is on the rise, but its digital presence hasn't caught up.
 
 ==Founded in 1869==, Trinity University sits on a 125-acre hilltop campus near downtown San Antonio and is consistently ranked among the nation's top liberal arts colleges. The academic experience centers on close mentorship, with a student-to-faculty ratio around 9 to 1 across a student body of roughly 2,500 to 2,600.
 
 ![Trinity.edu Homepage](https://media.kaelub.com/Trinity-Redesign/homepage.png)
 
 ```stats
-$2B | Endowment, unheard of for a school this size in the south | Banknote
-25% | 2025 acceptance rate, down from roughly 50% a decade ago | Scale
 153% | Growth in applicants over the last 15 years | Users
-60% | Of students graduate debt free | GraduationCap
+2017 | Last Website redesign | GraduationCap
 ```
 
 These numbers show an accelerating institution, but the website carrying them continued to ==bloat==.
@@ -21,33 +19,33 @@ Yes there are issues with broken components, messy text, and layouts that make e
 
 ![Broken parts of the site on the homepage at a larger resolution](https://media.kaelub.com/Trinity-Redesign/broken.png)
 
-^Roadmap
 ## The Roadmap | The goal, the reasoning behind it, and where the project actually landed.
 
 ### The goal
 Create new school, department, and program webpages that keep consistency with the other design elements already living on Trinity.edu, and reconfigure navigation around the end user. As Trinity continues to rise in the ranks, we needed a better user experience so that current students and prospects could find useful information quickly.
 
 ### Why
-Our data showed that most people visiting the site were prospective students rather than current students. That told us one of two things was true: either there was important information missing from the current iteration of the website, or much of what was there simply wasn't needed. We wanted to change that.
+Our data showed that most people visiting the site were prospective students rather than current students. That told us one of two things was true: either there was important information missing from the current iteration of the website, or much of what was there simply wasn't needed. I wanted to change that.
 
-### The outcome
-==Due to a change in leadership, this project was completely disbanded in favor of a full site redesign. Some elements from this project are being carried into that larger redesign such as the research and specific design elements.==
+^The Outcome
+### This project's scope grew and became the foundation for a full site redesign.
+==Leadership changed direction mid-project, folding this work into a full site redesign including the journey maps, the AI audit, and small bits of the design system all carried forward into that larger effort.==
 
-^UX Goal
+
 ## The User Experience Goal | Not "make it look nice." Make it fast to skim.
 
 The overall goal wasn't to get the website to merely look nice, although that was definitely one of our sub-goals, but to give our numerous personas a way to get to insightful information from the website quickly.
 
-The existing experience is dated, which makes a quick skim for useful information difficult. ==In the age of AI, it also makes web crawler information collection disorganized.== Most students now use AI to look for colleges, so we pushed toward making the website friendly to our AI companions too.
+The existing experience is dated, which makes a quick skim for useful information difficult. ==In the age of AI, it also makes web crawler information collection disorganized.== Most students now use AI to look for colleges, so I pushed toward making the website friendly to our AI companions too.
 
 Designing for AI would mean making more bulleted lists and less marketing-heavy text, just quick facts as soon as you get into a page.
 
-## Research | Page audits, outside examples, and five journey maps.
+^Research
+## Page audits, outside research, and five journey maps.
 
 ### Page audit and outside examples
-For this sectioned redesign, our efforts focused on the schools, departments, and programs rather than the homepage, because the timelines we were given were much shorter.
 
-We started by seeing what research we had completed already, so from independent agency audits.
+I started by seeing what research was completed already, so from independent agency audits.
 
 We started with an audit of which webpages needed the most work, and opted to start at the top — the schools. We researched other institutions' school webpages, ideally liberal-arts focused, then built four different example sheets, one per Trinity school, each averaging about six examples to choose from for excellent design and UX standards. Many of those designs came from Ivy League or well-known liberal arts institutions.
 
@@ -77,7 +75,8 @@ Frustrating navigation | Users struggled to move between schools, departments, a
 
 We discover this within journey mapping.
 
-### Creating an AI Agent with our journey maps
+^The differentiator
+### I built an AI agent that used our journey maps to audit all 4,000+ pages on the site, cutting the audit timeline in half.
 ```Image Carousel
 https://media.kaelub.com/Trinity-Redesign/j1.jpg | Journey maps for each perspective our site uses.
 https://media.kaelub.com/Trinity-Redesign/j2.jpg | Journey maps for each perspective our site uses.
@@ -106,7 +105,7 @@ During the infancy of ChatGPT agents, I created a small agent to fully utilize o
 
 ## Our Philosophies.
 
-> At first, the schools pages had to keep using the old components, due to budget and leadership priorities. But over the months of redesigning schools, programs, and departments, leadership changed and the mission became to completely redo every component in the Drupal system. It was fair game. ==So the wireframes contain a mix of old elements and new ones.
+> At first, the schools pages had to keep using the old components, due to budget and leadership priorities. But over the months of redesigning schools, programs, and departments, leadership changed and the mission became to completely redo every component in the Drupal system. It was fair game. So the wireframes contain a mix of old elements and new ones.
 
 ![Wireframes of the design following these philosophies](https://media.kaelub.com/Trinity-Redesign/wireframes.jpg)
 
@@ -122,7 +121,7 @@ We stray away from fully marketed pages almost immediately, right after the user
 
 ![Mobile view featuring news and honest stories about our campus](https://media.kaelub.com/Trinity-Redesign/mobile.jpg)
 
-Users also want personal anecdotes, so we include videos or photos of alumni and current students participating in the activities the schools put on.
+Users also want personal anecdotes, so I include videos or photos of alumni and current students participating in the activities the schools put on.
 
 ## Reflection
 
