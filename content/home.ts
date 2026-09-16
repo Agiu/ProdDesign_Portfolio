@@ -465,7 +465,7 @@ export const footer = {
   /* TODO: swap these for  real handles */
   elsewhere: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/kaelub" },
-    { label: "GitHub", href: "https://github.com/kaelub" },
+    { label: "GitHub", href: "https://github.com/Kaelubagu" },
     { label: "Résumé", href: "https://media.kaelub.com/Caleb_Design_Resume.pdf" },
   ],
 
