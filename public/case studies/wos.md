@@ -1,4 +1,5 @@
-## About WOS (WIP)
+^Overview
+## A data visualizer that traces who owns the South Lake Union neighborhood, block by block, over time. (WIP)
 
 Who Owns Seattle is a data visualizer that presents a timeline of ownership through multiple neighborhoods in the downtown Seattle area. It reveals economic patterns and companies or notable developers who dictate the landscape of downtown Seattle using some publicly accessible data from King County. 
 
@@ -15,7 +16,7 @@ XTSZty1by-c
 
 
 ^History
-## A little history | ==An urban studies interest of mine, sorry==
+## Pioneer Square and South Lake Union sit a mile apart and look like they're from different centuries. | ==An urban studies interest of mine, sorry==
 
 Seattle’s downtown area has seen a dramatic price increase in the last few decades. What once was a shipyard and supply chain dock is now one of the most important tech centers on Earth. I recently visited downtown and was struck by the aesthetic architectural differences between two neighborhoods located downtown: Pioneer Square and South Lake Union. Pioneer square still exudes old Seattle—exposed brick, not ADA compliant or earthquake proof, but still lots of character; while the other pushes a corporate and sleek narrative meant only for tech bros, salarymen, and wealthy individuals. 
 
@@ -23,8 +24,8 @@ These neighborhoods are just a few miles apart from each other, and in the same 
 
 ![](https://media.kaelub.com/WOS/4.jpg)
 
-^South Lake Union
-## Look at how different the buildings look, now!
+^How we got here
+## South Lake Union was supposed to become Seattle's Central Park. When the vote failed, Paul Allen turned it into real estate instead.
 Through Paul Allen’s assistance (Co Founder of Microsoft), in the 90s, South Lake Union was meant to become something similar to New York City’s Central Park through an initiative titled the ‘Seattle Commons’.
 
 ![Citation: https://www.historylink.org/File/8252](https://media.kaelub.com/WOS/5.png)
@@ -33,8 +34,8 @@ However, as much as I would have personally enjoyed this, the resolution in the 
 
 Over the years this company has turned Paul Allen’s estate into a multibillion dollar real estate portfolio by just developing on the land that was initially meant to house a park for Seattleites to use. So what did Vulcan do with all that land? 
 
-
-## Who Owns Seattle?
+^The thesis
+## A handful of developers, not market demand, decide who gets to live downtown.
 
 I wanted to dive deeper into what this company has turned South Lake Union into, and track how the landscape has changed hands over time. I also wanted to take advantage of some artificial intelligence to speed up the process of this project, so I utilized Claude to help me find data and develop part of an app to tell a story about data through time.
 
@@ -47,8 +48,8 @@ Downtown Seattle has many owners, obviously, but the richest tend to dictate who
 
 In short, large corporations can dictate a geographical economy easily and influence attributes of a city that goes past economics. It shapes the look and the experience people strolling around the city. 
 
-^The Build
-## Parsing King County Data | ==For fun I tend to look at King County's Parcel Viewer, my interest in maps collides heavily with real estate data using this platform.==
+^Building it
+## King County's ownership data is public but paywalled, so I built a scraper to get it anyway.
 
 ### Legality Disclaimer
 I'm doing this as a personal project and will not be publishing the entire codebase due to the fragility of the data i've collected from King County. Since I'm a student at UW not doing sponsored research, I do not have access to any datasets that have protected data, i.e. owner names — which I need for this project to work.

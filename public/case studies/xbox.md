@@ -132,12 +132,14 @@ Using audience-tailored affinity mapping and an idea co-creation, we found that 
 
 After leaving both conventions, we organized together and found patterns between our interviews and sentiment boards that we used to decide what area to look into next, especially within discovery.
 
+### Findings from both Emerald City Comic Con and Sakura Con
+
 
 ```insights
 Gamers view XBOX through Rose-Tinted Glasses | Sentiment overall was bifurcated: some felt very nostalgic for XBOX; "toxic" and "dying; "bustling" was all said in our sentiment form. | form
 Socially-Driven Game Discovery | Players would like to see their friends interacting organically within the storefront: buying a game, rating a game, etc... | Store
-External tool usage to fill the social gap on Xbox storefronts | Players use many other platforms to decide what to play next with their friends. | Users
-Personalization for meaningful storefront experiences | Players prefer having a decision on what they see on the storefront | player
+External apps to fill the social gap on Xbox storefronts | Players use many other platforms to decide what to play next with their friends. | Users
+Storefronts are generally disliked | Players would not want to interact with a storefront if they could. | player
 
 ```
 
@@ -157,12 +159,12 @@ The nudge Genevieve gave us let us discover something new about Xbox
 
 ```
 
-> Play styles vary, but social gaming dominates: 62.8% identify as hybrid solo/multiplayer gamers, 23.3% play purely multiplayer, and only 14% play purely solo.
+Play styles vary, but social gaming dominates: 62.8% identify as hybrid solo/multiplayer gamers, 23.3% play purely multiplayer, and only 14% play purely solo.
 
 
 We found that the Game Pass library's value is unrealized due to poor searchability. Users typically discover games outside the Xbox ecosystem first mostly on Steam, then return just to check if the game is available on Game Pass, creating a fragmented experience.
 
-People do not know the full capabilities of Game Pass. Crucial social features like co-op filters go largely undiscovered, meaning the platform delivers less value than it is capable of.
+> People do not know the full capabilities of Game Pass. Crucial social features like co-op filters go largely undiscovered; hidden community building groupchats within the XBOX console and web mostly due to the inconsistent user interfaces — this means the platform delivers less value than it is capable of.
 
 
 ### Player Interviews
@@ -179,6 +181,12 @@ P6 | Casual Social Gamer (Passive) | PC Focused, Solo and Multiplayer | Steam-ma
 P7 | Scout | PC Daily Player, Group Discoverer | Daily with friends, long-time group | Game Pass: Ultimate
 P8 | Night Shift Gamer | PC 1-2X/WEEK, Schedule Limited, Solo+Co-op | Hard to align schedules, Long-time gamer | Game Pass: Ultimate
 ```
+
+### Co-op, or group players, are left untethered.
+
+>These player interviews ultimately gave us the qualitative data to realize that XBOX, despite marketing pushing for it, neglected the co-op or group gaming community as a whole and as a result are treated as a last ditch resort in the game decision process.
+
+
 ^What the research told us
 ## Xbox shows up last in the journey, hides its best features, and ignores how little time friends have.
 
@@ -308,7 +316,8 @@ So in our content details page, which we frankensteined from Meera's original pr
 
 ![Social proofing within the content detail page, friend reviews](https://media.kaelub.com/Xbox/ending/socialproof.JPG)
 
-### Creating Useful Previews
+^Fixing UX
+## Creating Higher Conversion Rates Through Gameplay Previews
 When wanting to deliver useful game information to the masses, it's important to find out what information players generally want to know about a game. There were 3 different routes to take:
 
  - minimalist, only show the game itself.
@@ -328,6 +337,8 @@ Vertical video didn't make sense since gaming content displayed on desktop is 16
 https://media.kaelub.com/Xbox/ending/Desktop%202026-09-08%202-02-43%20AM.mp4
 ```
 
+To verify if these changes worked we user tested them extensively.
+
 ^Testing with real groups
 ## Watching friend groups play showed us exactly where discovery and decision collided.
 
@@ -336,6 +347,14 @@ https://media.kaelub.com/Xbox/ending/Desktop%202026-09-08%202-02-43%20AM.mp4
 20+ | Changes to the UI and rethinking of concepts | noteboard
 
 ```
+
+We created a mechanism to look at each players' monitor screens by hooking up a realtime database to the backend. It's difficult to get an accurate reading about someone's screen when you have to keep clicking on other people's screens on a zoom call, so we created our own screen-only zoom call.
+
+### When testing game previews users would say one thing, but do another.
+
+We had 3 designs showcased for this test, a maximalist design, an in between and the simple design. On all of our calls, people prefered the maximalist design because it will give away alot of "fun fact" info. But as they hovered over the simpler and cleaner designs, they became mesmerized by looking at the game footage — shown by them actually clicking eventually on the preview.
+
+My decisions above were validated.
 
 ### Watching friend groups operate our prototype
 ```video

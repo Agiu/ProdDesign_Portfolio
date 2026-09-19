@@ -60,13 +60,9 @@ The AI assistance aided in finding common themes across all phrases we collected
 From these findings we created a few how might we's that could lead us to ==designing a product==. 
 
 ```hmw
-How might we design a headset that stays securely in place across all ear sizes and alongside peripherals like glasses or earrings, without requiring readjustment?
-How might we distribute the weight of a headset so it avoids localized pressure points and head fatigue during sustained wear?
-How might we design an audio form factor that prevents heat and moisture build-up during extended or active use?
-How might we create an audio device that feels desirable and appropriate across different contexts — commuting, working out, reading, or social settings?
-```
+How might we design wearables that are lightweight, portable, and comfortable (even with a degree of variance e.g. wearing glasses)
 
-> **Note:** How might we's wording was slightly changed from original research to fit the story better, but the goal is still the same.
+```
 
 ```button
 View Research Analysis | https://www.figma.com/board/seMvdbF8VlQxQLFU1DzH1T/CKHAM--Empathy-Maps---Findings?node-id=287-2055&t=U84CDWwuTr7xnvhD-1 | FileMaps
@@ -74,7 +70,6 @@ View Research Analysis | https://www.figma.com/board/seMvdbF8VlQxQLFU1DzH1T/CKHA
 
 ^Exploring form
 ## We sketched wide, from utilitarian joints to VR-inspired hovering speakers, before landing on one shared instinct.
-Out of the selection, we chose: "How might we design wearables that are lightweight, portable, and comfortable (even with a degree of variance e.g. wearing glasses)?"
 
 ![Early ideation sketches exploring utilitarian, bandless, and double-curve headband designs.](https://media.kaelub.com/Audio/image_placeholder_2.JPG)
 
