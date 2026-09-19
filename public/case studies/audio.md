@@ -2,8 +2,8 @@
 ```
 
 
-## So, What's The Problem? | Today's audio wearables fail to deliver consistent comfort and performance across real-world use. ==Earbuds trap heat and moisture, fall out, or cause pain, while over-ear headphones are bulky and heavy for extended wear.== What's the solution and middleground?
-
+^Problem
+## Earbuds trap heat and fall out. Over-ear headphones are too heavy to wear all day. Nothing sits in between.
 
 ![Project Open](https://media.kaelub.com/Audio/headphone_render.jpg)
 We've all experienced issues with comfort among our headphones and earbuds. Many companies have attempted to solve universal comfort issues across all mediums — Virtual Reality, Personal handheld devices, and more with little to no success. 
@@ -15,7 +15,8 @@ My team of design friends and I came together to try and address these frustrati
 This project ended up turning into a big lesson on team dynamics, team management, and learning on the fly to create a high quality product. Collectively we all had interests in wearable devices and we thought there could be something within the audio space, however we had little to no experience in industrial design.
 
 
-## Building Out the Problem Space 
+^Validating our assumptions
+## Five interviews and 5,400 words confirmed what we suspected: pain, heat, and instability drive people away from their headphones.
 
 To narrow down our problem space, I insited on gathering heuristic assumptions firstly, then validating those assumptions with research. ==Our assumptions were around comfort and general frustrations like ear pressure, heat build-up, and instability.== These needed to be validated, of course; maybe through some user research?
 
@@ -59,20 +60,16 @@ The AI assistance aided in finding common themes across all phrases we collected
 From these findings we created a few how might we's that could lead us to ==designing a product==. 
 
 ```hmw
-How might we design a headset that stays securely in place across all ear sizes and alongside peripherals like glasses or earrings, without requiring readjustment?
-How might we distribute the weight of a headset so it avoids localized pressure points and head fatigue during sustained wear?
-How might we design an audio form factor that prevents heat and moisture build-up during extended or active use?
-How might we create an audio device that feels desirable and appropriate across different contexts — commuting, working out, reading, or social settings?
-```
+How might we design wearables that are lightweight, portable, and comfortable (even with a degree of variance e.g. wearing glasses)
 
-> **Note:** How might we's wording was slightly changed from original research to fit the story better, but the goal is still the same.
+```
 
 ```button
 View Research Analysis | https://www.figma.com/board/seMvdbF8VlQxQLFU1DzH1T/CKHAM--Empathy-Maps---Findings?node-id=287-2055&t=U84CDWwuTr7xnvhD-1 | FileMaps
 ```
 
-## Ideation & Strategy
-Out of the selection, we chose: "How might we design wearables that are lightweight, portable, and comfortable (even with a degree of variance e.g. wearing glasses)?"
+^Exploring form
+## We sketched wide, from utilitarian joints to VR-inspired hovering speakers, before landing on one shared instinct.
 
 ![Early ideation sketches exploring utilitarian, bandless, and double-curve headband designs.](https://media.kaelub.com/Audio/image_placeholder_2.JPG)
 
@@ -119,7 +116,8 @@ As I was stuck on this design; stuck on the simplicity of taking it on and off. 
 
 ![Getting rid of literal pain points on our prototype](https://media.kaelub.com/Audio/image_placeholder_6.JPG)
 
-### Applying the New Discovery
+^The breakthrough
+## Tri-Axis Support: three foam-padded cylinders that hold the headset in place without ever touching the inside of the ear.
 I took the idea of removing the inner sections of my foundation from the donut concept, which seemed to work flawlessly. Putting it on and taking it off became even easier than expected.
 
 During this process a breakthrough occurred and we called it the "Tri Axis Support". We merged concepts by keeping the open-ear "donut" foundation but introducing "tri-axis support cylinders" to help alleviate the weight distribution across the ear itself.
@@ -142,7 +140,8 @@ This was it. I modeled a speaker with holes for wiring that sat right above the 
 
 ![Final Headphones Render](https://media.kaelub.com/Audio/image_placeholder_8.png)
 
-## Final Designs & Specifications
+^Final spec
+## A bandless headset, sized to any ear, built for all-day wear.
 * **The Design:** A highly comfortable, small, bandless headset that avoids pressure points and is printed in different sizes to accommodate all users.
 * **Materials:** Constructed from PTB Plastic to ensure a durable and lightweight fit.
 * **Battery:** Equipped with a 105mAh Lithium Polymer battery per earphone, offering 11 hours of life with 1-hour charge times.

@@ -9,7 +9,7 @@ import { cookieNameFor, isUnlocked } from "@/lib/caseStudyAuth";
 import { Footer } from "@/components/Footer";
 import { Toc } from "./Toc";
 import { PasswordGate } from "./PasswordGate";
-import { CaseHeroVitals, CaseMeta } from "./CaseMeta";
+import { CaseMeta } from "./CaseMeta";
 import { FadeImage } from "./FadeImage";
 import { FigureImage } from "./FigureImage";
 import { HeroVideo } from "./HeroVideo";
@@ -117,7 +117,12 @@ function BlockView({ block }: { block: Block }) {
     case "heading":
       return (
         <>
-          <h2 id={block.id} className={styles.h2}>
+          {block.eyebrow && (
+            <p id={block.id} className={styles.h2Eyebrow}>
+              {block.eyebrow}
+            </p>
+          )}
+          <h2 id={block.eyebrow ? undefined : block.id} className={styles.h2}>
             {block.title}
           </h2>
           {block.lead && (
@@ -284,13 +289,27 @@ export default async function CaseStudyPage({
 
       <main className={styles.page}>
       <BackLink />
-      {/* The dark run BackLink.tsx tracks to know when to flip its own tone —
-          always just the hero now that the vitals row below it (CaseMeta.tsx)
-          sits on paper rather than on a dark card of its own. */}
-      <header className={styles.hero} data-dark-run="">
+      <header className={styles.intro}>
+        <p className={styles.introEyebrow}>
+          {study.discipline} · {study.year}
+        </p>
+        <h1 className={styles.title}>{study.title}</h1>
+        <p className={styles.summary}>{study.summary}</p>
+        {study.tags && study.tags.length > 0 && (
+          <ul className={styles.tags} aria-label="Skills">
+            {study.tags.map((tag) => (
+              <li key={tag}>{tag}</li>
+            ))}
+          </ul>
+        )}
+        {study.meta && !locked && <CaseMeta meta={study.meta} />}
+      </header>
+
+      {/* BackLink.tsx flips to light ink while this is behind it. */}
+      <div className={styles.hero} data-dark-run="">
         <FadeImage
           src={study.hero ?? study.cover}
-          alt={study.title}
+          alt=""
           fill
           priority
           sizes="100vw"
@@ -299,35 +318,22 @@ export default async function CaseStudyPage({
         {study.video && (
           <HeroVideo src={study.video} poster={study.hero ?? study.cover} />
         )}
-        <div
-          className={[styles.heroScrim, study.video && styles.heroScrimVideo]
-            .filter(Boolean)
-            .join(" ")}
-        />
-        <div className={styles.heroInner}>
-          <div className={styles.heroText}>
-            <h1 className={styles.title}>{study.title}</h1>
-            <p className={styles.summary}>{study.summary}</p>
-          </div>
-
-          {study.meta && !locked && <CaseHeroVitals meta={study.meta} />}
-        </div>
-      </header>
-
-      {study.meta && !locked && <CaseMeta meta={study.meta} />}
+      </div>
 
       <div className={styles.body}>
         {locked ? (
           <PasswordGate slug={slug} title={study.title} />
         ) : (
-          <>
-            <Toc toc={toc} />
+          <div className={styles.centerCol}>
+            <div className={styles.navSlot}>
+              <Toc toc={toc} />
+            </div>
             <article className={styles.content}>
               {blocks.map((block, i) => (
                 <BlockView key={i} block={block} />
               ))}
             </article>
-          </>
+          </div>
         )}
       </div>
 

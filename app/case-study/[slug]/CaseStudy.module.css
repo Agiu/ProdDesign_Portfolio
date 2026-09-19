@@ -1,7 +1,7 @@
 /*
  * Case-study page. Light, sans (Open Sauce Two via the global body stack) —
- * the same system as the homepage. Layout follows the Figma: a full-bleed
- * banner hero with the title/summary overlaid bottom-left, a two-column body
+ * the same system as the homepage. An intro on paper (title, summary, project
+ * facts), the hero media below it with nothing overlaid, a two-column body
  * (sticky "Navigation" rail + content), and a Recommended section.
  */
 
@@ -9,43 +9,190 @@
   padding-bottom: clamp(4rem, 9vw, 7.5rem);
 }
 
-/* ---- Hero banner ------------------------------------------------------- */
+/* ---- Intro: title, summary and project facts, on paper ----------------- */
+
+.intro {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  /* Top padding clears the fixed back link (.back). */
+  padding-block: clamp(6.5rem, 11vw, 8rem) clamp(2.5rem, 5vw, 3.75rem);
+}
+
+.introEyebrow {
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-dim);
+}
+
+.title {
+  max-width: 22ch;
+  margin-top: 0.75rem;
+  font-size: clamp(2.125rem, 1.3rem + 3vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.summary {
+  max-width: 58ch;
+  margin-top: clamp(1rem, 2vw, 1.4rem);
+  font-size: var(--step-lead);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+.tags li {
+  padding: 0.3rem 0.65rem;
+  border: 1px solid rgb(0 0 0 / 14%);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  color: var(--ink-soft);
+}
+
+/* CaseMeta.tsx */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  margin-top: clamp(2rem, 4vw, 2.75rem);
+  padding-top: clamp(1.5rem, 3vw, 2rem);
+  border-top: 1px solid rgb(0 0 0 / 12%);
+}
+
+@media (min-width: 761px) {
+  .facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  /* Source order (and the phone stack) reads Role, Timeline, Team, Advisors —
+     Timeline first since it's short and scannable. Side by side in a row,
+     though, the two longer lists read better next to Role, so Timeline moves
+     to the end instead. */
+  .factTimeline {
+    order: 1;
+  }
+}
+
+.fact {
+  min-width: 0;
+}
+
+.factLabel {
+  margin-bottom: 0.5rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-dim);
+}
+
+.factValue {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.factDetail {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--ink-dim);
+}
+
+.factList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.factListLead {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.advisorList {
+  gap: 0.6rem;
+}
+
+.outcomes {
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.outcomeList {
+  list-style: none;
+  counter-reset: outcome;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 761px) {
+  .outcomeList {
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+}
+
+.outcomeList li {
+  counter-increment: outcome;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.outcomeList li::before {
+  content: counter(outcome, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-dim);
+}
+
+/* ---- Hero media: image/video only, no text or scrim over it ------------ */
 
 .hero {
   position: relative;
   width: 100%;
-  height: clamp(320px, 42vh, 460px);
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--shade);
 }
 
-/*
- * The frame — the homepage hero's, on the same 18px and the same breakpoint
- * (Hero.module.css), so a reader crossing from one to the other sees the same
- * gesture rather than two near-misses. Open at the bottom for the same reason:
- * the legs run down into the page below and the white simply carries on.
- *
- * Border rather than padding, because everything in here is absolutely
- * positioned — .heroImage (Next's `fill`), .heroVideo and .heroScrim are all
- * inset: 0, and an abs-positioned child lays out against its ancestor's
- * *padding* box. Padding would leave all three exactly where they are and move
- * only .heroInner. A border shrinks that padding box, so all four inset at once
- * and the overflow clip comes in with them.
- *
- * box-sizing is border-box, so the 18px comes out of the height clamp instead
- * of adding to it — the banner still occupies the same strip, and .heroInner's
- * height: 100% still resolves against the content box.
- *
- * Every study gets it now, meta band or not: the vitals row that used to
- * follow a study's hero was a dark card butted flush against it (no border
- * between the two dark surfaces); now that row sits on plain paper, the same
- * "white carries on below" assumption this frame was already making for a
- * study with no metadata holds for every study.
- */
+@media (min-width: 761px) {
+  .hero {
+    aspect-ratio: 16 / 9;
+    max-height: min(80vh, 780px);
+  }
+}
+
+/* Inset by the homepage hero's 18px frame at the same breakpoint. */
 @media (min-width: 1024px) {
   .hero {
-    border: 18px solid var(--paper);
-    border-bottom: 0;
+    width: calc(100% - 36px);
+    margin-inline: auto;
   }
 }
 
@@ -80,119 +227,9 @@
   pointer-events: none;
 }
 
-/* Dark scrim, heaviest at the bottom-left where the text sits. */
-.heroScrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgb(0 0 0 / 88%) 0%,
-    rgb(0 0 0 / 62%) 30%,
-    rgb(0 0 0 / 22%) 60%,
-    transparent 100%
-  );
-}
-
-/* A playing video keeps cycling through brighter frames a still photo never
-   does, so a video hero (HeroVideo.tsx) gets a heavier scrim than the shared
-   default above — darker throughout and reaching further up the frame,
-   rather than just at the bottom-left. */
-.heroScrimVideo {
-  background: linear-gradient(
-    to top,
-    rgb(0 0 0 / 94%) 0%,
-    rgb(0 0 0 / 78%) 35%,
-    rgb(0 0 0 / 46%) 65%,
-    rgb(0 0 0 / 14%) 88%,
-    transparent 100%
-  );
-}
-
-.heroInner {
-  position: relative;
-  max-width: var(--measure);
-  height: 100%;
-  margin-inline: auto;
-  padding-inline: var(--gutter);
-  padding-bottom: clamp(1.5rem, 3.5vw, 2.75rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  color: #e9e7e2;
-}
-
-/*
- * Title + summary, as their own box now that .heroInner has a second thing to
- * lay out beside them (.heroVitals) rather than being its only children.
- * min-width: 0 so this is the side that gives if the two ever get tight —
- * .heroVitals is short, fixed-content facts with nowhere shorter to wrap to.
- */
-.heroText {
-  min-width: 0;
-}
-
-/*
- * Role and Time (CaseHeroVitals in CaseMeta.tsx), set into the hero's own
- * bottom-right — empty paper on a wide screen otherwise, while the study's
- * two shortest facts queued up in the band below instead. Own colour scale
- * rather than reusing .metaLabel/.metaValue: those are tuned for ink on
- * paper, and this sits on the same scrim .summary reads against.
- *
- * Desktop only. A phone's hero is short on both height and width to spend on
- * a second column — CaseMeta's own .metaMobileOnly groups carry the same two
- * facts back into the band below at that width instead.
- */
-.heroVitals {
-  display: none;
-}
-
-@media (min-width: 761px) {
-  .heroInner {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: clamp(1.5rem, 4vw, 3rem);
-  }
-
-  .heroVitals {
-    display: flex;
-    flex: none;
-    gap: clamp(1.5rem, 3vw, 2.75rem);
-    text-align: right;
-  }
-
-  .heroVitalsGroup {
-    flex: none;
-  }
-}
-
-.heroVitalsLabel {
-  margin-bottom: 0.4rem;
-  font-size: var(--step-small);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: rgb(233 231 226 / 62%);
-}
-
-.heroVitalsValue {
-  max-width: 20ch;
-  font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.0625rem);
-  font-weight: 600;
-  line-height: 1.3;
-  color: #e9e7e2;
-}
-
-.heroVitalsDetail {
-  margin-top: 0.15rem;
-  font-size: var(--step-small);
-  line-height: 1.3;
-  color: rgb(233 231 226 / 62%);
-}
-
 /*
  * The back control (BackLink.tsx). Fixed to the top-left corner of the
- * viewport rather than stacked above the title, so it stays reachable for the
- * whole study instead of scrolling away with the hero.
+ * viewport so it stays reachable for the whole study.
  *
  * `top` is the Navigation rail's own sticky offset, repeated verbatim — once
  * the page is under the fold the link and the rail come to rest on the same
@@ -223,7 +260,7 @@
   transform: translateX(-3px);
 }
 
-/* Over the hero and the metadata band — cream ink on dark ground. */
+/* While the hero media is behind it — cream ink on dark ground. */
 .back[data-ground="dark"] {
   color: rgb(233 231 226 / 85%);
 }
@@ -233,19 +270,12 @@
 }
 
 /*
- * Over the page body. The ground it carries is the body's own cream, which is
- * invisible out in the empty margin where this normally sits — it earns its
- * keep only on the phone stack, where the link floats over running text and
- * would otherwise tangle with it.
+ * Over paper. The cream halo is invisible on the page ground but keeps the
+ * glyph off running text where the link floats over copy on a phone.
  */
 .back[data-ground="paper"] {
   color: var(--ink-soft);
   background: var(--paper);
-  /* A halo of the same cream, solid at the glyph and feathered out past it.
-     Out in the desktop margin this paints cream on cream and is invisible; on
-     the phone stack, where the link floats over running text, it is the only
-     thing keeping the glyph off the words — and it feathers so the copy slips
-     under it rather than hitting a hard patch. */
   box-shadow:
     0 0 0 0.3rem var(--paper),
     0 0 1.4rem 0.9rem var(--paper);
@@ -253,184 +283,6 @@
 
 .back[data-ground="paper"]:hover {
   color: var(--ink);
-}
-
-.title {
-  font-size: clamp(1.6rem, 1.1rem + 1.9vw, 2.375rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.08;
-  text-wrap: balance;
-}
-
-.summary {
-  max-width: 46ch;
-  margin-top: 0.75rem;
-  font-size: var(--step-body);
-  line-height: 1.45;
-  color: rgb(233 231 226 / 88%);
-}
-
-/* ---- Project metadata band (CaseMeta.tsx) -----------------------------
- *
- * The vitals under the hero, minus the two that now live in the hero itself
- * (Role and Time — see .heroVitals below). What's left is a name list and a
- * paragraph, which is short enough to sit in one row with no internal
- * divider: Team on the left at its own width, Contributions taking the rest.
- * On a phone, where the hero has nowhere to put Role/Time, .metaMobileOnly
- * brings them back into Team's column instead — see CaseHeroVitals in
- * CaseMeta.tsx for why that's a second copy in the DOM rather than one moved
- * around with CSS `order`.
- *
- * No toggle. A row this short has nothing worth hiding.
- */
-.metaWrap {
-  max-width: var(--measure);
-  margin-inline: auto;
-  padding-inline: var(--gutter);
-  padding-block: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 2.5vw, 1.75rem);
-}
-
-.metaRow {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: clamp(2.5rem, 6vw, 4.5rem);
-  /* Also the whole of the spacing between groups once they stack on a phone,
-     which is why nothing in here carries a margin of its own for it. */
-  row-gap: clamp(1.5rem, 5vw, 1.75rem);
-  padding-block: 0 clamp(1.1rem, 2.2vw, 1.5rem);
-  /* Bottom only. The hero's own bottom edge is already the line this band
-     sits under; a second rule a few pixels beneath it just boxed it in. */
-  border-bottom: 1px solid rgb(0 0 0 / 12%);
-}
-
-.metaGroup {
-  flex: none;
-  min-width: 11rem;
-}
-
-/* The one value in the row that's actual prose — full sentences, not a name
-   or a phrase — so it's the one group that grows to fill whatever width
-   Team leaves it, and the one whose lines are capped for readability rather
-   than left to run the row's full, wrap-however-wide width. */
-.metaContribGroup {
-  flex: 1 1 22rem;
-  max-width: 58ch;
-}
-
-/*
- * Role and Time. The hero carries them from 761px up (.heroVitals), so up
- * there these two are simply not drawn.
- */
-.metaMobileOnly {
-  display: none;
-}
-
-@media (min-width: 761px) {
-  /*
-   * The one place anything is reordered. Source order is the phone's reading
-   * order (see CaseMeta.tsx), which leaves Contributions ahead of Team — but
-   * side by side in a row the name list belongs on the left, against the
-   * gutter, with the prose given the rest of the width.
-   */
-  .metaGroup {
-    order: 1;
-  }
-
-  .metaContribGroup {
-    order: 2;
-  }
-}
-
-@media (max-width: 760px) {
-  .metaGroup,
-  .metaContribGroup {
-    flex-basis: 100%;
-  }
-
-  .metaMobileOnly {
-    display: block;
-  }
-}
-
-.metaLabel {
-  margin-bottom: 0.5rem;
-  font-size: var(--step-small);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--ink-muted);
-}
-
-/* A second label further down its column (Advisors, under Team). */
-.metaLabelStacked {
-  margin-top: 0.9rem;
-}
-
-.metaValue {
-  font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--ink);
-}
-
-/* The real date range, a step down under the rounded duration. */
-.metaTimeDetail {
-  margin-top: 0.15rem;
-  font-size: var(--step-small);
-  line-height: 1.3;
-  color: var(--ink-dim);
-}
-
-.metaTeam {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
-  line-height: 1.35;
-  color: var(--ink-soft);
-}
-
-/* The author, first in the list — read a step stronger than the rest. */
-.metaTeamLead {
-  font-weight: 700;
-  color: var(--ink);
-}
-
-/* One line per advisor — name, then role and org run in after a comma rather
-   than dropped to a line of their own. Two lines each was the single biggest
-   thing the old card spent height on for the studies that had them. */
-.metaAdvisors {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: var(--step-small);
-  line-height: 1.4;
-  color: var(--ink-soft);
-}
-
-.metaAdvisorTitle {
-  color: var(--ink-dim);
-}
-
-/*
- * No bullet and no hanging indent — the entries set flush left like the name
- * list beside them, which is what keeps the two columns reading as one band
- * rather than a list next to a paragraph.
- *
- * The gap is doing the work a marker used to, so it's wider than it was: with
- * nothing but space between two wrapped sentences, too tight a gap reads them
- * as one paragraph.
- */
-.metaContributions {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
-  line-height: 1.4;
-  color: var(--ink-soft);
 }
 
 /* ---- Body: nav rail + content ----------------------------------------- */
@@ -444,6 +296,14 @@
   grid-template-columns: minmax(150px, 210px) minmax(0, 1fr);
   gap: clamp(2rem, 5vw, 4.5rem);
   align-items: start;
+}
+
+/* Purely structural below the wide-desktop breakpoint further down — see the
+   comment there — so .nav and .content stay direct children of .body's grid,
+   exactly as if these two wrappers (page.tsx) weren't there at all. */
+.centerCol,
+.navSlot {
+  display: contents;
 }
 
 .nav {
@@ -473,6 +333,59 @@
   }
 }
 
+/*
+ * Wide desktop: recentre the page on the markdown column instead of on the
+ * nav+content pair — below this, .body's two-column grid (above) keeps
+ * centring the pair as a block, so the content column's own centre sits
+ * right of the page's (the rail borrows real width from the row on its own,
+ * with nothing matching it on the right).
+ *
+ * .centerCol and .navSlot (page.tsx) are inert wrappers below this
+ * breakpoint — `display: contents` drops them from the box tree so .body's
+ * grid still parents .nav/.content directly, unchanged from the rule above.
+ * Here they switch on: .centerCol becomes the centred box, sized to
+ * --content-measure — recomputed with the same terms .body used to size the
+ * content column with (measure, gutter, the rail's own width, the gap), so
+ * the markdown stays exactly the width it always was, just centred on its
+ * own now rather than as part of the pair. .navSlot floats .nav in the
+ * margin that opens up to the left of it: absolutely positioned (so it
+ * can't affect .centerCol's centring), stretched top-to-bottom to give
+ * .nav's own `position: sticky` a containing block as tall as .content to
+ * travel within, same as it had sharing a grid row with it before.
+ */
+@media (min-width: 1400px) {
+  .body {
+    display: block;
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  .centerCol {
+    --nav-w: 210px;
+    --nav-gap: clamp(2rem, 5vw, 4.5rem);
+    --content-measure: calc(
+      var(--measure) - (var(--gutter) * 2) - var(--nav-w) - var(--nav-gap)
+    );
+    display: block;
+    position: relative;
+    max-width: var(--content-measure);
+    margin-inline: auto;
+  }
+
+  .navSlot {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(100% + var(--nav-gap));
+    width: var(--nav-w);
+  }
+
+  .content {
+    width: 100%;
+  }
+}
+
 .navList {
   list-style: none;
   display: flex;
@@ -483,7 +396,7 @@
 .navLink {
   display: block;
   font-size: 0.9375rem;
-  line-height: 1.3;
+  line-height: 1.4;
   color: var(--ink-muted);
   transition: color var(--dur) var(--ease);
 }
@@ -504,12 +417,12 @@
 }
 
 .content > * + * {
-  margin-top: 1.4rem;
+  margin-top: 1.75rem;
 }
 
 /* Custom design-system blocks get noticeably more air than body copy — a
    clear gap on both sides sets each widget apart from the prose and from an
-   adjacent block, for legibility. Overrides both the 1.4rem body rhythm and
+   adjacent block, for legibility. Overrides both the 1.75rem body rhythm and
    each block's own default margin (higher specificity via `.content >`). */
 .content > .mdButton,
 .content > .stats,
@@ -531,20 +444,42 @@
 .h2 {
   scroll-margin-top: 2rem;
   /* Main section headings open a large gap so each section reads as a fresh
-     start. */
+     start — unless an eyebrow (below) already opened it, in which case this
+     sits tight underneath instead. */
   margin-top: clamp(4rem, 8vw, 6.5rem);
   font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.125rem);
   font-weight: 700;
   letter-spacing: -0.02em;
-  line-height: 1.1;
+  line-height: 1.2;
   color: var(--ink);
+}
+
+/* Eyebrow kicker (BlockView's heading case, page.tsx) — a short label that
+   carries the section's own place in the "Navigation" rail, set above the
+   longer, more narrative heading beside it. It opens the section's big gap;
+   the heading itself then sits close underneath. Same tracked-caption idiom
+   as .recEyebrow, not forced to caps. */
+.h2Eyebrow {
+  scroll-margin-top: 2rem;
+  margin-top: clamp(4rem, 8vw, 6.5rem);
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-muted);
+}
+
+.h2Eyebrow + .h2 {
+  margin-top: 0.65rem;
 }
 
 /* First heading sits directly under the hero — no extra top gap. A callout
    opening the study (the `masters` note) counts as the same starting position:
-   its own margin-bottom collapses through to space the heading below it. */
+   its own margin-bottom collapses through to space the heading (or its
+   eyebrow, if it has one) below it. */
 .content > .h2:first-child,
-.content > .callout:first-child + .h2 {
+.content > .h2Eyebrow:first-child,
+.content > .callout:first-child + .h2,
+.content > .callout:first-child + .h2Eyebrow {
   margin-top: 0;
 }
 
@@ -553,6 +488,7 @@
      gap so the hierarchy reads. */
   margin-top: clamp(3rem, 5.5vw, 4.25rem);
   font-size: 1.4rem;
+  line-height: 1.3;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--ink);
@@ -561,14 +497,14 @@
 .lead {
   max-width: 66ch;
   font-size: var(--step-lead);
-  line-height: 1.5;
+  line-height: 1.6;
   color: var(--ink-soft);
 }
 
 .paragraph {
   max-width: 68ch;
   font-size: var(--step-body);
-  line-height: 1.7;
+  line-height: 1.8;
   color: var(--ink-soft);
   text-wrap: pretty;
 }
@@ -710,7 +646,7 @@
 .caption {
   margin-top: 0.85rem;
   font-size: var(--step-small);
-  line-height: 1.45;
+  line-height: 1.55;
   color: var(--ink-dim);
   text-align: center;
   text-wrap: pretty;
@@ -720,12 +656,12 @@
   max-width: 68ch;
   padding-left: 1.3rem;
   font-size: var(--step-body);
-  line-height: 1.6;
+  line-height: 1.75;
   color: var(--ink-soft);
 }
 
 .list li + li {
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
 }
 
 .quote {
@@ -734,7 +670,7 @@
   border-left: 2px solid var(--ink);
   font-size: var(--step-body);
   font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.65;
   color: var(--ink);
 }
 
@@ -1013,7 +949,7 @@
 .cardListTitle {
   font-size: clamp(1.0625rem, 0.98rem + 0.4vw, 1.3rem);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.3;
   letter-spacing: -0.01em;
   color: #e9e7e2;
 }
@@ -1022,7 +958,7 @@
   margin-top: 0.4rem;
   max-width: 68ch;
   font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
-  line-height: 1.45;
+  line-height: 1.6;
   color: rgb(233 231 226 / 74%);
   text-wrap: pretty;
 }
@@ -1034,7 +970,7 @@
   padding-right: clamp(1.75rem, 5vw, 3rem);
   font-size: clamp(1rem, 0.94rem + 0.3vw, 1.1875rem);
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.55;
   color: #e9e7e2;
   text-wrap: pretty;
 }
@@ -1163,7 +1099,7 @@
 
 /* Eyebrow treatment — the same tracked idiom as the other labels on the page,
    at full ink weight so it carries the notice. Set as authored, not forced to
-   caps (see .metaLabel above for why). */
+   caps. */
 .calloutLabel {
   font-size: var(--step-small);
   font-weight: 700;
@@ -1176,7 +1112,7 @@
   margin-top: 0.45rem;
   max-width: 62ch;
   font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
-  line-height: 1.55;
+  line-height: 1.7;
   color: var(--ink-soft);
   text-wrap: pretty;
 }
@@ -1501,7 +1437,7 @@
   max-width: 42ch;
   font-size: clamp(1.0625rem, 0.95rem + 0.6vw, 1.375rem);
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 1.45;
   color: #e9e7e2;
   text-wrap: pretty;
 }
@@ -1874,7 +1810,7 @@
 .imageCarouselCaption {
   margin-top: 0.85rem;
   font-size: var(--step-small);
-  line-height: 1.45;
+  line-height: 1.55;
   color: var(--ink-dim);
   text-align: center;
   text-wrap: pretty;
@@ -2014,7 +1950,7 @@
 .compareCaption {
   margin-top: 0.85rem;
   font-size: var(--step-small);
-  line-height: 1.45;
+  line-height: 1.55;
   color: var(--ink-dim);
   text-align: center;
   text-wrap: pretty;
@@ -2324,14 +2260,14 @@
 .boardDetailTitle {
   font-size: 1rem;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.35;
   color: var(--ink);
 }
 
 .boardDetailBody {
   margin-top: 0.35rem;
   font-size: var(--step-small);
-  line-height: 1.5;
+  line-height: 1.65;
   color: var(--ink-soft);
   text-wrap: pretty;
 }
@@ -2660,7 +2596,7 @@
   margin-top: 0.5rem;
   max-width: 46ch;
   font-size: var(--step-body);
-  line-height: 1.55;
+  line-height: 1.65;
   color: var(--ink-soft);
   text-wrap: pretty;
 }
@@ -2677,7 +2613,8 @@
     position: static;
   }
 
-  .content > .h2:first-child {
+  .content > .h2:first-child,
+  .content > .h2Eyebrow:first-child {
     margin-top: 0;
   }
 
@@ -2718,48 +2655,7 @@
   overflow: visible;
 }
 
-/* Phase eyebrow. Kept in HTML rather than as SVG <text> so it stays at caption
-   size instead of scaling with the diagram — which is also why it sits in the
-   flow above the stage rather than overlaying its top-left corner: the label
-   holds its px size as the diagram shrinks, so on a phone it takes a much
-   larger share of the width and the scattered badges run straight into it. */
-.orbitLabel {
-  display: flex;
-  gap: 0.55rem;
-  align-items: center;
-  margin: 0 0 0.35rem;
-  font-size: var(--step-small);
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--ink-dim);
-}
-
-.orbitLabelDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--ink-muted);
-  transition:
-    background 600ms var(--ease-inout),
-    box-shadow 600ms var(--ease-inout);
-}
-
-.orbitOrbiting .orbitLabelDot,
-.orbitTucked .orbitLabelDot {
-  background: #5865f2;
-  box-shadow: 0 0 0 4px rgb(88 101 242 / 18%);
-}
-
-/* Every label sits in one grid cell so the chip never resizes mid-swap. */
-.orbitLabelSlot {
-  display: grid;
-}
-
-.orbitLabelSlot > span {
-  grid-area: 1 / 1;
-}
-
-/* Shared crossfade for the stacked eyebrows and the stacked captions. */
+/* Shared crossfade for the stacked captions (LogoOrbit.tsx's figcaption). */
 .orbitFadeIn,
 .orbitFadeOut {
   transition: opacity 450ms var(--ease-inout);
@@ -3025,7 +2921,6 @@
   .orbitGuide,
   .orbitHub,
   .orbitPulseRing,
-  .orbitLabelDot,
   .orbitFadeIn,
   .orbitFadeOut {
     transition: none;
