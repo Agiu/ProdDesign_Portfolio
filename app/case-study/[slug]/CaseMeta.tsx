@@ -33,18 +33,20 @@ export function CaseMeta({ meta }: { meta: ProjectMeta }) {
           </div>
         )}
 
-        <div className={styles.fact}>
-          <dt className={styles.factLabel}>Team</dt>
-          <dd>
-            <ul className={styles.factList}>
-              {meta.team.map((name, i) => (
-                <li key={i} className={i === 0 ? styles.factListLead : undefined}>
-                  {name}
-                </li>
-              ))}
-            </ul>
-          </dd>
-        </div>
+        {meta.team.length > 0 && (
+          <div className={styles.fact}>
+            <dt className={styles.factLabel}>Team</dt>
+            <dd>
+              <ul className={styles.factList}>
+                {meta.team.map((name, i) => (
+                  <li key={i} className={i === 0 ? styles.factListLead : undefined}>
+                    {name}
+                  </li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        )}
 
         {meta.advisors && meta.advisors.length > 0 && (
           <div className={styles.fact}>
