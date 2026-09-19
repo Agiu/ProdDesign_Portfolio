@@ -169,6 +169,36 @@ a {
   opacity: 0;
 }
 
+/*
+ * Terminal pretrial homepage (app/page.tsx, components/system). Keyed off its
+ * data-system wrapper with :has(), so every other route keeps its cream ground.
+ */
+body:has([data-system]) {
+  background: #23241f;
+  color: #f0f0ee;
+}
+
+/* PageTransition's curtain takes the ground it's covering, and eases between
+   the two when a navigation crosses from the dark homepage to a cream page. */
+[data-curtain] {
+  transition: background-color 320ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html:has([data-system]) [data-curtain] {
+  background: #23241f;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has([data-system]) {
+    scroll-behavior: smooth;
+  }
+}
+
+/* A film is playing in FilmReel's dialog: hold the page still behind it. */
+html:has([data-system] dialog[open]) {
+  overflow: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;

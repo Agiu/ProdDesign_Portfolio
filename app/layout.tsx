@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { openSauceTwo } from "./fonts";
+import { openSauceTwo, plexMono } from "./fonts";
 import { PageTransition } from "@/components/PageTransition";
 import "./globals.css";
 
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${openSauceTwo.variable} ${sans.variable}`}>
+    <html lang="en" className={`${openSauceTwo.variable} ${plexMono.variable} ${sans.variable}`}>
       <body>
         {/* Without JS none of the three things that clear these ever runs:
             useReveal.ts for .reveal's blocks, Hero.tsx for the name and

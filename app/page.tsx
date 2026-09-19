@@ -1,32 +1,30 @@
-import { Hero } from "@/components/Hero";
-import { CaseStudies } from "@/components/CaseStudies";
-import { About } from "@/components/About";
-import { Filmmaker } from "@/components/Filmmaker";
-import { Footer } from "@/components/Footer";
-import { HideScrollbar } from "@/components/HideScrollbar";
-import { ScrollCue } from "@/components/ScrollCue";
-import styles from "./page.module.css";
+import { SystemHero } from "@/components/system/SystemHero";
+import { WorkRegistry } from "@/components/system/WorkRegistry";
+import { Profile } from "@/components/system/Profile";
+import { FilmReel } from "@/components/system/FilmReel";
+import { Contact } from "@/components/system/Contact";
+import sys from "@/components/system/System.module.css";
 
+/*
+ * Terminal pretrial (see kaelub-redesign-prd.md). Only the homepage is
+ * reskinned; case studies, /films, and /recruiter are untouched. The previous
+ * homepage's components (Hero, ScrollCue, CaseStudies, About, Filmmaker,
+ * Footer, and page.module.css) are left in place, unused, so the two can be
+ * compared or swapped back.
+ *
+ * data-system is what globals.css keys the page ground and the transition
+ * curtain off, so neither leaks onto other routes.
+ */
 export default function Home() {
   return (
-    <>
-      <HideScrollbar />
+    <div className={sys.system} data-system>
       <main>
-        {/* The hero is pinned for its own height of scroll and the rest of the
-            page is drawn up over it — see page.module.css. */}
-        <div className={styles.pin}>
-          <Hero />
-        </div>
-        <div className={styles.stack}>
-          {/* Stands on this wrapper's top edge, i.e. the work section's, and
-              rides up over the pinned hero with it. */}
-          <ScrollCue />
-          <CaseStudies />
-          <About />
-          <Filmmaker />
-        </div>
+        <SystemHero />
+        <WorkRegistry />
+        <Profile />
+        <FilmReel />
       </main>
-      <Footer />
-    </>
+      <Contact />
+    </div>
   );
 }

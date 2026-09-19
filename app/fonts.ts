@@ -1,4 +1,16 @@
 import localFont from "next/font/local";
+import { IBM_Plex_Mono } from "next/font/google";
+
+/*
+ * IBM Plex Mono, for the terminal pretrial's readouts and labels. IBM's own
+ * house monospace, which is the mainframe lineage the redesign borrows from.
+ */
+export const plexMono = IBM_Plex_Mono({
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  variable: "--font-plex-mono",
+  display: "swap",
+});
 
 /*
  * Open Sauce Two, self-hosted from /public. Full latin-subset family across
