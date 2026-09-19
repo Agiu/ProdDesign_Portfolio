@@ -4350,6 +4350,22 @@
   border-radius: calc(5 * var(--s) * 1px);
 }
 
+/*
+ * LogbookPicker.tsx only: each group's label sticks to the top of the
+ * scrolling region while its own rows pass under it, so a reader deep in the
+ * list still knows which group they're in. Sticky is scoped to the label's
+ * group block, so when Recommended arrives its label pushes Recent's up and
+ * out rather than stacking on top of it. The label is opaque and sits above
+ * the rows' circles (which carry `z-index: 1`); the paper-coloured ring
+ * covers the rows behind its rounded corners.
+ */
+.logbookScroll .logbookGroup {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  box-shadow: 0 0 0 calc(3 * var(--s) * 1px) var(--ff-paper);
+}
+
 /* One group is "Recent Entries", the other "Recommended Entries" — both
    live in the same scrolling region (see .logbookScroll), so the second
    needs its own top gap rather than relying on anything the list provides. */
@@ -4372,6 +4388,39 @@
 .logbookScrollWrap {
   position: relative;
   margin-top: calc(15 * var(--s) * 1px);
+}
+
+/*
+ * LogbookPicker.tsx only: the "more below" cue along the region's bottom
+ * edge — a band shading from a faint dark at the edge up to nothing, with a
+ * small radial pool of shadow centred on top of it, so the list reads as
+ * running on under the edge rather than stopping there. Shown only while
+ * some of the list is below the fold, faded out at the end. It stops short
+ * of the drawn scrollbar on the right, and never takes a press.
+ */
+.logbookScrollFade {
+  position: absolute;
+  left: 0;
+  right: calc(10 * var(--s) * 1px);
+  bottom: 0;
+  height: calc(22 * var(--s) * 1px);
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 45% 70% at 50% 100%,
+      rgb(17 17 17 / 12%),
+      rgb(17 17 17 / 0%)
+    ),
+    linear-gradient(to top, rgb(17 17 17 / 9%), rgb(17 17 17 / 0%));
+  border-bottom-left-radius: calc(5 * var(--s) * 1px);
+  border-bottom-right-radius: calc(5 * var(--s) * 1px);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.logbookScrollFade[data-visible] {
+  opacity: 1;
 }
 
 .logbookScroll {
@@ -4430,6 +4479,41 @@
   transition: opacity var(--dur) var(--ease), filter var(--dur) var(--ease);
 }
 
+/*
+ * LogbookPicker.tsx only: a row "Create New Entry" just added, entering at
+ * the top of the list, or one "Delete Entry" is taking out (the same
+ * motion, run backwards). It mounts `collapsed` — a one-track grid at 0fr, its
+ * content lifted above its own top edge — and is opened a frame later, so
+ * the row grows in from nothing while its content slides down into it: the
+ * same reveal the "Linked" tag uses, one level up. The clip between the two
+ * is what the content slides out from behind; it's a separate element
+ * because `.logbookPick`'s own padding would stop it collapsing to zero.
+ */
+.logbookRow:has(> .logbookRowClip) {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--dur) var(--ease);
+}
+
+.logbookRow[data-collapsed] {
+  grid-template-rows: 0fr;
+}
+
+.logbookRowClip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.logbookRowClip > .logbookPick {
+  transition: background-color var(--dur) var(--ease), opacity var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.logbookRow[data-collapsed] .logbookPick {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
 .logbookList[data-active] .logbookRow:not([data-picked]) {
   opacity: 0.4;
   filter: grayscale(65%);
@@ -4458,6 +4542,54 @@
 
 .logbookPick:hover {
   background: rgb(10 135 181 / 5%);
+}
+
+/*
+ * LogbookPicker.tsx only: the row a press has selected, for the actions
+ * under "Create New Entry" to act on — a deeper tint of the hover wash.
+ */
+.logbookPick {
+  position: relative;
+}
+
+.logbookPick[data-selected] {
+  background: rgb(10 135 181 / 10%);
+}
+
+/*
+ * The select target: the route's own line, as a button, with an ::after
+ * stretched over the whole row — so a press anywhere on the row selects it
+ * while the circle (lifted above the stretch) keeps its own press.
+ */
+/* `line-height: 0` and a block route: the button only wraps the route's own
+   line box, so it adds no height of its own and the gap under the route is
+   exactly the tail's margin — the same gap the date and total have. */
+.logbookSelect {
+  display: block;
+  min-width: 0;
+  padding: 0;
+  font: inherit;
+  line-height: 0;
+  text-align: left;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logbookSelect::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.logbookSelect:focus-visible {
+  outline: none;
+}
+
+.logbookSelect:focus-visible::after {
+  outline: 2px solid var(--ff-blue);
+  outline-offset: -2px;
 }
 
 /*
@@ -4500,14 +4632,17 @@
   outline-offset: 2px;
 }
 
+/* Spacing between the lines is each line's own top margin rather than a
+   flex `gap`: LogbookPicker.tsx keeps a collapsed tag in every row (so it
+   can animate in), and a gap would still space that empty line out. */
 .logbookWhat {
   display: flex;
   flex-direction: column;
-  gap: calc(2 * var(--s) * 1px);
   min-width: 0;
 }
 
 .logbookRoute {
+  display: block;
   font-size: calc(13 * var(--s) * 1px);
   font-weight: 700;
   line-height: 1.2;
@@ -4518,6 +4653,7 @@
 }
 
 .logbookTail {
+  margin-top: calc(2 * var(--s) * 1px);
   font-size: calc(12 * var(--s) * 1px);
   line-height: 1.2;
   color: var(--ff-ink);
@@ -4526,18 +4662,89 @@
   white-space: nowrap;
 }
 
-/* The tag that makes a filled, linked check legible on its own, without
-   asking the reader to notice the fill colour or find the hover state to
-   learn what it means. */
+/*
+ * The tag that backs up a linked row's unlink mark in words, so the state
+ * doesn't rest on the reader decoding an icon. It's always in the row, and
+ * linking animates it in two parts at once:
+ *
+ *   .logbookLinkedReveal — the row growing to make room: a one-track grid
+ *                          whose track goes 0fr → 1fr, which animates to
+ *                          the tag's real height without measuring it.
+ *   .logbookLinkedTag    — the words sliding down from the top of that
+ *                          space as it opens, fading in on the way. The
+ *                          clip between them hides the tag above the line
+ *                          it lands on, so it enters from inside the row
+ *                          rather than over the tail number.
+ *
+ * Unlinking runs both back the other way.
+ */
+.logbookLinkedReveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur) var(--ease);
+}
+
+.logbookLinkedReveal[data-open] {
+  grid-template-rows: 1fr;
+}
+
+.logbookLinkedClip {
+  min-height: 0;
+  overflow: hidden;
+}
+
 .logbookLinkedTag {
+  display: grid;
+  overflow: hidden;
+  padding-top: calc(2 * var(--s) * 1px);
   font-size: calc(10 * var(--s) * 1px);
   font-weight: 600;
   color: var(--ff-slate);
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 
+.logbookLinkedReveal[data-open] .logbookLinkedTag {
+  opacity: 1;
+  transform: none;
+}
+
+/*
+ * The tag's words. Most rows only ever draw "Linked"; a row "Create New
+ * Entry" added also carries "Just created", for the arrival only. Both sit
+ * in the same grid cell, so the tag is as wide as the longer one and swapping
+ * them doesn't shift anything — `data-label` picks which is showing, and the
+ * change reads as a flip: the outgoing words roll up and out of the tag's
+ * own clip while the incoming ones roll up into place from below.
+ */
+.logbookLinkedCreated,
+.logbookLinkedLinked {
+  grid-area: 1 / 1;
+  transition: opacity calc(var(--dur) * 0.75) var(--ease),
+    transform calc(var(--dur) * 0.75) var(--ease);
+}
+
+.logbookLinkedTag[data-label="linked"] .logbookLinkedCreated {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.logbookLinkedTag[data-label="created"] .logbookLinkedLinked {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+/*
+ * Lined up with the left column line for line: pinned to the top rather
+ * than centred (so a linked row's taller left column doesn't push the date
+ * off the route's line), the date's line box as tall as the route's, and
+ * the same 2px step down to the total as the route has to the tail.
+ */
 .logbookWhen {
   display: flex;
   flex-direction: column;
+  align-self: start;
   gap: calc(2 * var(--s) * 1px);
   text-align: right;
 }
@@ -4546,7 +4753,8 @@
    entry's own link, the same blue as every other action on the card. */
 .logbookDate {
   font-size: calc(12 * var(--s) * 1px);
-  line-height: 1.2;
+  /* The route's line box (13px × 1.2), so the total starts where the tail does. */
+  line-height: calc(13 * 1.2 * var(--s) * 1px);
   color: var(--ff-blue);
   white-space: nowrap;
 }
@@ -4559,19 +4767,21 @@
 }
 
 /*
- * The row's own action, replacing the card-wide "Add to Logbook Entry" the
- * first pass had — pressing this one circle both picks the row and acts on
- * it. Two variants, both live (neither is ever disabled now):
+ * The row's own action, in the checkbox's old position — one circle that
+ * both picks the row and acts on it. Two variants, both live:
  *
  *   link      — grey, a plus: an offer, not yet a state, so it stays out of
  *               the blue/green/red the rest of the card's actions carry.
  *               Pressing it links this entry.
- *   connected — green, a check: a state, not an offer. Hovering or focusing
- *               swaps the mark and the fill to red ×, previewing what a
- *               press does — pressing it unlinks.
+ *   connected — light red, a broken chain: the link that's there and what a
+ *               press does to it, visible at rest rather than behind a
+ *               hover. Light so several linked rows don't read as a list of
+ *               alarms; hover and focus deepen it to the full red, the
+ *               preview of a press. Pressing it unlinks.
  */
 .logbookRowAction {
   position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
   flex: none;
@@ -4581,12 +4791,38 @@
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
 }
 
-.logbookRowAction svg {
+/*
+ * Both marks are always in the button, stacked, so switching variants can
+ * turn one into the other instead of swapping them: the plus spins a
+ * quarter turn and shrinks away while the chain spins in from the other
+ * side and grows into place, under the circle's own grey → light red fade.
+ */
+.logbookRowIconPlus,
+.logbookRowIconUnlink {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.logbookRowIconPlus svg {
   width: 46%;
   height: 46%;
+}
+
+.logbookRowAction[data-variant="connected"] .logbookRowIconPlus {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.4);
+}
+
+.logbookRowAction[data-variant="link"] .logbookRowIconUnlink {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.4);
 }
 
 .logbookRowAction[data-variant="link"] {
@@ -4600,40 +4836,23 @@
   transform: scale(1.08);
 }
 
+/* The chain has more detail than the plus, so it's drawn a little larger
+   to stay legible inside the same circle. */
+.logbookRowIconUnlink svg {
+  width: 58%;
+  height: 58%;
+}
+
 .logbookRowAction[data-variant="connected"] {
-  color: #fff;
-  background: var(--ff-green);
+  color: var(--ff-red);
+  background: rgb(214 69 69 / 16%);
 }
 
 .logbookRowAction[data-variant="connected"]:hover,
 .logbookRowAction[data-variant="connected"]:focus-visible {
+  color: #fff;
   background: var(--ff-red);
   transform: scale(1.08);
-}
-
-/* The two marks overlap exactly (both `inset: 0`, centred) and cross-fade —
-   the linked check is what's on top at rest, the unlink × on top on hover. */
-.logbookRowIconLinked,
-.logbookRowIconUnlink {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  transition: opacity var(--dur) var(--ease);
-}
-
-.logbookRowIconUnlink {
-  opacity: 0;
-}
-
-.logbookRowAction:hover .logbookRowIconLinked,
-.logbookRowAction:focus-visible .logbookRowIconLinked {
-  opacity: 0;
-}
-
-.logbookRowAction:hover .logbookRowIconUnlink,
-.logbookRowAction:focus-visible .logbookRowIconUnlink {
-  opacity: 1;
 }
 
 /* ---- LogbookPickerBefore.tsx only: show more, and the primary it led to ---- */
@@ -4744,6 +4963,106 @@
   background: none;
 }
 
+/*
+ * LogbookPicker.tsx only: the selected row's actions, under "Create New
+ * Entry" — two small buttons, centred, sized to their labels rather than
+ * stretched to the card, so they read as tools for one row and not as a
+ * second pair of card-wide actions. Opened by the reveal the rows and the
+ * "Linked" tag use — a 0fr → 1fr track, the buttons sliding down into the
+ * space as it opens — and closed the same way, backwards.
+ */
+.logbookActionsReveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur) var(--ease);
+}
+
+.logbookActionsReveal[data-open] {
+  grid-template-rows: 1fr;
+}
+
+.logbookActionsClip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.logbookActions {
+  display: flex;
+  justify-content: center;
+  gap: calc(6 * var(--s) * 1px);
+  padding-top: calc(8 * var(--s) * 1px);
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.logbookActionsReveal[data-open] .logbookActions {
+  opacity: 1;
+  transform: none;
+}
+
+.logbookDelete,
+.logbookOpen {
+  padding: calc(4 * var(--s) * 1px) calc(12 * var(--s) * 1px);
+  font: inherit;
+  font-size: calc(11 * var(--s) * 1px);
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  border: 1.5px solid;
+  border-radius: calc(4 * var(--s) * 1px);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+/* Outlined, not filled: the destructive one of the pair shouldn't be the
+   louder one. It fills on hover, the preview of a press. */
+.logbookDelete {
+  color: var(--ff-red);
+  background: #fff;
+  border-color: var(--ff-red);
+}
+
+.logbookDelete:hover,
+.logbookDelete:focus-visible {
+  color: #fff;
+  background: var(--ff-red);
+}
+
+.logbookOpen {
+  display: grid;
+  overflow: hidden;
+  color: #fff;
+  background: var(--ff-blue);
+  border-color: var(--ff-blue);
+}
+
+.logbookOpen:hover,
+.logbookOpen:focus-visible {
+  background: #0a769c;
+  border-color: #0a769c;
+}
+
+/* The label flips the way the "Just created" tag does: the idle words roll
+   up and out while the hand-off words roll up into place from below. */
+.logbookOpenIdle,
+.logbookOpenBusy {
+  grid-area: 1 / 1;
+  transition: opacity calc(var(--dur) * 0.75) var(--ease),
+    transform calc(var(--dur) * 0.75) var(--ease);
+}
+
+.logbookOpen[data-label="open"] .logbookOpenBusy {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+.logbookOpen[data-label="opening"] .logbookOpenIdle {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
 /* ---- the confirmation ---- */
 
 /*
@@ -4799,11 +5118,24 @@
   .logbookModal,
   .logbookClose,
   .logbookRow,
+  .logbookRow:has(> .logbookRowClip),
   .logbookPick,
+  .logbookRowClip > .logbookPick,
   .logbookCheck,
   .logbookRowAction,
-  .logbookRowIconLinked,
+  .logbookRowIconPlus,
   .logbookRowIconUnlink,
+  .logbookLinkedReveal,
+  .logbookLinkedTag,
+  .logbookLinkedCreated,
+  .logbookLinkedLinked,
+  .logbookActionsReveal,
+  .logbookScrollFade,
+  .logbookActions,
+  .logbookDelete,
+  .logbookOpen,
+  .logbookOpenIdle,
+  .logbookOpenBusy,
   .logbookMore,
   .logbookPrimary,
   .logbookSecondary {

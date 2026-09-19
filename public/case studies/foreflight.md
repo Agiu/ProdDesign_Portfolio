@@ -145,7 +145,7 @@ heading: Select a Logbook entry
 blurb: You have a logbook available for this track log. Link it to gain more insight about your flight.
 group: Recent Entries
 recommended-group: Recommended Entries
-connected-note: Already linked
+connected-note: Linked
 secondary: Create New Entry
 confirm: Redirecting you to logbook...
 confirm-new: New logbook entry created
@@ -172,7 +172,7 @@ heading: Select a Logbook entry
 blurb: You have a logbook available for this track log. Link it to gain more insight about your flight.
 group: Recent Entries
 recommended-group: Recommended Entries
-connected-note: Already linked
+connected-note: Linked
 secondary: Create New Entry
 confirm: Redirecting you to logbook...
 confirm-new: New logbook entry created
