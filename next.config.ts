@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // The Voidpets prototype is a prebuilt Vite app in public/voidpets (built with
+  // The Voidpet prototype is a prebuilt Vite app in public/voidpets (built with
   // base /voidpets/). Link-only: nothing on the site points at it, and it's
   // kept out of search indexes.
   async rewrites() {
