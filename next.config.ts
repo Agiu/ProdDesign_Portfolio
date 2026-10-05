@@ -20,7 +20,6 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       { source: "/voidpets", destination: "/voidpets/story.html" },
-      { source: "/voidpets/prototype", destination: "/voidpets/index.html" },
     ];
   },
   async headers() {
