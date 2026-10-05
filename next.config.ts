@@ -14,6 +14,27 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // The Voidpets prototype is a prebuilt Vite app in public/voidpets (built with
+  // base /voidpets/). Link-only: nothing on the site points at it, and it's
+  // kept out of search indexes.
+  async rewrites() {
+    return [
+      { source: "/voidpets", destination: "/voidpets/story.html" },
+      { source: "/voidpets/prototype", destination: "/voidpets/index.html" },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/voidpets/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      {
+        source: "/voidpets",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
