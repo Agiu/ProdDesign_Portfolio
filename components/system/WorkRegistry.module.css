@@ -1,0 +1,161 @@
+/* The first section after the hero sits closer to it, so its heading shows
+   below the fold on arrival as the scroll cue. Qualified with the element so
+   it outranks the shared .section padding whatever order the modules load. */
+section.first {
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.list {
+  list-style: none;
+}
+
+.list > li {
+  border-bottom: 1px solid var(--rule);
+}
+
+/* ── Featured entries ──────────────────────────────────────────────────── */
+
+.entry {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+  padding-block: clamp(1.75rem, 3.5vw, 3rem);
+}
+
+.cover {
+  aspect-ratio: 3 / 2;
+}
+
+.coverImage {
+  object-fit: cover;
+}
+
+.text {
+  display: block;
+}
+
+.title {
+  display: block;
+  max-width: 22ch;
+  font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.summary {
+  display: block;
+  max-width: 52ch;
+  margin-top: 0.9rem;
+  color: var(--signal-dim);
+  line-height: 1.55;
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.9rem 1.5rem;
+  max-width: 40rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+.metaRow {
+  display: grid;
+  gap: 0.2rem;
+  align-content: start;
+}
+
+.open {
+  display: inline-block;
+  margin-top: 1.75rem;
+  padding-bottom: 2px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--signal);
+  transition:
+    color 160ms var(--ease-inout),
+    background-color 160ms var(--ease-inout),
+    box-shadow 160ms var(--ease-inout);
+}
+
+/* Fills without reflowing: the spread shadow grows the block outward. */
+.entry:hover .open,
+.entry:focus-visible .open {
+  color: var(--ground);
+  background: var(--signal);
+  box-shadow: 0 0 0 0.4rem var(--signal);
+}
+
+/* ── More projects ─────────────────────────────────────────────────────── */
+
+.moreHeading {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* The two-colour hover: the row inverts. */
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 14rem 3.5rem;
+  gap: 1.5rem;
+  align-items: baseline;
+  margin-inline: -0.75rem;
+  padding: 1.1rem 0.75rem;
+  transition:
+    color 160ms var(--ease-inout),
+    background-color 160ms var(--ease-inout);
+}
+
+.row:hover,
+.row:focus-visible {
+  color: var(--ground);
+  background: var(--signal);
+}
+
+.rowTitle {
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.rowDiscipline {
+  color: var(--signal-dim);
+}
+
+.rowYear {
+  text-align: right;
+}
+
+.row:hover .rowDiscipline,
+.row:focus-visible .rowDiscipline {
+  color: inherit;
+}
+
+/* ── Smaller screens ───────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .entry {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .rowDiscipline {
+    display: none;
+  }
+}

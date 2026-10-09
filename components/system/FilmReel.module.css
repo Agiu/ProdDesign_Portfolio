@@ -1,0 +1,195 @@
+.archive {
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--signal);
+}
+
+.archive:hover {
+  color: var(--ground);
+  background: var(--signal);
+  box-shadow: 0 0 0 0.35rem var(--signal);
+}
+
+.intro {
+  max-width: 52ch;
+  padding-top: clamp(1.25rem, 2.5vw, 2rem);
+  color: var(--signal-dim);
+}
+
+.reel {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  align-items: start;
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.list {
+  display: grid;
+  gap: clamp(1.1rem, 2vw, 1.5rem);
+  list-style: none;
+}
+
+/* ── Cards ─────────────────────────────────────────────────────────────── */
+
+.card {
+  display: block;
+  width: 100%;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.side {
+  display: grid;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.poster {
+  aspect-ratio: 16 / 9;
+}
+
+.posterImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.play {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  color: var(--ground);
+  background: var(--signal);
+}
+
+.side .play {
+  bottom: 0.45rem;
+  left: 0.45rem;
+  padding: 0.3rem 0.45rem;
+}
+
+.glyph {
+  width: 0;
+  height: 0;
+  border-top: 4.5px solid transparent;
+  border-bottom: 4.5px solid transparent;
+  border-left: 7px solid currentColor;
+}
+
+.caption {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.lead .caption {
+  margin-top: 1rem;
+}
+
+.title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.lead .title {
+  font-size: clamp(1.4rem, 1rem + 1.2vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.card:hover .title,
+.card:focus-visible .title {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.15em;
+}
+
+/* ── Player ────────────────────────────────────────────────────────────── */
+
+/* Fills the viewport so any click outside the player lands on the dialog
+   itself, which closes it. Display is only set while open, or it would
+   override the browser's hidden state for a closed dialog. */
+.dialog {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  padding: var(--pad);
+  color: var(--signal);
+  background: transparent;
+  border: 0;
+}
+
+.dialog[open] {
+  display: grid;
+  place-items: center;
+}
+
+.dialog::backdrop {
+  background: rgb(35 36 31 / 96%);
+}
+
+.player {
+  width: min(100%, 1200px, calc((100svh - 8rem) * 16 / 9));
+}
+
+.playerBar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.75rem;
+}
+
+.close {
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--ground);
+  background: var(--signal);
+  border: 0;
+  cursor: pointer;
+}
+
+.screen {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ── Smaller screens ───────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .reel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .side {
+    grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr);
+  }
+}

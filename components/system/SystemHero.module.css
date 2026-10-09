@@ -1,0 +1,234 @@
+/* The still's stepped-edge progress (see SystemHero.tsx). Registered so it
+   interpolates; defaults to the finished shape. */
+@property --reveal {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
+.hero {
+  display: grid;
+  /* Short enough that the Case studies heading shows below the fold on
+     arrival, so the next section is itself the scroll cue. */
+  min-height: calc(100svh - 8.5rem);
+  padding-top: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.shell {
+  display: grid;
+}
+
+.frame {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: clamp(1.75rem, 3.5vw, 2.75rem);
+  padding: clamp(1.1rem, 2.2vw, 1.9rem) clamp(1.1rem, 2.4vw, 2.2rem);
+}
+
+/* ── Frame edges ───────────────────────────────────────────────────────── */
+
+/*
+ * Three readouts per edge, hung off the marks like the Nucleus card: one from
+ * the left corner, one from the centre mark, one right-aligned to the right
+ * corner. The centre and right cells share the second column.
+ */
+.edge {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 2rem;
+}
+
+.cell:nth-child(1) {
+  grid-area: 1 / 1;
+}
+
+.cell:nth-child(2) {
+  grid-area: 1 / 2;
+  justify-self: start;
+}
+
+.cell:nth-child(3) {
+  grid-area: 1 / 2;
+  justify-self: end;
+  text-align: right;
+}
+
+.line {
+  display: block;
+}
+
+/* ── Body ──────────────────────────────────────────────────────────────── */
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: end;
+}
+
+.name {
+  margin-left: -0.04em;
+  font-size: clamp(5.25rem, 1rem + 9.5vw, 10rem);
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 0.84;
+}
+
+.name span {
+  display: block;
+}
+
+.statement {
+  max-width: 28ch;
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  font-size: clamp(1.15rem, 0.9rem + 1vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* The page's one filled control: an inverted block, which is what a primary
+   button looks like when there are only two colours to work with. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  padding: 0.85rem 1.1rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ground);
+  background: var(--signal);
+  transition:
+    color 160ms var(--ease-inout),
+    background-color 160ms var(--ease-inout),
+    box-shadow 160ms var(--ease-inout);
+}
+
+.cta:hover {
+  color: var(--signal);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--signal);
+}
+
+/* ── The still ─────────────────────────────────────────────────────────── */
+
+.plate {
+  margin: 0;
+}
+
+.still {
+  aspect-ratio: 5 / 4;
+  animation: extend 1000ms var(--ease-wipe) 250ms both;
+}
+
+.image {
+  object-fit: cover;
+  /* The subject runs right of centre; keep him clear of the stepped edge. */
+  object-position: 62% 50%;
+}
+
+.caption {
+  margin-top: 0.75rem;
+}
+
+@keyframes extend {
+  from {
+    --reveal: 0;
+  }
+
+  to {
+    --reveal: 1;
+  }
+}
+
+/*
+ * The readouts type on as the still extends: a stepped wipe, so the text
+ * arrives in character-sized jumps rather than a smooth slide. Content (name,
+ * statement, button) never animates; it's on screen from the first paint.
+ */
+.edge .cell {
+  animation: type 460ms steps(16, end) both;
+}
+
+.edgeTop .cell:nth-child(1) {
+  animation-delay: 380ms;
+}
+
+.edgeTop .cell:nth-child(2) {
+  animation-delay: 460ms;
+}
+
+.edgeTop .cell:nth-child(3) {
+  animation-delay: 540ms;
+}
+
+.edgeBottom .cell:nth-child(1) {
+  animation-delay: 660ms;
+}
+
+.edgeBottom .cell:nth-child(2) {
+  animation-delay: 740ms;
+}
+
+.edgeBottom .cell:nth-child(3) {
+  animation-delay: 820ms;
+}
+
+@keyframes type {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .still,
+  .edge .cell {
+    animation: none;
+  }
+}
+
+/* ── Smaller screens ───────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .plate {
+    max-width: 36rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero {
+    min-height: 0;
+  }
+
+  /* The top edge is texture: keep its two outer cells, one line each. */
+  .edgeTop .cell:nth-child(2),
+  .edgeTop .line + .line {
+    display: none;
+  }
+
+  /* The bottom edge is information: stack it rather than crowd it. */
+  .edgeBottom {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.75rem;
+  }
+
+  .edgeBottom .cell:nth-child(n) {
+    grid-area: auto;
+    justify-self: start;
+    text-align: left;
+  }
+}

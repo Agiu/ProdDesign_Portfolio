@@ -17,9 +17,14 @@ const nextConfig: NextConfig = {
   // The Voidpet prototype is a prebuilt Vite app in public/voidpets (built with
   // base /voidpets/). Link-only: nothing on the site points at it, and it's
   // kept out of search indexes.
+  // Who Owns Seattle is a prebuilt Vite app in public/who, built from the WOS
+  // repo with `npm run build:portfolio` (base /who/). Two pages: the story site
+  // at /who and the visualizer at /who/explore.
   async rewrites() {
     return [
       { source: "/voidpets", destination: "/voidpets/story.html" },
+      { source: "/who", destination: "/who/index.html" },
+      { source: "/who/explore", destination: "/who/explore/index.html" },
     ];
   },
   async headers() {

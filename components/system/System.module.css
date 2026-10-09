@@ -1,0 +1,186 @@
+/*
+ * The terminal pretrial's shared system: tokens, the readout type style, the
+ * section header, the registration marks, and the duotone image treatment.
+ * Tokens live on .system (the homepage wrapper) rather than :root, so every
+ * other route keeps its own palette.
+ *
+ * Two colours. Hierarchy comes from scale, weight, and one alpha step, never
+ * from a third hue. Contrast against --ground:
+ *   --signal      13.7:1  everything
+ *   --signal-dim   6.4:1  secondary text at any size
+ *   --rule                hairlines only, never text
+ */
+.system {
+  --ground: #23241f;
+  --signal: #f0f0ee;
+  --signal-dim: rgb(240 240 238 / 64%);
+  --rule: rgb(240 240 238 / 16%);
+
+  --mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", Menlo,
+    Consolas, monospace;
+
+  --frame: 1320px;
+  --pad: clamp(1.25rem, 4vw, 3rem);
+  --mark: 6px;
+
+  min-height: 100svh;
+  background: var(--ground);
+  color: var(--signal);
+}
+
+.system ::selection {
+  background: var(--signal);
+  color: var(--ground);
+}
+
+/* One focus style for the whole page: a solid signal outline, clear of the
+   element so it never sits on top of inverted fills. */
+.system :focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+/* Monospace, small, uppercase, tracked. The connective tissue of the theme,
+   so it's reserved for metadata and never used for anything a visitor has to
+   read at length. */
+.readout {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.label {
+  color: var(--signal-dim);
+}
+
+.section {
+  padding-top: clamp(3rem, 7vw, 6rem);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.sectionTitle {
+  font-size: clamp(2.25rem, 1.3rem + 3.4vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+/* ── Registration marks (RegMarks.tsx) ─────────────────────────────────── */
+
+.marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mark {
+  position: absolute;
+  width: var(--mark);
+  height: var(--mark);
+  background: var(--signal);
+}
+
+.mark[data-at^="t"] {
+  top: 0;
+}
+
+.mark[data-at^="b"] {
+  bottom: 0;
+}
+
+.mark[data-at^="m"] {
+  top: calc(50% - var(--mark) / 2);
+}
+
+.mark[data-at$="l"] {
+  left: 0;
+}
+
+.mark[data-at$="r"] {
+  right: 0;
+}
+
+.mark[data-at$="c"] {
+  left: calc(50% - var(--mark) / 2);
+}
+
+@media (max-width: 720px) {
+  .mark:is([data-at="tc"], [data-at="bc"], [data-at="ml"], [data-at="mr"]) {
+    display: none;
+  }
+}
+
+/* ── Duotone ───────────────────────────────────────────────────────────── */
+
+/*
+ * Maps any photo onto the two colours: greyscale it, lift its blacks to
+ * --ground (lighten), then tint its whites down to --signal (multiply). Pure
+ * CSS, so every image source (local, CDN, YouTube) gets the same treatment.
+ *
+ * Inside a link or button, hovering or focusing that control brings the full
+ * colour back. That's decoration on top of a control that already reads as
+ * one, never the only sign that something is clickable.
+ */
+.duotone {
+  position: relative;
+  display: block;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--ground);
+}
+
+.duotone img {
+  filter: grayscale(1) contrast(1.08);
+  transition: filter var(--dur-slow) var(--ease-inout);
+}
+
+.duotone::before,
+.duotone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity var(--dur-slow) var(--ease-inout);
+}
+
+.duotone::before {
+  background: var(--ground);
+  mix-blend-mode: lighten;
+}
+
+.duotone::after {
+  background: var(--signal);
+  mix-blend-mode: multiply;
+}
+
+:where(a:hover, a:focus-visible, button:hover, button:focus-visible)
+  .duotone
+  img {
+  filter: none;
+}
+
+:where(a:hover, a:focus-visible, button:hover, button:focus-visible)
+  .duotone::before,
+:where(a:hover, a:focus-visible, button:hover, button:focus-visible)
+  .duotone::after {
+  opacity: 0;
+}
