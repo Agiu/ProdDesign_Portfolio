@@ -38,6 +38,19 @@ export const films: Film[] = [
     category: "Demo Reel",
   },
   {
+    youtubeId: "JZpwuotClQ0",
+    title: "Advanced Interfaces Lab w/ Chris Seifert | MHCI+D Course Overview",
+    description:
+      "A course overview video for the Advanced Interfaces Lab in UW's MHCI+D program.",
+    category: "Documentary",
+  },
+  {
+    youtubeId: "eBoFxr2qnhQ",
+    title: "MHCI+D Studio Tour in Motion",
+    description: "A motion tour of the MHCI+D studio space at UW.",
+    category: "Documentary",
+  },
+  {
     youtubeId: "oO-0QA1BzfQ",
     title: "XBOX Arcade: Discover and Play Instantly",
     description:
