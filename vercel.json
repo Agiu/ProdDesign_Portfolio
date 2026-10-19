@@ -1,4 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "nextjs"
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/who", "destination": "/who/index.html" },
+    { "source": "/who/explore", "destination": "/who/explore/index.html" },
+    { "source": "/((?!who/|assets/).*)", "destination": "/index.html" }
+  ]
 }

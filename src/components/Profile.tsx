@@ -1,0 +1,302 @@
+import { useRef } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import arrowDown from '../assets/arrow-down.svg'
+import arrowNe from '../assets/arrow-ne.svg'
+import linkRule from '../assets/link-rule.svg'
+import { profile } from '../data/caseStudies'
+import { gsap, useGSAP } from '../lib/gsap'
+import { fadeOutPage } from '../lib/pageTransition'
+import { useTimeOfDay } from '../lib/timeOfDay'
+
+/** Dot grid spacing and pointer-light radius for the name's hover (the header's grid uses 22 / 150). */
+const DOT_GAP = 14
+const DOT_REACH = 90
+
+/**
+ * Name, bio and status. The name links home; on hover a dot grid behind it lights up around the
+ * pointer, the header's grid inverted to black dots on the white page.
+ */
+export function Intro({ onHome }: { onHome?: (e: React.MouseEvent<HTMLAnchorElement>) => void }) {
+  const wrap = useRef<HTMLHeadingElement>(null)
+  const dots = useRef<HTMLCanvasElement>(null)
+  // Pointer target, the eased position the light actually sits at, and how lit the grid is.
+  const light = useRef({ tx: 0, ty: 0, x: 0, y: 0, on: 0, live: false })
+
+  const { contextSafe } = useGSAP(
+    () => {
+      const cv = dots.current!
+      const ctx = cv.getContext('2d')
+      if (!ctx) return
+      const s = light.current
+      const draw = () => {
+        if (!s.live) return
+        const w = cv.clientWidth, h = cv.clientHeight
+        const dpr = Math.min(window.devicePixelRatio || 1, 2)
+        if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) {
+          cv.width = Math.round(w * dpr)
+          cv.height = Math.round(h * dpr)
+        }
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+        ctx.clearRect(0, 0, w, h)
+        // The light trails the pointer a little, like the header's.
+        s.x += (s.tx - s.x) * 0.25
+        s.y += (s.ty - s.y) * 0.25
+        ctx.fillStyle = getComputedStyle(cv).color
+        for (let y = DOT_GAP / 2; y < h; y += DOT_GAP) {
+          for (let x = DOT_GAP / 2; x < w; x += DOT_GAP) {
+            const d = Math.hypot(x - s.x, y - s.y)
+            const a = s.on * (0.06 + 0.45 * Math.max(0, 1 - d / DOT_REACH))
+            if (a < 0.01) continue
+            ctx.globalAlpha = a
+            ctx.fillRect(x, y, 1, 1)
+          }
+        }
+        if (s.on <= 0.001) s.live = false
+      }
+      gsap.ticker.add(draw)
+      return () => gsap.ticker.remove(draw)
+    },
+    { scope: wrap },
+  )
+
+  const move = (e: React.PointerEvent) => {
+    const r = dots.current!.getBoundingClientRect()
+    const s = light.current
+    s.tx = e.clientX - r.left
+    s.ty = e.clientY - r.top
+  }
+  const enter = contextSafe((e: React.PointerEvent) => {
+    if (!window.matchMedia('(hover: hover)').matches) return
+    const s = light.current
+    move(e)
+    if (!s.live) {
+      s.x = s.tx
+      s.y = s.ty
+    }
+    s.live = true
+    gsap.to(s, { on: 1, duration: 0.4, ease: 'power2.out', overwrite: true })
+  })
+  const leave = contextSafe(() => {
+    gsap.to(light.current, { on: 0, duration: 0.6, ease: 'power2.out', overwrite: true })
+  })
+
+  return (
+    <div className="intro">
+      <h1 ref={wrap} className="intro-name">
+        <canvas ref={dots} className="intro-name-dots" aria-hidden="true" />
+        <Link
+          to="/"
+          className="intro-name-link"
+          data-split
+          onClick={onHome}
+          onPointerEnter={enter}
+          onPointerMove={move}
+          onPointerLeave={leave}
+        >
+          {profile.name}
+        </Link>
+      </h1>
+      <div className="intro-bio">
+        <p className="intro-lead" data-split>
+          {profile.bio}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Sidebar link row: label, north-east arrow, full-width rule. On hover the rule retracts to the
+ * right and redraws from the left, the label nudges in, and the arrow exits up-right while a
+ * copy arrives from the bottom-left.
+ */
+export function ArrowLink({
+  href,
+  label,
+  down = false,
+  onClick,
+}: {
+  href: string
+  label: string
+  /** A straight down arrow right after the label, with the rule only as wide as the two. */
+  down?: boolean
+  /** Replaces the default follow behaviour. */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void
+}) {
+  const root = useRef<HTMLAnchorElement>(null)
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+  // Internal routes ("/recruiter") fade the current page out first, like the other page changes.
+  const internal = href.startsWith('/')
+  const { contextSafe } = useGSAP({ scope: root })
+
+  const enter = contextSafe(() => {
+    if (!window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches) return
+    const q = gsap.utils.selector(root)
+    gsap.killTweensOf(q('.arrow-link-rule, .arrow-link-icon, .arrow-link-label'))
+    gsap.set(q('.arrow-link-icon--out'), { x: 0, y: 0 })
+    gsap
+      .timeline()
+      .to(q('.arrow-link-rule'), { scaleX: 0, transformOrigin: '100% 50%', duration: 0.3, ease: 'power2.in' }, 0)
+      .set(q('.arrow-link-rule'), { transformOrigin: '0% 50%' })
+      .to(q('.arrow-link-rule'), { scaleX: 1, duration: 0.6, ease: 'expo.out' })
+      // The arrow leaves the way it points and a copy follows in behind it.
+      .to(q('.arrow-link-icon--out'), { ...(down ? { y: 12 } : { x: 14, y: -8 }), duration: 0.35, ease: 'power2.in' }, 0)
+      .fromTo(
+        q('.arrow-link-icon--in'),
+        down ? { x: 0, y: -12 } : { x: -14, y: 8 },
+        { x: 0, y: 0, duration: 0.55, ease: 'expo.out' },
+        0.25,
+      )
+      .to(q('.arrow-link-label'), { x: 4, duration: 0.5, ease: 'expo.out' }, 0)
+  })
+
+  const leave = contextSafe(() => {
+    const q = gsap.utils.selector(root)
+    gsap.to(q('.arrow-link-label'), { x: 0, duration: 0.5, ease: 'expo.out' })
+  })
+
+  const follow = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!internal || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    e.preventDefault()
+    await fadeOutPage(e.currentTarget.closest<HTMLElement>('.layout-sidebar'))
+    navigate(href, { state: { from: pathname } })
+  }
+
+  return (
+    <a
+      ref={root}
+      className={`arrow-link${down ? ' arrow-link--down' : ''}`}
+      href={href}
+      {...(internal ? {} : { target: '_blank', rel: 'noreferrer' })}
+      onClick={onClick ?? follow}
+      onMouseEnter={enter}
+      onMouseLeave={leave}
+    >
+      <span className="arrow-link-row">
+        <span className="arrow-link-label">{label}</span>
+        <span className="arrow-link-arrow" aria-hidden="true">
+          <img className="arrow-link-icon arrow-link-icon--out" src={down ? arrowDown : arrowNe} alt="" />
+          <img className="arrow-link-icon arrow-link-icon--in" src={down ? arrowDown : arrowNe} alt="" />
+        </span>
+      </span>
+      <img className="arrow-link-rule" src={linkRule} alt="" />
+    </a>
+  )
+}
+
+/** Where I'm based, then the Resume and LinkedIn links: sits at the foot of the sidebar. */
+export function SidebarContact() {
+  const linkedin = profile.links.find((l) => l.label === 'Linkedin')!
+  return (
+    <div className="sidebar-contact">
+      <p className="intro-status" data-split>
+        {profile.status}
+      </p>
+      <ul className="sidebar-links">
+        <li className="intro-fade">
+          <ArrowLink href="/recruiter" label="Resume" />
+        </li>
+        <li className="intro-fade">
+          <ArrowLink href={linkedin.href} label="LinkedIn" />
+        </li>
+      </ul>
+    </div>
+  )
+}
+
+/**
+ * Oil-like bridge between the two squares. It's two fillets filling the concave corners at each
+ * end of the edge the squares share (x = 8). Rebuilt every frame from the squares' positions, so
+ * it stays attached and bends with them: it stretches vertically (and thins) with speed, and melts
+ * to nothing as the squares line up mid-swap, re-forming on the opposite corners. At rest it matches
+ * the exported Figma bridge (curves with both control points on the corner).
+ */
+function bridgePath(ya: number, yb: number, stretch: number) {
+  const diff = Math.abs(ya - yb) // how far one square's side sticks out past the other's
+  const rv = Math.min(4 * stretch, diff)
+  const rh = Math.min(4 / Math.sqrt(stretch), diff)
+  if (rv < 0.05 || rh < 0.05) return ''
+  const top = Math.max(ya, yb) // top end of the shared edge
+  const bot = Math.min(ya, yb) + 8 // bottom end
+  const topDir = ya < yb ? 1 : -1 // fillet flows onto whichever square sits lower at that end
+  const botDir = ya > yb ? 1 : -1
+  const fillet = (y: number, dy: number, dir: number) =>
+    `M8 ${y + dy}C8 ${y} 8 ${y} ${8 + dir * rh} ${y}L8 ${y}Z`
+  return fillet(top, -rv, topDir) + fillet(bot, rv, botDir)
+}
+
+/**
+ * Footer mark from the Figma frame: two squares meeting at a corner, joined by the oily bridge.
+ * Per the designer's note, the squares slide vertically past each other in alternating directions
+ * while the bridge keeps their corners meshed.
+ */
+function FooterMark() {
+  const root = useRef<SVGSVGElement>(null)
+
+  useGSAP(
+    () => {
+      const q = gsap.utils.selector(root)
+      const [a, b] = q('.mark-square')
+      const bridge = q('.mark-bridge')[0]
+      const pos = { ya: 0, yb: 8 }
+      let lastYa = pos.ya
+      let lastT = performance.now()
+      let stretch = 1
+
+      const draw = () => {
+        const now = performance.now()
+        const dt = Math.max(1, now - lastT) / 1000
+        const speed = Math.abs(pos.ya - lastYa) / dt // px/s; peaks around 15
+        lastYa = pos.ya
+        lastT = now
+        // Ease the stretch toward the speed-based target so the oil lags and settles, not snaps.
+        stretch += (1 + Math.min(speed / 15, 1.4) - stretch) * 0.25
+        a.setAttribute('y', `${pos.ya}`)
+        b.setAttribute('y', `${pos.yb}`)
+        bridge.setAttribute('d', bridgePath(pos.ya, pos.yb, stretch))
+      }
+      draw()
+
+      gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', () => {
+        const slide = (ya: number, yb: number) => ({ ya, yb, duration: 1.1, ease: 'power3.inOut' })
+        const tl = gsap
+          .timeline({ repeat: -1, repeatDelay: 1.4, delay: 1 })
+          .to(pos, slide(8, 0)) // top-left square slides down, bottom-right slides up
+          .to(pos, slide(0, 8), '+=1.4') // then back the other way
+        // Redraw once per frame on GSAP's ticker, which also lets the stretch relax after each slide.
+        gsap.ticker.add(draw)
+        return () => {
+          tl.kill()
+          gsap.ticker.remove(draw)
+        }
+      })
+    },
+    { scope: root },
+  )
+
+  return (
+    <svg ref={root} className="footer-mark" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+      <rect className="mark-square" x="0" y="0" width="8" height="8" />
+      <rect className="mark-square" x="8" y="8" width="8" height="8" />
+      <path className="mark-bridge" d={bridgePath(0, 8, 1)} />
+    </svg>
+  )
+}
+
+export function SidebarFooter() {
+  // The mark lights up in the header's current time-of-day colour on hover.
+  const { swatches } = useTimeOfDay()
+  return (
+    <footer className="sidebar-footer" style={{ '--tod': swatches[1] } as React.CSSProperties}>
+      {/* GSAP fades the <p> in on load; the hover crossfade lives on the inner span so the two never fight. */}
+      <p className="intro-fade">
+        <span className="footer-credit">Designed and Developed by Caleb</span>
+      </p>
+      <span className="footer-mark-wrap">
+        <span className="footer-mark-note">always thinking</span>
+        <FooterMark />
+      </span>
+    </footer>
+  )
+}
