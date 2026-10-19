@@ -108,10 +108,15 @@ const studies: Omit<CaseStudy, 'sections'>[] = [
       'Set the visual direction and brought our mockups to life with animation and motion.',
       'Co-directed and produced a product pitch that fits the realm of Xbox and Discord, with funding from Netflix.',
     ],
-    team: ['Caleb Aguiar', 'Clarisse Pelayo Sicat', 'Sauhee Han', 'Meera Forespring'],
+    team: [
+      'Caleb Aguiar',
+      { name: 'Clarisse Pelayo Sicat', linkedin: 'https://www.linkedin.com/in/clarissepsicatux/' },
+      { name: 'Sauhee Han', linkedin: 'https://www.linkedin.com/in/shannon-sauhee-han-451101194/' },
+      { name: 'Meera Forespring', linkedin: 'https://www.linkedin.com/in/meera-divecha-forespring-3439351a2/' },
+    ],
     advisors: [
-      { name: 'John Snavely', role: 'Head of Design, Xbox', linkedin: '' },
-      { name: 'Yessenia Garcia', role: 'Technical Program Manager, Xbox', linkedin: '' },
+      { name: 'John Snavely', role: 'Head of Design, Xbox', linkedin: 'https://www.linkedin.com/in/john-snavely-7259203/' },
+      { name: 'Yessenia Garcia', role: 'Technical Program Manager, Xbox', linkedin: 'https://www.linkedin.com/in/garciayesseniam/' },
     ],
   },
   {
