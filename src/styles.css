@@ -6267,7 +6267,9 @@ a {
     display: contents;
   }
 
+  /* The name and bio come first, with Work's header art under them. */
   .layout-site .sidebar-top {
+    order: -1;
     padding-bottom: 24px;
     background: var(--surface);
   }
@@ -6292,7 +6294,7 @@ a {
     padding-right: 16px;
   }
 
-  /* A little more air between the header art and the name. */
+  /* A little more air above the name, at the top of the page. */
   .sidebar .intro {
     padding-top: 36px;
   }
@@ -6468,7 +6470,7 @@ a {
     grid-template-columns: 1fr 1fr;
   }
 
-  /* Phones: art first, full-bleed, sized so the name and bio below it still land on the first screen. */
+  /* Phones: the art runs full-bleed under the name and bio, sized to fit the rest of the first screen. */
   .site-header {
     padding: 0;
   }

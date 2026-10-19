@@ -114,8 +114,9 @@ export function SiteLayout() {
 
   return (
     <div ref={root} className="layout-sidebar layout-site">
-      {/* Work's datamosh header lives in the shell, not the page, so on phones it can sit above
-          the name; on desktop CSS grid places it at the top of the right-hand column. */}
+      {/* Work's datamosh header lives in the shell, not the page, so on phones it can sit between
+          the name and the case studies; on desktop CSS grid places it at the top of the
+          right-hand column. */}
       {pathname === '/' && (
         <div ref={header} className="site-header">
           <HomeHeader />
