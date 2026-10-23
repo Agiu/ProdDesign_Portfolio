@@ -410,7 +410,7 @@ const foreflight: Scene = (() => {
   return {
     description: 'Under NDA: a system that links flight telemetry from ForeFlight’s Track Logs to pilots’ digital logbooks.',
     prepare,
-    draw: ({ ctx, box, t, reveal, col, pal }) => {
+    draw: ({ ctx, box, t, reveal, hair, col, pal }) => {
       // Normally long done by now; if not (a jump straight here), finish it.
       prepare(() => true)
       const cx = box.x + box.w / 2, cy = box.y + box.h / 2
@@ -436,8 +436,9 @@ const foreflight: Scene = (() => {
       // The land, drawing on from the valleys up; higher contours read brighter. Its contours are
       // hairlines, one device pixel wide at any pixel density (their alpha raised to match, so
       // they carry the same light): Chrome strokes anything wider far more slowly, which held
-      // this scene to ~45fps on retina screens.
-      const T = ctx.getTransform(), devicePx = Math.hypot(T.a, T.b)
+      // this scene to ~45fps on retina screens. Close up (phones) they carry the light of the
+      // frame's usual weight, not the zoomed one.
+      const T = ctx.getTransform(), devicePx = Math.hypot(T.a, T.b), weight = devicePx * hair
       ctx.lineWidth = 1 / devicePx
       const c0 = Math.max(0, Math.floor((scroll - WINDOW) / CHUNK)), c1 = Math.min(CHUNKS - 1, Math.floor((scroll + WINDOW) / CHUNK))
       for (let li = 0; li < LEVELS; li++) {
@@ -449,7 +450,7 @@ const foreflight: Scene = (() => {
           for (let ci = c0; ci <= c1; ci++) {
             const segs = bins[li][band][ci]
             if (!segs.length) continue
-            const a = Math.min(1, (0.22 + 0.45 * (li / LEVELS)) * across * along((ci + 0.5) * CHUNK) * on * devicePx)
+            const a = Math.min(1, (0.22 + 0.45 * (li / LEVELS)) * across * along((ci + 0.5) * CHUNK) * on * weight)
             if (a <= 0.005) continue
             ctx.beginPath()
             for (let k = 0; k < segs.length; k += 4) {
@@ -462,12 +463,12 @@ const foreflight: Scene = (() => {
           }
         }
       }
-      ctx.lineWidth = 1
+      ctx.lineWidth = hair
 
       // The route on the ground, dotted, as it would be on a chart.
       const ground: V3[] = []
       for (let x = scroll - WINDOW; x <= scroll + WINDOW; x += 0.08) ground.push([x, height(x, routeZ(x)) + 0.01, routeZ(x)])
-      ctx.setLineDash([1, 4])
+      ctx.setLineDash([hair, 4 * hair])
       path(ground)
       ctx.strokeStyle = col(pal.hi, 0.35 * reveal)
       ctx.stroke()
@@ -1215,14 +1216,15 @@ let freshAt = 0
  * bottomPad: a band at the foot kept clear of the HUD and the scenes, for when the page fades
  * the canvas out at the bottom edge. The top inset (setFrame) is a band the page lays its own
  * content over: the scenes sit in what's left below it, scaled up by zoom from their foot so
- * they spill past the sides and up into it.
+ * they spill past the sides and up into it. Its bottom inset adds to bottomPad, for a foot the
+ * browser covers (a toolbar floating over the page).
  */
-export function createReel(canvas: HTMLCanvasElement, { bottomPad = 0 } = {}) {
+export function createReel(canvas: HTMLCanvasElement, { bottomPad: footPad = 0 } = {}) {
   const ctx = canvas.getContext('2d')
   if (!ctx) return null
   const modelReady = loadModel()
   let w = 0, h = 0, dpr = 1
-  let topPad = 0, zoomBy = 1
+  let topPad = 0, zoomBy = 1, bottomPad = footPad
   /** Where in a scene's space (0 top, 1 foot) a zoom holds still, unless it says otherwise. */
   const ZOOM_ANCHOR = 0.8
 
@@ -1299,8 +1301,9 @@ export function createReel(canvas: HTMLCanvasElement, { bottomPad = 0 } = {}) {
       return freshAt
     },
 
-    setFrame({ top = 0, zoom = 1 }: { top?: number; zoom?: number }) {
+    setFrame({ top = 0, bottom = 0, zoom = 1 }: { top?: number; bottom?: number; zoom?: number }) {
       topPad = Math.max(0, top)
+      bottomPad = footPad + Math.max(0, bottom)
       zoomBy = zoom
     },
 

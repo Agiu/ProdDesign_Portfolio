@@ -6286,10 +6286,13 @@ a {
     color: #fff;
   }
 
-  /* Short of the full window by a sliver of the first case study, so it reads as a page that
-     carries on. The reel centres its scenes below the block (see HomeHeader). */
+  /* The full window (on phones whose toolbar floats over the page, Safari on iOS 26, a good deal
+     more than svh), less a hair so the case studies only just show below. The reel keeps its
+     description and call to action above the toolbar, and centres its scenes below the name
+     block (see HomeHeader). */
   .layout-site--work .home-header {
-    height: calc(100svh - 40px);
+    height: calc(100svh - 12px);
+    height: calc(100lvh - 12px);
     min-height: 600px;
   }
 

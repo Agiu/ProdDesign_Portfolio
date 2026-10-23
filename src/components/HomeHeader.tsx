@@ -100,20 +100,32 @@ export function HomeHeader() {
       window.addEventListener('scroll', onScroll, { passive: true })
 
       // Phones: the name, bio and nav are laid over the top of the reel; the scenes are drawn big,
-      // reaching up behind that block.
+      // reaching up behind that block. The header runs the full window, past where a toolbar
+      // floating over the page (Safari on iOS 26) starts, so the reel lifts its description and
+      // progress above that line: the small viewport's height, measured by a probe.
       const over = document.querySelector<HTMLElement>('.layout-site--work .sidebar-top')
       const phone = window.matchMedia('(max-width: 899px)')
+      const probe = document.createElement('div')
+      probe.style.cssText = 'position:fixed;top:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none'
+      document.body.appendChild(probe)
       const inset = () => {
-        reel.setFrame(phone.matches && over ? { top: over.offsetHeight * OVERLAP, zoom: PHONE_ZOOM } : {})
+        reel.setFrame(
+          phone.matches && over
+            ? { top: over.offsetHeight * OVERLAP, bottom: el.offsetHeight - probe.offsetHeight + 16, zoom: PHONE_ZOOM }
+            : {},
+        )
         render()
       }
       inset()
       const overRo = new ResizeObserver(inset)
       if (over) overRo.observe(over)
+      overRo.observe(el)
+      overRo.observe(probe)
       phone.addEventListener('change', inset)
 
       const teardown = () => {
         overRo.disconnect()
+        probe.remove()
         phone.removeEventListener('change', inset)
         window.removeEventListener('scroll', onScroll)
         rootStyle.backgroundColor = ''
