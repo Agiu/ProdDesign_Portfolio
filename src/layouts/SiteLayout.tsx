@@ -70,6 +70,15 @@ export function SiteLayout() {
           ease: 'expo.inOut',
           clearProps: 'height,paddingTop,paddingBottom,overflow',
         })
+        // Phones: coming back from About the name and bio rise into their masks again, as on page
+        // load (the lines are useIntro's split, still in place).
+        if (changed && !reduce && window.matchMedia('(max-width: 899px)').matches) {
+          gsap.fromTo(
+            intro.querySelectorAll('.split-line'),
+            { yPercent: 135 },
+            { yPercent: 0, duration: 1.3, stagger: 0.08, delay: 0.2, overwrite: true },
+          )
+        }
       }
     },
     { dependencies: [pathname], scope: root },

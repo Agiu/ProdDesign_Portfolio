@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { gsap, useGSAP } from '../lib/gsap'
 import type { Palette } from '../lib/timeOfDay'
 import { scrollToTarget } from '../lib/useSmoothScroll'
@@ -18,8 +18,6 @@ const PALETTE: Palette = { lo: [1 / 255, 1 / 255, 1 / 255], mid: [0x7a / 255, 0x
 // continues the reel where it was instead of restarting it and replaying the entrance.
 let reelClock = 0
 let entrancePlayed = false
-// Once closed, the under-construction notice stays closed for the visit.
-let noticeDismissed = false
 
 /** Scrolling counts as stopped this long after the last scroll update. */
 const SCROLL_SETTLE_MS = 160
@@ -34,7 +32,6 @@ export function HomeHeader() {
   const bar = useRef<HTMLDivElement>(null)
   // Set once the reel is up: pressing a progress segment jumps to that slide.
   const jump = useRef<(i: number) => void>(() => {})
-  const [notice, setNotice] = useState(!noticeDismissed)
 
   // The call to action under the title scrolls down to the case study list.
   const goToWork = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -97,7 +94,20 @@ export function HomeHeader() {
       // Project Open's model loads separately; redraw once it's in (matters for the still frame).
       reel.modelReady?.then(render)
 
+      // Overscroll past the top (where the browser still rubber-bands despite overscroll-behavior)
+      // paints the gap above the page with the root background: a grey strip over the reel on
+      // desktop, a white one over the black name block on phones. While the top of Work is in view
+      // that ground is the reel's black instead.
+      const rootStyle = document.documentElement.style
+      const onScroll = () => {
+        rootStyle.backgroundColor = window.scrollY < window.innerHeight * 0.5 ? HEADER_BG : ''
+      }
+      onScroll()
+      window.addEventListener('scroll', onScroll, { passive: true })
+
       const teardown = () => {
+        window.removeEventListener('scroll', onScroll)
+        rootStyle.backgroundColor = ''
         ro.disconnect()
         el.removeEventListener('pointermove', onMove)
         el.removeEventListener('pointerleave', onLeave)
@@ -243,27 +253,6 @@ export function HomeHeader() {
         <div ref={cta} className="hh-cta">
           <ArrowLink href="#work" label="See all work" down onClick={goToWork} />
         </div>
-        {notice && (
-          <div className="hh-notice" role="status">
-            <p>
-              <span className="hh-notice-title">Pardon the dust.</span> This site is still being built, as
-              are its case studies.
-            </p>
-            <button
-              type="button"
-              className="hh-notice-close"
-              aria-label="Dismiss notice"
-              onClick={() => {
-                noticeDismissed = true
-                setNotice(false)
-              }}
-            >
-              <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
-                <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            </button>
-          </div>
-        )}
         <div ref={bar} className="hh-progress" role="group" aria-label="Slides">
           {Array.from({ length: SCENE_COUNT }, (_, i) => (
             <button key={i} type="button" aria-label={`Slide ${i + 1} of ${SCENE_COUNT}`} onClick={() => jump.current(i)} />

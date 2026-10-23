@@ -139,7 +139,10 @@ a {
   margin-top: 25px;
 }
 
+/* Held to the desktop sidebar's text column (its width less the intro's side padding), so the bio
+   breaks the same way on phones as in the sidebar. */
 .intro-lead {
+  max-width: calc(var(--sidebar-width) - 53px);
   font-size: 16px;
   line-height: 20px;
   color: #757575;
@@ -589,79 +592,6 @@ a {
   color: #fff;
   font-size: var(--text-sm);
   line-height: var(--leading-sm);
-}
-
-/* "Pardon the dust" notice pinned across the top of the reel, closable: the site's small type on
-   a red-pink bar, with hazard stripes fading in from the left behind the close button. */
-.hh-notice {
-  --notice-red: #e0435f;
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  right: 16px;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  overflow: hidden;
-  padding: 10px 10px 10px 16px;
-  border-radius: var(--card-radius);
-  background: var(--notice-red);
-  color: #fff;
-  font-family: var(--font);
-  font-size: var(--text-sm);
-  line-height: var(--leading-sm);
-}
-
-.hh-notice::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: min(320px, 45%);
-  background: repeating-linear-gradient(-45deg, rgb(0 0 0 / 0.28) 0 10px, transparent 10px 20px);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 85%);
-  mask-image: linear-gradient(90deg, transparent, #000 85%);
-  pointer-events: none;
-}
-
-.hh-notice p {
-  position: relative;
-  z-index: 1;
-  flex: 1;
-  margin: 0;
-  color: rgb(255 255 255 / 0.85);
-}
-
-.hh-notice-title {
-  font-weight: 500;
-  color: #fff;
-}
-
-.hh-notice-close {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 0;
-  border-radius: 4px;
-  background: var(--notice-red);
-  color: #fff;
-  cursor: pointer;
-}
-
-.hh-notice-close:hover {
-  background: color-mix(in srgb, var(--notice-red), #000 15%);
-}
-
-.hh-notice-close:focus-visible {
-  outline: 1px solid #fff;
-  outline-offset: 2px;
 }
 
 /* Hit area over the canvas-drawn progress bar: one 26px button per segment, 4px apart, each
@@ -6293,6 +6223,47 @@ a {
     order: -1;
     padding-bottom: 24px;
     background: var(--surface);
+  }
+
+  /* On Work the name sits right on top of the reel, so it takes the reel's black ground (and
+     light type) to run seamlessly into it. */
+  /* Leaving Work (or coming back) the block eases between the two grounds instead of snapping
+     when the header unmounts. */
+  .layout-site .sidebar-top,
+  .layout-site .intro-lead,
+  .layout-site .site-nav .nav-link {
+    transition:
+      background-color 0.6s ease,
+      color 0.6s ease;
+  }
+
+  .layout-site .nav-line {
+    transition:
+      width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      margin-right 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.3s ease,
+      filter 0.6s ease;
+  }
+
+  .site-header ~ .sidebar--home .sidebar-top {
+    background: #010101;
+    color: #fff;
+  }
+
+  .site-header ~ .sidebar--home .intro-lead {
+    color: #9a9a9a;
+  }
+
+  .site-header ~ .sidebar--home .intro-name-dots {
+    color: #fff;
+  }
+
+  .site-header ~ .sidebar--home .site-nav .nav-link {
+    color: #fff;
+  }
+
+  .site-header ~ .sidebar--home .nav-line {
+    filter: invert(1);
   }
 
   .layout-site .sidebar-contact {
