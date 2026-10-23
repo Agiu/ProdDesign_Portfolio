@@ -23,6 +23,9 @@ let entrancePlayed = false
  *  larger, growing up from their foot, so they run off the sides and well up behind the name. */
 const OVERLAP = 0.4
 const PHONE_ZOOM = 1.75
+/** How far into the band a floating toolbar covers the reel's description may sink: the toolbar
+ *  sits a little below the small viewport's edge, and the reel keeps its own margin. */
+const TOOLBAR_GAP = 24
 
 /** Scrolling counts as stopped this long after the last scroll update. */
 const SCROLL_SETTLE_MS = 160
@@ -111,7 +114,7 @@ export function HomeHeader() {
       const inset = () => {
         reel.setFrame(
           phone.matches && over
-            ? { top: over.offsetHeight * OVERLAP, bottom: el.offsetHeight - probe.offsetHeight + 16, zoom: PHONE_ZOOM }
+            ? { top: over.offsetHeight * OVERLAP, bottom: el.offsetHeight - probe.offsetHeight - TOOLBAR_GAP, zoom: PHONE_ZOOM }
             : {},
         )
         render()
