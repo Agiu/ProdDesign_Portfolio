@@ -7,10 +7,9 @@ import type { Palette, RGB } from './timeOfDay'
  * ground, mid/hi = linework), so the reel drifts from dawn to night like the old header did.
  */
 
-type Pointer = { x: number; y: number }
 type Box = { x: number; y: number; w: number; h: number }
 /** Where scenes draw: box is in stage units, placed at (x, y) in the frame and scaled by k. */
-type Stage = { x: number; y: number; k: number; box: Box }
+type Stage = { x: number; y: number; k: number; box: Box; hair: number }
 
 /**
  * Where the DOM overlays sit: the call to action under the description (which it doesn't fade or
@@ -27,6 +26,8 @@ type SceneCtx = {
   t: number
   /** 0..1 draw-on at the start of the scene. */
   reveal: number
+  /** A line width that stays the frame's usual weight however far the scene is zoomed in. */
+  hair: number
   col: (c: RGB, a?: number) => string
   pal: Palette
 }
@@ -609,7 +610,7 @@ const whoOwnsSeattle: Scene = (() => {
   return {
     description:
       'A data visualizer that maps who owns Seattle, parcel by parcel, from King County property records.',
-    draw: ({ ctx, box, p, t, reveal, col, pal }) => {
+    draw: ({ ctx, box, p, t, reveal, hair, col, pal }) => {
       // Three steps from the highlight down towards the ground: developer, trust, public.
       const owners = [pal.hi, mix(pal.hi, pal.lo, 0.38), mix(pal.hi, pal.lo, 0.62)]
       const years = yearAt(p)
@@ -631,20 +632,21 @@ const whoOwnsSeattle: Scene = (() => {
           i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y)
         })
       }
-      ctx.lineWidth = 1
+      // Close up (phones) the map is drawn big but its linework stays fine.
+      ctx.lineWidth = hair
 
-      // ---- The lake: its shore and rows of ripples, fading out to the north ----
+      // ---- The lake: its shore and rows of ripples, fading out far to the north ----
       ctx.beginPath()
       const shoreLine: V3[] = []
-      for (let x = -0.9; x <= COLS + 0.4; x += 0.1) shoreLine.push([x, 0, shore(x)])
+      for (let x = -1.6; x <= COLS + 1.2; x += 0.1) shoreLine.push([x, 0, shore(x)])
       line(shoreLine)
       ctx.strokeStyle = col(pal.hi, 0.5 * reveal)
       ctx.stroke()
-      for (let k = 1; k <= 9; k++) {
-        const a = (0.3 - k * 0.03) * reveal
+      for (let k = 1; k <= 18; k++) {
+        const a = (0.3 - k * 0.016) * reveal
         if (a <= 0) continue
         ctx.beginPath()
-        for (let x = -0.9; x <= COLS + 0.4; x += 0.1) {
+        for (let x = -1.6; x <= COLS + 1.2; x += 0.1) {
           const z = shore(x) - k * 0.22
           // Broken into dashes that drift, like light on water.
           if (Math.sin(x * 4 + k * 1.7 + t * 0.8) > -0.2) {
@@ -1185,6 +1187,20 @@ const projectOpen: Scene = (() => {
 })()
 
 const SCENES: Scene[] = [projectOpen, xbox, foreflight, whoOwnsSeattle]
+
+/**
+ * How each scene takes the close-up framing (setFrame's zoom, on phones): its scale relative to
+ * the rest, and where in its space (0 top, 1 foot) the zoom holds still. The city wants to fill
+ * the frame and the flight close in on the plane; the wheel reads best with its whole rim in
+ * view. Most sit high in their space, so they zoom about a higher point, growing in place
+ * instead of rising up behind the name.
+ */
+const CLOSE_UP = new Map<Scene, { scale?: number; anchor?: number }>([
+  [xbox, { scale: 0.62, anchor: 0.2 }],
+  [foreflight, { scale: 1.3, anchor: 0.45 }],
+  [whoOwnsSeattle, { scale: 1.4, anchor: 0.5 }],
+  [projectOpen, { anchor: 0.3 }],
+])
 export const SCENE_COUNT = SCENES.length
 
 /**
@@ -1197,13 +1213,18 @@ let freshAt = 0
 
 /**
  * bottomPad: a band at the foot kept clear of the HUD and the scenes, for when the page fades
- * the canvas out at the bottom edge.
+ * the canvas out at the bottom edge. The top inset (setFrame) is a band the page lays its own
+ * content over: the scenes sit in what's left below it, scaled up by zoom from their foot so
+ * they spill past the sides and up into it.
  */
 export function createReel(canvas: HTMLCanvasElement, { bottomPad = 0 } = {}) {
   const ctx = canvas.getContext('2d')
   if (!ctx) return null
   const modelReady = loadModel()
   let w = 0, h = 0, dpr = 1
+  let topPad = 0, zoomBy = 1
+  /** Where in a scene's space (0 top, 1 foot) a zoom holds still, unless it says otherwise. */
+  const ZOOM_ANCHOR = 0.8
 
   // Scenes with heavy setup do it in idle moments, a slice at a time, well before their turn.
   const setup = SCENES.filter((s) => s.prepare)
@@ -1221,9 +1242,8 @@ export function createReel(canvas: HTMLCanvasElement, { bottomPad = 0 } = {}) {
   if (setup.length) whenIdle(work)
 
   // The dot grid is the same every frame, so it's drawn once into a layer of its own (redrawn
-  // when the size or palette changes); each frame copies it in and relights only the dots near
-  // the pointer.
-  const DOT_GAP = 22, DOT_ALPHA = 0.07, DOT_REACH = 150
+  // when the size or palette changes) and each frame copies it in.
+  const DOT_GAP = 22, DOT_ALPHA = 0.07
   const dots = document.createElement('canvas')
   let dotsFor = ''
   let dotsFill: CanvasPattern | null = null
@@ -1243,6 +1263,7 @@ export function createReel(canvas: HTMLCanvasElement, { bottomPad = 0 } = {}) {
       p: clamp01((local - SHOWN_SECONDS) / (LIFE_SECONDS - 2 * SHOWN_SECONDS)),
       // Draws on as it arrives, then off again (the same motion reversed) as it leaves.
       reveal: easeOutCubic(clamp01((local - 0.55) / 1.4)) * easeInOutCubic(clamp01((left - 0.55) / 0.95)),
+      hair: stage.hair,
       col,
       pal,
     }
@@ -1278,6 +1299,11 @@ export function createReel(canvas: HTMLCanvasElement, { bottomPad = 0 } = {}) {
       return freshAt
     },
 
+    setFrame({ top = 0, zoom = 1 }: { top?: number; zoom?: number }) {
+      topPad = Math.max(0, top)
+      zoomBy = zoom
+    },
+
     resize(width: number, height: number, ratio: number) {
       w = width
       h = height
@@ -1286,7 +1312,7 @@ export function createReel(canvas: HTMLCanvasElement, { bottomPad = 0 } = {}) {
       canvas.height = Math.max(1, Math.round(h * dpr))
     },
 
-    draw(time: number, pal: Palette, pointer: Pointer): Hud | undefined {
+    draw(time: number, pal: Palette): Hud | undefined {
       if (!w || !h) return
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       ctx.fillStyle = col(pal.lo)
@@ -1294,7 +1320,7 @@ export function createReel(canvas: HTMLCanvasElement, { bottomPad = 0 } = {}) {
       ctx.textBaseline = 'alphabetic'
 
       const m = Math.max(20, Math.min(36, w * 0.028))
-      // Dot grid; dots near the pointer light up.
+      // Dot grid.
       const gap = DOT_GAP
       const dotsKey = `${canvas.width}x${canvas.height}:${pal.hi}`
       if (dotsKey !== dotsFor || !dotsFill) {
@@ -1315,17 +1341,6 @@ export function createReel(canvas: HTMLCanvasElement, { bottomPad = 0 } = {}) {
         ctx.fillRect(0, 0, dots.width, dots.height)
       }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      // A lit dot is drawn again over its resting self, at whatever alpha brings it up to its
-      // brightness.
-      const firstLit = (p: number) => gap / 2 + Math.max(0, Math.ceil((p - DOT_REACH - gap / 2) / gap)) * gap
-      for (let y = firstLit(pointer.y); y < h && y < pointer.y + DOT_REACH; y += gap) {
-        for (let x = firstLit(pointer.x); x < w && x < pointer.x + DOT_REACH; x += gap) {
-          const lit = 0.5 * Math.max(0, 1 - Math.hypot(x - pointer.x, y - pointer.y) / DOT_REACH)
-          if (lit <= 0) continue
-          ctx.fillStyle = col(pal.hi, 1 - (1 - DOT_ALPHA - lit) / (1 - DOT_ALPHA))
-          ctx.fillRect(x, y, 1, 1)
-        }
-      }
 
       const cycle = SCENES.length * SCENE_SECONDS
       const tt = ((time % cycle) + cycle) % cycle
@@ -1341,21 +1356,31 @@ export function createReel(canvas: HTMLCanvasElement, { bottomPad = 0 } = {}) {
       // The stage: the space between the HUD's top and bottom bands, where each scene composes
       // itself around the centre. Big frames scale the scenes up (to 1.5x) instead of spreading
       // them out, and very wide ones just get more margin, so the work stays gathered in the middle.
-      const aw = w - 2 * m - 16, ah = h - bottomPad - 2 * m - 170
+      const aw = w - 2 * m - 16, ah = h - bottomPad - topPad - 2 * m - 170
       const k = Math.min(1.5, Math.max(1, ah / 600))
       const bh = ah / k, bw = Math.min(aw / k, bh * 2.3)
-      const stage: Stage = { x: m + 8 + (aw - bw * k) / 2, y: m + 44, k, box: { x: 0, y: 0, w: bw, h: bh } }
+      // Zoomed about a point low in the space the scene would otherwise fill, centred across it:
+      // it grows mostly up and out, only a little down towards the description.
+      const cx = m + 8 + aw / 2, top = topPad + m + 44
+      const stageFor = (scene: Scene): Stage => {
+        const box = { x: 0, y: 0, w: bw, h: bh }
+        if (zoomBy === 1) return { x: cx - (bw * k) / 2, y: top, k, box, hair: 1 }
+        const { scale = 1, anchor = ZOOM_ANCHOR } = CLOSE_UP.get(scene) ?? {}
+        const kz = k * zoomBy * scale
+        return { x: cx - (bw * kz) / 2, y: top + bh * (k - kz) * anchor, k: kz, box, hair: k / kz }
+      }
 
       // Handoff: the last stretch of each slot, where this scene draws itself off as the next one
       // draws on over it. q runs 0..1 through it (0 when there isn't one under way).
       const handoffAt = SCENE_SECONDS - HANDOFF_SECONDS
       const q = phase > handoffAt ? (phase - handoffAt) / HANDOFF_SECONDS : 0
-      drawScene(SCENES[idx], local, stage, pal)
-      if (q > 0) drawScene(SCENES[next], phase - handoffAt, stage, pal)
+      drawScene(SCENES[idx], local, stageFor(SCENES[idx]), pal)
+      if (q > 0) drawScene(SCENES[next], phase - handoffAt, stageFor(SCENES[next]), pal)
 
       // Vignette: edges fall away to the ground colour, heaviest at the foot, so the frame reads
       // like a film still and the bottom edge feels like a threshold into the page below.
-      const vg = ctx.createRadialGradient(w / 2, h * 0.42, Math.min(w, h) * 0.32, w / 2, h * 0.42, Math.hypot(w, h) * 0.62)
+      const vy = topPad + (h - topPad) * 0.42
+      const vg = ctx.createRadialGradient(w / 2, vy, Math.min(w, h) * 0.32, w / 2, vy, Math.hypot(w, h) * 0.62)
       vg.addColorStop(0, col(pal.lo, 0))
       vg.addColorStop(1, col(pal.lo, 0.85))
       ctx.fillStyle = vg

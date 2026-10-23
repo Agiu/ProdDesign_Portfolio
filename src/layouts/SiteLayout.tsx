@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import divider from '../assets/divider.svg'
 import { Arrow } from '../components/Arrow'
@@ -26,6 +26,9 @@ export function SiteLayout() {
   const { pathname, state } = useLocation()
   const navigate = useNavigate()
   const prevPath = useRef(pathname)
+  // Set while Work fades out on the way to another page: on phones the name block, laid over the
+  // reel in black, eases back to the light sidebar in the same moment (see the phone styles).
+  const [leavingWork, setLeavingWork] = useState(false)
   useIntro(root)
 
   useLayoutEffect(() => {
@@ -35,6 +38,7 @@ export function SiteLayout() {
       return
     }
     prevPath.current = pathname
+    setLeavingWork(false)
     fadeInPage(main.current)
   }, [pathname])
 
@@ -117,12 +121,16 @@ export function SiteLayout() {
     if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
     e.preventDefault()
     if (to === pathname) return
+    if (pathname === '/') setLeavingWork(true)
     await Promise.all([fadeOutPage(main.current), fadeOutPage(header.current)])
     navigate(to)
   }
 
   return (
-    <div ref={root} className="layout-sidebar layout-site">
+    <div
+      ref={root}
+      className={`layout-sidebar layout-site${pathname === '/' ? ' layout-site--work' : ''}${leavingWork ? ' is-leaving' : ''}`}
+    >
       {/* Work's datamosh header lives in the shell, not the page, so on phones it can sit between
           the name and the case studies; on desktop CSS grid places it at the top of the
           right-hand column. */}

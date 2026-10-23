@@ -19,6 +19,11 @@ const PALETTE: Palette = { lo: [1 / 255, 1 / 255, 1 / 255], mid: [0x7a / 255, 0x
 let reelClock = 0
 let entrancePlayed = false
 
+/** Phones: the scenes sit below this share of the overlaid name block and are drawn this much
+ *  larger, growing up from their foot, so they run off the sides and well up behind the name. */
+const OVERLAP = 0.4
+const PHONE_ZOOM = 1.75
+
 /** Scrolling counts as stopped this long after the last scroll update. */
 const SCROLL_SETTLE_MS = 160
 /** How long the reel takes to wind down to a stop as scrolling starts, and back up once it stops. */
@@ -49,17 +54,6 @@ export function HomeHeader() {
       if (!reel) return
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-      const pointer = { x: -9999, y: -9999 }
-      const onMove = (e: PointerEvent) => {
-        const r = el.getBoundingClientRect()
-        pointer.x = e.clientX - r.left
-        pointer.y = e.clientY - r.top
-      }
-      const onLeave = () => {
-        pointer.x = pointer.y = -9999
-      }
-      el.addEventListener('pointermove', onMove)
-      el.addEventListener('pointerleave', onLeave)
 
       // Keep the DOM call to action pinned under the canvas title. It stays put and visible while
       // the titles hand over.
@@ -79,7 +73,7 @@ export function HomeHeader() {
         }
       }
 
-      const render = () => place(reel.draw(reelClock, PALETTE, pointer))
+      const render = () => place(reel.draw(reelClock, PALETTE))
 
       const resize = () => {
         const r = el.getBoundingClientRect()
@@ -105,12 +99,25 @@ export function HomeHeader() {
       onScroll()
       window.addEventListener('scroll', onScroll, { passive: true })
 
+      // Phones: the name, bio and nav are laid over the top of the reel; the scenes are drawn big,
+      // reaching up behind that block.
+      const over = document.querySelector<HTMLElement>('.layout-site--work .sidebar-top')
+      const phone = window.matchMedia('(max-width: 899px)')
+      const inset = () => {
+        reel.setFrame(phone.matches && over ? { top: over.offsetHeight * OVERLAP, zoom: PHONE_ZOOM } : {})
+        render()
+      }
+      inset()
+      const overRo = new ResizeObserver(inset)
+      if (over) overRo.observe(over)
+      phone.addEventListener('change', inset)
+
       const teardown = () => {
+        overRo.disconnect()
+        phone.removeEventListener('change', inset)
         window.removeEventListener('scroll', onScroll)
         rootStyle.backgroundColor = ''
         ro.disconnect()
-        el.removeEventListener('pointermove', onMove)
-        el.removeEventListener('pointerleave', onLeave)
       }
 
       // Dip the art out, then start the chosen slide drawing itself on from nothing, so nothing
